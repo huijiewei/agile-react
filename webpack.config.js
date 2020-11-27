@@ -153,7 +153,6 @@ module.exports = (env, argv) => {
     );
     config.plugins.push(
       new CleanWebpackPlugin({
-        verbose: true,
         cleanOnceBeforeBuildPatterns: [path.resolve('./dist' + appConfig.publicPath)],
       }),
     );
