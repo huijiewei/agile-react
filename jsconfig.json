@@ -1,0 +1,12 @@
+{
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@shared/*": ["shared/*"],
+      "@admin/*": ["app/admin/*"],
+      "@mobile/*": ["app/mobile*"]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "include": ["./src/**/*"],
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "@shared/*": ["shared/*"],
+      "@admin/*": ["app/admin/*"],
+      "@mobile/*": ["app/mobile*"]
+    },
+
+    "exclude": ["node_modules", "dist"]
+  }
+}
