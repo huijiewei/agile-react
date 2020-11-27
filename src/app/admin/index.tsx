@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 
+import '@shared/assets/styles/agile.less';
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker

@@ -9,13 +9,14 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
   const appProduction = argv.mode === 'production';
   const appConfig = require(env.APP_CONFIG)(appProduction);
 
   const fileName = `assets/js/${appProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
-  const cssFileName = `assets/css/${appProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
+  const cssFileName = `assets/css/${appProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
 
   const config = {
     mode: argv.mode,
@@ -38,8 +39,12 @@ module.exports = (env, argv) => {
           loader: 'babel-loader',
         },
         {
+          test: /\.less$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+        },
+        {
           test: /\.css$/,
-          use: [appProduction ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
         {
           test: /\.(png|jpe?g|gif|webp)$/,
@@ -90,6 +95,10 @@ module.exports = (env, argv) => {
       new webpack.EnvironmentPlugin({
         BASE_URL: appConfig.publicPath,
       }),
+      new MiniCssExtractPlugin({
+        filename: cssFileName,
+        chunkFilename: cssFileName,
+      }),
       new HtmlWebPackPlugin({
         title: appConfig.name,
         template: path.join('./public/app', appConfig.publicPath, 'index.html'),
@@ -106,6 +115,8 @@ module.exports = (env, argv) => {
 
   if (appProduction) {
     config.optimization = {
+      minimize: true,
+      minimizer: [new CssMinimizerPlugin()],
       splitChunks: {
         cacheGroups: {
           vendor: {
@@ -129,12 +140,6 @@ module.exports = (env, argv) => {
             priority: 5,
             enforce: true,
           },
-          styles: {
-            name: 'styles',
-            test: /\.css$/,
-            chunks: 'initial',
-            enforce: true,
-          },
         },
       },
     };
@@ -147,14 +152,9 @@ module.exports = (env, argv) => {
       }),
     );
     config.plugins.push(
-      new MiniCssExtractPlugin({
-        filename: cssFileName,
-        chunkFilename: cssFileName,
-      }),
-    );
-    config.plugins.push(
       new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: [path.resolve('dist' + appConfig.publicPath)],
+        verbose: true,
+        cleanOnceBeforeBuildPatterns: [path.resolve('./dist' + appConfig.publicPath)],
       }),
     );
     config.plugins.push(

@@ -14,8 +14,6 @@
       "@shared/*": ["shared/*"],
       "@admin/*": ["app/admin/*"],
       "@mobile/*": ["app/mobile*"]
-    },
-
-    "exclude": ["node_modules", "dist"]
+    }
   }
 }
