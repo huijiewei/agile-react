@@ -12,5 +12,6 @@ module.exports = (appProduction) => {
     },
     pwaEnable: true,
     apiHost: appProduction ? 'https://agile.huijiewei.com/admin-api' : 'https://agile.huijiewei.com/admin-api',
+    htmlChunks: ['react', 'vendor', 'shared', 'admin'],
   };
 };

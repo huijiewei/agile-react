@@ -111,34 +111,33 @@ module.exports = (env, argv) => {
         },
         inject: true,
         filename: 'index.html',
-        chunks: ['react', 'vendor', 'shared', appName],
+        chunks: appConfig.htmlChunks,
       }),
     ],
   };
 
   if (appProduction) {
     config.optimization = {
-      minimize: true,
       minimizer: [new CssMinimizerPlugin()],
       splitChunks: {
         cacheGroups: {
           vendor: {
-            test: /[\\/]node_modules[\\/]/,
             name: 'vendor',
+            test: /[\\/]node_modules[\\/]/,
             chunks: 'initial',
             priority: 10,
             enforce: true,
           },
           react: {
             name: 'react',
-            test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+            test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/,
             chunks: 'initial',
             priority: 20,
             enforce: true,
           },
           shared: {
-            test: /[\\/]src\/shared[\\/]/,
             name: 'shared',
+            test: /[\\/]src\/shared[\\/]/,
             chunks: 'initial',
             priority: 5,
             enforce: true,

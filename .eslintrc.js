@@ -18,6 +18,11 @@ module.exports = {
       version: 'detect',
     },
   },
-  extends: ['plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'prettier/react'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
+    'prettier/@typescript-eslint',
+    'prettier/react',
+  ],
   rules: {},
 };
