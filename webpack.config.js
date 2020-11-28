@@ -83,13 +83,23 @@ module.exports = (env, argv) => {
       pathinfo: false,
     },
     devServer: {
-      contentBase: [path.resolve('public/shared/'), path.resolve(`public/app/${appName}/`)],
-      contentBasePublicPath: appConfig.publicPath,
+      static: [
+        {
+          directory: path.resolve('public/shared/'),
+          publicPath: appConfig.publicPath,
+        },
+        {
+          directory: path.resolve(`public/app/${appName}/`),
+          publicPath: appConfig.publicPath,
+        },
+      ],
       historyApiFallback: {
         index: appConfig.publicPath,
       },
       headers: { 'Access-Control-Allow-Origin': '*' },
-      publicPath: appConfig.publicPath,
+      dev: {
+        publicPath: appConfig.publicPath,
+      },
       host: appConfig.serverHost,
       port: appConfig.serverPort,
       public: `${appConfig.serverHost}:${appConfig.serverPort}${appConfig.publicPath}`,
