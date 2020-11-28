@@ -6,21 +6,22 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackPwaManifest = require('webpack-pwa-manifest');
-const ESLintPlugin = require('eslint-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
   const appProduction = argv.mode === 'production';
   const appConfig = require(env.APP_CONFIG)(appProduction);
 
+  const appName = appConfig.name;
+
   const fileName = `assets/js/${appProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
   const cssFileName = `assets/css/${appProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
 
   const config = {
-    mode: argv.mode,
-    entry: appConfig.entry,
+    entry: {
+      [appName]: `./src/app/${appName}/index.tsx`,
+    },
     target: appProduction ? 'browserslist' : 'web',
     resolve: {
       extensions: ['.tsx', '.ts', 'jsx', '.js'],
@@ -28,7 +29,9 @@ module.exports = (env, argv) => {
         {
           '@shared': path.resolve('src/shared'),
         },
-        appConfig.alias,
+        {
+          [`@${appName}`]: path.resolve(`src/app/${appName}`),
+        },
       ),
     },
     module: {
@@ -73,14 +76,14 @@ module.exports = (env, argv) => {
       ],
     },
     output: {
-      path: path.resolve(`./dist${appConfig.publicPath}`),
+      path: path.resolve(`./dist/${appName}`),
       publicPath: appConfig.publicPath + '/',
       filename: fileName,
       chunkFilename: fileName,
       pathinfo: false,
     },
     devServer: {
-      contentBase: [path.resolve('public/shared/'), path.resolve('public/app' + appConfig.publicPath)],
+      contentBase: [path.resolve('public/shared/'), path.resolve(`public/app/${appName}/`)],
       contentBasePublicPath: appConfig.publicPath,
       historyApiFallback: {
         index: appConfig.publicPath,
@@ -100,15 +103,15 @@ module.exports = (env, argv) => {
         chunkFilename: cssFileName,
       }),
       new HtmlWebPackPlugin({
-        title: appConfig.name,
-        template: path.join('./public/app', appConfig.publicPath, 'index.html'),
+        title: appConfig.title,
+        template: `./public/app/${appName}/index.html`,
         templateParameters: {
           BASE_URL: appConfig.publicPath + '/',
           API_HOST: appConfig.apiHost,
         },
         inject: true,
         filename: 'index.html',
-        chunks: appConfig.chunks,
+        chunks: ['react', 'vendor', 'shared', appName],
       }),
     ],
   };
@@ -144,7 +147,6 @@ module.exports = (env, argv) => {
       },
     };
 
-    //config.plugins.push(new BundleAnalyzerPlugin());
     config.plugins.push(
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,
@@ -153,7 +155,7 @@ module.exports = (env, argv) => {
     );
     config.plugins.push(
       new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: [path.resolve('./dist' + appConfig.publicPath)],
+        cleanOnceBeforeBuildPatterns: [path.resolve(`./dist/${appName}/`)],
       }),
     );
     config.plugins.push(
