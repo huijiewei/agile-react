@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-const DefaultLayout = (): JSX.Element => {
+const DefaultLayout: FC = () => {
   return (
     <section>
       <h1>Welcome to the Agile!</h1>

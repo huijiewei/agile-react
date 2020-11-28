@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@admin/template/views/site/Home';
 import About from '@admin/template/views/site/About';
 import NotFound from '@admin/template/views/site/NotFound';
 import DefaultLayout from '@admin/template/layouts/DefaultLayout';
 
-const App = (): JSX.Element => {
+const App: FC = () => {
   return (
     <Routes basename={process.env.BASE_URL}>
       <Route path="/" element={<DefaultLayout />}>
