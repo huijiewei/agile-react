@@ -22,7 +22,6 @@ module.exports = (env, argv) => {
     entry: {
       [appName]: `./src/app/${appName}/index.tsx`,
     },
-    target: appProduction ? 'browserslist' : 'web',
     resolve: {
       extensions: ['.tsx', '.ts', 'jsx', '.js'],
       alias: Object.assign(
