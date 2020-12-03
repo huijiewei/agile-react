@@ -1,11 +1,12 @@
 {
   "include": ["./src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": false,
-    "module": "es6",
+    "module": "esnext",
     "target": "es5",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

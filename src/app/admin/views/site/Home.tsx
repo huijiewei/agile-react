@@ -1,0 +1,92 @@
+import { FC } from 'react';
+
+const Home: FC = () => {
+  return (
+    <div>
+      <p>Hello Agile</p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+      <p>
+        <button>中文按钮</button>
+      </p>
+    </div>
+  );
+};
+
+export default Home;

@@ -19,10 +19,12 @@ module.exports = {
     },
   },
   extends: [
+    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
     'prettier/@typescript-eslint',
-    'prettier/react',
+    'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:jsx-a11y/recommended',
   ],
-  rules: {},
+  rules: { 'react/jsx-uses-react': 'off', 'react/react-in-jsx-scope': 'off' },
 };

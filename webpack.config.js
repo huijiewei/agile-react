@@ -8,6 +8,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = (env, argv) => {
   const appProduction = argv.mode === 'production';
@@ -24,14 +25,22 @@ module.exports = (env, argv) => {
     },
     resolve: {
       extensions: ['.tsx', '.ts', 'jsx', '.js'],
-      alias: Object.assign(
-        {
+      alias: {
+        ...{
           '@shared': path.resolve('src/shared'),
         },
-        {
+        ...{
           [`@${appName}`]: path.resolve(`src/app/${appName}`),
         },
-      ),
+      },
+    },
+    output: {
+      path: path.resolve(`./dist/${appName}`),
+      publicPath: appConfig.publicPath + '/',
+      filename: fileName,
+      chunkFilename: fileName,
+      pathinfo: false,
+      assetModuleFilename: 'assets/resource/[name].[hash:8][ext]',
     },
     module: {
       rules: [
@@ -49,37 +58,37 @@ module.exports = (env, argv) => {
           use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
         {
-          test: /\.(png|jpe?g|gif|webp)$/,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 8192,
-                name: 'assets/images/[name].[hash:8].[ext]',
-              },
+          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          type: 'asset',
+          generator: {
+            filename: 'assets/images/[name].[hash:8][ext]',
+          },
+          parser: {
+            dataUrlCondition: {
+              maxSize: 4 * 1024, // 4kb
             },
-          ],
+          },
         },
         {
-          test: /\.(woff2?|eot|ttf|otf)$/,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 16384,
-                name: 'assets/fonts/[name].[hash:8].[ext]',
-              },
+          test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+          type: 'asset/resource',
+          generator: {
+            filename: 'assets/medias/[name].[hash:8][ext]',
+          },
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: 'asset',
+          generator: {
+            filename: 'assets/fonts/[name].[hash:8][ext]',
+          },
+          parser: {
+            dataUrlCondition: {
+              maxSize: 2 * 1024, // 4kb
             },
-          ],
+          },
         },
       ],
-    },
-    output: {
-      path: path.resolve(`./dist/${appName}`),
-      publicPath: appConfig.publicPath + '/',
-      filename: fileName,
-      chunkFilename: fileName,
-      pathinfo: false,
     },
     devServer: {
       static: [
@@ -107,6 +116,7 @@ module.exports = (env, argv) => {
       new webpack.EnvironmentPlugin({
         BASE_URL: appConfig.publicPath,
       }),
+      new ESLintPlugin({}),
       new MiniCssExtractPlugin({
         filename: cssFileName,
         chunkFilename: cssFileName,
@@ -127,7 +137,7 @@ module.exports = (env, argv) => {
 
   if (appProduction) {
     config.optimization = {
-      minimizer: [new CssMinimizerPlugin()],
+      minimizer: [new CssMinimizerPlugin(), '...'],
       splitChunks: {
         cacheGroups: {
           vendor: {
@@ -139,7 +149,14 @@ module.exports = (env, argv) => {
           },
           react: {
             name: 'react',
-            test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/,
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            chunks: 'initial',
+            priority: 20,
+            enforce: true,
+          },
+          evergreen: {
+            name: 'evergreen',
+            test: /[\\/]node_modules[\\/](evergreen-ui|ui-box)[\\/]/,
             chunks: 'initial',
             priority: 20,
             enforce: true,

@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  padding: 0;
+  color: #505d69;
+  background-color: #f4f8fb;
+}
+
+@side-width: 220px;
+@side-collapsed-width: 60px;
+@side-background-color: #2c343f;
+@head-height: 50px;
+
+.ag-layout {
+  display: flex;
+
+  .ag-side {
+    width: @side-width;
+    background-color: @side-background-color;
+    position: fixed;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.01);
+    overflow: hidden;
+    height: 100vh;
+    color: #f4f8fb;
+
+    a,
+    a:hover,
+    a:active {
+      color: #f4f8fb;
+    }
+
+    .ag-brand {
+      text-align: center;
+      line-height: @head-height;
+      height: @head-height;
+      img {
+        vertical-align: middle;
+        height: 39px;
+      }
+    }
+
+    .ag-scroll {
+      overflow-y: scroll;
+    }
+  }
+
+  .ag-header {
+    position: fixed;
+    height: @head-height;
+    width: calc(~'100% - ' @side-width);
+  }
+
+  .ag-main {
+    display: flex;
+    margin-left: @side-width;
+    overflow: hidden;
+  }
+
+  .ag-content {
+    margin-top: @head-height;
+    background-color: #ffffff;
+  }
+}
