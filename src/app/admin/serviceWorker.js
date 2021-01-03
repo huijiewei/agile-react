@@ -1,10 +1,3 @@
-import { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
-
-import App from './App';
-
-import '@shared/assets/styles/agile.less';
-
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
@@ -17,10 +10,3 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
-
-ReactDOM.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-  document.getElementById('root'),
-);

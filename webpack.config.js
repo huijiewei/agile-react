@@ -1,14 +1,13 @@
 const path = require('path');
-const webpack = require('webpack');
+const { EnvironmentPlugin } = require('webpack');
 
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env, argv) => {
   const appProduction = argv.mode === 'production';
@@ -21,10 +20,10 @@ module.exports = (env, argv) => {
 
   const config = {
     entry: {
-      [appName]: `./src/app/${appName}/index.tsx`,
+      [appName]: `./src/app/${appName}/index.jsx`,
     },
     resolve: {
-      extensions: ['.tsx', '.ts', 'jsx', '.js'],
+      extensions: ['.jsx', '.js'],
       alias: {
         ...{
           '@shared': path.resolve('src/shared'),
@@ -45,7 +44,7 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx|ts|tsx)$/,
+          test: /\.(js|jsx)$/,
           include: path.resolve('./src'),
           loader: 'babel-loader',
         },
@@ -113,10 +112,11 @@ module.exports = (env, argv) => {
       public: `${appConfig.serverHost}:${appConfig.serverPort}${appConfig.publicPath}`,
     },
     plugins: [
-      new webpack.EnvironmentPlugin({
-        BASE_URL: appConfig.publicPath,
+      new EnvironmentPlugin({
+        PUBLIC_URL: appConfig.publicPath,
+        QS_ARRAY_FORMAT: appConfig.qsArrayFormat,
       }),
-      new ESLintPlugin({}),
+      new ESLintPlugin(),
       new MiniCssExtractPlugin({
         filename: cssFileName,
         chunkFilename: cssFileName,
@@ -125,7 +125,7 @@ module.exports = (env, argv) => {
         title: appConfig.title,
         template: `./public/app/${appName}/index.html`,
         templateParameters: {
-          BASE_URL: appConfig.publicPath + '/',
+          PUBLIC_URL: appConfig.publicPath + '/',
           API_HOST: appConfig.apiHost,
         },
         inject: true,
@@ -154,9 +154,9 @@ module.exports = (env, argv) => {
             priority: 20,
             enforce: true,
           },
-          evergreen: {
-            name: 'evergreen',
-            test: /[\\/]node_modules[\\/](evergreen-ui|ui-box)[\\/]/,
+          chakra: {
+            name: 'chakra',
+            test: /[\\/]node_modules[\\/](@chakra-ui)[\\/]/,
             chunks: 'initial',
             priority: 20,
             enforce: true,
@@ -179,11 +179,6 @@ module.exports = (env, argv) => {
       }),
     );
     config.plugins.push(
-      new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: [path.resolve(`./dist/${appName}/`)],
-      }),
-    );
-    config.plugins.push(
       new CopyPlugin({
         patterns: [
           {
@@ -197,6 +192,7 @@ module.exports = (env, argv) => {
         ],
       }),
     );
+    config.plugins.push(new CleanWebpackPlugin());
   } else {
     config.optimization = {
       runtimeChunk: true,

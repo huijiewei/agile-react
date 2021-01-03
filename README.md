@@ -1,4 +1,4 @@
-React + TypeScript + Webpack 5 + ? 演示项目
+React + Webpack 5 + ? 演示项目
 
 项目目前正在开发，变动可能会很大，暂时只供研究学习参考
 
@@ -30,7 +30,7 @@ npm install
 
 
 #### 运行本地开发
-复制 .env.example 为 .env.development
+修改 app.*.config.js 里面的相关参数
 
 ```bash
 npm run admin-dev
@@ -43,7 +43,7 @@ npm run admin-build
 ```
 
 #### 生产版本本地试运行
-
+修改 package.json 里面 admin-serve 相关 host
 ```bash
 npm run admin-serve
 ```

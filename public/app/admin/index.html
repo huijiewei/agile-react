@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
+<head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="api-host" content="<%= API_HOST %>" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <link rel="icon" href="<%= PUBLIC_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <link type="text/css" rel="stylesheet" href="<%= BASE_URL %>css/splash.css?v2020110901" />
-  </head>
-  <body>
-    <noscript>
-      <strong>请允许 JavaScript 运行</strong>
-    </noscript>
-    <div id="splash">
-      <div class="sk-fading-circle">
-        <div class="sk-circle1 sk-circle"></div>
-        <div class="sk-circle2 sk-circle"></div>
-        <div class="sk-circle3 sk-circle"></div>
-        <div class="sk-circle4 sk-circle"></div>
-        <div class="sk-circle5 sk-circle"></div>
-        <div class="sk-circle6 sk-circle"></div>
-        <div class="sk-circle7 sk-circle"></div>
-        <div class="sk-circle8 sk-circle"></div>
-        <div class="sk-circle9 sk-circle"></div>
-        <div class="sk-circle10 sk-circle"></div>
-        <div class="sk-circle11 sk-circle"></div>
-        <div class="sk-circle12 sk-circle"></div>
-      </div>
+    <link type="text/css" rel="stylesheet" href="<%= PUBLIC_URL %>css/splash.css?v2020110901" />
+</head>
+<body>
+<noscript>
+    <strong>请允许 JavaScript 运行</strong>
+</noscript>
+<div id="splash">
+    <div id="splash-status">
+        <div class="spinner"></div>
     </div>
-    <div id="root" class="ag-app"></div>
-  </body>
+</div>
+<div id="root" class="ag"></div>
+</body>
 </html>

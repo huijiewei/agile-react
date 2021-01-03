@@ -7,6 +7,7 @@ module.exports = (appProduction) => {
     serverPort: 8010,
     pwaEnable: true,
     apiHost: appProduction ? 'https://agile.huijiewei.com/admin-api' : 'https://agile.huijiewei.com/admin-api',
-    htmlChunks: ['react', 'vendor', 'shared', 'evergreen', 'admin'],
+    qsArrayFormat: 'none',
+    htmlChunks: ['react', 'vendor', 'shared', 'chakra', 'admin'],
   };
 };

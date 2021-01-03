@@ -1,32 +1,32 @@
-import { FC } from 'react';
+import { Button } from '@chakra-ui/react';
 
-const Home: FC = () => {
+const Home = () => {
   return (
     <div>
       <p>Hello Agile</p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
-        <button>中文按钮</button>
+        <Button>中文按钮</Button>
       </p>
       <p>
         <button>中文按钮</button>
