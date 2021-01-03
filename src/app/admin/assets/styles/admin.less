@@ -1,0 +1,47 @@
+@side-width: 220px;
+@side-collapsed-width: 60px;
+@side-background-color: #2c343f;
+
+.ag-layout {
+  background: #f4f8fb;
+  min-height: 100vh;
+
+  .ag-side {
+    position: fixed;
+    width: @side-width;
+    height: 100vh;
+    background-color: @side-background-color;
+
+    .ag-brand {
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+
+      a {
+        text-decoration: none;
+      }
+
+      img {
+        vertical-align: middle;
+        height: 39px;
+        display: inline-block;
+      }
+    }
+
+    .ag-scroll {
+      height: calc(100vh - 50px);
+    }
+
+    a {
+      color: #ffffff;
+    }
+  }
+
+  .ag-main {
+    margin-left: @side-width;
+
+    .ag-content {
+      padding: 16px;
+    }
+  }
+}

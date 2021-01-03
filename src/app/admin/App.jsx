@@ -11,6 +11,8 @@ import useSplash from '@shared/hooks/useSplash';
 import ErrorProvider from '@shared/providers/ErrorProvider';
 import ErrorDialog from '@admin/components/ErrorDialog';
 
+import '@admin/assets/styles/admin.less';
+
 const App = () => {
   useSplash();
 

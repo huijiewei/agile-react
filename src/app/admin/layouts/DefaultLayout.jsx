@@ -24,7 +24,7 @@ const AgileHeader = () => {
 
 const AgileSide = () => {
   return (
-    <Flex w={'220px'} className={'ag-side'}>
+    <div className={'ag-side'}>
       <div className={'ag-brand'}>
         <img alt="Agile" src={require('../assets/images/logo.png')} />
         <img alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
@@ -45,7 +45,7 @@ const AgileSide = () => {
           </li>
         </nav>
       </div>
-    </Flex>
+    </div>
   );
 };
 

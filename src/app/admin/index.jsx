@@ -5,6 +5,8 @@ import App from './App';
 
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
+import '@shared/assets/styles/agile.less';
+
 import './serviceWorker';
 
 const agileTheme = extendTheme({
