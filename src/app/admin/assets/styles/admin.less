@@ -5,6 +5,9 @@
 .ag-layout {
   background: #f4f8fb;
   min-height: 100vh;
+  display: flex;
+  flex: auto;
+  flex-direction: row;
 
   .ag-side {
     position: fixed;
@@ -38,10 +41,20 @@
   }
 
   .ag-main {
+    display: flex;
+    position: relative;
     margin-left: @side-width;
+    flex: auto;
+    flex-direction: column;
+    overflow: hidden;
 
     .ag-content {
       padding: 16px;
+
+      .ag-box {
+        background-color: #ffffff;
+        padding: 16px;
+      }
     }
   }
 }

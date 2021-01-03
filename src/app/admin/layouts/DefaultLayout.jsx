@@ -1,6 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Flex, Button } from '@chakra-ui/react';
-import useError from '@shared/hooks/useError';
+import { Flex } from '@chakra-ui/react';
 
 const AgileHeader = () => {
   return (
@@ -50,28 +49,16 @@ const AgileSide = () => {
 };
 
 const DefaultLayout = () => {
-  const { addError } = useError();
-
-  const handleError = () => {
-    addError('ERROR', true);
-  };
-
   return (
-    <Flex className={'ag-layout'}>
+    <div className={'ag-layout'}>
       <AgileSide />
       <div className={'ag-main'}>
         <AgileHeader />
         <main className={'ag-content'}>
-          <div>
-            <h2>Welcome to the Agile!</h2>
-            <Button onClick={handleError}>错误</Button>
-          </div>
-          <div>
-            <Outlet />
-          </div>
+          <Outlet />
         </main>
       </div>
-    </Flex>
+    </div>
   );
 };
 
