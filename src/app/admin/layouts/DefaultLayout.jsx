@@ -50,7 +50,7 @@ const AgileSide = () => {
 };
 
 const DefaultLayout = () => {
-  const { data } = useSWR('auth/account');
+  const { data, error } = useSWR('auth/account');
 
   return (
     <div className={'ag-layout'}>
