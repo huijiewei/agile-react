@@ -3,7 +3,7 @@ import LoginForm from '@admin/components/LoginForm';
 
 const LoginModal = () => {
   return (
-    <Modal isOpen="true">
+    <Modal isOpen="true" closeOnOverlayClick={false} isCentered={true}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>登录</ModalHeader>

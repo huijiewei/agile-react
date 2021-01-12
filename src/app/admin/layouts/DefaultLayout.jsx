@@ -1,5 +1,4 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Flex } from '@chakra-ui/react';
 import useSWR from 'swr';
 
 const AgileHeader = () => {
