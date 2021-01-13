@@ -1,29 +1,42 @@
-import { InputGroup, InputLeftElement, Input, FormControl, Icon, Stack, Button } from '@chakra-ui/react';
+import {
+  InputGroup,
+  InputLeftElement,
+  Input,
+  FormControl,
+  Icon,
+  Stack,
+  Button,
+  FormErrorMessage,
+} from '@chakra-ui/react';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 
 const LoginForm = () => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { register, handleSubmit, errors } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4}>
-        <FormControl id="account">
+        <FormControl id="account" isInvalid={errors.account}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Icon as={FaUser} color="gray.300" />
             </InputLeftElement>
-            <Input type="text" placeholder="手机号码或者电子邮箱" />
+            <Input name="account" ref={register({ required: true })} type="text" placeholder="手机号码或者电子邮箱" />
           </InputGroup>
+          <FormErrorMessage>{errors.account && '请输入帐号'}</FormErrorMessage>
         </FormControl>
-        <FormControl id="password">
+        <FormControl id="password" isInvalid={errors.password}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Icon as={FaLock} color="gray.300" />
             </InputLeftElement>
-            <Input type="password" placeholder="密码" />
+            <Input name="password" ref={register({ required: true })} type="password" placeholder="密码" />
           </InputGroup>
+          <FormErrorMessage>{errors.password && '请输入密码'}</FormErrorMessage>
         </FormControl>
         <Button type={'submit'} isFullWidth={true} colorScheme="blue">
           确 定

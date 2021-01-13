@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import useSWR from 'swr';
+import useFetch from 'use-http';
 
 const AgileHeader = () => {
   return (
@@ -49,7 +49,7 @@ const AgileSide = () => {
 };
 
 const DefaultLayout = () => {
-  const { data, error } = useSWR('auth/account');
+  const { loading, error, data } = useFetch('auth/account', {}, []);
 
   return (
     <div className={'ag-layout'}>

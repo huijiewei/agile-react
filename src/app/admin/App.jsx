@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, BrowserRouter as Router } from 'react-router-dom';
-import { SWRConfig } from 'swr';
+import { Provider } from 'use-http';
 
 import Home from '@admin/views/site/Home';
 import About from '@admin/views/site/About';
@@ -14,7 +14,6 @@ import useSplash from '@shared/hooks/useSplash';
 import '@admin/assets/styles/admin.less';
 
 import useError from '@shared/hooks/useError';
-import axios from 'axios';
 
 const UnauthorizedHttpCode = 401;
 const UnprocessableEntityHttpCode = 422;
@@ -26,53 +25,71 @@ const App = () => {
 
   useSplash();
 
+  const handleError = (error) => {
+    const historyBack = error.config.historyBack;
+
+    console.log(error);
+
+    if (!error.response) {
+      addError(error.message, historyBack);
+
+      return;
+    }
+
+    if (error.response.status === UnauthorizedHttpCode) {
+      if (!error.config.__storeDispatch) {
+        error.config.__storeDispatch = true;
+
+        if (historyBack || HttpGetMethod.includes(error.config.method.toUpperCase())) {
+          // 跳转登录
+        } else {
+          // 窗口登录
+        }
+      }
+
+      return;
+    }
+
+    if (error.response.status === UnprocessableEntityHttpCode) {
+      return;
+    }
+
+    addError(
+      error.response.data.detail ||
+        error.response.data.message ||
+        error.response.data.title ||
+        error.response.statusText ||
+        '网络请求错误',
+      historyBack,
+    );
+  };
+
+  const options = {
+    interceptors: {
+      request: ({ options }) => {
+        console.log(options);
+        options.historyBack = options.historyBack || true;
+        console.log(options);
+        return options;
+      },
+      response: ({ response }) => {
+        console.log(response);
+
+        if (!response.ok) {
+          return handleError(response.data);
+        }
+
+        return response;
+      },
+    },
+    onError: ({ error }) => {
+      console.log(error.status);
+      handleError(error);
+    },
+  };
+
   return (
-    <SWRConfig
-      value={{
-        onError: (error, key) => {
-          const historyBack = error.config.historyBack;
-
-          if (!error.response) {
-            addError(error.message, historyBack);
-
-            return;
-          }
-
-          if (error.response.status === UnauthorizedHttpCode) {
-            if (!error.config.__storeDispatch) {
-              error.config.__storeDispatch = true;
-
-              if (historyBack || HttpGetMethod.includes(error.config.method.toUpperCase())) {
-                // 跳转登录
-              } else {
-                // 窗口登录
-              }
-            }
-
-            return;
-          }
-
-          if (error.response.status === UnprocessableEntityHttpCode) {
-            return;
-          }
-
-          addError(
-            error.response.data.detail ||
-              error.response.data.message ||
-              error.response.data.title ||
-              error.response.statusText ||
-              '网络请求错误',
-            historyBack,
-          );
-        },
-        fetcher: (url) => {
-          return axios({
-            baseURL: document.querySelector('meta[name="api-host"]').getAttribute('content'),
-            url: url,
-          }).then((res) => res.data);
-        },
-      }}
-    >
+    <Provider url={document.querySelector('meta[name="api-host"]').getAttribute('content')} options={options}>
       <Router>
         <Routes basename={process.env.PUBLIC_URL}>
           <Route element={<DefaultLayout />}>
@@ -86,7 +103,7 @@ const App = () => {
           </Route>
         </Routes>
       </Router>
-    </SWRConfig>
+    </Provider>
   );
 };
 
