@@ -19,7 +19,7 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={4}>
+      <Stack spacing={4} shouldWrapChildren={true}>
         <FormControl id="account" isInvalid={errors.account}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
