@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate, BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'use-http';
 
+import { useError } from '@shared/hooks/useError';
+
 import Home from '@admin/views/site/Home';
 import About from '@admin/views/site/About';
 import NotFound from '@admin/views/site/NotFound';
@@ -13,14 +15,12 @@ import useSplash from '@shared/hooks/useSplash';
 
 import '@admin/assets/styles/admin.less';
 
-import useError from '@shared/hooks/useError';
-
 const UnauthorizedHttpCode = 401;
 const UnprocessableEntityHttpCode = 422;
 
-const HttpGetMethod = ['GET', 'HEAD'];
+const HttpGetMethod: string[] = ['GET', 'HEAD'];
 
-const App = () => {
+const App = (): JSX.Element => {
   const { addError } = useError();
 
   useSplash();

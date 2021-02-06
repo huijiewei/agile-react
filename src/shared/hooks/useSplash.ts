@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useSplash = () => {
+const useSplash = (): void => {
   useEffect(() => {
     const timerId = window.setTimeout(() => {
       document.getElementById('splash')?.remove();

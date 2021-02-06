@@ -11,7 +11,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env, argv) => {
   const appProduction = argv.mode === 'production';
-  const appConfig = require(env.APP_CONFIG)(appProduction);
+  const appConfig = require(env['APP_CONFIG'])(appProduction);
 
   const appName = appConfig.name;
 
@@ -20,10 +20,10 @@ module.exports = (env, argv) => {
 
   const config = {
     entry: {
-      [appName]: `./src/app/${appName}/index.jsx`,
+      [appName]: `./src/app/${appName}/index.tsx`,
     },
     resolve: {
-      extensions: ['.jsx', '.js'],
+      extensions: ['.jsx', '.js', '.tsx', '.ts'],
       alias: {
         ...{
           '@shared': path.resolve('src/shared'),
@@ -44,17 +44,17 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
           loader: 'babel-loader',
         },
         {
           test: /\.less$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+          use: [MiniCssExtractPlugin['loader'], 'css-loader', 'less-loader'],
         },
         {
           test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          use: [MiniCssExtractPlugin['loader'], 'css-loader'],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,

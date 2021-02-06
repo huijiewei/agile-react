@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import useError from '@shared/hooks/useError';
+import { useError } from '@shared/hooks/useError';
 
 const Home = () => {
   const { addError } = useError();

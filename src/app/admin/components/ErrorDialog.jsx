@@ -1,4 +1,4 @@
-import useError from '@shared/hooks/useError';
+import { useError } from '@shared/hooks/useError';
 import {
   AlertDialog,
   AlertDialogBody,

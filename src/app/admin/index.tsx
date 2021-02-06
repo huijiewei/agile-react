@@ -8,8 +8,8 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import '@shared/assets/styles/agile.less';
 
 import './serviceWorker';
-import ErrorProvider from '@shared/providers/ErrorProvider';
 import ErrorDialog from '@admin/components/ErrorDialog';
+import { ErrorProvider } from '@shared/providers/ErrorProvider';
 
 const agileTheme = extendTheme({
   fontSizes: {
