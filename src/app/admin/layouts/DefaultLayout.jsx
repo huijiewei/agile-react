@@ -1,5 +1,4 @@
 import { Link, Outlet } from 'react-router-dom';
-import useFetch from 'use-http';
 
 const AgileHeader = () => {
   return (
@@ -49,8 +48,6 @@ const AgileSide = () => {
 };
 
 const DefaultLayout = () => {
-  const { loading, error, data } = useFetch('auth/account', {}, []);
-
   return (
     <div className={'ag-layout'}>
       <AgileSide />

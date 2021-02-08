@@ -9,6 +9,6 @@ interface HttpProviderProps {
   children: ReactNode;
 }
 
-export const HttpProvider = ({ client = Axios, children }) => {
+export const HttpProvider = ({ axios = Axios, children }) => {
   return <HttpContext.Provider value={axios}>{children}</HttpContext.Provider>;
 };

@@ -12,9 +12,11 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 
 const LoginForm = () => {
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => {
+  const { register, handleSubmit, errors, formState } = useForm();
+  const onSubmit = async (data) => {
     console.log(data);
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   };
 
   return (
@@ -38,7 +40,7 @@ const LoginForm = () => {
           </InputGroup>
           <FormErrorMessage>{errors.password && '请输入密码'}</FormErrorMessage>
         </FormControl>
-        <Button type={'submit'} isFullWidth={true} colorScheme="blue">
+        <Button type={'submit'} isFullWidth={true} colorScheme="blue" isLoading={formState.isSubmitting}>
           确 定
         </Button>
       </Stack>
