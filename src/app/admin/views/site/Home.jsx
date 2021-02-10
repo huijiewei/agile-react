@@ -1,5 +1,5 @@
-import { Button } from '@chakra-ui/react';
 import { useError } from '@shared/hooks/useError';
+import { Button } from '@chakra-ui/react';
 
 const Home = () => {
   const { addError } = useError();
@@ -14,87 +14,8 @@ const Home = () => {
       <p>
         <Button onClick={handleError}>错误</Button>
       </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <Button>中文按钮</Button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
-      <p>
-        <button>中文按钮</button>
-      </p>
+      <p>TEST</p>
+      <p>TEST</p>
     </div>
   );
 };

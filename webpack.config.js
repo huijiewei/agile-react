@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
 
   const config = {
     entry: {
-      [appName]: `./src/app/${appName}/index.tsx`,
+      [appName]: `./src/app/${appName}/main.tsx`,
     },
     resolve: {
       extensions: ['.jsx', '.js', '.tsx', '.ts'],
@@ -50,11 +50,11 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.less$/,
-          use: [MiniCssExtractPlugin['loader'], 'css-loader', 'less-loader'],
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
         },
         {
           test: /\.css$/,
-          use: [MiniCssExtractPlugin['loader'], 'css-loader'],
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -137,7 +137,7 @@ module.exports = (env, argv) => {
 
   if (appProduction) {
     config.optimization = {
-      minimizer: [new CssMinimizerPlugin(), '...'],
+      minimizer: ['...', new CssMinimizerPlugin()],
       splitChunks: {
         cacheGroups: {
           vendor: {

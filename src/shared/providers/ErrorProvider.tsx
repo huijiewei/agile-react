@@ -21,7 +21,7 @@ interface ErrorProviderProps {
   children: ReactNode;
 }
 
-export const ErrorProvider = ({ children }: ErrorProviderProps): JSX.Element => {
+const ErrorProvider = ({ children }: ErrorProviderProps): JSX.Element => {
   const [error, setError] = useState<IError | null>(null);
 
   const value = {
@@ -32,3 +32,5 @@ export const ErrorProvider = ({ children }: ErrorProviderProps): JSX.Element => 
 
   return <ErrorContext.Provider value={value}>{children}</ErrorContext.Provider>;
 };
+
+export default ErrorProvider;

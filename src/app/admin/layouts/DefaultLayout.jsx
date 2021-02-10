@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
 
 const AgileHeader = () => {
   return (
@@ -36,6 +37,12 @@ const AgileSide = () => {
             <Link to="about">About</Link>
           </li>
           <li>
+            <Link to="admin">Admin</Link>
+          </li>
+          <li>
+            <Link to="admin-group">AdminGroup</Link>
+          </li>
+          <li>
             <Link to="login">Login</Link>
           </li>
           <li>
@@ -54,7 +61,9 @@ const DefaultLayout = () => {
       <div className={'ag-main'}>
         <AgileHeader />
         <main className={'ag-content'}>
-          <Outlet />
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>
