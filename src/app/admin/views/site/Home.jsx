@@ -1,5 +1,4 @@
 import { useError } from '@shared/hooks/useError';
-import { Button } from '@chakra-ui/react';
 
 const Home = () => {
   const { addError } = useError();
@@ -12,7 +11,9 @@ const Home = () => {
     <div className={'ag-box'}>
       <p>Hello Agile</p>
       <p>
-        <Button onClick={handleError}>错误</Button>
+        <button className={'button'} onClick={handleError}>
+          错误
+        </button>
       </p>
       <p>TEST</p>
       <p>TEST</p>

@@ -1,4 +1,6 @@
-React + TypeScript + Webpack 5 + ? 演示项目
+React + TailwindCSS + TypeScript + Webpack 5 演示项目
+
+
 
 项目目前正在开发，变动可能会很大，暂时只供研究学习参考
 

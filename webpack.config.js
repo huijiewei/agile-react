@@ -10,6 +10,8 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env, argv) => {
+  process.env.NODE_ENV = argv.mode;
+
   const appProduction = argv.mode === 'production';
   const appConfig = require(env['APP_CONFIG'])(appProduction);
 
@@ -49,12 +51,17 @@ module.exports = (env, argv) => {
           loader: 'babel-loader',
         },
         {
-          test: /\.less$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
-        },
-        {
           test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+          use: [
+            appProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+              },
+            },
+            'postcss-loader',
+          ],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,

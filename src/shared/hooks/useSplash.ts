@@ -1,12 +1,9 @@
-import { useEffect } from 'react';
+import useTimeout from '@shared/hooks/useTimeout';
 
 const useSplash = (): void => {
-  useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      document.getElementById('splash')?.remove();
-    }, 600);
-    return () => window.clearTimeout(timerId);
-  }, []);
+  useTimeout(() => {
+    document.getElementById('splash')?.remove();
+  }, 600);
 };
 
 export default useSplash;

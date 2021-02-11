@@ -16,18 +16,19 @@ const routes = [
     element: <Login />,
   },
   {
+    path: '/',
     element: <DefaultLayout />,
     children: [
       {
-        path: '/',
+        path: '',
         element: <Navigate to="home" replace={true} />,
       },
       {
-        path: '/home',
+        path: 'home',
         element: <Home />,
       },
       {
-        path: '/about',
+        path: 'about',
         element: <About />,
       },
       ...adminRoutes,

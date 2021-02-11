@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
+import useSWR from 'swr';
 
 const AgileHeader = () => {
   return (
@@ -55,6 +56,10 @@ const AgileSide = () => {
 };
 
 const DefaultLayout = () => {
+  const { data } = useSWR('auth/account');
+
+  console.log(data);
+
   return (
     <div className={'ag-layout'}>
       <AgileSide />

@@ -24,13 +24,13 @@ interface ErrorProviderProps {
 const ErrorProvider = ({ children }: ErrorProviderProps): JSX.Element => {
   const [error, setError] = useState<IError | null>(null);
 
-  const value = {
+  const contextValue = {
     error,
     addError: useCallback((message, historyBack) => setError({ message, historyBack }), []),
     removeError: useCallback(() => setError(null), []),
   };
 
-  return <ErrorContext.Provider value={value}>{children}</ErrorContext.Provider>;
+  return <ErrorContext.Provider value={contextValue}>{children}</ErrorContext.Provider>;
 };
 
 export default ErrorProvider;

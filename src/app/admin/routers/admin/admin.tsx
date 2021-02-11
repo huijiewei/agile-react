@@ -4,7 +4,7 @@ const AdminIndex = lazy(() => import(/* webpackChunkName: "chunk-admin" */ '@adm
 
 const adminRoutes = [
   {
-    path: '/admin',
+    path: 'admin',
     element: <AdminIndex />,
   },
 ];
