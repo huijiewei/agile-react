@@ -1,4 +1,6 @@
-const AdminIndex = (): JSX.Element => {
+import { FC } from 'react';
+
+const AdminIndex: FC = () => {
   return (
     <div className={'ag-box'}>
       <p>Admin Index</p>

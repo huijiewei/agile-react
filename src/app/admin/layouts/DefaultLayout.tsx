@@ -1,8 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Suspense, useEffect } from 'react';
-import useSWR from 'swr';
+import { FC, Suspense, useEffect } from 'react';
 
-const AgileHeader = () => {
+const AgileHeader = (): JSX.Element => {
   return (
     <header className={'ag-header'}>
       <nav className={'ag-nav'}>
@@ -22,7 +21,7 @@ const AgileHeader = () => {
   );
 };
 
-const AgileSide = () => {
+const AgileSide = (): JSX.Element => {
   return (
     <div className={'ag-side'}>
       <div className={'ag-brand'}>
@@ -36,6 +35,9 @@ const AgileSide = () => {
           </li>
           <li>
             <Link to="about">About</Link>
+          </li>
+          <li>
+            <Link to="user">User</Link>
           </li>
           <li>
             <Link to="admin">Admin</Link>
@@ -55,10 +57,12 @@ const AgileSide = () => {
   );
 };
 
-const DefaultLayout = () => {
-  const { data } = useSWR('auth/account');
+const DefaultLayout: FC = () => {
+  console.log('DefaultLayout init');
 
-  console.log(data);
+  useEffect(() => {
+    console.log('DefaultLayout render');
+  }, []);
 
   return (
     <div className={'ag-layout'}>

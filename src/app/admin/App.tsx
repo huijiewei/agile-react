@@ -7,25 +7,12 @@ import '@admin/assets/styles/admin.components.css';
 import '@admin/assets/styles/admin.utilities.css';
 
 import routes from '@admin/routers';
-import { SWRConfig } from 'swr';
+import { FC } from 'react';
 
-const App = (): JSX.Element => {
+const App: FC = () => {
   useSplash();
 
-  const agileRoutes = useRoutes(routes, process.env.PUBLIC_URL);
-
-  return (
-    <SWRConfig
-      value={{
-        shouldRetryOnError: false,
-        onError: (error, key) => {
-          console.log(error, key);
-        },
-      }}
-    >
-      {agileRoutes}
-    </SWRConfig>
-  );
+  return useRoutes(routes, process.env.PUBLIC_URL);
 };
 
 export default App;

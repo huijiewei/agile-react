@@ -1,6 +1,7 @@
 import { useError } from '@shared/hooks/useError';
+import { FC } from 'react';
 
-const ErrorDialog = () => {
+const ErrorDialog: FC = () => {
   const { error, removeError } = useError();
 
   const handleClick = () => {
@@ -10,11 +11,13 @@ const ErrorDialog = () => {
   return (
     <div className={'modal'} role="dialog">
       <div className={'modal-overlay'} />
-      <div>
+      <div className={'modal-content'}>
         <div>{error && error.message}</div>
 
         <div>
-          <button onClick={handleClick}>{error && error.historyBack ? '返回' : '关闭'}</button>
+          <button className={'btn'} onClick={handleClick}>
+            {error && error.historyBack ? '返回' : '关闭'}
+          </button>
         </div>
       </div>
     </div>

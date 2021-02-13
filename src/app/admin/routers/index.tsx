@@ -9,6 +9,7 @@ import NotFound from '@admin/views/site/NotFound';
 
 import adminRoutes from './admin/admin';
 import adminGroupRoutes from './admin/adminGroup';
+import userRoutes from './user/user';
 
 const routes = [
   {
@@ -33,6 +34,7 @@ const routes = [
       },
       ...adminRoutes,
       ...adminGroupRoutes,
+      ...userRoutes,
       {
         path: '*',
         element: <NotFound />,

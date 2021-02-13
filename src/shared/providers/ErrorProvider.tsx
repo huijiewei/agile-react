@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode, FC } from 'react';
 
 export interface IError {
   message: string;
@@ -21,16 +21,20 @@ interface ErrorProviderProps {
   children: ReactNode;
 }
 
-const ErrorProvider = ({ children }: ErrorProviderProps): JSX.Element => {
+const ErrorProvider: FC = ({ children }: ErrorProviderProps) => {
   const [error, setError] = useState<IError | null>(null);
 
-  const contextValue = {
-    error,
-    addError: useCallback((message, historyBack) => setError({ message, historyBack }), []),
-    removeError: useCallback(() => setError(null), []),
-  };
-
-  return <ErrorContext.Provider value={contextValue}>{children}</ErrorContext.Provider>;
+  return (
+    <ErrorContext.Provider
+      value={{
+        error,
+        addError: (message, historyBack) => setError({ message, historyBack }),
+        removeError: () => setError(null),
+      }}
+    >
+      {children}
+    </ErrorContext.Provider>
+  );
 };
 
 export default ErrorProvider;

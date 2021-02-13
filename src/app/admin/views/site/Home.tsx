@@ -1,17 +1,18 @@
 import { useError } from '@shared/hooks/useError';
+import { FC } from 'react';
 
-const Home = () => {
+const Home: FC = () => {
   const { addError } = useError();
 
   const handleError = () => {
-    addError('ERROR', true);
+    addError('出现错误', false);
   };
 
   return (
     <div className={'ag-box'}>
       <p>Hello Agile</p>
       <p>
-        <button className={'button'} onClick={handleError}>
+        <button className={'btn'} onClick={handleError}>
           错误
         </button>
       </p>

@@ -22,7 +22,7 @@ module.exports = (env, argv) => {
 
   const config = {
     entry: {
-      [appName]: `./src/app/${appName}/main.tsx`,
+      [appName]: `./src/app/${appName}/entry.tsx`,
     },
     resolve: {
       extensions: ['.jsx', '.js', '.tsx', '.ts'],

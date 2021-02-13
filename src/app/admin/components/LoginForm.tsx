@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
+import { FC } from 'react';
 
-const LoginForm = () => {
+const LoginForm: FC = () => {
   const { register, handleSubmit, errors, formState } = useForm();
+
   const onSubmit = async (data) => {
     console.log(data);
 

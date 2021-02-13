@@ -1,6 +1,7 @@
 import LoginForm from '@admin/components/LoginForm';
+import { FC } from 'react';
 
-const LoginModal = () => {
+const LoginModal: FC = () => {
   return (
     <div>
       <div>

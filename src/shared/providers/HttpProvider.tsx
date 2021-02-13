@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useMemo, useRef } from 'react';
+import { createContext, FC, ReactNode, useMemo } from 'react';
 import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 export const HttpContext = createContext(null);
@@ -15,7 +15,7 @@ interface HttpProviderProps {
   children: ReactNode;
 }
 
-const HttpProvider = ({ config, children }: HttpProviderProps): JSX.Element => {
+const HttpProvider: FC = ({ config, children }: HttpProviderProps) => {
   const axios = useMemo(() => {
     const axios = Axios.create({ baseURL: config.baseURL, paramsSerializer: config.paramsSerializer });
 
