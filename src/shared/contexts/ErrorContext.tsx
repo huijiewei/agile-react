@@ -1,6 +1,6 @@
-import React, { createContext, useState, ReactNode, FC } from 'react';
+import React, { createContext, useState, FC, PropsWithChildren } from 'react';
 
-export interface IError {
+interface IError {
   message: string;
   historyBack: boolean;
 }
@@ -17,11 +17,7 @@ export const ErrorContext = createContext<IErrorContext>({
   removeError: () => void {},
 });
 
-interface ErrorProviderProps {
-  children: ReactNode;
-}
-
-const ErrorProvider: FC = ({ children }: ErrorProviderProps) => {
+const ErrorProvider: FC<PropsWithChildren<void>> = ({ children }: PropsWithChildren<void>) => {
   const [error, setError] = useState<IError | null>(null);
 
   return (

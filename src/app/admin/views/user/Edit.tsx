@@ -5,9 +5,9 @@ import useHttp from '@shared/hooks/useHttp';
 const UserEdit: FC = () => {
   const { id } = useParams();
 
-  const { data, error } = useHttp('GET', 'auth/account', { id: id });
+  const { data } = useHttp('GET', 'auth/account', { id: id });
 
-  console.log(data, error);
+  console.log(data);
 
   return <div className={'ag-box'}>UserEdit: {id}</div>;
 };

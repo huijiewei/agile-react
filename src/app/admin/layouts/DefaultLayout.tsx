@@ -1,6 +1,8 @@
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, Navigate, NavLink, Outlet } from 'react-router-dom';
 import { FC, Suspense, useEffect } from 'react';
 import useHttp from '@shared/hooks/useHttp';
+import useAuth from '@shared/hooks/useAuth';
+import { LoginAction } from '@shared/contexts/AuthContext';
 
 const AgileHeader = (): JSX.Element => {
   return (
@@ -71,15 +73,17 @@ const AgileSide = (): JSX.Element => {
 };
 
 const DefaultLayout: FC = () => {
-  const { data, error } = useHttp('GET', 'auth/account');
+  const { data } = useHttp('GET', 'auth/account');
 
-  console.log(data, error);
+  const { loginAction } = useAuth();
 
-  useEffect(() => {
-    console.log('DefaultLayout render');
-  }, []);
+  if (data) {
+    console.log(data);
+  }
 
-  return (
+  return loginAction === LoginAction.DIRECT ? (
+    <Navigate to={'login'} replace={true} />
+  ) : (
     <div className={'ag-layout'}>
       <AgileSide />
       <div className={'ag-main'}>
