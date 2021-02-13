@@ -1,5 +1,6 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import { FC, Suspense, useEffect } from 'react';
+import useHttp from '@shared/hooks/useHttp';
 
 const AgileHeader = (): JSX.Element => {
   return (
@@ -31,25 +32,37 @@ const AgileSide = (): JSX.Element => {
       <div className={'ag-scroll'}>
         <nav>
           <li>
-            <Link to="home">Home</Link>
+            <NavLink activeClassName={'activated'} to="home">
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to="about">About</Link>
+            <NavLink activeClassName={'activated'} to="about">
+              About
+            </NavLink>
           </li>
           <li>
-            <Link to="user">User</Link>
+            <NavLink activeClassName={'activated'} to="user">
+              User
+            </NavLink>
           </li>
           <li>
-            <Link to="admin">Admin</Link>
+            <NavLink activeClassName={'activated'} to="admin">
+              Admin
+            </NavLink>
           </li>
           <li>
-            <Link to="admin-group">AdminGroup</Link>
+            <NavLink activeClassName={'activated'} to="admin-group">
+              AdminGroup
+            </NavLink>
           </li>
           <li>
             <Link to="login">Login</Link>
           </li>
           <li>
-            <Link to="404">404</Link>
+            <NavLink activeClassName={'activated'} to="404">
+              404
+            </NavLink>
           </li>
         </nav>
       </div>
@@ -58,7 +71,9 @@ const AgileSide = (): JSX.Element => {
 };
 
 const DefaultLayout: FC = () => {
-  console.log('DefaultLayout init');
+  const { data, error } = useHttp('GET', 'auth/account');
+
+  console.log(data, error);
 
   useEffect(() => {
     console.log('DefaultLayout render');

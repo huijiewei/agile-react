@@ -6,7 +6,7 @@
     "paths": {
       "@shared/*": ["shared/*"],
       "@admin/*": ["app/admin/*"],
-      "@mobile/*": ["app/mobile*"]
+      "@mobile/*": ["app/mobile/*"]
     }
   }
 }

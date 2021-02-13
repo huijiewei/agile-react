@@ -1,16 +1,13 @@
 import { useParams } from 'react-router-dom';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
+import useHttp from '@shared/hooks/useHttp';
 
 const UserEdit: FC = () => {
-  console.log('UserEdit init');
-
   const { id } = useParams();
 
-  useEffect(() => {
-    console.log(id);
+  const { data, error } = useHttp('GET', 'auth/account', { id: id });
 
-    console.log('UserEdit render');
-  }, [id]);
+  console.log(data, error);
 
   return <div className={'ag-box'}>UserEdit: {id}</div>;
 };

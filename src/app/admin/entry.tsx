@@ -6,7 +6,7 @@ import App from './App';
 
 import './serviceWorker';
 
-import ErrorProvider from '@shared/providers/ErrorProvider';
+import ErrorProvider from '@shared/contexts/ErrorContext';
 import ErrorDialog from '@admin/components/ErrorDialog';
 
 render(
