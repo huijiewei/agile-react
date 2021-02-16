@@ -1,10 +1,12 @@
-import useError from '@shared/hooks/useError';
-import { FC } from 'react';
+import { useErrorDispatcher } from '@shared/hooks/useError';
+import { VFC } from 'react';
 
-const Home: FC = () => {
-  const { addError } = useError();
+const Home: VFC = () => {
+  console.log('Home Render');
 
-  const handleError = () => {
+  const { addError } = useErrorDispatcher();
+
+  const handleClick = () => {
     addError('出现错误', false);
   };
 
@@ -12,7 +14,7 @@ const Home: FC = () => {
     <div className={'ag-box'}>
       <p>Hello Agile</p>
       <p>
-        <button className={'btn'} onClick={handleError}>
+        <button className={'btn'} onClick={handleClick}>
           错误
         </button>
       </p>

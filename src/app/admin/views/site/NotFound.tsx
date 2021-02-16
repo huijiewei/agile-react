@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const NotFound: FC = () => {
+const NotFound: VFC = () => {
   return <div className={'ag-box'}>404 Not found</div>;
 };
 

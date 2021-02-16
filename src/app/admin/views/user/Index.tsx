@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const UserIndex: FC = () => {
+const UserIndex: VFC = () => {
   return <div className={'ag-box'}>UserIndex</div>;
 };
 

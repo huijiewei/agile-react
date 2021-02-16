@@ -10,7 +10,7 @@
   }
 
   .modal {
-    @apply opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center;
+    @apply justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none;
   }
 
   .modal .modal-overlay {
@@ -18,6 +18,6 @@
   }
 
   .modal .modal-content {
-    @apply bg-white text-center overflow-y-auto z-50 rounded mx-auto;
+    @apply bg-white text-center overflow-y-auto z-50 rounded mx-auto p-2;
   }
 }

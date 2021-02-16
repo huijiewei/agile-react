@@ -1,6 +1,32 @@
 import { useContext } from 'react';
-import { ErrorContext, IErrorContext } from '@shared/contexts/ErrorContext';
+import {
+  ErrorDispatcherContext,
+  ErrorStateContext,
+  IErrorDispatcherContext,
+  IErrorStateContext,
+} from '@shared/contexts/ErrorContext';
 
-const useError = (): IErrorContext => useContext(ErrorContext);
+export const useErrorState = (): IErrorStateContext => {
+  const context = useContext(ErrorStateContext);
+
+  if (context === undefined) {
+    throw new Error('useErrorState must be used within a ErrorStateProvider');
+  }
+
+  return context;
+};
+export const useErrorDispatcher = (): IErrorDispatcherContext => {
+  const context = useContext(ErrorDispatcherContext);
+
+  if (context === undefined) {
+    throw new Error('useErrorDispatcher must be used within a ErrorDispatcherProvider');
+  }
+
+  return context;
+};
+
+const useError = (): [IErrorStateContext, IErrorDispatcherContext] => {
+  return [useErrorState(), useErrorDispatcher()];
+};
 
 export default useError;

@@ -1,35 +1,42 @@
-import React, { createContext, useState, FC, PropsWithChildren } from 'react';
+import React, { createContext, FC, useCallback, useState } from 'react';
 
-interface IError {
+export interface IErrorStateContext {
   message: string;
   historyBack: boolean;
 }
 
-export interface IErrorContext {
-  error: IError | null;
+export interface IErrorDispatcherContext {
   addError: (message: string, historyBack: boolean) => void;
   removeError: () => void;
 }
 
-export const ErrorContext = createContext<IErrorContext>({
-  error: null,
-  addError: () => void {},
-  removeError: () => void {},
-});
+export const ErrorStateContext = createContext<IErrorStateContext | undefined>(undefined);
 
-const ErrorProvider: FC<PropsWithChildren<void>> = ({ children }: PropsWithChildren<void>) => {
-  const [error, setError] = useState<IError | null>(null);
+export const ErrorDispatcherContext = createContext<IErrorDispatcherContext | undefined>(undefined);
+
+const ErrorProvider: FC = ({ children }) => {
+  const [error, setError] = useState<IErrorStateContext | null>(null);
+
+  const addError = useCallback((message, historyBack) => {
+    setError({
+      message,
+      historyBack,
+    });
+  }, []);
+
+  const removeError = useCallback(() => {
+    setError(null);
+  }, []);
 
   return (
-    <ErrorContext.Provider
+    <ErrorDispatcherContext.Provider
       value={{
-        error,
-        addError: (message, historyBack) => setError({ message, historyBack }),
-        removeError: () => setError(null),
+        addError: addError,
+        removeError: removeError,
       }}
     >
-      {children}
-    </ErrorContext.Provider>
+      <ErrorStateContext.Provider value={error}>{children}</ErrorStateContext.Provider>
+    </ErrorDispatcherContext.Provider>
   );
 };
 

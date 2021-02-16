@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const AdminIndex: FC = () => {
+const AdminIndex: VFC = () => {
   return (
     <div className={'ag-box'}>
       <p>Admin Index</p>

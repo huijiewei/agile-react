@@ -1,7 +1,7 @@
 import LoginForm from '@admin/components/LoginForm';
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const Login: FC = () => {
+const Login: VFC = () => {
   return (
     <div className={'ag-login'}>
       <div className={'ag-login-layout'}>

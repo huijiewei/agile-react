@@ -1,7 +1,7 @@
 import LoginForm from '@admin/components/LoginForm';
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const LoginModal: FC = () => {
+const LoginModal: VFC = () => {
   return (
     <div>
       <div>

@@ -63,12 +63,7 @@ interface AuthProviderProps {
   setAccessToken: (accessToken: string) => void;
 }
 
-const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
-  getClientId,
-  getAccessToken,
-  setAccessToken,
-  children,
-}: PropsWithChildren<AuthProviderProps>) => {
+const AuthProvider: FC<AuthProviderProps> = ({ getClientId, getAccessToken, setAccessToken, children }) => {
   const [authUser, setAuthUser] = useState<IAuthUser>({ user: null, menus: [], permissions: [] });
   const [authToken] = useState<IAuthToken>(() => {
     return { clientId: getClientId(), accessToken: getAccessToken() };

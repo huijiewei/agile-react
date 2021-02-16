@@ -1,9 +1,45 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import Axios, { Method } from 'axios';
+import { useCallback, useContext, useEffect, useReducer } from 'react';
+import Axios, { AxiosError, Method } from 'axios';
 import { HttpContext } from '@shared/contexts/HttpContext';
 
-const axiosRequest = (method, url, query, body, historyBack, state, setState, httpContext) => {
-  setState({ ...state, error: null, loading: true });
+interface IState {
+  loading: boolean;
+  error: AxiosError | null;
+  data: any;
+}
+
+interface IAction {
+  type: ActionEnum;
+  payload?: any;
+}
+
+enum ActionEnum {
+  REQUEST_START = 'REQUEST_START',
+  REQUEST_SUCCESS = 'REQUEST_SUCCESS',
+  REQUEST_ERROR = 'REQUEST_ERROR',
+}
+
+const initialState = {
+  loading: true,
+  error: null,
+  data: null,
+};
+
+const reducer = (state: IState, action: IAction) => {
+  switch (action.type) {
+    case ActionEnum.REQUEST_START:
+      return { loading: true, error: null, data: null };
+    case ActionEnum.REQUEST_SUCCESS:
+      return { loading: false, error: null, data: action.payload };
+    case ActionEnum.REQUEST_ERROR:
+      return { loading: false, error: action.payload, data: null };
+    default:
+      return state;
+  }
+};
+
+const axiosRequest = (method, url, query, body, historyBack, dispatch, httpContext) => {
+  dispatch({ type: ActionEnum.REQUEST_START });
 
   const axiosInstance = Axios.create({
     baseURL: httpContext.url,
@@ -41,13 +77,10 @@ const axiosRequest = (method, url, query, body, historyBack, state, setState, ht
       data: body,
     })
     .then((response) => {
-      setState({ ...state, data: response.data });
+      dispatch({ type: ActionEnum.REQUEST_SUCCESS, payload: response.data });
     })
     .catch((error) => {
-      setState({ ...state, error: error });
-    })
-    .finally(() => {
-      setState({ ...state, loading: false });
+      dispatch({ type: ActionEnum.REQUEST_ERROR, payload: error });
     });
 };
 
@@ -58,27 +91,21 @@ const useHttp = (
   body: any = null,
   lazy = false,
   historyBack = true,
-): {
-  request: (method, url, query, body, historyBack, state, setState, httpContext) => void;
-  data: null;
-  error: null;
-  loading: boolean;
-} => {
+) => {
   const httpContext = useContext(HttpContext);
 
-  const [state, setState] = useState({
-    data: null,
-    error: null,
-    loading: !lazy,
-  });
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const request = useCallback(axiosRequest, [axiosRequest]);
+  const request = useCallback(axiosRequest, []);
+
+  const queryJson = JSON.stringify(query);
+  const bodyJson = JSON.stringify(body);
 
   useEffect(() => {
     if (!lazy) {
-      request(method, url, query, body, historyBack, state, setState, httpContext);
+      request(method, url, query, body, historyBack, dispatch, httpContext);
     }
-  }, [method, url, query, body, historyBack]);
+  }, [method, url, queryJson, bodyJson, historyBack]);
 
   return { ...state, request };
 };

@@ -1,14 +1,14 @@
 import useError from '@shared/hooks/useError';
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const ErrorDialog: FC = () => {
-  const { error, removeError } = useError();
+const ErrorDialog: VFC = () => {
+  const [error, { removeError }] = useError();
 
   const handleClick = () => {
     removeError();
   };
 
-  return (
+  return error ? (
     <div className={'modal'} role="dialog">
       <div className={'modal-overlay'} />
       <div className={'modal-content'}>
@@ -21,7 +21,7 @@ const ErrorDialog: FC = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default ErrorDialog;

@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const About: FC = () => {
+const About: VFC = () => {
   return <div className={'ag-box'}>About Agile</div>;
 };
 

@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const UserCreate: FC = () => {
+const UserCreate: VFC = () => {
   return <div className={'ag-box'}>UserCreate</div>;
 };
 

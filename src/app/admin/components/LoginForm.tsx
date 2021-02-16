@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { FC } from 'react';
+import { VFC } from 'react';
 
-const LoginForm: FC = () => {
+const LoginForm: VFC = () => {
   const { register, handleSubmit, errors, formState } = useForm();
 
   const onSubmit = async (data) => {

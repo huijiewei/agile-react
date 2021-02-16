@@ -1,10 +1,10 @@
 import { Link, Navigate, NavLink, Outlet } from 'react-router-dom';
-import { FC, Suspense, useEffect } from 'react';
+import { FC, Props, PropsWithoutRef, Suspense, useEffect } from 'react';
 import useHttp from '@shared/hooks/useHttp';
 import useAuth from '@shared/hooks/useAuth';
-import { LoginAction } from '@shared/contexts/AuthContext';
+import { IMenu, LoginAction } from '@shared/contexts/AuthContext';
 
-const AgileHeader = (): JSX.Element => {
+const AgileHeader: FC = () => {
   return (
     <header className={'ag-header'}>
       <nav className={'ag-nav'}>
@@ -24,7 +24,9 @@ const AgileHeader = (): JSX.Element => {
   );
 };
 
-const AgileSide = (): JSX.Element => {
+const AgileSide: FC<PropsWithoutRef<IMenu[]>> = ({ menus }: PropsWithoutRef<IMenu[]>) => {
+  console.log('AgileSide Render');
+
   return (
     <div className={'ag-side'}>
       <div className={'ag-brand'}>
@@ -33,6 +35,13 @@ const AgileSide = (): JSX.Element => {
       </div>
       <div className={'ag-scroll'}>
         <nav>
+          {menus.map((menu, idx) => {
+            return (
+              <NavLink key={'menu-' + idx} activeClassName={'activated'} to={menu.url}>
+                {menu.label}
+              </NavLink>
+            );
+          })}
           <li>
             <NavLink activeClassName={'activated'} to="home">
               Home
@@ -73,19 +82,15 @@ const AgileSide = (): JSX.Element => {
 };
 
 const DefaultLayout: FC = () => {
-  const { data } = useHttp('GET', 'auth/account');
+  console.log('DefaultLayout Render');
 
-  const { loginAction } = useAuth();
-
-  if (data) {
-    console.log(data);
-  }
+  const { loginAction, authUser } = useAuth();
 
   return loginAction === LoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />
   ) : (
     <div className={'ag-layout'}>
-      <AgileSide />
+      <AgileSide menus={authUser.menus} />
       <div className={'ag-main'}>
         <AgileHeader />
         <main className={'ag-content'}>
