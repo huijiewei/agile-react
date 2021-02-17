@@ -1,27 +1,29 @@
-import React, { createContext, FC, useCallback, useState } from 'react';
+import { createContext, FC, useCallback, useContext, useState } from 'react';
 
-export interface IErrorStateContext {
+interface IErrorStateContext {
   message: string;
   historyBack: boolean;
 }
 
-export interface IErrorDispatcherContext {
-  addError: (message: string, historyBack: boolean) => void;
-  removeError: () => void;
+interface IErrorAddDispatchContext {
+  (message: string, historyBack: boolean): void;
 }
 
-export const ErrorStateContext = createContext<IErrorStateContext | undefined>(undefined);
+interface IErrorRemoveDispatchContext {
+  (): void;
+}
 
-export const ErrorDispatcherContext = createContext<IErrorDispatcherContext | undefined>(undefined);
+const ErrorStateContext = createContext<IErrorStateContext | undefined>(undefined);
 
-const ErrorProvider: FC = ({ children }) => {
+const ErrorAddDispatchContext = createContext<IErrorAddDispatchContext | undefined>(undefined);
+
+const ErrorRemoveDispatchContext = createContext<IErrorRemoveDispatchContext | undefined>(undefined);
+
+export const ErrorProvider: FC = ({ children }) => {
   const [error, setError] = useState<IErrorStateContext | null>(null);
 
   const addError = useCallback((message, historyBack) => {
-    setError({
-      message,
-      historyBack,
-    });
+    setError({ message, historyBack });
   }, []);
 
   const removeError = useCallback(() => {
@@ -29,15 +31,40 @@ const ErrorProvider: FC = ({ children }) => {
   }, []);
 
   return (
-    <ErrorDispatcherContext.Provider
-      value={{
-        addError: addError,
-        removeError: removeError,
-      }}
-    >
-      <ErrorStateContext.Provider value={error}>{children}</ErrorStateContext.Provider>
-    </ErrorDispatcherContext.Provider>
+    <ErrorAddDispatchContext.Provider value={addError}>
+      <ErrorRemoveDispatchContext.Provider value={removeError}>
+        <ErrorStateContext.Provider value={error}>{children}</ErrorStateContext.Provider>
+      </ErrorRemoveDispatchContext.Provider>
+    </ErrorAddDispatchContext.Provider>
   );
 };
 
-export default ErrorProvider;
+export const useErrorState = (): IErrorStateContext => {
+  const context = useContext(ErrorStateContext);
+
+  if (context === undefined) {
+    throw new Error('useErrorState must be used within a ErrorStateProvider');
+  }
+
+  return context;
+};
+
+export const useErrorAddDispatch = (): IErrorAddDispatchContext => {
+  const context = useContext(ErrorAddDispatchContext);
+
+  if (context === undefined) {
+    throw new Error('useErrorAddDispatch must be used within a ErrorAddDispatchProvider');
+  }
+
+  return context;
+};
+
+export const useErrorRemoveDispatch = (): IErrorRemoveDispatchContext => {
+  const context = useContext(ErrorRemoveDispatchContext);
+
+  if (context === undefined) {
+    throw new Error('useErrorRemoveDispatch must be used within a ErrorRemoveDispatchProvider');
+  }
+
+  return context;
+};

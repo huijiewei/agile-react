@@ -1,10 +1,10 @@
-import { useErrorDispatcher } from '@shared/hooks/useError';
 import { VFC } from 'react';
+import { useErrorAddDispatch } from '@shared/contexts/ErrorContext';
 
 const Home: VFC = () => {
   console.log('Home Render');
 
-  const { addError } = useErrorDispatcher();
+  const addError = useErrorAddDispatch();
 
   const handleClick = () => {
     addError('出现错误', false);
@@ -15,7 +15,7 @@ const Home: VFC = () => {
       <p>Hello Agile</p>
       <p>
         <button className={'btn'} onClick={handleClick}>
-          错误
+          错误关闭
         </button>
       </p>
       <p>TEST</p>

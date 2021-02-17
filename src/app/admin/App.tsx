@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 import useSplash from '@shared/hooks/useSplash';
 
-import ErrorProvider from '@shared/contexts/ErrorContext';
+import { ErrorProvider, useErrorAddDispatch } from '@shared/contexts/ErrorContext';
 import ErrorDialog from '@admin/components/ErrorDialog';
 
 import HttpProvider from '@shared/contexts/HttpContext';
@@ -13,8 +13,6 @@ import '@admin/assets/styles/admin.base.css';
 import '@admin/assets/styles/admin.components.css';
 import '@admin/assets/styles/admin.utilities.css';
 
-import { useErrorDispatcher } from '@shared/hooks/useError';
-
 import routes from '@admin/routers';
 
 const UnauthorizedHttpCode = 401;
@@ -22,21 +20,8 @@ const UnprocessableEntityHttpCode = 422;
 
 const HttpGetMethod = ['GET', 'HEAD'];
 
-const AppErrorProvider: FC = ({ children }) => {
-  return (
-    <ErrorProvider>
-      {children}
-      <ErrorDialog />
-    </ErrorProvider>
-  );
-};
-
-const AppRouterProvider: FC = ({ children }) => {
-  return <BrowserRouter>{children}</BrowserRouter>;
-};
-
 const AppHttpProvider: FC = ({ children }) => {
-  const { addError } = useErrorDispatcher();
+  const addError = useErrorAddDispatch();
 
   return (
     <HttpProvider
@@ -109,14 +94,16 @@ const App: FC = () => {
   console.log('App render');
 
   useSplash();
+
   return (
-    <AppErrorProvider>
-      <AppRouterProvider>
+    <BrowserRouter>
+      <ErrorProvider>
         <AppHttpProvider>
           <AppRoutes />
         </AppHttpProvider>
-      </AppRouterProvider>
-    </AppErrorProvider>
+        <ErrorDialog />
+      </ErrorProvider>
+    </BrowserRouter>
   );
 };
 

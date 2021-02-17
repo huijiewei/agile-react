@@ -1,22 +1,32 @@
-import useError from '@shared/hooks/useError';
 import { VFC } from 'react';
+import { useErrorRemoveDispatch, useErrorState } from '@shared/contexts/ErrorContext';
+import { useNavigate } from 'react-router-dom';
 
 const ErrorDialog: VFC = () => {
-  const [error, { removeError }] = useError();
+  console.log('ErrorDialog render');
+
+  const error = useErrorState();
+  const removeError = useErrorRemoveDispatch();
+
+  const navigate = useNavigate();
 
   const handleClick = () => {
     removeError();
+
+    if (error.historyBack) {
+      navigate(-1);
+    }
   };
 
   return error ? (
     <div className={'modal'} role="dialog">
       <div className={'modal-overlay'} />
       <div className={'modal-content'}>
-        <div>{error && error.message}</div>
+        <div>{error.message}</div>
 
         <div>
           <button className={'btn'} onClick={handleClick}>
-            {error && error.historyBack ? '返回' : '关闭'}
+            {error.historyBack ? '返回' : '关闭'}
           </button>
         </div>
       </div>

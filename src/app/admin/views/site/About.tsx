@@ -1,7 +1,25 @@
 import { VFC } from 'react';
+import { useErrorAddDispatch } from '@shared/contexts/ErrorContext';
 
 const About: VFC = () => {
-  return <div className={'ag-box'}>About Agile</div>;
+  console.log('About Render');
+
+  const addError = useErrorAddDispatch();
+
+  const handleClick = () => {
+    addError('出现错误', true);
+  };
+
+  return (
+    <div className={'ag-box'}>
+      <p>About Agile</p>
+      <p>
+        <button className={'btn'} onClick={handleClick}>
+          错误返回
+        </button>
+      </p>
+    </div>
+  );
 };
 
 export default About;
