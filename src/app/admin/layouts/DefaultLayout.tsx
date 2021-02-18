@@ -1,7 +1,8 @@
 import { Link, Navigate, NavLink, Outlet } from 'react-router-dom';
-import { FC, PropsWithoutRef, Suspense } from 'react';
-import useAuth from '@shared/hooks/useAuth';
-import { IMenu, LoginAction } from '@shared/contexts/AuthContext';
+import { FC, Suspense, useEffect } from 'react';
+import { IMenu, useAuthIdentSetDispatch, useAuthIdentState } from '@shared/contexts/AuthIdentContext';
+import { useGet } from '@shared/contexts/HttpContext';
+import { LoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 
 const AgileHeader: FC = () => {
   return (
@@ -79,13 +80,24 @@ const AgileSide: FC<{ menus: IMenu[] }> = ({ menus }) => {
 };
 
 const DefaultLayout: FC = () => {
-  const { loginAction, authUser } = useAuth();
+  const auth = useAuthIdentState();
+  const setAuth = useAuthIdentSetDispatch();
+  const loginAction = useAuthLoginState();
+  const { data, request } = useGet('auth/account', null, null, false, true);
 
-  return loginAction === LoginAction.DIRECT ? (
+  console.log(request);
+
+  if (auth.user === null) {
+    request();
+
+    console.log(data);
+  }
+
+  return loginAction == LoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />
   ) : (
     <div className={'ag-layout'}>
-      <AgileSide menus={authUser.menus} />
+      <AgileSide menus={[]} />
       <div className={'ag-main'}>
         <AgileHeader />
         <main className={'ag-content'}>

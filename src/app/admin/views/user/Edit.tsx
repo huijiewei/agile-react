@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { VFC } from 'react';
-import useHttp from '@shared/hooks/useHttp';
+import { useGet } from '@shared/contexts/HttpContext';
 
 const UserEdit: VFC = () => {
   const { id } = useParams();
 
-  const { data } = useHttp('GET', 'auth/account', { id: id });
+  const { data } = useGet('auth/account', { id: id });
 
   console.log(data);
 

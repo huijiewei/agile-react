@@ -1,11 +1,11 @@
 import { VFC } from 'react';
-import { useErrorAddDispatch } from '@shared/contexts/ErrorContext';
+import { useErrorSetDispatch } from '@shared/contexts/ErrorContext';
 
 const About: VFC = () => {
-  const addError = useErrorAddDispatch();
+  const setError = useErrorSetDispatch();
 
   const handleClick = () => {
-    addError('出现错误', true);
+    setError('出现错误', true);
   };
 
   return (

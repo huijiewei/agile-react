@@ -8,17 +8,18 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
 
-  const appProduction = argv.mode === 'production';
-  const appConfig = require(env['APP_CONFIG'])(appProduction);
+  const isProduction = argv.mode === 'production';
+  const appConfig = require(env['APP_CONFIG'])(isProduction);
 
   const appName = appConfig.name;
 
-  const fileName = `assets/js/${appProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
-  const cssFileName = `assets/css/${appProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
+  const fileName = `assets/js/${isProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
+  const cssFileName = `assets/css/${isProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
 
   const config = {
     entry: {
@@ -49,11 +50,14 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
           loader: 'babel-loader',
+          options: {
+            plugins: [!isProduction && require.resolve('react-refresh/babel')].filter(Boolean),
+          },
         },
         {
           test: /\.css$/,
           use: [
-            appProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
             {
               loader: 'css-loader',
               options: {
@@ -142,7 +146,7 @@ module.exports = (env, argv) => {
     ],
   };
 
-  if (appProduction) {
+  if (isProduction) {
     config.optimization = {
       minimizer: ['...', new CssMinimizerPlugin()],
       splitChunks: {
@@ -204,7 +208,10 @@ module.exports = (env, argv) => {
     config.optimization = {
       runtimeChunk: true,
     };
+
     config.devtool = 'eval-cheap-module-source-map';
+
+    config.plugins.push(new ReactRefreshPlugin());
   }
 
   return config;

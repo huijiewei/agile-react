@@ -1,11 +1,11 @@
 import { VFC } from 'react';
-import { useErrorAddDispatch } from '@shared/contexts/ErrorContext';
+import { useErrorSetDispatch } from '@shared/contexts/ErrorContext';
 
 const Home: VFC = () => {
-  const addError = useErrorAddDispatch();
+  const setError = useErrorSetDispatch();
 
   const handleClick = () => {
-    addError('出现错误', false);
+    setError('出现错误', false);
   };
 
   return (
@@ -16,7 +16,6 @@ const Home: VFC = () => {
           错误关闭
         </button>
       </p>
-      <p>TEST</p>
       <p>TEST</p>
     </div>
   );
