@@ -1,25 +1,8 @@
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
 interface IErrorStateContext {
-  show: boolean;
   message: string;
   historyBack: boolean;
-}
-
-interface IAction {
-  type: ActionEnum;
-  payload?: any;
-}
-
-const initialState = {
-  show: false,
-  message: '',
-  historyBack: false,
-};
-
-enum ActionEnum {
-  ERROR_ADD = 'ERROR_ADD',
-  ERROR_REMOVE = 'ERROR_REMOVE',
 }
 
 interface IErrorAddDispatchContext {
