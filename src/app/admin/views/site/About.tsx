@@ -2,8 +2,6 @@ import { VFC } from 'react';
 import { useErrorAddDispatch } from '@shared/contexts/ErrorContext';
 
 const About: VFC = () => {
-  console.log('About Render');
-
   const addError = useErrorAddDispatch();
 
   const handleClick = () => {

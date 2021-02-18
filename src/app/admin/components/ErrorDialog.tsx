@@ -3,8 +3,6 @@ import { useErrorRemoveDispatch, useErrorState } from '@shared/contexts/ErrorCon
 import { useNavigate } from 'react-router-dom';
 
 const ErrorDialog: VFC = () => {
-  console.log('ErrorDialog render');
-
   const error = useErrorState();
   const removeError = useErrorRemoveDispatch();
 

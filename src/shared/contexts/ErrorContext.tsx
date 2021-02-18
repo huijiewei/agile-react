@@ -1,8 +1,25 @@
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
 interface IErrorStateContext {
+  show: boolean;
   message: string;
   historyBack: boolean;
+}
+
+interface IAction {
+  type: ActionEnum;
+  payload?: any;
+}
+
+const initialState = {
+  show: false,
+  message: '',
+  historyBack: false,
+};
+
+enum ActionEnum {
+  ERROR_ADD = 'ERROR_ADD',
+  ERROR_REMOVE = 'ERROR_REMOVE',
 }
 
 interface IErrorAddDispatchContext {
@@ -19,7 +36,7 @@ const ErrorAddDispatchContext = createContext<IErrorAddDispatchContext | undefin
 
 const ErrorRemoveDispatchContext = createContext<IErrorRemoveDispatchContext | undefined>(undefined);
 
-export const ErrorProvider: FC = ({ children }) => {
+const ErrorProvider: FC = ({ children }) => {
   const [error, setError] = useState<IErrorStateContext | null>(null);
 
   const addError = useCallback((message, historyBack) => {
@@ -39,7 +56,7 @@ export const ErrorProvider: FC = ({ children }) => {
   );
 };
 
-export const useErrorState = (): IErrorStateContext => {
+const useErrorState = (): IErrorStateContext => {
   const context = useContext(ErrorStateContext);
 
   if (context === undefined) {
@@ -49,7 +66,7 @@ export const useErrorState = (): IErrorStateContext => {
   return context;
 };
 
-export const useErrorAddDispatch = (): IErrorAddDispatchContext => {
+const useErrorAddDispatch = (): IErrorAddDispatchContext => {
   const context = useContext(ErrorAddDispatchContext);
 
   if (context === undefined) {
@@ -59,7 +76,7 @@ export const useErrorAddDispatch = (): IErrorAddDispatchContext => {
   return context;
 };
 
-export const useErrorRemoveDispatch = (): IErrorRemoveDispatchContext => {
+const useErrorRemoveDispatch = (): IErrorRemoveDispatchContext => {
   const context = useContext(ErrorRemoveDispatchContext);
 
   if (context === undefined) {
@@ -68,3 +85,5 @@ export const useErrorRemoveDispatch = (): IErrorRemoveDispatchContext => {
 
   return context;
 };
+
+export { ErrorProvider, useErrorState, useErrorAddDispatch, useErrorRemoveDispatch };

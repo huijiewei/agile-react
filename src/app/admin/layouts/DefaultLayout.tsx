@@ -1,6 +1,5 @@
 import { Link, Navigate, NavLink, Outlet } from 'react-router-dom';
-import { FC, Props, PropsWithoutRef, Suspense, useEffect } from 'react';
-import useHttp from '@shared/hooks/useHttp';
+import { FC, PropsWithoutRef, Suspense } from 'react';
 import useAuth from '@shared/hooks/useAuth';
 import { IMenu, LoginAction } from '@shared/contexts/AuthContext';
 
@@ -24,9 +23,7 @@ const AgileHeader: FC = () => {
   );
 };
 
-const AgileSide: FC<PropsWithoutRef<IMenu[]>> = ({ menus }: PropsWithoutRef<IMenu[]>) => {
-  console.log('AgileSide Render');
-
+const AgileSide: FC<{ menus: IMenu[] }> = ({ menus }) => {
   return (
     <div className={'ag-side'}>
       <div className={'ag-brand'}>
@@ -82,8 +79,6 @@ const AgileSide: FC<PropsWithoutRef<IMenu[]>> = ({ menus }: PropsWithoutRef<IMen
 };
 
 const DefaultLayout: FC = () => {
-  console.log('DefaultLayout Render');
-
   const { loginAction, authUser } = useAuth();
 
   return loginAction === LoginAction.DIRECT ? (

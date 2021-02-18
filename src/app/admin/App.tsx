@@ -91,8 +91,6 @@ const AppRoutes: FC = () => {
 };
 
 const App: FC = () => {
-  console.log('App render');
-
   useSplash();
 
   return (
