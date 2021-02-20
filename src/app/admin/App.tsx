@@ -111,9 +111,6 @@ const AppRoutes: FC = () => {
   return useRoutes(routes, process.env.PUBLIC_URL);
 };
 
-import '@admin/assets/styles/admin.base.css';
-import '@admin/assets/styles/admin.components.css';
-import '@admin/assets/styles/admin.utilities.css';
 import { AuthIdentProvider } from '@shared/contexts/AuthIdentContext';
 
 const App: FC = () => {

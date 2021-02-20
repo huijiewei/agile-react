@@ -1,8 +1,8 @@
-import { Link, Navigate, NavLink, Outlet } from 'react-router-dom';
-import { FC, Suspense, useEffect } from 'react';
-import { IMenu, useAuthIdentSetDispatch, useAuthIdentState } from '@shared/contexts/AuthIdentContext';
-import { useGet } from '@shared/contexts/HttpContext';
+import { NavLink, Link, Navigate, Outlet } from 'react-router-dom';
+import { FC, useEffect, Suspense } from 'react';
+import { useAuthIdentSetDispatch, useAuthIdentState } from '@shared/contexts/AuthIdentContext';
 import { LoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
+import { useGet } from '@shared/contexts/HttpContext';
 
 const AgileHeader: FC = () => {
   return (
@@ -24,7 +24,10 @@ const AgileHeader: FC = () => {
   );
 };
 
-const AgileSide: FC<{ menus: IMenu[] }> = ({ menus }) => {
+const AgileSide: FC = () => {
+  //const { menus } = useAuthIdentState();
+  const menus = [];
+
   return (
     <div className={'ag-side'}>
       <div className={'ag-brand'}>
@@ -80,24 +83,21 @@ const AgileSide: FC<{ menus: IMenu[] }> = ({ menus }) => {
 };
 
 const DefaultLayout: FC = () => {
-  const auth = useAuthIdentState();
   const setAuth = useAuthIdentSetDispatch();
   const loginAction = useAuthLoginState();
-  const { data, request } = useGet('auth/account', null, null, false, true);
+  const { data } = useGet('auth/account', null, null, false);
 
-  console.log(request);
-
-  if (auth.user === null) {
-    request();
-
-    console.log(data);
-  }
+  useEffect(() => {
+    if (data) {
+      setAuth(data.currentUser, data.groupMenus, data.groupPermissions);
+    }
+  }, [data]);
 
   return loginAction == LoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />
   ) : (
     <div className={'ag-layout'}>
-      <AgileSide menus={[]} />
+      <AgileSide />
       <div className={'ag-main'}>
         <AgileHeader />
         <main className={'ag-content'}>
