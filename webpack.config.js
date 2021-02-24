@@ -8,7 +8,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -187,7 +187,7 @@ module.exports = (env, argv) => {
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,
         skipWaiting: true,
-      }),
+      })
     );
     config.plugins.push(
       new CopyPlugin({
@@ -201,7 +201,7 @@ module.exports = (env, argv) => {
             },
           },
         ],
-      }),
+      })
     );
     config.plugins.push(new CleanWebpackPlugin());
   } else {
@@ -211,7 +211,7 @@ module.exports = (env, argv) => {
 
     config.devtool = 'eval-cheap-module-source-map';
 
-    config.plugins.push(new ReactRefreshPlugin());
+    config.plugins.push(new ReactRefreshWebpackPlugin());
   }
 
   return config;

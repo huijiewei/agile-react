@@ -62,7 +62,7 @@ const AppHttpProvider: FC = ({ children }) => {
               error.response.data.title ||
               error.response.statusText ||
               '网络请求错误',
-            historyBack,
+            historyBack
           );
 
           return Promise.reject(error);

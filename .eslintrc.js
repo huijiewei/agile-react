@@ -17,13 +17,13 @@ module.exports = {
       version: 'detect',
     },
   },
-  extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'plugin:prettier/recommended'],
+  extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
   rules: { 'react/jsx-uses-react': 'off', 'react/react-in-jsx-scope': 'off' },
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
       parser: '@typescript-eslint/parser',
-      extends: ['plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'plugin:prettier/recommended'],
+      extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
       rules: {
         'react/prop-types': 'off',
       },

@@ -58,7 +58,7 @@ const axiosRequest = (method, url, query, body, historyBack, dispatch, httpConte
     },
     (error) => {
       return httpContext.onError?.(error);
-    },
+    }
   );
 
   axiosInstance.interceptors.response.use(
@@ -67,7 +67,7 @@ const axiosRequest = (method, url, query, body, historyBack, dispatch, httpConte
     },
     (error) => {
       return httpContext.onError?.(error);
-    },
+    }
   );
 
   axiosInstance
@@ -91,7 +91,7 @@ const useHttp = (
   query: any = null,
   body: any = null,
   historyBack = true,
-  lazy = false,
+  lazy = false
 ) => {
   const httpContext = useContext(HttpContext);
 

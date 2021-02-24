@@ -16,20 +16,22 @@ const ErrorDialog: VFC = () => {
     }
   };
 
-  return error ? (
-    <div className={'modal'} role="dialog">
-      <div className={'modal-overlay'} />
-      <div className={'modal-content'}>
-        <div>{error.message}</div>
+  return (
+    error && (
+      <div className="modal" role="dialog">
+        <div className="modal-overlay" />
+        <div className="modal-content">
+          <div>{error.message}</div>
 
-        <div>
-          <button className={'btn'} onClick={handleClick}>
-            {error.historyBack ? '返回' : '关闭'}
-          </button>
+          <div>
+            <button className="btn" onClick={handleClick}>
+              {error.historyBack ? '返回' : '关闭'}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  ) : null;
+    )
+  );
 };
 
 export default ErrorDialog;
