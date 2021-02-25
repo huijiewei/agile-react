@@ -7,14 +7,14 @@ interface IState {
   data: any;
 }
 
-enum ActionEnum {
+enum RequestAction {
   REQUEST_START = 'REQUEST_START',
   REQUEST_SUCCESS = 'REQUEST_SUCCESS',
   REQUEST_ERROR = 'REQUEST_ERROR',
 }
 
 interface IAction {
-  type: ActionEnum;
+  type: RequestAction;
   payload?: any;
 }
 
@@ -26,11 +26,11 @@ const initialState: IState = {
 
 const reducer = (state: IState, action: IAction): IState => {
   switch (action.type) {
-    case ActionEnum.REQUEST_START:
+    case RequestAction.REQUEST_START:
       return { loading: true, error: null, data: null };
-    case ActionEnum.REQUEST_SUCCESS:
+    case RequestAction.REQUEST_SUCCESS:
       return { loading: false, error: null, data: action.payload };
-    case ActionEnum.REQUEST_ERROR:
+    case RequestAction.REQUEST_ERROR:
       return { loading: false, error: action.payload, data: null };
     default:
       return state;
@@ -38,7 +38,7 @@ const reducer = (state: IState, action: IAction): IState => {
 };
 
 const axiosRequest = (method, url, query, body, historyBack, dispatch, httpContext, cancelToken) => {
-  dispatch({ type: ActionEnum.REQUEST_START });
+  dispatch({ type: RequestAction.REQUEST_START });
 
   const axiosInstance = Axios.create({
     baseURL: httpContext.url,
@@ -78,10 +78,10 @@ const axiosRequest = (method, url, query, body, historyBack, dispatch, httpConte
       data: body,
     })
     .then((response) => {
-      dispatch({ type: ActionEnum.REQUEST_SUCCESS, payload: response.data });
+      dispatch({ type: RequestAction.REQUEST_SUCCESS, payload: response.data });
     })
     .catch((error) => {
-      dispatch({ type: ActionEnum.REQUEST_ERROR, payload: error });
+      dispatch({ type: RequestAction.REQUEST_ERROR, payload: error });
     });
 };
 
