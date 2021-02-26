@@ -1,5 +1,11 @@
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
+export interface IAccount {
+  currentUser: IUser;
+  groupMenus: IMenu[];
+  groupPermissions: string[];
+}
+
 export interface IMenu {
   label: string;
   url: string;

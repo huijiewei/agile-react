@@ -2,7 +2,7 @@ import { NavLink, Link, Navigate, Outlet } from 'react-router-dom';
 import { FC, useEffect, Suspense } from 'react';
 import { LoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import { useGet } from '@shared/contexts/HttpContext';
-import { useAuthUserSetDispatch } from '@admin/contexts/AuthUserContext';
+import { IAccount, useAuthUserSetDispatch } from '@admin/contexts/AuthUserContext';
 
 const AgileHeader: FC = () => {
   return (
@@ -85,11 +85,11 @@ const AgileSide: FC = () => {
 const DefaultLayout: FC = () => {
   const setAuthUser = useAuthUserSetDispatch();
   const authLoginAction = useAuthLoginState();
-  const { data } = useGet('auth/account', null, null, false);
+  const { data } = useGet<IAccount>('auth/account', null, null, false);
 
   useEffect(() => {
     if (data) {
-      setAuthUser(data['currentUser'], data['groupMenus'], data['groupPermissions']);
+      setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
     }
   }, [data, setAuthUser]);
 

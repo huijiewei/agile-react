@@ -24,7 +24,7 @@ const initialState: IState = {
   data: null,
 };
 
-const reducer = (state: IState, action: IAction): IState => {
+const httpReducer = (state: IState, action: IAction): IState => {
   switch (action.type) {
     case RequestAction.REQUEST_START:
       return { loading: true, error: null, data: null };
@@ -97,7 +97,7 @@ const useHttp = (
 
   const cancelSource = useRef<CancelTokenSource>();
 
-  const [{ data, error, loading }, dispatch] = useReducer(reducer, initialState);
+  const [{ data, error, loading }, dispatch] = useReducer(httpReducer, initialState);
 
   const queryJson = JSON.stringify(query);
   const bodyJson = JSON.stringify(body);
