@@ -2,7 +2,7 @@ import { NavLink, Link, Navigate, Outlet } from 'react-router-dom';
 import { FC, useEffect, Suspense } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import { useGet } from '@shared/contexts/HttpContext';
-import { IAccount, useAuthUserSetDispatch } from '@admin/contexts/AuthUserContext';
+import { IAccount, useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
 
 const AgileHeader: FC = () => {
   return (
@@ -83,7 +83,7 @@ const AgileSide: FC = () => {
 };
 
 const DefaultLayout: FC = () => {
-  const setAuthUser = useAuthUserSetDispatch();
+  const setAuthUser = useAuthUserDispatch();
   const authLoginAction = useAuthLoginState();
   const { data } = useGet<IAccount>('auth/account', null, null, false);
 
@@ -92,6 +92,8 @@ const DefaultLayout: FC = () => {
       setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
     }
   }, [data, setAuthUser]);
+
+  console.log('DefaultLayout Render');
 
   return authLoginAction == AuthLoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />

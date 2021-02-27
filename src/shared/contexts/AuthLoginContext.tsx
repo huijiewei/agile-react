@@ -50,7 +50,7 @@ const useAuthLoginDispatch = (): IAuthLoginDispatch => {
   const context = useContext(AuthLoginDispatchContext);
 
   if (context === undefined) {
-    throw new Error('useAuthLoginSetDispatch must be used within a AuthLoginProvider');
+    throw new Error('useAuthLoginDispatch must be used within a AuthLoginProvider');
   }
 
   return context;

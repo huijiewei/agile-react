@@ -8,6 +8,8 @@ const Home: VFC = () => {
     setError('出现错误', false);
   };
 
+  console.log('Home Render');
+
   return (
     <div className={'ag-box'}>
       <p>Hello Agile</p>

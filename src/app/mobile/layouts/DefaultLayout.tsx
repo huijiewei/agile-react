@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { FC, Suspense, useEffect } from 'react';
+import { FC, Suspense } from 'react';
 
 const AgileHeader = (): JSX.Element => {
   return (
@@ -20,9 +20,7 @@ const AgileHeader = (): JSX.Element => {
 };
 
 const DefaultLayout: FC = () => {
-  useEffect(() => {
-    console.log('DefaultLayout render');
-  }, []);
+  console.log('DefaultLayout render');
 
   return (
     <div className={'ag-layout'}>

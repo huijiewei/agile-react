@@ -34,12 +34,12 @@ interface IAuthUserState {
   permissions: string[];
 }
 
-interface IAuthUserSetDispatch {
+interface IAuthUserDispatch {
   (user: IUser | null, menus?: IMenu[], permissions?: string[]): void;
 }
 
 const AuthUserStateContext = createContext<IAuthUserState | undefined>(undefined);
-const AuthUserSetDispatchContext = createContext<IAuthUserSetDispatch | undefined>(undefined);
+const AuthUserDispatchContext = createContext<IAuthUserDispatch | undefined>(undefined);
 
 const AuthUserProvider: FC = ({ children }) => {
   const [authUserState, setAuthUserState] = useState<IAuthUserState>({
@@ -52,9 +52,9 @@ const AuthUserProvider: FC = ({ children }) => {
     setAuthUserState({ user, menus, permissions });
   }, []);
   return (
-    <AuthUserSetDispatchContext.Provider value={setAuthUser}>
+    <AuthUserDispatchContext.Provider value={setAuthUser}>
       <AuthUserStateContext.Provider value={authUserState}>{children}</AuthUserStateContext.Provider>
-    </AuthUserSetDispatchContext.Provider>
+    </AuthUserDispatchContext.Provider>
   );
 };
 
@@ -68,14 +68,14 @@ const useAuthUserState = (): IAuthUserState => {
   return context;
 };
 
-const useAuthUserSetDispatch = (): IAuthUserSetDispatch => {
-  const context = useContext(AuthUserSetDispatchContext);
+const useAuthUserDispatch = (): IAuthUserDispatch => {
+  const context = useContext(AuthUserDispatchContext);
 
   if (context === undefined) {
-    throw new Error('useAuthUserSetDispatch must be used within a AuthUserProvider');
+    throw new Error('useAuthUserDispatch must be used within a AuthUserProvider');
   }
 
   return context;
 };
 
-export { AuthUserProvider, useAuthUserState, useAuthUserSetDispatch };
+export { AuthUserProvider, useAuthUserState, useAuthUserDispatch };

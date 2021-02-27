@@ -56,7 +56,7 @@ const useAuthTokenDispatch = (): IAuthTokenDispatch => {
   const context = useContext(AuthTokenDispatchContext);
 
   if (context === undefined) {
-    throw new Error('useAuthTokenSetDispatch must be used within a AuthTokenProvider');
+    throw new Error('useAuthTokenDispatch must be used within a AuthTokenProvider');
   }
 
   return context;

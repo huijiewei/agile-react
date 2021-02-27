@@ -48,7 +48,7 @@ const useErrorDispatch = (): IErrorDispatch => {
   const context = useContext(ErrorDispatchContext);
 
   if (context === undefined) {
-    throw new Error('useErrorAddDispatch must be used within a ErrorProvider');
+    throw new Error('useErrorDispatch must be used within a ErrorProvider');
   }
 
   return context;

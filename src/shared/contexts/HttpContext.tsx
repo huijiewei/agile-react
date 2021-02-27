@@ -1,49 +1,26 @@
-import Axios, { AxiosError, AxiosRequestConfig, CancelTokenSource, Method } from 'axios';
-import { createContext, useCallback, useContext, useEffect, useReducer, useRef } from 'react';
+import Axios, { AxiosError, AxiosRequestConfig, Method } from 'axios';
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
 
-interface IState {
+interface IState<T> {
   loading: boolean;
   error: AxiosError | null;
-  data: any;
+  data: T;
 }
 
-enum RequestAction {
-  REQUEST_START = 'REQUEST_START',
-  REQUEST_SUCCESS = 'REQUEST_SUCCESS',
-  REQUEST_ERROR = 'REQUEST_ERROR',
+interface EncodedQuery {
+  [key: string]: string | (string | null)[] | null | undefined;
 }
 
-interface IAction {
-  type: RequestAction;
-  payload?: any;
-}
-
-const initialState: IState = {
+const initialState: IState<null> = {
   loading: true,
   error: null,
   data: null,
 };
 
-const httpReducer = (state: IState, action: IAction): IState => {
-  switch (action.type) {
-    case RequestAction.REQUEST_START:
-      return { loading: true, error: null, data: null };
-    case RequestAction.REQUEST_SUCCESS:
-      return { loading: false, error: null, data: action.payload };
-    case RequestAction.REQUEST_ERROR:
-      return { loading: false, error: action.payload, data: null };
-    default:
-      return state;
-  }
-};
-
-const axiosRequest = (method, url, query, body, historyBack, dispatch, httpContext, cancelToken) => {
-  dispatch({ type: RequestAction.REQUEST_START });
-
+const axiosRequest = (method, url, query, body, historyBack, setState, httpContext) => {
   const axiosInstance = Axios.create({
     baseURL: httpContext.url,
     paramsSerializer: httpContext.paramsSerializer,
-    cancelToken: cancelToken,
   });
 
   axiosInstance.interceptors.request.use(
@@ -78,62 +55,84 @@ const axiosRequest = (method, url, query, body, historyBack, dispatch, httpConte
       data: body,
     })
     .then((response) => {
-      dispatch({ type: RequestAction.REQUEST_SUCCESS, payload: response.data });
+      setState({
+        loading: false,
+        error: null,
+        data: response.data,
+      });
     })
     .catch((error) => {
-      dispatch({ type: RequestAction.REQUEST_ERROR, payload: error });
+      setState({
+        loading: false,
+        error: error,
+        data: null,
+      });
     });
 };
 
 const useHttp = (
   method: Method,
   url: string,
-  query: any = null,
-  body: any = null,
+  query: EncodedQuery | null = null,
+  body: EncodedQuery | null = null,
   historyBack = true,
   lazy = false
-) => {
+): IState<null> => {
   const httpContext = useContext(HttpContext);
 
-  const cancelSource = useRef<CancelTokenSource>();
+  const [state, setState] = useState<IState<null>>(initialState);
 
-  const [{ data, error, loading }, dispatch] = useReducer(httpReducer, initialState);
-
-  const request = useCallback(() => {
-    if (cancelSource.current) {
-      cancelSource.current?.cancel();
-    }
-
-    axiosRequest(method, url, query, body, historyBack, dispatch, httpContext, cancelSource.current?.token);
-  }, [method, url, JSON.stringify(query), JSON.stringify(body), historyBack]);
+  const queryJson = JSON.stringify(query);
+  const bodyJson = JSON.stringify(body);
 
   useEffect(() => {
     if (!lazy) {
-      request();
+      axiosRequest(method, url, JSON.parse(queryJson), JSON.parse(bodyJson), historyBack, setState, httpContext);
     }
-  }, [lazy, request]);
+  }, [method, url, queryJson, bodyJson, historyBack, lazy, httpContext]);
 
   return {
-    data,
-    error,
-    loading,
-    request,
+    ...state,
   };
 };
 
-const useGet = (url: string, query: any = null, body: any = null, historyBack = true, lazy = false) => {
+const useGet = (
+  url: string,
+  query: EncodedQuery | null = null,
+  body: EncodedQuery | null = null,
+  historyBack = true,
+  lazy = false
+): IState<null> => {
   return useHttp('GET', url, query, body, historyBack, lazy);
 };
 
-const usePost = (url: string, query: any = null, body: any = null, historyBack = false, lazy = true) => {
+const usePost = (
+  url: string,
+  query: EncodedQuery | null = null,
+  body: EncodedQuery | null = null,
+  historyBack = false,
+  lazy = true
+): IState<null> => {
   return useHttp('POST', url, query, body, historyBack, lazy);
 };
 
-const usePut = (url: string, query: any = null, body: any = null, historyBack = false, lazy = true) => {
+const usePut = (
+  url: string,
+  query: EncodedQuery | null = null,
+  body: EncodedQuery | null = null,
+  historyBack = false,
+  lazy = true
+): IState<null> => {
   return useHttp('PUT', url, query, body, historyBack, lazy);
 };
 
-const useDelete = (url: string, query: any = null, body: any = null, historyBack = false, lazy = true) => {
+const useDelete = (
+  url: string,
+  query: EncodedQuery | null = null,
+  body: EncodedQuery | null = null,
+  historyBack = false,
+  lazy = true
+): IState<null> => {
   return useHttp('DELETE', url, query, body, historyBack, lazy);
 };
 
@@ -141,11 +140,11 @@ interface HttpProviderProps {
   url: string;
   onRequest: (config: AxiosRequestConfig) => AxiosRequestConfig;
   onError: (error: AxiosError) => Promise<AxiosError>;
-  paramsSerializer: (params: any) => string;
+  paramsSerializer: (params: EncodedQuery) => string;
 }
 
 const HttpContext = createContext<Partial<HttpProviderProps>>({});
 
 const HttpProvider = HttpContext.Provider;
 
-export { HttpProvider, useHttp, useGet, usePost, usePut, useDelete };
+export { HttpProvider, useGet, usePost, usePut, useDelete };

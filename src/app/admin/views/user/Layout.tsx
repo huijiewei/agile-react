@@ -12,12 +12,6 @@ const UserLayout: VFC = () => {
           <li>
             <Link to="create">UserCreate</Link>
           </li>
-          <li>
-            <Link to="edit/123">UserEdit 123</Link>
-          </li>
-          <li>
-            <Link to="edit/132">UserEdit 132</Link>
-          </li>
         </nav>
       </div>
       <div>
