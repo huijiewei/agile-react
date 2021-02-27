@@ -2,7 +2,19 @@ import { NavLink, Link, Navigate, Outlet } from 'react-router-dom';
 import { FC, useEffect, Suspense } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import { useGet } from '@shared/contexts/HttpContext';
-import { IAccount, useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
+import { IAccount, useAuthUserDispatch, useAuthUserState } from '@admin/contexts/AuthUserContext';
+
+const formatUrl = (url) => {
+  if (url === 'site/index') {
+    return 'home';
+  }
+
+  if (url.endsWith('/index')) {
+    return url.substr(0, url.length - 6);
+  }
+
+  return url;
+};
 
 const AgileHeader: FC = () => {
   return (
@@ -25,8 +37,8 @@ const AgileHeader: FC = () => {
 };
 
 const AgileSide: FC = () => {
-  //const { menus } = useAuthIdentState();
-  const menus = [];
+  const { menus } = useAuthUserState();
+  //const menus = [];
 
   return (
     <div className={'ag-side'}>
@@ -36,46 +48,49 @@ const AgileSide: FC = () => {
       </div>
       <div className={'ag-scroll'}>
         <nav>
-          {menus.map((menu, idx) => {
-            return (
-              <NavLink key={'menu-' + idx} activeClassName={'activated'} to={menu.url}>
-                {menu.label}
-              </NavLink>
-            );
-          })}
-          <li>
-            <NavLink activeClassName={'activated'} to="home">
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName={'activated'} to="about">
-              About
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName={'activated'} to="user">
-              User
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName={'activated'} to="admin">
-              Admin
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName={'activated'} to="admin-group">
-              AdminGroup
-            </NavLink>
-          </li>
-          <li>
-            <Link to="login">Login</Link>
-          </li>
-          <li>
-            <NavLink activeClassName={'activated'} to="404">
-              404
-            </NavLink>
-          </li>
+          {menus.map((menu, idx) => (
+            <li key={'menu-' + idx}>
+              {menu.url ? (
+                <NavLink activeClassName={'activated'} to={formatUrl(menu.url)}>
+                  {menu.label}
+                </NavLink>
+              ) : (
+                <>
+                  <span>{menu.label}</span>
+                  {menu.children && (
+                    <ul>
+                      {menu.children.map((subMenu, subIdx) => (
+                        <li key={'menu-' + idx + subIdx}>
+                          {subMenu.url ? (
+                            <NavLink activeClassName={'activated'} to={formatUrl(subMenu.url)}>
+                              {subMenu.label}
+                            </NavLink>
+                          ) : (
+                            <>
+                              <span>{menu.label}</span>
+                              {menu.children && (
+                                <ul>
+                                  {menu.children.map((subMenu, subIdx) => (
+                                    <li key={'menu-' + idx + subIdx}>
+                                      {subMenu.url ? (
+                                        <NavLink activeClassName={'activated'} to={formatUrl(subMenu.url)}>
+                                          {subMenu.label}
+                                        </NavLink>
+                                      ) : null}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )}
+            </li>
+          ))}
         </nav>
       </div>
     </div>
