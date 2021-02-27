@@ -1,15 +1,15 @@
 import { VFC } from 'react';
-import { useErrorSetDispatch, useErrorState } from '@shared/contexts/ErrorContext';
+import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
 
 const ErrorDialog: VFC = () => {
   const error = useErrorState();
-  const setError = useErrorSetDispatch();
+  const { resetError } = useErrorDispatch();
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    setError(null);
+    resetError();
 
     if (error.historyBack) {
       navigate(-1);

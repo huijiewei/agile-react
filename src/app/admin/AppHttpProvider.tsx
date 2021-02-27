@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useAuthTokenState } from '@shared/contexts/AuthTokenContext';
-import { useErrorSetDispatch } from '@shared/contexts/ErrorContext';
-import { LoginAction, useAuthLoginSetDispatch } from '@shared/contexts/AuthLoginContext';
+import { useErrorDispatch } from '@shared/contexts/ErrorContext';
+import { AuthLoginAction, useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { HttpProvider } from '@shared/contexts/HttpContext';
 import queryString from 'query-string';
 
@@ -12,13 +12,19 @@ const HttpGetMethod = ['GET', 'HEAD'];
 
 const AppHttpProvider: FC = ({ children }) => {
   const authToken = useAuthTokenState();
-  const setError = useErrorSetDispatch();
-  const setLoginAction = useAuthLoginSetDispatch();
+  const { setError } = useErrorDispatch();
+  const { setLoginAction } = useAuthLoginDispatch();
 
   return (
     <HttpProvider
       value={{
         url: document.querySelector('meta[name="api-host"]').getAttribute('content'),
+        onRequest: (config) => {
+          config.headers['X-Client-Id'] = authToken.clientId;
+          config.headers['X-Access-Token'] = authToken.accessToken;
+
+          return config;
+        },
         onError: (error) => {
           const historyBack = error.config['__historyBack'];
 
@@ -34,10 +40,10 @@ const AppHttpProvider: FC = ({ children }) => {
 
               if (historyBack || HttpGetMethod.includes(error.config.method?.toUpperCase() as string)) {
                 // 跳转登录
-                setLoginAction(LoginAction.DIRECT);
+                setLoginAction(AuthLoginAction.DIRECT);
               } else {
                 // 弹出登录框
-                setLoginAction(LoginAction.MODAL);
+                setLoginAction(AuthLoginAction.MODAL);
               }
             }
 
@@ -58,12 +64,6 @@ const AppHttpProvider: FC = ({ children }) => {
           );
 
           return Promise.reject(error);
-        },
-        onRequest: (config) => {
-          config.headers['X-Client-Id'] = authToken.clientId;
-          config.headers['X-Access-Token'] = authToken.accessToken;
-
-          return config;
         },
         paramsSerializer: (params) => {
           return queryString.stringify(params, {

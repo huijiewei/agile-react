@@ -1,34 +1,42 @@
-import { createContext, FC, useCallback, useContext, useState } from 'react';
+import { createContext, FC, useCallback, useContext, useMemo, useState } from 'react';
 
-export enum LoginAction {
+export enum AuthLoginAction {
   NONE,
   MODAL,
   DIRECT,
 }
 
-interface IAuthLoginSetDispatch {
-  (action: LoginAction): void;
+interface IAuthLoginDispatch {
+  setLoginAction: (action: AuthLoginAction) => void;
+  resetLoginAction: () => void;
 }
 
-const AuthLoginStateContext = createContext<LoginAction | undefined>(undefined);
+const AuthLoginStateContext = createContext<AuthLoginAction | undefined>(undefined);
 
-const AuthLoginSetDispatchContext = createContext<IAuthLoginSetDispatch | undefined>(undefined);
+const AuthLoginDispatchContext = createContext<IAuthLoginDispatch | undefined>(undefined);
 
 const AuthLoginProvider: FC = ({ children }) => {
-  const [authLoginState, setAuthLoginState] = useState<LoginAction>(LoginAction.NONE);
+  const [authLoginState, setAuthLoginState] = useState<AuthLoginAction>(AuthLoginAction.NONE);
 
-  const setAuthLogin = useCallback((action) => {
-    setAuthLoginState(action);
+  const authLoginDispatch = useMemo(() => {
+    return {
+      setLoginAction: (action) => {
+        setAuthLoginState(action);
+      },
+      resetLoginAction: () => {
+        setAuthLoginState(AuthLoginAction.NONE);
+      },
+    };
   }, []);
 
   return (
-    <AuthLoginSetDispatchContext.Provider value={setAuthLogin}>
+    <AuthLoginDispatchContext.Provider value={authLoginDispatch}>
       <AuthLoginStateContext.Provider value={authLoginState}>{children}</AuthLoginStateContext.Provider>
-    </AuthLoginSetDispatchContext.Provider>
+    </AuthLoginDispatchContext.Provider>
   );
 };
 
-const useAuthLoginState = (): LoginAction => {
+const useAuthLoginState = (): AuthLoginAction => {
   const context = useContext(AuthLoginStateContext);
 
   if (context === undefined) {
@@ -38,8 +46,8 @@ const useAuthLoginState = (): LoginAction => {
   return context;
 };
 
-const useAuthLoginSetDispatch = (): IAuthLoginSetDispatch => {
-  const context = useContext(AuthLoginSetDispatchContext);
+const useAuthLoginDispatch = (): IAuthLoginDispatch => {
+  const context = useContext(AuthLoginDispatchContext);
 
   if (context === undefined) {
     throw new Error('useAuthLoginSetDispatch must be used within a AuthLoginProvider');
@@ -48,4 +56,4 @@ const useAuthLoginSetDispatch = (): IAuthLoginSetDispatch => {
   return context;
 };
 
-export { AuthLoginProvider, useAuthLoginState, useAuthLoginSetDispatch };
+export { AuthLoginProvider, useAuthLoginState, useAuthLoginDispatch };

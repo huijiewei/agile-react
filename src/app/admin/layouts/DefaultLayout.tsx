@@ -1,6 +1,6 @@
 import { NavLink, Link, Navigate, Outlet } from 'react-router-dom';
 import { FC, useEffect, Suspense } from 'react';
-import { LoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
+import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import { useGet } from '@shared/contexts/HttpContext';
 import { IAccount, useAuthUserSetDispatch } from '@admin/contexts/AuthUserContext';
 
@@ -93,7 +93,7 @@ const DefaultLayout: FC = () => {
     }
   }, [data, setAuthUser]);
 
-  return authLoginAction == LoginAction.DIRECT ? (
+  return authLoginAction == AuthLoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />
   ) : (
     <div className={'ag-layout'}>

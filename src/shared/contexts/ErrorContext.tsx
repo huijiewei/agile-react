@@ -1,33 +1,36 @@
-import { createContext, FC, useCallback, useContext, useState } from 'react';
+import { createContext, FC, useContext, useMemo, useState } from 'react';
 
 interface IErrorState {
   message: string;
   historyBack: boolean;
 }
 
-interface IErrorSetDispatch {
-  (message: string | null, historyBack?: boolean): void;
+interface IErrorDispatch {
+  setError: (message: string, historyBack?: boolean) => void;
+  resetError: () => void;
 }
 
 const ErrorStateContext = createContext<IErrorState | undefined>(undefined);
-
-const ErrorSetDispatchContext = createContext<IErrorSetDispatch | undefined>(undefined);
+const ErrorDispatchContext = createContext<IErrorDispatch | undefined>(undefined);
 
 const ErrorProvider: FC = ({ children }) => {
   const [errorState, setErrorState] = useState<IErrorState | null>(null);
 
-  const setError = useCallback((message, historyBack = false) => {
-    if (message === null) {
-      setErrorState(null);
-    } else {
-      setErrorState({ message, historyBack });
-    }
+  const errorDispatch = useMemo(() => {
+    return {
+      setError: (message: string, historyBack: boolean) => {
+        setErrorState({ message, historyBack });
+      },
+      resetError: () => {
+        setErrorState(null);
+      },
+    };
   }, []);
 
   return (
-    <ErrorSetDispatchContext.Provider value={setError}>
+    <ErrorDispatchContext.Provider value={errorDispatch}>
       <ErrorStateContext.Provider value={errorState}>{children}</ErrorStateContext.Provider>
-    </ErrorSetDispatchContext.Provider>
+    </ErrorDispatchContext.Provider>
   );
 };
 
@@ -41,8 +44,8 @@ const useErrorState = (): IErrorState => {
   return context;
 };
 
-const useErrorSetDispatch = (): IErrorSetDispatch => {
-  const context = useContext(ErrorSetDispatchContext);
+const useErrorDispatch = (): IErrorDispatch => {
+  const context = useContext(ErrorDispatchContext);
 
   if (context === undefined) {
     throw new Error('useErrorAddDispatch must be used within a ErrorProvider');
@@ -51,4 +54,4 @@ const useErrorSetDispatch = (): IErrorSetDispatch => {
   return context;
 };
 
-export { ErrorProvider, useErrorState, useErrorSetDispatch };
+export { ErrorProvider, useErrorState, useErrorDispatch };

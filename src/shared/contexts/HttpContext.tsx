@@ -48,11 +48,11 @@ const axiosRequest = (method, url, query, body, historyBack, dispatch, httpConte
 
   axiosInstance.interceptors.request.use(
     (config) => {
+      config['__historyBack'] = historyBack;
+
       if (httpContext.onRequest) {
         return httpContext.onRequest(config);
       }
-
-      config['__historyBack'] = historyBack;
 
       return config;
     },
@@ -99,16 +99,13 @@ const useHttp = (
 
   const [{ data, error, loading }, dispatch] = useReducer(httpReducer, initialState);
 
-  const queryJson = JSON.stringify(query);
-  const bodyJson = JSON.stringify(body);
-
   const request = useCallback(() => {
     if (cancelSource.current) {
       cancelSource.current?.cancel();
     }
 
     axiosRequest(method, url, query, body, historyBack, dispatch, httpContext, cancelSource.current?.token);
-  }, [method, url, queryJson, bodyJson, historyBack]);
+  }, [method, url, JSON.stringify(query), JSON.stringify(body), historyBack]);
 
   useEffect(() => {
     if (!lazy) {

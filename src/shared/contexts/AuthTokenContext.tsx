@@ -1,16 +1,17 @@
-import { createContext, FC, useCallback, useContext, useState } from 'react';
+import { createContext, FC, useContext, useMemo, useState } from 'react';
 
 interface IAuthTokenState {
   clientId: string;
   accessToken: string;
 }
 
-interface IAuthTokenSetDispatch {
-  (accessToken: string): void;
+interface IAuthTokenDispatch {
+  setAccessToken: (accessToken: string) => void;
+  resetAccessToken: () => void;
 }
 
 const AuthTokenStateContext = createContext<IAuthTokenState | undefined>(undefined);
-const AuthTokenSetDispatchContext = createContext<IAuthTokenSetDispatch | undefined>(undefined);
+const AuthTokenDispatchContext = createContext<IAuthTokenDispatch | undefined>(undefined);
 
 interface AuthTokenProviderProps {
   getClientId: () => string;
@@ -23,10 +24,21 @@ const AuthTokenProvider: FC<AuthTokenProviderProps> = ({ children, getClientId, 
     return { clientId: getClientId(), accessToken: getAccessToken() };
   });
 
+  const authTokenDispatch = useMemo(() => {
+    return {
+      setAccessToken: (accessToken) => {
+        setAccessToken(accessToken);
+      },
+      resetAccessToken: () => {
+        setAccessToken('');
+      },
+    };
+  }, []);
+
   return (
-    <AuthTokenSetDispatchContext.Provider value={setAccessToken}>
+    <AuthTokenDispatchContext.Provider value={authTokenDispatch}>
       <AuthTokenStateContext.Provider value={authTokenState}>{children}</AuthTokenStateContext.Provider>
-    </AuthTokenSetDispatchContext.Provider>
+    </AuthTokenDispatchContext.Provider>
   );
 };
 
@@ -40,8 +52,8 @@ const useAuthTokenState = (): IAuthTokenState => {
   return context;
 };
 
-const useAuthTokenSetDispatch = (): IAuthTokenSetDispatch => {
-  const context = useContext(AuthTokenSetDispatchContext);
+const useAuthTokenDispatch = (): IAuthTokenDispatch => {
+  const context = useContext(AuthTokenDispatchContext);
 
   if (context === undefined) {
     throw new Error('useAuthTokenSetDispatch must be used within a AuthTokenProvider');
@@ -50,4 +62,4 @@ const useAuthTokenSetDispatch = (): IAuthTokenSetDispatch => {
   return context;
 };
 
-export { AuthTokenProvider, useAuthTokenState, useAuthTokenSetDispatch };
+export { AuthTokenProvider, useAuthTokenState, useAuthTokenDispatch };
