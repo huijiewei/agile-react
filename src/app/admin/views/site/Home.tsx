@@ -1,11 +1,12 @@
 import { VFC } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
+import { Button } from '@material-ui/core';
 
 const Home: VFC = () => {
   const { setError } = useErrorDispatch();
 
   const handleClick = () => {
-    setError('出现错误', false);
+    setError('No handler found for GET /admin-api/shop-products', false);
   };
 
   console.log('Home Render');
@@ -14,10 +15,45 @@ const Home: VFC = () => {
     <div className={'ag-box'}>
       <p>Hello Agile</p>
       <p>
-        <button className={'btn'} onClick={handleClick}>
-          错误关闭
-        </button>
+        <Button onClick={handleClick}>错误关闭</Button>
       </p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
+      <p>TEST</p>
       <p>TEST</p>
     </div>
   );

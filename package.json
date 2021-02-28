@@ -20,6 +20,10 @@
   "author": "Huijie Wei",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
+    "@material-ui/core": "^5.0.0-alpha.26",
+    "@material-ui/icons": "^5.0.0-alpha.26",
     "axios": "^0.21.1",
     "history": "^5.0.0",
     "query-string": "^6.14.1",
@@ -27,8 +31,7 @@
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.4",
     "react-router-dom": "^6.0.0-beta.0",
-    "swr": "^0.4.2",
-    "tailwindcss": "^2.0.3"
+    "swr": "^0.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",

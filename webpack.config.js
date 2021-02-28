@@ -166,8 +166,8 @@ module.exports = (env, argv) => {
             enforce: true,
           },
           chakra: {
-            name: 'chakra',
-            test: /[\\/]node_modules[\\/](@chakra-ui)[\\/]/,
+            name: 'material',
+            test: /[\\/]node_modules[\\/](@material-ui)[\\/]/,
             chunks: 'initial',
             priority: 20,
             enforce: true,
