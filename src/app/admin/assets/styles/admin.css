@@ -1,1 +1,13 @@
 @import '../../../../shared/assets/styles/agile.css';
+
+.ag-brand {
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+}
+
+.ag-brand img {
+  vertical-align: middle;
+  height: 39px;
+  display: inline-block;
+}

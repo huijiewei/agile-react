@@ -15,6 +15,9 @@ import { zhCN } from '@material-ui/core/locale';
 const theme = createMuiTheme(
   {
     palette: {},
+    typography: {
+      fontSize: 14,
+    },
     components: {
       MuiButtonBase: {
         defaultProps: {
