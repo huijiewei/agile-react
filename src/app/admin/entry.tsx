@@ -9,15 +9,13 @@ import '@admin/assets/styles/admin.css';
 
 import './serviceWorker';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
 import { zhCN } from '@material-ui/core/locale';
 
 const theme = createMuiTheme(
   {
     palette: {},
-    typography: {
-      fontSize: 14,
-    },
+    typography: {},
     components: {
       MuiButtonBase: {
         defaultProps: {
@@ -38,6 +36,7 @@ const theme = createMuiTheme(
 render(
   <StrictMode>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <App />
     </ThemeProvider>
   </StrictMode>,

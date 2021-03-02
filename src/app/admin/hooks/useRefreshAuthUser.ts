@@ -1,11 +1,11 @@
-import { IAccount, useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
-import { useGet } from '@shared/contexts/HttpContext';
+import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
 import { useEffect } from 'react';
+import useAccount from '@admin/services/useAccount';
 
 const useRefreshAuthUser = (): void => {
   const setAuthUser = useAuthUserDispatch();
 
-  const { data } = useGet<IAccount>('auth/account', null, null, false);
+  const { data } = useAccount();
 
   useEffect(() => {
     if (data) {

@@ -25,7 +25,7 @@ const ErrorDialog: VFC = () => {
   return (
     error && (
       <Dialog open={true} onClose={handleDialogClose}>
-        <DialogContent sx={{ textAlign: 'center' }}>
+        <DialogContent sx={{ textAlign: 'center', minWidth: '320px' }}>
           <p>
             <ErrorOutlineIcon fontSize={'large'} color={'error'} />
           </p>

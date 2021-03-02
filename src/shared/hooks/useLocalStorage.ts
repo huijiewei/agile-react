@@ -1,30 +1,34 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-const useLocalStorage = <T>(key: string, initialValue: T): [T, (val: T) => void, () => void] => {
-  const [value, setValue] = useState<T>(() => {
-    const item = window.localStorage.getItem(key);
+const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    try {
+      const localStorageValue = window.localStorage.getItem(key);
 
-    return item ? JSON.parse(item) : initialValue;
+      if (localStorageValue !== null) {
+        return JSON.parse(localStorageValue);
+      } else {
+        initialValue && localStorage.setItem(key, JSON.stringify(initialValue));
+
+        return initialValue;
+      }
+    } catch (error) {
+      return initialValue;
+    }
   });
 
-  const set = useCallback((data: T) => window.localStorage.setItem(key, JSON.stringify(data)), [key]);
-  const remove = useCallback(() => window.localStorage.removeItem(key), [key]);
+  const setValue: Dispatch<SetStateAction<T>> = (value) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
 
-  const handleStorage = useCallback(
-    (event: StorageEvent) => {
-      if (event.storageArea === window.localStorage && event.key === key && event.newValue) {
-        setValue(JSON.parse(event.newValue));
-      }
-    },
-    [key],
-  );
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() => {
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, [handleStorage]);
-
-  return [value, set, remove];
+  return [storedValue, setValue];
 };
 
 export default useLocalStorage;

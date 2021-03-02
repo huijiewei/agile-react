@@ -1,5 +1,9 @@
 @import '../../../../shared/assets/styles/agile.css';
 
+.ag-box {
+  padding: 1em;
+}
+
 .ag-brand {
   text-align: center;
   height: 50px;
@@ -10,4 +14,30 @@
   vertical-align: middle;
   height: 39px;
   display: inline-block;
+}
+
+.ag-login {
+  width: 100vw;
+  height: 100vh;
+  background: url(../images/login-bg.jpg) top;
+  background-size: cover;
+}
+
+.ag-login-layout {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ag-login-main {
+  border-radius: 2px;
+  background: #fff;
+  padding: 15px 35px;
+  width: 320px;
+  box-shadow: 0 4px 23px 0 rgba(0, 0, 0, 0.09);
+}
+
+.ag-login-head {
+  text-align: center;
 }

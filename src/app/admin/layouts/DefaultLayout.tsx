@@ -1,5 +1,5 @@
 import { Navigate, NavLink, Outlet } from 'react-router-dom';
-import { Suspense, useState, VFC } from 'react';
+import { Suspense, useState, VFC, Fragment } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import { useAuthUserState } from '@admin/contexts/AuthUserContext';
 import {
@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
+  Typography,
 } from '@material-ui/core';
 import useRefreshAuthUser from '@admin/hooks/useRefreshAuthUser';
 import { formatUrl } from '@shared/utils/utils';
@@ -21,8 +22,16 @@ const drawerWidth = 220;
 
 const AgileHead: VFC = () => {
   return (
-    <AppBar color="transparent" position="fixed">
-      <Toolbar></Toolbar>
+    <AppBar
+      style={{ width: `calc(100% - ${drawerWidth}px)`, marginLeft: drawerWidth }}
+      color="inherit"
+      position="fixed"
+    >
+      <Toolbar>
+        <Typography variant="h6" noWrap component="div">
+          Clipped drawer
+        </Typography>
+      </Toolbar>
     </AppBar>
   );
 };
@@ -30,7 +39,28 @@ const AgileHead: VFC = () => {
 const AgileSideMenu: VFC = () => {
   const { menus } = useAuthUserState();
 
-  return <AgileSideNestMenu keyPrefix="m-" component="nav" menus={menus} />;
+  return (
+    <List component={'nav'}>
+      {menus.map((menu, index) => (
+        <ListItem button key={'m-' + index}>
+          {menu.icon && (
+            <ListItemIcon sx={{ minWidth: '1em', marginRight: '6px' }}>
+              <svg
+                style={{ display: 'inline-block', width: '1em', height: '1em' }}
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                dangerouslySetInnerHTML={{ __html: menu.icon }}
+              />
+            </ListItemIcon>
+          )}
+          <ListItemText>
+            {menu.url ? <NavLink to={formatUrl(menu.url)}>{menu.label}</NavLink> : menu.label}
+          </ListItemText>
+        </ListItem>
+      ))}
+    </List>
+  );
 };
 
 const AgileSideMenuItem: VFC = (props) => {
@@ -49,9 +79,7 @@ const AgileSideMenuItem: VFC = (props) => {
           />
         </ListItemIcon>
       )}
-      <ListItemText disableTypography>
-        {menu.url ? <NavLink to={formatUrl(menu.url)}>{menu.label}</NavLink> : menu.label}
-      </ListItemText>
+      <ListItemText>{menu.url ? <NavLink to={formatUrl(menu.url)}>{menu.label}</NavLink> : menu.label}</ListItemText>
       {hasChildren && (open ? <ExpandLess /> : <ExpandMore />)}
     </ListItem>
   );
@@ -62,7 +90,6 @@ const AgileSideNestMenu: VFC = (props) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
-    console.log(open);
     setOpen(!open);
   };
 
@@ -70,20 +97,24 @@ const AgileSideNestMenu: VFC = (props) => {
     <List component={component}>
       {menus.map((menu, index) => {
         return (
-          <>
-            <AgileSideMenuItem
-              open={open}
-              hasChildren={!!menu.children}
-              onClick={handleClick}
-              key={keyPrefix + index}
-              menu={menu}
-            />
-            {menu.children && (
-              <Collapse key={'c' + keyPrefix + index} timeout="auto" in={open} unmountOnExit>
-                <AgileSideNestMenu keyPrefix={keyPrefix + index} component="div" menus={menu.children} />
-              </Collapse>
+          <Fragment key={keyPrefix + index}>
+            {menu.children ? (
+              <>
+                <AgileSideMenuItem open={open} hasChildren={true} onClick={handleClick} menu={menu} />
+                <Collapse timeout="auto" in={open} unmountOnExit>
+                  <AgileSideNestMenu keyPrefix={keyPrefix + index} component="div" menus={menu.children} />
+                </Collapse>
+              </>
+            ) : (
+              <AgileSideMenuItem
+                hasChildren={false}
+                onClick={() => {
+                  return;
+                }}
+                menu={menu}
+              />
             )}
-          </>
+          </Fragment>
         );
       })}
     </List>
@@ -92,7 +123,16 @@ const AgileSideNestMenu: VFC = (props) => {
 
 const AgileSide: VFC = () => {
   return (
-    <Drawer style={{ width: drawerWidth, flexShrink: 0 }} open variant="persistent">
+    <Drawer
+      style={{ width: drawerWidth, flexShrink: 0 }}
+      PaperProps={{
+        style: {
+          width: drawerWidth,
+        },
+      }}
+      open
+      variant="persistent"
+    >
       <div className={'ag-brand'}>
         <img alt="Agile" src={require('../assets/images/logo.png')} />
         <img alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
@@ -117,7 +157,7 @@ const DefaultLayout: VFC = () => {
     <Container style={{ display: 'flex' }} disableGutters={true} maxWidth={false}>
       <AgileHead />
       <AgileSide />
-      <main style={{ flexGrow: 1 }}>
+      <main style={{ flexGrow: 1, paddingTop: '60px' }}>
         <Suspense fallback={null}>
           <Outlet />
         </Suspense>
