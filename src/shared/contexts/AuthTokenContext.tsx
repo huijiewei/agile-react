@@ -33,6 +33,7 @@ const AuthTokenProvider: FC<AuthTokenProviderProps> = ({ children, getClientId, 
         setAccessToken('');
       },
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

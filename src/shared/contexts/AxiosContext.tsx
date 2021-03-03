@@ -50,7 +50,8 @@ const AxiosProvider: FC = ({
     );
 
     return axiosInstance;
-  }, [baseUrl, onError, onRequest, paramsSerializer]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <AxiosContext.Provider value={axios}>{children}</AxiosContext.Provider>;
 };

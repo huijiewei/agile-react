@@ -1,7 +1,7 @@
 import { Navigate, NavLink, Outlet } from 'react-router-dom';
-import { Suspense, useState, VFC, Fragment } from 'react';
+import { Fragment, Suspense, useEffect, useState, VFC } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
-import { useAuthUserState } from '@admin/contexts/AuthUserContext';
+import { useAuthUserDispatch, useAuthUserState } from '@admin/contexts/AuthUserContext';
 import {
   AppBar,
   Collapse,
@@ -14,13 +14,14 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import useRefreshAuthUser from '@admin/hooks/useRefreshAuthUser';
-import { formatUrl } from '@shared/utils/utils';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import { formatUrl, mapNestedPath } from '@shared/utils/utils';
+import { useAccount } from '@admin/services/useAccount';
 
 const drawerWidth = 220;
 
 const AgileHead: VFC = () => {
+  const { user } = useAuthUserState();
+
   return (
     <AppBar
       style={{ width: `calc(100% - ${drawerWidth}px)`, marginLeft: drawerWidth }}
@@ -29,7 +30,7 @@ const AgileHead: VFC = () => {
     >
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
-          Clipped drawer
+          {user && user.name}
         </Typography>
       </Toolbar>
     </AppBar>
@@ -39,35 +40,28 @@ const AgileHead: VFC = () => {
 const AgileSideMenu: VFC = () => {
   const { menus } = useAuthUserState();
 
+  console.log('AgileSideMenu Render');
+
+  if (menus && menus.length > 0) {
+    const map = mapNestedPath(menus, 'm-');
+
+    console.log(map);
+  }
+
   return (
     <List component={'nav'}>
       {menus.map((menu, index) => (
         <ListItem button key={'m-' + index}>
-          {menu.icon && (
-            <ListItemIcon sx={{ minWidth: '1em', marginRight: '6px' }}>
-              <svg
-                style={{ display: 'inline-block', width: '1em', height: '1em' }}
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                dangerouslySetInnerHTML={{ __html: menu.icon }}
-              />
-            </ListItemIcon>
-          )}
-          <ListItemText>
-            {menu.url ? <NavLink to={formatUrl(menu.url)}>{menu.label}</NavLink> : menu.label}
-          </ListItemText>
+          <AgileSideMenuItem menu={menu} />
         </ListItem>
       ))}
     </List>
   );
 };
 
-const AgileSideMenuItem: VFC = (props) => {
-  const { menu, hasChildren, onClick, open } = props;
-
+const AgileSideMenuItem: VFC = ({ menu }) => {
   return (
-    <ListItem button onClick={onClick}>
+    <>
       {menu.icon && (
         <ListItemIcon sx={{ minWidth: '1em', marginRight: '6px' }}>
           <svg
@@ -80,8 +74,7 @@ const AgileSideMenuItem: VFC = (props) => {
         </ListItemIcon>
       )}
       <ListItemText>{menu.url ? <NavLink to={formatUrl(menu.url)}>{menu.label}</NavLink> : menu.label}</ListItemText>
-      {hasChildren && (open ? <ExpandLess /> : <ExpandMore />)}
-    </ListItem>
+    </>
   );
 };
 
@@ -145,7 +138,15 @@ const AgileSide: VFC = () => {
 };
 
 const DefaultLayout: VFC = () => {
-  useRefreshAuthUser();
+  const setAuthUser = useAuthUserDispatch();
+
+  const { data } = useAccount();
+
+  useEffect(() => {
+    if (data) {
+      setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
+    }
+  }, [data, setAuthUser]);
 
   const authLoginAction = useAuthLoginState();
 
