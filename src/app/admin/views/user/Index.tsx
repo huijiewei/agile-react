@@ -20,7 +20,6 @@ import useSWR from 'swr';
 const UserList: VFC = () => {
   const { httpGet } = useRequest();
   const [searchParams] = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1', 10);
 
   const { data } = useSWR('users?page=' + searchParams.get('page'), async (url) => {
     const { data } = await httpGet(url);
@@ -74,7 +73,7 @@ const UserList: VFC = () => {
           <Pagination
             shape="rounded"
             count={data.pages.pageCount}
-            page={page}
+            page={data.pages.currentPage}
             renderItem={(item) => (
               <PaginationItem component={Link} to={`${item.page === 1 ? '' : `?page=${item.page}`}`} {...item} />
             )}

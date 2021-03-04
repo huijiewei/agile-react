@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useAxios } from '@shared/contexts/AxiosContext';
+import { saveFile } from '@shared/utils/util';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useRequest = () => {
@@ -12,7 +13,8 @@ const useRequest = () => {
         __historyBack: historyBack,
       });
     },
-    [axios]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const httpPost = useCallback(
@@ -23,7 +25,8 @@ const useRequest = () => {
         __historyBack: historyBack,
       });
     },
-    [axios]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const httpPut = useCallback(
@@ -34,7 +37,8 @@ const useRequest = () => {
         __historyBack: historyBack,
       });
     },
-    [axios]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const httpDelete = useCallback(
@@ -44,7 +48,8 @@ const useRequest = () => {
         __historyBack: historyBack,
       });
     },
-    [axios]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const httpDownload = useCallback(
@@ -61,31 +66,11 @@ const useRequest = () => {
       config['__historyBack'] = historyBack;
 
       axios.request(config).then((response) => {
-        let filename = response.headers['x-suggested-filename'];
-
-        if (!filename) {
-          filename = response.headers['content-disposition'].match(/filename="(.+)"/)[1];
-        }
-
-        if (filename) {
-          const url = window.URL.createObjectURL(
-            new Blob([response.data], {
-              type: response.headers['content-type'],
-            })
-          );
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', decodeURIComponent(filename));
-          link.click();
-          window.URL.revokeObjectURL(url);
-
-          return true;
-        } else {
-          return false;
-        }
+        return saveFile(response);
       });
     },
-    [axios]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   return { httpPut, httpGet, httpPost, httpDelete, httpDownload };

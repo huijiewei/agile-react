@@ -14,7 +14,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { formatUrl, mapNestedPath } from '@shared/utils/utils';
+import { formatUrl } from '@shared/utils/util';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
 
 const drawerWidth = 220;
@@ -41,12 +41,6 @@ const AgileSideMenu: VFC = () => {
   const { menus } = useAuthUserState();
 
   console.log('AgileSideMenu Render');
-
-  if (menus && menus.length > 0) {
-    const map = mapNestedPath(menus, 'm-');
-
-    console.log(map);
-  }
 
   return (
     <List component={'nav'}>

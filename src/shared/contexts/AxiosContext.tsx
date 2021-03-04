@@ -1,5 +1,5 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { createContext, FC, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
+import { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
 
 interface EncodedQuery {
   [key: string]: string | (string | null)[] | null | undefined;
