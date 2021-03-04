@@ -26,7 +26,6 @@ const AppAxiosProvider: FC = ({ children }) => {
         return config;
       }}
       onError={(error) => {
-        console.log(error.config);
         const historyBack = error.config['__historyBack'];
 
         if (!error.response) {

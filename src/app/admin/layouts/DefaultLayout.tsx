@@ -1,7 +1,7 @@
 import { Navigate, NavLink, Outlet } from 'react-router-dom';
 import { Fragment, Suspense, useEffect, useState, VFC } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
-import { useAuthUserDispatch, useAuthUserState } from '@admin/contexts/AuthUserContext';
+import { useAuthUserState } from '@admin/contexts/AuthUserContext';
 import {
   AppBar,
   Collapse,
@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { formatUrl, mapNestedPath } from '@shared/utils/utils';
-import { useAccount } from '@admin/services/useAccount';
+import useRefreshUser from '@admin/hooks/useRefreshUser';
 
 const drawerWidth = 220;
 
@@ -138,15 +138,11 @@ const AgileSide: VFC = () => {
 };
 
 const DefaultLayout: VFC = () => {
-  const setAuthUser = useAuthUserDispatch();
-
-  const { data } = useAccount();
+  const refreshUser = useRefreshUser();
 
   useEffect(() => {
-    if (data) {
-      setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
-    }
-  }, [data, setAuthUser]);
+    refreshUser();
+  }, [refreshUser]);
 
   const authLoginAction = useAuthLoginState();
 
@@ -158,7 +154,7 @@ const DefaultLayout: VFC = () => {
     <Container style={{ display: 'flex' }} disableGutters={true} maxWidth={false}>
       <AgileHead />
       <AgileSide />
-      <main style={{ flexGrow: 1, paddingTop: '60px' }}>
+      <main style={{ flexGrow: 1, paddingTop: '60px', backgroundColor: '#f4f8fb' }}>
         <Suspense fallback={null}>
           <Outlet />
         </Suspense>

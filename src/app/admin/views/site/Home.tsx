@@ -1,28 +1,15 @@
-import { useEffect, VFC } from 'react';
+import { VFC } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { Button } from '@material-ui/core';
-import { useAccountLazy } from '@admin/services/useAccount';
-import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
+import useRefreshUser from '@admin/hooks/useRefreshUser';
 
 const Home: VFC = () => {
   const { setError } = useErrorDispatch();
 
-  const { data, execute } = useAccountLazy();
-
-  const setAuthUser = useAuthUserDispatch();
-
-  useEffect(() => {
-    if (data) {
-      setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
-    }
-  }, [data, setAuthUser]);
+  const refreshUser = useRefreshUser();
 
   const handleClick = () => {
     setError('No handler found for GET /admin-api/shop-products', false);
-  };
-
-  const refreshUser = () => {
-    execute();
   };
 
   console.log('Home Render');

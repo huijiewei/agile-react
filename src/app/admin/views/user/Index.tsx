@@ -1,9 +1,10 @@
 import { VFC } from 'react';
-import { Link } from 'react-router-dom';
-import { useUserList } from '@admin/services/useUser';
 import {
   Avatar,
+  Box,
+  Button,
   Pagination,
+  PaginationItem,
   Paper,
   Table,
   TableBody,
@@ -12,64 +13,75 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import { Link, useSearchParams } from 'react-router-dom';
+import useRequest from '@shared/hooks/useRequest';
+import useSWR from 'swr';
 
 const UserList: VFC = () => {
-  const { data, isValidating } = useUserList();
+  const { httpGet } = useRequest();
+  const [searchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page') || '1', 10);
 
-  console.log(isValidating, data);
+  const { data } = useSWR('users?page=' + searchParams.get('page'), async (url) => {
+    const { data } = await httpGet(url);
+
+    return data;
+  });
 
   console.log('UserList Render');
 
   return (
     <>
-      {data && (
-        <>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Id</TableCell>
-                  <TableCell>手机号码</TableCell>
-                  <TableCell>邮箱</TableCell>
-                  <TableCell>姓名</TableCell>
-                  <TableCell>头像</TableCell>
-                  <TableCell>注册 IP</TableCell>
-                  <TableCell>注册来源</TableCell>
-                  <TableCell>注册时间</TableCell>
-                  <TableCell align={'right'}>操作</TableCell>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>手机号码</TableCell>
+              <TableCell>邮箱</TableCell>
+              <TableCell>姓名</TableCell>
+              <TableCell>头像</TableCell>
+              <TableCell>注册 IP</TableCell>
+              <TableCell>注册来源</TableCell>
+              <TableCell>注册时间</TableCell>
+              <TableCell align={'right'}>操作</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.items.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    <Avatar sx={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
+                  </TableCell>
+                  <TableCell>{user.createdIp}</TableCell>
+                  <TableCell>{user.createdFrom.description}</TableCell>
+                  <TableCell>{user.createdAt}</TableCell>
+                  <TableCell align={'right'}>
+                    <Link to={'edit/' + user.id}>编辑</Link>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.items.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>{user.phone}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>
-                      <Avatar src={user.avatar} />
-                    </TableCell>
-                    <TableCell>{user.createdIp}</TableCell>
-                    <TableCell>{user.createdFrom.description}</TableCell>
-                    <TableCell>{user.createdAt}</TableCell>
-                    <TableCell align={'right'}>{user.id}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {data.pages && <Pagination variant="outlined" shape="rounded" count={data.pages.pageCount} />}
-        </>
-      )}
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box sx={{ textAlign: 'right', marginTop: '16px' }}>
+        {data && (
+          <Pagination
+            shape="rounded"
+            count={data.pages.pageCount}
+            page={page}
+            renderItem={(item) => (
+              <PaginationItem component={Link} to={`${item.page === 1 ? '' : `?page=${item.page}`}`} {...item} />
+            )}
+          />
+        )}
+      </Box>
     </>
-  );
-};
-
-const UserListItem: VFC = ({ user }) => {
-  return (
-    <li>
-      <Link to={'edit/' + user.id + 1000}>{user.name}</Link>
-    </li>
   );
 };
 
