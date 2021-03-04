@@ -2,7 +2,6 @@ import { VFC } from 'react';
 import {
   Avatar,
   Box,
-  Button,
   Pagination,
   PaginationItem,
   Paper,
