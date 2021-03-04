@@ -25,6 +25,13 @@ const AppAxiosProvider: FC = ({ children }) => {
 
         return config;
       }}
+      onSuccess={(response) => {
+        if (response.config.responseType === 'blob') {
+          return Promise.resolve(response);
+        }
+
+        return Promise.resolve(response.data);
+      }}
       onError={(error) => {
         const historyBack = error.config['__historyBack'];
 

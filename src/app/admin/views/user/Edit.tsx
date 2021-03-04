@@ -8,9 +8,7 @@ const UserEdit: VFC = () => {
   const { httpGet } = useRequest();
 
   const { data } = useSWR('users/' + id, async (url) => {
-    const { data } = await httpGet(url);
-
-    return data;
+    return await httpGet(url);
   });
 
   console.log('UserEdit Render');

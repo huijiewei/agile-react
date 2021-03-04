@@ -12,6 +12,10 @@ export const formatUrl = (url: string): string => {
   return url;
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const flatry = (promise) =>
+  promise.then((data) => ({ data, error: undefined })).catch((error) => ({ data: undefined, error }));
+
 export const saveFile = (response: AxiosResponse): boolean => {
   let filename = response.headers['x-suggested-filename'];
 

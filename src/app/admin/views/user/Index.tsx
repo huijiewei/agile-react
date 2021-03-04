@@ -1,7 +1,8 @@
-import { VFC } from 'react';
+import { useState, VFC } from 'react';
 import {
   Avatar,
   Box,
+  Button,
   Pagination,
   PaginationItem,
   Paper,
@@ -15,6 +16,8 @@ import {
 import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
+import { LoadingButton } from '@material-ui/lab';
+import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
 const UserList: VFC = () => {
   const { httpGet } = useRequest();
@@ -83,12 +86,44 @@ const UserList: VFC = () => {
   );
 };
 
+const UserDownload: VFC = () => {
+  const { httpDownload } = useRequest();
+  const { setError } = useErrorDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const handleDownload = async () => {
+    setLoading(true);
+
+    const result = await httpDownload('GET', 'users/export');
+
+    setLoading(false);
+
+    if (!result) {
+      setError('下载失败', false);
+    }
+  };
+
+  return (
+    <LoadingButton size={'small'} variant={'outlined'} pending={loading} onClick={handleDownload}>
+      用户导出
+    </LoadingButton>
+  );
+};
+
 const UserIndex: VFC = () => {
   console.log('UserIndex Render');
 
   return (
     <div className={'ag-box'}>
       <h5>UserIndex</h5>
+      <p>
+        <Button component={Link} to={'create'}>
+          新建用户
+        </Button>
+      </p>
+      <p>
+        <UserDownload />
+      </p>
       <UserList />
     </div>
   );

@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
 
 interface EncodedQuery {
@@ -8,6 +8,7 @@ interface EncodedQuery {
 interface AxiosProviderProps {
   baseUrl: string;
   onRequest: (config: AxiosRequestConfig) => AxiosRequestConfig;
+  onSuccess: (response: AxiosResponse) => Promise<unknown>;
   onError: (error: AxiosError) => Promise<AxiosError>;
   paramsSerializer: (params: EncodedQuery) => string;
 }
@@ -18,6 +19,7 @@ const AxiosProvider: FC = ({
   children,
   baseUrl,
   onRequest,
+  onSuccess,
   onError,
   paramsSerializer,
 }: PropsWithChildren<AxiosProviderProps>) => {
@@ -42,6 +44,10 @@ const AxiosProvider: FC = ({
 
     axiosInstance.interceptors.response.use(
       (response) => {
+        if (onSuccess) {
+          return onSuccess(response);
+        }
+
         return response;
       },
       (error) => {

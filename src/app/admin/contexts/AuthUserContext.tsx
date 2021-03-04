@@ -28,7 +28,7 @@ export interface IUser {
   };
 }
 
-interface IAuthUserState {
+export interface IAuthUserState {
   user: IUser | null;
   menus: IMenu[];
   permissions: string[];
