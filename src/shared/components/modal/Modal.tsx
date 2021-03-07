@@ -105,7 +105,7 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props
   const _containerClassNames =
     'fixed flex h-screen w-screen top-0 left-0 overflow-auto justify-center items-start z-30';
 
-  const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none max-w-md mt-20 mb-20';
+  const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none max-w-md mt-20 mb-20 z-30';
 
   const _dialogClassNames = clsx(DEFAULTS, className);
 
@@ -171,7 +171,7 @@ export interface ModalOverlayProps extends Omit<HTMLAttributes<HTMLDivElement>, 
 export const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>((props, ref) => {
   const { className, ...rest } = props;
 
-  const DEFAULTS = 'fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-50 z-20';
+  const DEFAULTS = 'fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-50 z-30';
 
   const _className = clsx(DEFAULTS, className);
 
@@ -225,7 +225,7 @@ if (__DEV__) {
 
 export const ModalFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
   const { className, ...rest } = props;
-  const _className = clsx('flex items-center px-9 py-6 justify-center', className);
+  const _className = clsx('flex px-9 py-6', className);
 
   return <footer ref={ref} className={_className} {...rest} />;
 });

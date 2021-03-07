@@ -138,22 +138,22 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const DEFAULTS = `inline-flex leading-none focus:outline-none items-center justify-center border align-middle select-none appearance-none relative whitespace-nowrap outline-none transition-colors duration-200 text-${size}`;
 
   const STYLES = {
-    solid: `focus:ring focus:ring-${colorScheme}-300 bg-${colorScheme}-700 text-white hover:bg-${colorScheme}-500 active:bg-${colorScheme}-900 border-transparent`,
+    solid: `focus:ring focus:ring-${colorScheme}-200 bg-${colorScheme}-500 text-white hover:bg-${colorScheme}-400 active:bg-${colorScheme}-600 border-transparent`,
     outline: clsx(
-      `focus:ring focus:ring-${colorScheme}-300 bg-${colorScheme}-50 text-${colorScheme}-800 hover:bg-${colorScheme}-200`,
+      `focus:ring focus:ring-${colorScheme}-200 bg-transparent text-${colorScheme}-600 hover:bg-${colorScheme}-50`,
       isAttached
-        ? `first:border-l-${colorScheme}-800 last:border-r-${colorScheme}-800 border-l-transparent border-r-transparent border-t-${colorScheme}-800 border-b-${colorScheme}-800`
-        : `border-${colorScheme}-800`
+        ? `first:border-l-${colorScheme}-600 last:border-r-${colorScheme}-600 border-l-transparent border-r-transparent border-t-${colorScheme}-600 border-b-${colorScheme}-600`
+        : `border-${colorScheme}-600`
     ),
-    ghost: `focus:ring focus:ring-${colorScheme}-300 hover:bg-${colorScheme}-200 text-${colorScheme}-800 border-transparent`,
-    link: `hover:underline text-${colorScheme}-800 border-transparent`,
+    ghost: `focus:ring focus:ring-${colorScheme}-200 hover:bg-${colorScheme}-50 text-${colorScheme}-600 border-transparent`,
+    link: `hover:underline text-${colorScheme}-500 border-transparent`,
     disabled: 'opacity-50 cursor-not-allowed',
   };
 
   const _classNames = clsx(
     className,
     DEFAULTS,
-    isAttached ? 'first:rounded-l last:rounded-r focus:z-10' : 'rounded',
+    isAttached ? 'first:rounded-l last:rounded-r focus:z-1' : 'rounded',
     isFullWidth ? 'w-full' : 'w-auto',
     {
       [STYLES.disabled]: isDisabled || isLoading,

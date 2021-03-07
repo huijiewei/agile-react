@@ -27,10 +27,10 @@ const ErrorDialog: VFC = () => {
       <Modal isOpen={error}>
         <ModalOverlay />
         <ModalContent>
-          <ModalBody>
+          <ModalBody className="text-center">
             <p>{error.message}</p>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className="justify-center">
             <Button onClick={handleDialogClose}>{error.historyBack ? '返回' : '关闭'}</Button>
           </ModalFooter>
         </ModalContent>

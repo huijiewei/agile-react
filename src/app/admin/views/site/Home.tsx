@@ -85,6 +85,57 @@ const Home: VFC = () => {
         <Button variant={'ghost'}>按钮</Button>
       </div>
       <div>
+        <Button colorScheme={'red'} size={'sm'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button colorScheme={'red'} size={'sm'} variant={'outline'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button colorScheme={'red'} size={'sm'} variant={'link'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button colorScheme={'red'} size={'sm'} variant={'ghost'}>
+          按钮
+        </Button>
+      </div>
+      <div>
+        <Button colorScheme={'red'} size={'sm'} isDisabled>
+          按钮
+        </Button>
+        &nbsp;
+        <Button colorScheme={'red'} size={'sm'} isDisabled variant={'outline'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button colorScheme={'red'} size={'sm'} isDisabled variant={'link'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button colorScheme={'red'} size={'sm'} isDisabled variant={'ghost'}>
+          按钮
+        </Button>
+      </div>
+      <div>
+        <Button size={'sm'} isDisabled>
+          按钮
+        </Button>
+        &nbsp;
+        <Button size={'sm'} isDisabled variant={'outline'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button size={'sm'} isDisabled variant={'link'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button size={'sm'} isDisabled variant={'ghost'}>
+          按钮
+        </Button>
+      </div>
+      <div>
         <Button isDisabled>按钮</Button>
         &nbsp;
         <Button isDisabled variant={'outline'}>
