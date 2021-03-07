@@ -1,23 +1,9 @@
 import { useState, VFC } from 'react';
-import {
-  Avatar,
-  Box,
-  Button,
-  Pagination,
-  PaginationItem,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core';
 import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
-import { LoadingButton } from '@material-ui/lab';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
+import Button from '@shared/components/button/Button';
 
 const UserList: VFC = () => {
   const { httpGet } = useRequest();
@@ -33,55 +19,41 @@ const UserList: VFC = () => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>手机号码</TableCell>
-              <TableCell>邮箱</TableCell>
-              <TableCell>姓名</TableCell>
-              <TableCell>头像</TableCell>
-              <TableCell>注册 IP</TableCell>
-              <TableCell>注册来源</TableCell>
-              <TableCell>注册时间</TableCell>
-              <TableCell align={'right'}>操作</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data &&
-              data.items.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.phone}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>
-                    <Avatar sx={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
-                  </TableCell>
-                  <TableCell>{user.createdIp}</TableCell>
-                  <TableCell>{user.createdFrom.description}</TableCell>
-                  <TableCell>{user.createdAt}</TableCell>
-                  <TableCell align={'right'}>
-                    <Link to={'edit/' + user.id}>编辑</Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box sx={{ textAlign: 'right', marginTop: '16px' }}>
-        {data && (
-          <Pagination
-            shape="rounded"
-            count={data.pages.pageCount}
-            page={data.pages.currentPage}
-            renderItem={(item) => (
-              <PaginationItem component={Link} to={`${item.page === 1 ? '' : `?page=${item.page}`}`} {...item} />
-            )}
-          />
-        )}
-      </Box>
+      <table>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>手机号码</th>
+            <th>邮箱</th>
+            <th>姓名</th>
+            <th>头像</th>
+            <th>注册 IP</th>
+            <th>注册来源</th>
+            <th>注册时间</th>
+            <th align={'right'}>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data &&
+            data.items.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.phone}</td>
+                <td>{user.email}</td>
+                <td>{user.name}</td>
+                <td>
+                  <img style={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
+                </td>
+                <td>{user.createdIp}</td>
+                <td>{user.createdFrom.description}</td>
+                <td>{user.createdAt}</td>
+                <td align={'right'}>
+                  <Link to={'edit/' + user.id}>编辑</Link>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </>
   );
 };
@@ -104,9 +76,9 @@ const UserDownload: VFC = () => {
   };
 
   return (
-    <LoadingButton size={'small'} variant={'outlined'} pending={loading} onClick={handleDownload}>
+    <Button size={'sm'} variant={'outlined'} isLoading={loading} onClick={handleDownload}>
       用户导出
-    </LoadingButton>
+    </Button>
   );
 };
 
@@ -117,9 +89,7 @@ const UserIndex: VFC = () => {
     <div className={'ag-box'}>
       <h5>UserIndex</h5>
       <p>
-        <Button component={Link} to={'create'}>
-          新建用户
-        </Button>
+        <Link to={'create'}>新建用户</Link>
       </p>
       <p>
         <UserDownload />

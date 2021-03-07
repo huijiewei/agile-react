@@ -165,13 +165,6 @@ module.exports = (env, argv) => {
             priority: 20,
             enforce: true,
           },
-          chakra: {
-            name: 'material',
-            test: /[\\/]node_modules[\\/](@material-ui)[\\/]/,
-            chunks: 'initial',
-            priority: 20,
-            enforce: true,
-          },
           shared: {
             name: 'shared',
             test: /[\\/]src\/shared[\\/]/,

@@ -5,40 +5,15 @@ import { render } from 'react-dom';
 
 import App from './App';
 
-import '@admin/assets/styles/admin.css';
+import '@shared/assets/styles/agile.base.css';
+import '@shared/assets/styles/agile.components.css';
+import '@shared/assets/styles/agile.utilities.css';
 
 import './serviceWorker';
 
-import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
-import { zhCN } from '@material-ui/core/locale';
-
-const theme = createMuiTheme(
-  {
-    palette: {},
-    typography: {},
-    components: {
-      MuiButtonBase: {
-        defaultProps: {
-          disableRipple: true,
-        },
-      },
-      MuiButton: {
-        defaultProps: {
-          variant: 'contained',
-          disableElevation: true,
-        },
-      },
-    },
-  },
-  zhCN
-);
-
 render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <App />
   </StrictMode>,
   document.getElementById('root')
 );

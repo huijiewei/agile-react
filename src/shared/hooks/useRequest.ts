@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useAxios } from '@shared/contexts/AxiosContext';
 import { saveFile } from '@shared/utils/util';
+import { AxiosRequestConfig } from 'axios';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useRequest = () => {
+const useRequest = (): UseRequestReturn => {
   const axios = useAxios();
 
   const httpGet = useCallback(
@@ -60,10 +60,9 @@ const useRequest = () => {
         timeout: 120 * 1000,
         params: params,
         data: data,
-      };
-
-      config['responseType'] = 'blob';
-      config['__historyBack'] = historyBack;
+        responseType: 'blob',
+        __historyBack: historyBack,
+      } as AxiosRequestConfig;
 
       axios.request(config).then((response) => {
         return saveFile(response);
@@ -75,5 +74,7 @@ const useRequest = () => {
 
   return { httpPut, httpGet, httpPost, httpDelete, httpDownload };
 };
+
+export type UseRequestReturn = ReturnType<typeof useRequest>;
 
 export default useRequest;

@@ -1,0 +1,7 @@
+@import "tailwindcss/base";
+
+@layer base {
+  body {
+    @apply text-base;
+  }
+}

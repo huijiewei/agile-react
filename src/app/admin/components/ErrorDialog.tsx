@@ -1,8 +1,8 @@
 import { VFC } from 'react';
 import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
-import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Button from '@shared/components/button/Button';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay } from '@shared/components/modal/Modal';
 
 const ErrorDialog: VFC = () => {
   const error = useErrorState();
@@ -24,19 +24,17 @@ const ErrorDialog: VFC = () => {
 
   return (
     error && (
-      <Dialog open={true} onClose={handleDialogClose}>
-        <DialogContent sx={{ textAlign: 'center', minWidth: '320px' }}>
-          <p>
-            <ErrorOutlineIcon fontSize={'large'} color={'error'} />
-          </p>
-          <p>{error.message}</p>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', marginBottom: '16px' }}>
-          <Button onClick={handleDialogClose} autoFocus={true}>
-            {error.historyBack ? '返回' : '关闭'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Modal isOpen={error}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <p>{error.message}</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleDialogClose}>{error.historyBack ? '返回' : '关闭'}</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     )
   );
 };

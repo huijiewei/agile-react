@@ -75,7 +75,7 @@ const AppAxiosProvider: FC = ({ children }) => {
       paramsSerializer={(params) => {
         return queryString.stringify(params, {
           arrayFormat:
-            (process.env['QS_ARRAY_FORMAT'] as 'bracket' | 'index' | 'comma' | 'separator' | 'none') || 'bracket',
+            (process.env.QS_ARRAY_FORMAT as 'bracket' | 'index' | 'comma' | 'separator' | 'none') || 'bracket',
         });
       }}
     >
