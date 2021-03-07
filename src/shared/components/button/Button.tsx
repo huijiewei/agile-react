@@ -51,10 +51,10 @@ if (__DEV__) {
 }
 
 const BUTTON_SIZES = {
-  sm: 'py-1 px-3 text-sm',
-  base: 'py-2 px-5 text-base',
-  lg: 'py-2 px-5 text-lg',
-  xl: 'py-3 px-6 text-xl',
+  sm: 'py-1.5 px-3',
+  base: 'py-2.5 px-5',
+  lg: 'py-4 px-5',
+  xl: 'py-5 px-6',
 };
 
 interface ButtonOptions {
@@ -135,25 +135,30 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
 
   const isAttached = group?.isAttached || false;
 
-  const DEFAULTS = `inline-flex font-medium focus:ring focus:outline-none items-center justify-center align-middle select-none appearance-none relative whitespace-nowrap outline-none transition-colors duration-200`;
+  const DEFAULTS = `inline-flex leading-none focus:outline-none items-center justify-center border align-middle select-none appearance-none relative whitespace-nowrap outline-none transition-colors duration-200 text-${size}`;
 
   const STYLES = {
-    solid: `bg-${colorScheme}-700 text-white hover:bg-${colorScheme}-500 active:bg-${colorScheme}-900 border border-transparent`,
-    outline: `bg-transparent text-${colorScheme}-800 border border-${colorScheme}-800 focus:border-transparent hover:bg-${colorScheme}-200`,
-    ghost: `hover:bg-${colorScheme}-200 text-${colorScheme}-800`,
-    link: `hover:underline text-${colorScheme}-800`,
+    solid: `focus:ring focus:ring-${colorScheme}-300 bg-${colorScheme}-700 text-white hover:bg-${colorScheme}-500 active:bg-${colorScheme}-900 border-transparent`,
+    outline: clsx(
+      `focus:ring focus:ring-${colorScheme}-300 bg-${colorScheme}-50 text-${colorScheme}-800 hover:bg-${colorScheme}-200`,
+      isAttached
+        ? `first:border-l-${colorScheme}-800 last:border-r-${colorScheme}-800 border-l-transparent border-r-transparent border-t-${colorScheme}-800 border-b-${colorScheme}-800`
+        : `border-${colorScheme}-800`
+    ),
+    ghost: `focus:ring focus:ring-${colorScheme}-300 hover:bg-${colorScheme}-200 text-${colorScheme}-800 border-transparent`,
+    link: `hover:underline text-${colorScheme}-800 border-transparent`,
     disabled: 'opacity-50 cursor-not-allowed',
   };
 
   const _classNames = clsx(
     className,
     DEFAULTS,
-    isAttached ? 'first:rounded-l last:rounded-r' : 'rounded',
+    isAttached ? 'first:rounded-l last:rounded-r focus:z-10' : 'rounded',
     isFullWidth ? 'w-full' : 'w-auto',
     {
       [STYLES.disabled]: isDisabled || isLoading,
       [STYLES[variant]]: variant,
-      [BUTTON_SIZES[size]]: size,
+      [BUTTON_SIZES[size]]: size && variant !== 'link',
     }
   );
 

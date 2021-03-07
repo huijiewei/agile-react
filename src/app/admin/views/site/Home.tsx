@@ -38,68 +38,145 @@ const Home: VFC = () => {
 
   return (
     <div className={'space-y-3'} style={{ padding: '16px' }}>
-      <p>Hello Agile</p>
-      <p>中文字体</p>
-      <p>
+      <div>Hello Agile</div>
+      <div>中文字体</div>
+      <div>
         <Button onClick={handleClick}>错误关闭</Button>
-      </p>
-      <p>
+      </div>
+      <div>
         <RefreshUserButton>重新获取用户</RefreshUserButton>
-      </p>
-      <p>
+      </div>
+      <div>
         <Spinner />
-      </p>
-      <p>
+      </div>
+      <div>
         <Button size={'sm'}>小按钮</Button>
         <Button>普通按钮</Button>
         <Button size={'lg'}>大按钮</Button>
         <Button size={'xl'}>超大按钮</Button>
-      </p>
-      <p>
+      </div>
+      <div>
         <Button isFullWidth={true}>全宽度按钮</Button>
-      </p>
-      <p>
+      </div>
+      <div>
         <Button isLoading={true}>正在加载</Button>
-      </p>
-      <p>
+      </div>
+      <div>
+        <Button isLoading={true} variant={'outline'}>
+          正在加载
+        </Button>
+      </div>
+      <div>
+        <Button>按钮</Button>
+        &nbsp;
+        <Button variant={'ghost'}>按钮</Button>
+        &nbsp;
+        <Button variant={'outline'}>按钮</Button>
+        &nbsp;
+        <Button variant={'link'}>按钮</Button>
+      </div>
+      <div>
+        <Button>按钮</Button>
+        &nbsp;
+        <Button variant={'outline'}>按钮</Button>
+        &nbsp;
+        <Button variant={'link'}>按钮</Button>
+        &nbsp;
+        <Button variant={'ghost'}>按钮</Button>
+      </div>
+      <div>
+        <Button isDisabled>按钮</Button>
+        &nbsp;
+        <Button isDisabled variant={'outline'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button isDisabled variant={'link'}>
+          按钮
+        </Button>
+        &nbsp;
+        <Button isDisabled variant={'ghost'}>
+          按钮
+        </Button>
+      </div>
+      <div>
         <Button isLoading={true} loadingText={'正在加载...'}>
           正在加载
         </Button>
-      </p>
-      <p>
+      </div>
+      <div>
         <ButtonGroup>
           <Button>测试</Button>
           <Button>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
         </ButtonGroup>
-      </p>
-      <p>
+      </div>
+      <div>
         <ButtonGroup isAttached>
           <Button>测试</Button>
           <Button>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
         </ButtonGroup>
-      </p>
-      <p>
+      </div>
+      <div>
         <ButtonGroup isAttached>
           <Button>测试</Button>
           <Button>测试</Button>
           <Button>测试</Button>
         </ButtonGroup>
-      </p>
-      <p>
+      </div>
+      <div>
+        <ButtonGroup isAttached>
+          <Button>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
+        </ButtonGroup>
+      </div>
+      <div>
+        <ButtonGroup isAttached>
+          <Button>测试</Button>
+        </ButtonGroup>
+      </div>
+      <div>
         <ButtonGroup variant={'outline'} isAttached>
           <Button>测试</Button>
           <Button>测试</Button>
         </ButtonGroup>
-      </p>
-      <p>
+      </div>
+      <div>
         <ButtonGroup variant={'outline'} isAttached>
-          <Button>测试</Button>
+          <Button variant={'solid'}>测试</Button>
           <Button>测试</Button>
           <Button>测试</Button>
         </ButtonGroup>
-      </p>
-      <p>TEST</p>
-      <p>TEST</p>
+      </div>
+      <div>
+        <ButtonGroup colorScheme={'gray'} variant={'outline'} isAttached>
+          <Button variant={'solid'}>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
+        </ButtonGroup>
+      </div>
+      <div>
+        <ButtonGroup colorScheme={'gray'} isAttached>
+          <Button variant={'solid'}>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
+        </ButtonGroup>
+      </div>
+      <div>
+        <ButtonGroup size={'sm'} colorScheme={'gray'} isAttached>
+          <Button variant={'solid'}>测试</Button>
+          <Button>测试</Button>
+          <Button>测试</Button>
+        </ButtonGroup>
+      </div>
+      <div>TEST</div>
+      <div>TEST</div>
       <p>TEST</p>
       <p>TEST</p>
       <p>TEST</p>

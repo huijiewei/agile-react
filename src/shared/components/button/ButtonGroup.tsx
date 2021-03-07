@@ -34,7 +34,7 @@ const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>((props, ref) =>
 
   const DEFAULTS = 'inline-flex';
 
-  const _className = clsx(className, DEFAULTS, isAttached ? '' : `space-x-${spacing}`);
+  const _className = clsx(className, DEFAULTS, isAttached ? 'space-x-px' : `space-x-${spacing}`);
 
   return (
     <ButtonGroupProvider value={context}>
