@@ -10,6 +10,7 @@ import NotFound from '@admin/views/site/NotFound';
 import adminRoutes from './admin/admin';
 import adminGroupRoutes from './admin/adminGroup';
 import userRoutes from './user/user';
+import componentRoutes from './component/component';
 
 const routes = [
   {
@@ -35,6 +36,7 @@ const routes = [
       ...adminRoutes,
       ...adminGroupRoutes,
       ...userRoutes,
+      ...componentRoutes,
       {
         path: '*',
         element: <NotFound />,

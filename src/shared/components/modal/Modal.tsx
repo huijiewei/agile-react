@@ -96,14 +96,14 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props
   const containerProps = getDialogContainerProps(rootProps);
 
   const _containerClassNames = clsx(
-    'fixed flex h-screen w-screen top-0 left-0 justify-center z-30',
+    'fixed flex h-screen w-screen top-0 left-0 justify-center z-70',
     isCentered ? 'items-center' : 'items-start',
     scrollBehavior === 'inside' ? 'overflow-hidden' : 'overflow-auto'
   );
 
-  const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none max-w-md mt-20 mb-20 z-30';
+  const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none max-w-md mt-20 mb-20';
 
-  const _dialogClassNames = clsx(DEFAULTS, className);
+  const _dialogClassNames = clsx(className, DEFAULTS);
 
   return (
     <ModalFocusScope>
@@ -167,9 +167,9 @@ export interface ModalOverlayProps extends Omit<HTMLAttributes<HTMLDivElement>, 
 export const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>((props, ref) => {
   const { className, ...rest } = props;
 
-  const DEFAULTS = 'fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-50 z-30';
+  const DEFAULTS = 'fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-50 z-70';
 
-  const _className = clsx(DEFAULTS, className);
+  const _className = clsx(className, DEFAULTS);
 
   return <div ref={ref} className={_className} {...rest} />;
 });
@@ -188,7 +188,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElem
     return () => setHeaderMounted(false);
   }, [setHeaderMounted]);
 
-  const _className = clsx('flex-grow-0 flex-shrink px-6 py-5', className);
+  const _className = clsx(className, 'flex-grow-0 flex-shrink px-6 py-5');
 
   return <header ref={ref} className={_className} id={headerId} {...rest} />;
 });
@@ -206,7 +206,7 @@ export const ModalBody = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElemen
     return () => setBodyMounted(false);
   }, [setBodyMounted]);
 
-  const _className = clsx('flex-1 px-6 py-2', className);
+  const _className = clsx(className, 'flex-1 px-6 py-2');
 
   return <div ref={ref} className={_className} id={bodyId} {...rest} />;
 });
@@ -217,7 +217,7 @@ if (__DEV__) {
 
 export const ModalFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
   const { className, ...rest } = props;
-  const _className = clsx('flex px-6 py-5 justify-end', className);
+  const _className = clsx(className, 'flex px-6 py-5 justify-end');
 
   return <footer ref={ref} className={_className} {...rest} />;
 });

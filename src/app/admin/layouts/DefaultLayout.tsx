@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, NavLink, Outlet } from 'react-router-dom';
 import { Suspense, useEffect, VFC } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
@@ -23,10 +23,47 @@ const AgileHead: VFC = () => {
 };
 
 const AgileSide: VFC = () => {
+  const menus = [
+    {
+      url: 'home',
+      label: '主页',
+    },
+    {
+      url: 'about',
+      label: '关于',
+    },
+    {
+      url: 'admin',
+      label: '管理员',
+    },
+    {
+      url: 'admin-group',
+      label: '管理组',
+    },
+    {
+      url: 'user',
+      label: '用户',
+    },
+    {
+      url: 'component',
+      label: '组件',
+    },
+    {
+      url: '404',
+      label: '404',
+    },
+  ];
+
   return (
     <aside className="">
-      <nav>
-        <li>2</li>
+      <nav className="list-none">
+        {menus.map((menu, index) => (
+          <li key={'m-' + index} className="leading-8">
+            <NavLink className="font-medium" to={menu.url}>
+              {menu.label}
+            </NavLink>
+          </li>
+        ))}
       </nav>
     </aside>
   );
