@@ -8,7 +8,8 @@ const headerHeight = '60px';
 
 const AgileHead: VFC = () => {
   return (
-    <div
+    <header
+      className="fixed w-full"
       style={{
         height: headerHeight,
         width: `calc(100% - ${drawerWidth})`,
@@ -17,7 +18,7 @@ const AgileHead: VFC = () => {
       }}
     >
       <p>1</p>
-    </div>
+    </header>
   );
 };
 
@@ -35,7 +36,7 @@ const DefaultLayout: VFC = () => {
   return authLoginAction == AuthLoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />
   ) : (
-    <div>
+    <div className="flex flex-row relative min-h-full flex-grow">
       <AgileHead />
       <main>
         <Suspense fallback={null}>

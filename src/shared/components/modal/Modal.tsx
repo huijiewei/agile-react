@@ -10,6 +10,8 @@ import CloseButton, { CloseButtonProps } from '@shared/components/close-button/C
 import { callAllHandlers } from '@shared/utils/function';
 import { createContext } from '@shared/utils/react';
 
+type ScrollBehavior = 'inside' | 'outside';
+
 interface ModalOptions extends Pick<FocusLockProps, 'lockFocusAcrossFrames'> {
   trapFocus?: boolean;
   autoFocus?: boolean;
@@ -19,38 +21,38 @@ interface ModalOptions extends Pick<FocusLockProps, 'lockFocusAcrossFrames'> {
   blockScrollOnMount?: boolean;
   allowPinchZoom?: boolean;
   preserveScrollBarGap?: boolean;
+  isCentered?: boolean;
+  scrollBehavior?: ScrollBehavior;
 }
-
-type ScrollBehavior = 'inside' | 'outside';
 
 export interface ModalProps extends UseModalProps, ModalOptions {
   children: ReactNode;
-  isCentered?: boolean;
-  scrollBehavior?: ScrollBehavior;
   portalProps?: Pick<PortalProps, 'appendToParentPortal' | 'containerRef'>;
 }
 
-interface ModalContext extends ModalOptions, UseModalReturn {}
+interface ModalContext extends Pick<ModalOptions, 'isCentered' | 'scrollBehavior'>, UseModalReturn {}
 
 const [ModalContextProvider, useModalContext] = createContext<ModalContext>({
   strict: true,
   name: 'ModalContext',
+  errorMessage: 'useModalContext: `context` is undefined. Seems you forgot to wrap modal components in `<Modal />`',
 });
 
 export const Modal: FC<ModalProps> = (props) => {
   const {
-    portalProps,
     children,
-    autoFocus,
-    trapFocus,
+    portalProps,
     initialFocusRef,
     finalFocusRef,
-    returnFocusOnClose,
-    blockScrollOnMount,
-    allowPinchZoom,
+    autoFocus = true,
+    trapFocus = true,
+    returnFocusOnClose = true,
+    blockScrollOnMount = true,
+    allowPinchZoom = false,
     preserveScrollBarGap,
-    motionPreset,
-    lockFocusAcrossFrames,
+    lockFocusAcrossFrames = true,
+    isCentered = false,
+    scrollBehavior = 'outside',
   } = props;
 
   const modal = useModal(props);
@@ -65,8 +67,9 @@ export const Modal: FC<ModalProps> = (props) => {
     blockScrollOnMount,
     allowPinchZoom,
     preserveScrollBarGap,
-    motionPreset,
     lockFocusAcrossFrames,
+    isCentered,
+    scrollBehavior,
   };
 
   return (
@@ -74,16 +77,6 @@ export const Modal: FC<ModalProps> = (props) => {
       {context.isOpen && <Portal {...portalProps}>{children}</Portal>}
     </ModalContextProvider>
   );
-};
-
-Modal.defaultProps = {
-  lockFocusAcrossFrames: true,
-  returnFocusOnClose: true,
-  scrollBehavior: 'outside',
-  trapFocus: true,
-  autoFocus: true,
-  blockScrollOnMount: true,
-  allowPinchZoom: false,
 };
 
 if (__DEV__) {
@@ -97,13 +90,16 @@ export interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
 export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) => {
   const { className, children, containerProps: rootProps, ...rest } = props;
 
-  const { getDialogProps, getDialogContainerProps } = useModalContext();
+  const { getDialogProps, getDialogContainerProps, isCentered, scrollBehavior } = useModalContext();
 
   const dialogProps = getDialogProps(rest, ref) as unknown;
   const containerProps = getDialogContainerProps(rootProps);
 
-  const _containerClassNames =
-    'fixed flex h-screen w-screen top-0 left-0 overflow-auto justify-center items-start z-30';
+  const _containerClassNames = clsx(
+    'fixed flex h-screen w-screen top-0 left-0 justify-center z-30',
+    isCentered ? 'items-center' : 'items-start',
+    scrollBehavior === 'inside' ? 'overflow-hidden' : 'overflow-auto'
+  );
 
   const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none max-w-md mt-20 mb-20 z-30';
 
@@ -234,7 +230,7 @@ export const ModalCloseButton = forwardRef<HTMLButtonElement, CloseButtonProps>(
   const { onClick, className, ...rest } = props;
   const { onClose } = useModalContext();
 
-  const _className = clsx('w-4 h-4 absolute top-3 right-3', className);
+  const _className = clsx(className, 'absolute top-3 right-3');
 
   return (
     <CloseButton

@@ -28,7 +28,7 @@ const ErrorDialog: VFC = () => {
 
   return (
     error && (
-      <Modal closeOnOverlayClick={false} closeOnEsc={false} onClose={handleDialogClose} isOpen={error}>
+      <Modal isCentered closeOnOverlayClick={false} closeOnEsc={false} onClose={handleDialogClose} isOpen={error}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Modal Title</ModalHeader>

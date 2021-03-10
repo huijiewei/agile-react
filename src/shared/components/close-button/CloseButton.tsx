@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { __DEV__ } from '@shared/utils/assertion';
 
 const CloseIcon: FC<IconProps> = (props) => (
-  <Icon focusable="false" aria-hidden {...props}>
+  <Icon size={3} focusable="false" aria-hidden {...props}>
     <path
       fill="currentColor"
       d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
@@ -19,9 +19,9 @@ export interface CloseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement
 const CloseButton = forwardRef<HTMLButtonElement, CloseButtonProps>((props, ref) => {
   const { children, isDisabled, className, ...rest } = props;
 
-  const DEFAULTS = `flex outline-none items-center justify-center flex-shrink-0`;
+  const DEFAULTS = `flex outline-none items-center transition-colors duration-200 justify-center text-gray-500 flex-shrink-0 rounded leading-none focus:outline-none focus:ring focus:ring-gray-200 hover:bg-gray-100 w-8 h-8`;
 
-  const _classNames = clsx(DEFAULTS, className);
+  const _classNames = clsx(className, DEFAULTS, isDisabled ? 'opacity-50 cursor-not-allowed' : '');
 
   return (
     <button type="button" aria-label="Close" ref={ref} disabled={isDisabled} className={_classNames} {...rest}>
