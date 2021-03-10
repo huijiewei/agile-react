@@ -192,7 +192,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElem
     return () => setHeaderMounted(false);
   }, [setHeaderMounted]);
 
-  const _className = clsx('', className);
+  const _className = clsx('flex-grow-0 flex-shrink px-6 py-5', className);
 
   return <header ref={ref} className={_className} id={headerId} {...rest} />;
 });
@@ -205,16 +205,12 @@ export const ModalBody = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElemen
   const { className, ...rest } = props;
   const { bodyId, setBodyMounted } = useModalContext();
 
-  /**
-   * Notify us if this component was rendered or used
-   * so we can append `aria-describedby` automatically
-   */
   useEffect(() => {
     setBodyMounted(true);
     return () => setBodyMounted(false);
   }, [setBodyMounted]);
 
-  const _className = clsx('flex-1 px-9 py-6', className);
+  const _className = clsx('flex-1 px-6 py-2', className);
 
   return <div ref={ref} className={_className} id={bodyId} {...rest} />;
 });
@@ -225,7 +221,7 @@ if (__DEV__) {
 
 export const ModalFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
   const { className, ...rest } = props;
-  const _className = clsx('flex px-9 py-6', className);
+  const _className = clsx('flex px-6 py-5 justify-end', className);
 
   return <footer ref={ref} className={_className} {...rest} />;
 });
@@ -238,7 +234,7 @@ export const ModalCloseButton = forwardRef<HTMLButtonElement, CloseButtonProps>(
   const { onClick, className, ...rest } = props;
   const { onClose } = useModalContext();
 
-  const _className = clsx('', className);
+  const _className = clsx('w-4 h-4 absolute top-3 right-3', className);
 
   return (
     <CloseButton
