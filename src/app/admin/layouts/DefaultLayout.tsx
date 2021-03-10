@@ -1,23 +1,27 @@
-import { Navigate, NavLink, Outlet } from 'react-router-dom';
+import { Link, Navigate, NavLink, Outlet } from 'react-router-dom';
 import { Suspense, useEffect, VFC } from 'react';
 import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
+import { noScrollbarsClassName } from 'react-remove-scroll-bar';
+import clsx from 'clsx';
+import CustomScroll from 'react-custom-scroll';
 
-const drawerWidth = '220px';
-const headerHeight = '60px';
+import '../assets/styles/default-layout.css';
+import '../assets/styles/custom-scroll.css';
 
 const AgileHead: VFC = () => {
+  const _classNames = clsx('ag-header fixed w-full', noScrollbarsClassName);
+
   return (
-    <header
-      className="fixed w-full"
-      style={{
-        height: headerHeight,
-        width: `calc(100% - ${drawerWidth})`,
-        marginLeft: drawerWidth,
-        boxShadow: 0,
-      }}
-    >
-      <p>1</p>
+    <header className={_classNames}>
+      <div className="ag-nav flex flex-row justify-between">
+        <p>BEGIN</p>
+        <p>END</p>
+      </div>
+      <div className="ag-tab flex flex-row justify-between">
+        <p>BEGIN</p>
+        <p>END</p>
+      </div>
     </header>
   );
 };
@@ -55,16 +59,63 @@ const AgileSide: VFC = () => {
   ];
 
   return (
-    <aside className="">
-      <nav className="list-none">
-        {menus.map((menu, index) => (
-          <li key={'m-' + index} className="leading-8">
-            <NavLink className="font-medium" to={menu.url}>
-              {menu.label}
-            </NavLink>
-          </li>
-        ))}
-      </nav>
+    <aside className="ag-aside fixed h-screen">
+      <div className="ag-brand">
+        <Link to={'home'}>
+          <img alt="Agile" src={require('../assets/images/logo.png')} />
+          <img alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
+        </Link>
+      </div>
+      <CustomScroll heightRelativeToParent="calc(100% - 50px)">
+        <nav className="list-none">
+          {menus.map((menu, index) => (
+            <li key={'m-' + index} className="leading-8">
+              <NavLink className="font-medium" to={menu.url}>
+                {menu.label}
+              </NavLink>
+            </li>
+          ))}
+          {[
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+          ].map((item) => (
+            <li key={'ms-' + item}>搞出滚动条{item}</li>
+          ))}
+        </nav>
+      </CustomScroll>
     </aside>
   );
 };
@@ -83,10 +134,10 @@ const DefaultLayout: VFC = () => {
   return authLoginAction == AuthLoginAction.DIRECT ? (
     <Navigate to={'login'} replace={true} />
   ) : (
-    <div className="flex flex-row relative min-h-full flex-grow">
+    <div className="ag-layout flex flex-row relative min-h-screen flex-grow">
       <AgileHead />
       <AgileSide />
-      <main>
+      <main className="ag-main">
         <Suspense fallback={null}>
           <Outlet />
         </Suspense>

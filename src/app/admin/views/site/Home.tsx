@@ -3,7 +3,6 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
 import Spinner from '@shared/components/spinner/Spinner';
 import Button from '@shared/components/button/Button';
-import ButtonGroup from '@shared/components/button/ButtonGroup';
 
 const RefreshUserButton: FC = ({ children }) => {
   const refreshUser = useRefreshUser();
@@ -37,7 +36,7 @@ const Home: VFC = () => {
   console.log('Home Render');
 
   return (
-    <div className={'space-y-3'} style={{ padding: '16px' }}>
+    <div className={'space-y-3'}>
       <div>Hello Agile</div>
       <div>中文字体</div>
       <div>
@@ -51,7 +50,10 @@ const Home: VFC = () => {
       </div>
       <div>TEST</div>
       <div>TEST</div>
-      <p>TEST</p>
+      <p className="w-full flex flex-row justify-between">
+        <p>BEGIN</p>
+        <p>END</p>
+      </p>
       <p>TEST</p>
       <p>TEST</p>
       <p>TEST</p>

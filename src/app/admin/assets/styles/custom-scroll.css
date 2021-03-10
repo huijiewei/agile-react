@@ -1,0 +1,11 @@
+@import "../../../../../node_modules/react-custom-scroll/dist/customScroll.css";
+
+.ag-aside .rcs-custom-scrollbar {
+  width: 5px;
+}
+
+.ag-aside .rcs-inner-handle {
+  background-color: #ccc;
+  border-radius: 1px;
+  opacity: 0.5;
+}

@@ -49,7 +49,7 @@ export const Modal: FC<ModalProps> = (props) => {
     returnFocusOnClose = true,
     blockScrollOnMount = true,
     allowPinchZoom = false,
-    preserveScrollBarGap,
+    preserveScrollBarGap = false,
     lockFocusAcrossFrames = true,
     isCentered = false,
     scrollBehavior = 'outside',
