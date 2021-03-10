@@ -22,6 +22,16 @@ const AgileHead: VFC = () => {
   );
 };
 
+const AgileSide: VFC = () => {
+  return (
+    <aside className="">
+      <nav>
+        <li>2</li>
+      </nav>
+    </aside>
+  );
+};
+
 const DefaultLayout: VFC = () => {
   const refreshUser = useRefreshUser();
 
@@ -38,6 +48,7 @@ const DefaultLayout: VFC = () => {
   ) : (
     <div className="flex flex-row relative min-h-full flex-grow">
       <AgileHead />
+      <AgileSide />
       <main>
         <Suspense fallback={null}>
           <Outlet />

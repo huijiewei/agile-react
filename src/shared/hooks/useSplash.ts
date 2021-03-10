@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useSplash = (): void => {
+export const useSplash = (): void => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       document.getElementById('splash')?.remove();
@@ -9,5 +9,3 @@ const useSplash = (): void => {
     return () => clearTimeout(timeoutId);
   }, []);
 };
-
-export default useSplash;

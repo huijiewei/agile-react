@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { AuthTokenProvider } from '@shared/contexts/AuthTokenContext';
 import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
 import { AuthUserProvider } from '@admin/contexts/AuthUserContext';
-import useLocalStorage from '@shared/hooks/useLocalStorage';
+import { useLocalStorage } from '@shared/hooks/useLocalStorage';
 
 const clientIdKey = 'ag:admin-client-id';
 const accessTokenKey = 'ag:admin-access-token';

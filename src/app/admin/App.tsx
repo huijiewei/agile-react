@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 
-import useSplash from '@shared/hooks/useSplash';
+import { useSplash } from '@shared/hooks/useSplash';
 
 import { ErrorProvider } from '@shared/contexts/ErrorContext';
 import ErrorDialog from '@admin/components/ErrorDialog';
