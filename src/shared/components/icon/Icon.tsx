@@ -18,7 +18,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
 }
 
 const Icon = forwardRef<SVGElement, IconProps>((props, ref) => {
-  const { viewBox, size = 4, color = 'current', focusable = false, children, className, ...rest } = props;
+  const { viewBox, size = 5, color = 'current', focusable = false, children, className, ...rest } = props;
 
   const _className = clsx(`w-${size} h-${size} inline-block leading-none flex-shrink-0 text-${color}`, className);
 
@@ -33,7 +33,7 @@ const Icon = forwardRef<SVGElement, IconProps>((props, ref) => {
   const _path = (children ?? fallbackIcon.path) as ReactNode;
 
   return (
-    <svg viewBox={_viewBox} {...shared} {...rest}>
+    <svg stroke="currentColor" fill="none" viewBox={_viewBox} {...shared} {...rest}>
       {_path}
     </svg>
   );

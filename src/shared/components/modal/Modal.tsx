@@ -23,6 +23,8 @@ interface ModalOptions extends Pick<FocusLockProps, 'lockFocusAcrossFrames'> {
   preserveScrollBarGap?: boolean;
   isCentered?: boolean;
   scrollBehavior?: ScrollBehavior;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'prose';
+  '';
 }
 
 export interface ModalProps extends UseModalProps, ModalOptions {
@@ -51,6 +53,7 @@ export const Modal: FC<ModalProps> = (props) => {
     allowPinchZoom = false,
     preserveScrollBarGap = false,
     lockFocusAcrossFrames = true,
+    size = 'md',
     isCentered = false,
     scrollBehavior = 'outside',
   } = props;
@@ -68,6 +71,7 @@ export const Modal: FC<ModalProps> = (props) => {
     allowPinchZoom,
     preserveScrollBarGap,
     lockFocusAcrossFrames,
+    size,
     isCentered,
     scrollBehavior,
   };
@@ -90,7 +94,7 @@ export interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
 export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) => {
   const { className, children, containerProps: rootProps, ...rest } = props;
 
-  const { getDialogProps, getDialogContainerProps, isCentered, scrollBehavior } = useModalContext();
+  const { getDialogProps, getDialogContainerProps, size, isCentered, scrollBehavior } = useModalContext();
 
   const dialogProps = getDialogProps(rest, ref) as unknown;
   const containerProps = getDialogContainerProps(rootProps);
@@ -101,9 +105,9 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props
     scrollBehavior === 'inside' ? 'overflow-hidden' : 'overflow-auto'
   );
 
-  const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none max-w-md mt-20 mb-20';
+  const DEFAULTS = 'flex relative w-full flex-col rounded bg-white outline-none mt-20 mb-20';
 
-  const _dialogClassNames = clsx(className, DEFAULTS);
+  const _dialogClassNames = clsx(className, DEFAULTS, `max-w-${size}`);
 
   return (
     <ModalFocusScope>

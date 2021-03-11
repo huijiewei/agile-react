@@ -5,13 +5,13 @@ import { StringOrNumber } from '@shared/utils/types';
 import { createContext } from '@shared/utils/react';
 import { ButtonTheme } from '@shared/components/button/ButtonTheme';
 
-interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement>, ButtonGroupContext {}
-
 interface ButtonGroupContext extends ButtonTheme {
   isDisabled?: boolean;
   isAttached?: boolean;
   spacing?: StringOrNumber;
 }
+
+interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement>, ButtonGroupContext {}
 
 const [ButtonGroupProvider, useButtonGroup] = createContext<ButtonGroupContext>({
   strict: false,

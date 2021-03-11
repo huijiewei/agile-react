@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@shared/components/modal/Modal';
+import { WarningIcon } from '@shared/components/icons/WarningIcon';
 
 const ErrorDialog: VFC = () => {
   const error = useErrorState();
@@ -31,12 +32,15 @@ const ErrorDialog: VFC = () => {
       <Modal isCentered closeOnOverlayClick={false} closeOnEsc={false} onClose={handleDialogClose} isOpen={error}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader />
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody className="text-center">
+            <p className="mb-5">
+              <WarningIcon size={10} color={'yellow-500'} />
+            </p>
             <p>{error.message}</p>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className="justify-center">
             <Button onClick={handleDialogClose}>{error.historyBack ? '返回' : '关闭'}</Button>
           </ModalFooter>
         </ModalContent>
