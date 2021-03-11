@@ -19,11 +19,7 @@ const focusableElList = [
 
 const focusableElSelector = focusableElList.join();
 
-export const hasDisplayNone = (element: HTMLElement): boolean => window.getComputedStyle(element).display === 'none';
-
 export const hasTabIndex = (element: HTMLElement): boolean => element.hasAttribute('tabindex');
-
-export const hasNegativeTabIndex = (element: HTMLElement): boolean => hasTabIndex(element) && element.tabIndex === -1;
 
 export const isHidden = (element: HTMLElement): boolean => {
   if (element.parentElement && isHidden(element.parentElement)) {
@@ -55,14 +51,12 @@ export const isFocusable = (element: HTMLElement): boolean => {
     return true;
   }
 
-  const others = {
-    a: () => element.hasAttribute('href'),
-    audio: () => element.hasAttribute('controls'),
-    video: () => element.hasAttribute('controls'),
-  };
+  if (localName === 'a' && element.hasAttribute('href')) {
+    return true;
+  }
 
-  if (localName in others) {
-    return others[localName as keyof typeof others]();
+  if ((localName === 'audio' || localName === 'video') && element.hasAttribute('controls')) {
+    return true;
   }
 
   if (isContentEditable(element)) {

@@ -14,11 +14,11 @@ const AgileHead: VFC = () => {
 
   return (
     <header className={_classNames}>
-      <div className="ag-nav flex flex-row justify-between">
+      <div className="ag-header-nav flex flex-row justify-between">
         <p>BEGIN</p>
         <p>END</p>
       </div>
-      <div className="ag-tab flex flex-row justify-between">
+      <div className="ag-header-tab flex flex-row justify-between">
         <p>BEGIN</p>
         <p>END</p>
       </div>

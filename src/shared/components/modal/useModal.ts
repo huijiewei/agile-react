@@ -1,10 +1,10 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { manager, useModalManager } from '@shared/components/modal/ModalManager';
-import { mergeRefs } from '@shared/utils/react';
 import { hideOthers, Undo } from 'aria-hidden';
 import { useIds } from '@shared/hooks/useId';
 import { callAllHandlers } from '@shared/utils/function';
 import { PropGetter } from '@shared/utils/types';
+import { mergeRefs } from '@shared/utils/react';
 
 export interface UseModalProps {
   isOpen: boolean;

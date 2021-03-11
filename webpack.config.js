@@ -9,6 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -143,7 +144,28 @@ module.exports = (env, argv) => {
         filename: 'index.html',
         chunks: appConfig.htmlChunks,
       }),
-    ],
+      isProduction &&
+        new WorkboxPlugin.GenerateSW({
+          clientsClaim: true,
+          skipWaiting: true,
+        }),
+      isProduction &&
+        new CopyPlugin({
+          patterns: [
+            {
+              from: 'public/shared',
+              to: './',
+              toType: 'dir',
+              globOptions: {
+                ignore: ['.DS_Store'],
+              },
+            },
+          ],
+        }),
+      !isProduction && new ReactRefreshWebpackPlugin(),
+      isProduction && new CleanWebpackPlugin(),
+      isProduction && new BundleAnalyzerPlugin(),
+    ].filter(Boolean),
   };
 
   if (isProduction) {
@@ -175,36 +197,12 @@ module.exports = (env, argv) => {
         },
       },
     };
-
-    config.plugins.push(
-      new WorkboxPlugin.GenerateSW({
-        clientsClaim: true,
-        skipWaiting: true,
-      })
-    );
-    config.plugins.push(
-      new CopyPlugin({
-        patterns: [
-          {
-            from: 'public/shared',
-            to: './',
-            toType: 'dir',
-            globOptions: {
-              ignore: ['.DS_Store'],
-            },
-          },
-        ],
-      })
-    );
-    config.plugins.push(new CleanWebpackPlugin());
   } else {
     config.optimization = {
       runtimeChunk: true,
     };
 
     config.devtool = 'eval-cheap-module-source-map';
-
-    config.plugins.push(new ReactRefreshWebpackPlugin());
   }
 
   return config;

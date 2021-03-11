@@ -11,7 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@shared/components/modal/Modal';
-import { WarningIcon } from '@shared/components/icons/WarningIcon';
+import { WarningIcon } from '@shared/components/icons/Warning';
 
 const ErrorDialog: VFC = () => {
   const error = useErrorState();
@@ -33,7 +33,6 @@ const ErrorDialog: VFC = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader />
-          <ModalCloseButton />
           <ModalBody className="text-center">
             <p className="mb-5">
               <WarningIcon size={10} color={'yellow-500'} />

@@ -4,11 +4,12 @@ import clsx from 'clsx';
 
 const fallbackIcon = {
   path: (
-    <g stroke="currentColor" strokeWidth="1.5">
-      <path strokeLinecap="round" fill="none" d="M9,9a3,3,0,1,1,4,2.829,1.5,1.5,0,0,0-1,1.415V14.25" />
-      <path fill="currentColor" strokeLinecap="round" d="M12,17.25a.375.375,0,1,0,.375.375A.375.375,0,0,0,12,17.25h0" />
-      <circle fill="none" strokeMiterlimit="10" cx="12" cy="12" r="11.25" />
-    </g>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
   ),
   viewBox: '0 0 24 24',
 };
@@ -20,9 +21,13 @@ export interface IconProps extends SVGAttributes<SVGElement> {
 const Icon = forwardRef<SVGElement, IconProps>((props, ref) => {
   const { viewBox, size = 5, color = 'current', focusable = false, children, className, ...rest } = props;
 
-  const _className = clsx(`w-${size} h-${size} inline-block leading-none flex-shrink-0 text-${color}`, className);
+  const _className = clsx(
+    className,
+    `inline-block flex-shrink-0 align-middle text-${color}`,
+    size ? `w-${size} h-${size} ` : ''
+  );
 
-  const shared: unknown = {
+  const shared = {
     ref,
     focusable,
     className: _className,

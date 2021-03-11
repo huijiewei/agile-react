@@ -1,5 +1,5 @@
 export interface ButtonTheme {
-  size?: 'sm' | 'base' | 'lg' | 'xl';
+  size?: 'sm' | 'base' | 'lg';
   variant?: 'solid' | 'ghost' | 'outline' | 'link';
   colorScheme?: string;
 }

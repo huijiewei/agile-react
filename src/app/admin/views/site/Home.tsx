@@ -50,10 +50,10 @@ const Home: VFC = () => {
       </div>
       <div>TEST</div>
       <div>TEST</div>
-      <p className="w-full flex flex-row justify-between">
+      <div className="w-full flex flex-row justify-between">
         <p>BEGIN</p>
         <p>END</p>
-      </p>
+      </div>
       <p>TEST</p>
       <p>TEST</p>
       <p>TEST</p>

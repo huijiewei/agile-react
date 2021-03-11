@@ -8,16 +8,23 @@ import { ButtonTheme, defaultButtonTheme } from '@shared/components/button/Butto
 import { StringOrNumber } from '@shared/utils/types';
 
 const ButtonIcon: FC<HTMLAttributes<HTMLSpanElement>> = (props) => {
-  const { children, ...rest } = props;
+  const { children, className, ...rest } = props;
 
   const _children = isValidElement(children)
     ? cloneElement(children, {
         'aria-hidden': true,
         focusable: false,
+        size: 4,
       })
     : children;
 
-  return <span {...rest}>{_children}</span>;
+  const _classNames = clsx(className, '');
+
+  return (
+    <span className={_classNames} {...rest}>
+      {_children}
+    </span>
+  );
 };
 
 if (__DEV__) {
@@ -53,8 +60,7 @@ if (__DEV__) {
 const BUTTON_SIZES = {
   sm: 'py-1.5 px-3',
   base: 'py-2.5 px-5',
-  lg: 'py-4 px-5',
-  xl: 'py-5 px-6',
+  lg: 'py-5 px-8',
 };
 
 interface ButtonOptions {
@@ -125,7 +131,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     leftIcon,
     rightIcon,
     loadingText,
-    iconSpacing = 2,
+    iconSpacing = 1.5,
     type = 'button',
     spinner,
     className,
@@ -135,12 +141,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
 
   const isAttached = group?.isAttached || false;
 
-  const DEFAULTS = `inline-flex leading-none focus:outline-none items-center justify-center border align-middle select-none appearance-none relative whitespace-nowrap outline-none transition-colors duration-200 text-${size}`;
+  const DEFAULTS = `inline-flex leading-none font-medium focus:outline-none items-center justify-center border align-middle select-none appearance-none relative whitespace-nowrap outline-none transition-colors duration-200 text-${size}`;
 
   const STYLES = {
     solid: `focus:ring focus:ring-${colorScheme}-200 bg-${colorScheme}-500 text-white hover:bg-${colorScheme}-400 active:bg-${colorScheme}-600 border-transparent`,
     outline: clsx(
-      `focus:ring focus:ring-${colorScheme}-200 bg-transparent text-${colorScheme}-600 hover:bg-${colorScheme}-50`,
+      `focus:ring focus:ring-${colorScheme}-200 bg-white text-${colorScheme}-600 hover:bg-${colorScheme}-50`,
       isAttached
         ? `first:border-l-${colorScheme}-600 last:border-r-${colorScheme}-600 border-l-transparent border-r-transparent border-t-${colorScheme}-600 border-b-${colorScheme}-600`
         : `border-${colorScheme}-600`
