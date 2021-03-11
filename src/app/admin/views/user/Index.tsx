@@ -3,7 +3,6 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import Button from '@shared/components/button/Button';
 
 const UserList: VFC = () => {
   const { httpGet } = useRequest();

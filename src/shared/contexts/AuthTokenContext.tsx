@@ -14,15 +14,12 @@ const AuthTokenStateContext = createContext<IAuthTokenState | undefined>(undefin
 const AuthTokenDispatchContext = createContext<IAuthTokenDispatch | undefined>(undefined);
 
 interface AuthTokenProviderProps {
-  getClientId: () => string;
-  getAccessToken: () => string;
+  authToken: IAuthTokenState;
   setAccessToken: (accessToken: string) => void;
 }
 
-const AuthTokenProvider: FC<AuthTokenProviderProps> = ({ children, getClientId, getAccessToken, setAccessToken }) => {
-  const [authTokenState] = useState<IAuthTokenState>(() => {
-    return { clientId: getClientId(), accessToken: getAccessToken() };
-  });
+const AuthTokenProvider: FC<AuthTokenProviderProps> = ({ children, authToken, setAccessToken }) => {
+  console.log('AuthTokenProvider render');
 
   const authTokenDispatch = useMemo(() => {
     return {
@@ -38,7 +35,7 @@ const AuthTokenProvider: FC<AuthTokenProviderProps> = ({ children, getClientId, 
 
   return (
     <AuthTokenDispatchContext.Provider value={authTokenDispatch}>
-      <AuthTokenStateContext.Provider value={authTokenState}>{children}</AuthTokenStateContext.Provider>
+      <AuthTokenStateContext.Provider value={authToken}>{children}</AuthTokenStateContext.Provider>
     </AuthTokenDispatchContext.Provider>
   );
 };

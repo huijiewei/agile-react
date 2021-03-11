@@ -2,18 +2,21 @@ import './wdyr';
 
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+
+import theme from './theme';
 
 import App from './App';
 
-import '@shared/assets/styles/agile.base.css';
-import '@shared/assets/styles/agile.components.css';
-import '@shared/assets/styles/agile.utilities.css';
-
 import './serviceWorker';
+
+const agileTheme = extendTheme(theme);
 
 render(
   <StrictMode>
-    <App />
+    <ChakraProvider theme={agileTheme}>
+      <App />
+    </ChakraProvider>
   </StrictMode>,
   document.getElementById('root')
 );

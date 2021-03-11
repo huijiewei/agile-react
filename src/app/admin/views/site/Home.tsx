@@ -1,8 +1,11 @@
 import { FC, useState, VFC } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
-import Spinner from '@shared/components/spinner/Spinner';
-import Button from '@shared/components/button/Button';
+import { Box, Button, Stack } from '@chakra-ui/react';
+import { useAuthTokenDispatch } from '@shared/contexts/AuthTokenContext';
+import useRequest from '@shared/hooks/useRequest';
+import { flatry } from '@shared/utils/util';
+import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
 
 const RefreshUserButton: FC = ({ children }) => {
   const refreshUser = useRefreshUser();
@@ -13,8 +16,6 @@ const RefreshUserButton: FC = ({ children }) => {
     setIsLoading(true);
 
     await refreshUser();
-
-    await new Promise((resolve) => setTimeout(resolve, 900));
 
     setIsLoading(false);
   };
@@ -28,27 +29,62 @@ const RefreshUserButton: FC = ({ children }) => {
 
 const Home: VFC = () => {
   const { setError } = useErrorDispatch();
+  const { setAccessToken } = useAuthTokenDispatch();
+  const { httpPost } = useRequest();
+  const setAuthUser = useAuthUserDispatch();
 
   const handleClick = () => {
     setError('No handler found for GET /admin-api/shop-products', false);
   };
 
+  const handleSetIncorrectAccessToken = () => {
+    setAccessToken('1nzh07MZ7ca3A3w5AjPf1T2');
+  };
+
+  const handleSetCorrectAccessToken = () => {
+    setAccessToken('1nzh07MZ7ca3A3w5AjPf1T');
+  };
+
+  const handleSendPost = async () => {
+    const { data } = await flatry(httpPost('user/create', {}));
+  };
+
+  const handleLogin = async () => {
+    const { data } = await flatry(httpPost('auth/login', { account: '13012345678', password: 'soarman' }));
+
+    if (data) {
+      setAccessToken(data.accessToken);
+      setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
+    }
+
+    console.log(data);
+  };
+
   console.log('Home Render');
 
   return (
-    <div className={'space-y-3'}>
-      <div>Hello Agile</div>
-      <div>中文字体</div>
-      <div>
+    <Stack direction={'column'} spacing={3} padding={'16px'}>
+      <Box>Hello Agile</Box>
+      <Box>中文字体</Box>
+      <Box>
         <Button onClick={handleClick}>错误关闭</Button>
-      </div>
-      <div>
+      </Box>
+      <Box>
         <RefreshUserButton>重新获取用户</RefreshUserButton>
-      </div>
-      <div>
-        <Spinner />
-      </div>
-      <div>TEST</div>
+      </Box>
+      <Box>
+        <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>
+      </Box>
+      <Box>
+        <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
+      </Box>
+      <Box>
+        <Button onClick={handleSendPost}>随便发送一个请求</Button>
+      </Box>
+      <Box>
+        <Button onClick={handleLogin}>测试登录接口</Button>
+      </Box>
+      <Box>TEST</Box>
       <div>TEST</div>
       <div className="w-full flex flex-row justify-between">
         <p>BEGIN</p>
@@ -84,7 +120,7 @@ const Home: VFC = () => {
       <p>TEST</p>
       <p>TEST</p>
       <p>TEST</p>
-    </div>
+    </Stack>
   );
 };
 

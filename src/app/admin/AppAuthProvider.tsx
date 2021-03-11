@@ -12,11 +12,7 @@ const AppAuthProvider: FC = ({ children }) => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, '');
 
   return (
-    <AuthTokenProvider
-      getClientId={() => clientId}
-      getAccessToken={() => accessToken}
-      setAccessToken={(accessToken) => setAccessToken(accessToken)}
-    >
+    <AuthTokenProvider authToken={{ clientId, accessToken }} setAccessToken={setAccessToken}>
       <AuthLoginProvider>
         <AuthUserProvider>{children}</AuthUserProvider>
       </AuthLoginProvider>

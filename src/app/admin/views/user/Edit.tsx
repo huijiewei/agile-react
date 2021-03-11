@@ -7,7 +7,7 @@ const UserEdit: VFC = () => {
   const { id } = useParams();
   const { httpGet } = useRequest();
 
-  const { data } = useSWR('users/' + id, async (url) => {
+  const { data } = useSWR('users/' + id, async (url: string) => {
     return await httpGet(url);
   });
 

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 
 export const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] => {
   const [storedValue, setStoredValue] = useState<T>(() => {
@@ -27,6 +27,27 @@ export const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<S
       console.log(error);
     }
   };
+
+  const handleStorage = useCallback(
+    (event: StorageEvent) => {
+      if (event.storageArea === localStorage && event.key === key) {
+        const newValue = event.newValue ? JSON.parse(event.newValue) : null;
+
+        console.log(newValue, storedValue);
+
+        if (newValue !== storedValue) {
+          setStoredValue(newValue);
+        }
+      }
+    },
+    [key, storedValue]
+  );
+
+  useEffect(() => {
+    window.addEventListener('storage', handleStorage);
+
+    return () => window.removeEventListener('storage', handleStorage);
+  }, [handleStorage]);
 
   return [storedValue, setValue];
 };

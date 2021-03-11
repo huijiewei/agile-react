@@ -15,6 +15,41 @@ interface AxiosProviderProps {
 
 const AxiosContext = createContext<AxiosInstance | undefined>(undefined);
 
+const createAxios = (baseUrl, onRequest, onSuccess, onError, paramsSerializer) => {
+  const axiosInstance = Axios.create({
+    baseURL: baseUrl,
+    paramsSerializer: paramsSerializer,
+  });
+
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      if (onRequest) {
+        return onRequest(config);
+      }
+
+      return config;
+    },
+    (error) => {
+      return onError(error);
+    }
+  );
+
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      if (onSuccess) {
+        return onSuccess(response);
+      }
+
+      return response;
+    },
+    (error) => {
+      return onError(error);
+    }
+  );
+
+  return axiosInstance;
+};
+
 const AxiosProvider: FC = ({
   children,
   baseUrl,
@@ -23,41 +58,8 @@ const AxiosProvider: FC = ({
   onError,
   paramsSerializer,
 }: PropsWithChildren<AxiosProviderProps>) => {
-  const axios = useMemo(() => {
-    const axiosInstance = Axios.create({
-      baseURL: baseUrl,
-      paramsSerializer: paramsSerializer,
-    });
-
-    axiosInstance.interceptors.request.use(
-      (config) => {
-        if (onRequest) {
-          return onRequest(config);
-        }
-
-        return config;
-      },
-      (error) => {
-        return onError(error);
-      }
-    );
-
-    axiosInstance.interceptors.response.use(
-      (response) => {
-        if (onSuccess) {
-          return onSuccess(response);
-        }
-
-        return response;
-      },
-      (error) => {
-        return onError(error);
-      }
-    );
-
-    return axiosInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  console.log('AxiosProvider render');
+  const axios = createAxios(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
 
   return <AxiosContext.Provider value={axios}>{children}</AxiosContext.Provider>;
 };

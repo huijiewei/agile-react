@@ -19,8 +19,7 @@ const useRequest = (): UseRequestReturn => {
 
   const httpPost = useCallback(
     (url, data, params = null, historyBack = false) => {
-      return axios.post(url, {
-        data: data,
+      return axios.post(url, data, {
         params: params,
         __historyBack: historyBack,
       });
@@ -31,8 +30,7 @@ const useRequest = (): UseRequestReturn => {
 
   const httpPut = useCallback(
     (url, data, params = null, historyBack = false) => {
-      return axios.put(url, {
-        data: data,
+      return axios.put(url, data, {
         params: params,
         __historyBack: historyBack,
       });

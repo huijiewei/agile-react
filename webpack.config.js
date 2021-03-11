@@ -65,7 +65,6 @@ module.exports = (env, argv) => {
                 importLoaders: 1,
               },
             },
-            'postcss-loader',
           ],
         },
         {
@@ -173,18 +172,25 @@ module.exports = (env, argv) => {
       minimizer: ['...', new CssMinimizerPlugin()],
       splitChunks: {
         cacheGroups: {
+          react: {
+            name: 'react',
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            chunks: 'initial',
+            priority: 30,
+            enforce: true,
+          },
+          chakra: {
+            name: 'chakra',
+            test: /[\\/]node_modules[\\/](@chakra-ui|@emotion|framer-motion)[\\/]/,
+            chunks: 'initial',
+            priority: 20,
+            enforce: true,
+          },
           vendor: {
             name: 'vendor',
             test: /[\\/]node_modules[\\/]/,
             chunks: 'initial',
             priority: 10,
-            enforce: true,
-          },
-          react: {
-            name: 'react',
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            chunks: 'initial',
-            priority: 20,
             enforce: true,
           },
           shared: {

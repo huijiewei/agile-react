@@ -1,25 +1,26 @@
-import { VFC } from 'react';
+import { useRef, VFC } from 'react';
 import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
-import Button from '@shared/components/button/Button';
 import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from '@shared/components/modal/Modal';
-import { WarningIcon } from '@shared/components/icons/Warning';
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  Center,
+} from '@chakra-ui/react';
+import { AlertCircle } from 'react-feather';
 
 const ErrorDialog: VFC = () => {
   const error = useErrorState();
   const { resetError } = useErrorDispatch();
+  const cancelRef = useRef();
 
   const navigate = useNavigate();
 
-  const handleDialogClose = () => {
+  const onClose = () => {
     resetError();
 
     if (error.historyBack) {
@@ -29,21 +30,31 @@ const ErrorDialog: VFC = () => {
 
   return (
     error && (
-      <Modal isCentered closeOnOverlayClick={false} closeOnEsc={false} onClose={handleDialogClose} isOpen={error}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader />
-          <ModalBody className="text-center">
-            <p className="mb-5">
-              <WarningIcon size={10} color={'yellow-500'} />
-            </p>
-            <p>{error.message}</p>
-          </ModalBody>
-          <ModalFooter className="justify-center">
-            <Button onClick={handleDialogClose}>{error.historyBack ? '返回' : '关闭'}</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <AlertDialog
+        colorScheme="orange"
+        isCentered
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
+        onClose={onClose}
+        isOpen={error}
+        leastDestructiveRef={cancelRef}
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+          <AlertDialogHeader />
+          <AlertDialogBody>
+            <Center marginBottom={5}>
+              <AlertCircle color="orange" size={36} />
+            </Center>
+            <Center>{error.message}</Center>
+          </AlertDialogBody>
+          <AlertDialogFooter justifyContent="center">
+            <Button ref={cancelRef} onClick={onClose}>
+              {error.historyBack ? '返回' : '关闭'}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     )
   );
 };
