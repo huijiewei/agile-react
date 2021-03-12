@@ -19,7 +19,7 @@ const AgileHeader = (): JSX.Element => {
   );
 };
 
-const DefaultLayout: FC = () => {
+const DefaultLayout = () => {
   console.log('DefaultLayout render');
 
   return (

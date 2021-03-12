@@ -1,5 +1,5 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
+import { createContext, PropsWithChildren, useContext } from 'react';
 
 interface EncodedQuery {
   [key: string]: string | (string | null)[] | null | undefined;
@@ -50,7 +50,7 @@ const createAxios = (baseUrl, onRequest, onSuccess, onError, paramsSerializer) =
   return axiosInstance;
 };
 
-const AxiosProvider: FC = ({
+const AxiosProvider = ({
   children,
   baseUrl,
   onRequest,

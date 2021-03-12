@@ -8,7 +8,7 @@ import { Flex, Box } from '@chakra-ui/react';
 import LoginModal from '@admin/components/LoginModal';
 import LoginDirect from '@admin/components/LoginDirect';
 
-const DefaultLayout: VFC = () => {
+const DefaultLayout = () => {
   const refreshUser = useRefreshUser();
   const authLoginAction = useAuthLoginState();
 

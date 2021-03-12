@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 interface IErrorState {
   message: string;
@@ -13,7 +13,7 @@ interface IErrorDispatch {
 const ErrorStateContext = createContext<IErrorState | undefined>(undefined);
 const ErrorDispatchContext = createContext<IErrorDispatch | undefined>(undefined);
 
-const ErrorProvider: FC = ({ children }) => {
+const ErrorProvider = ({ children }) => {
   const [errorState, setErrorState] = useState<IErrorState | null>(null);
 
   const errorDispatch = useMemo(() => {

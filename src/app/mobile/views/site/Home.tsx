@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import useSWR from 'swr';
 
-const Home: FC = () => {
+const Home = () => {
   const { data } = useSWR('https://agile.huijiewei.com/admin-api/open/captcha');
 
   console.log('Home Render');

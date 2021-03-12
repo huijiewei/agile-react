@@ -2,7 +2,7 @@ import { FC, useCallback } from 'react';
 import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
 import { AuthUserProvider } from '@admin/contexts/AuthUserContext';
 
-const AppAuthProvider: FC = ({ children }) => {
+const AppAuthProvider = ({ children }) => {
   return (
     <AuthLoginProvider>
       <AuthUserProvider>{children}</AuthUserProvider>

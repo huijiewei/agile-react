@@ -1,4 +1,4 @@
-import { FC, useState, VFC } from 'react';
+import { useState } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
 import { Box, Button, Stack } from '@chakra-ui/react';
@@ -7,7 +7,7 @@ import { flatry } from '@shared/utils/util';
 import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
 import { useAuthToken } from '@admin/AppAuthProvider';
 
-const RefreshUserButton: FC = ({ children }) => {
+const RefreshUserButton = ({ children }) => {
   const refreshUser = useRefreshUser();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ const RefreshUserButton: FC = ({ children }) => {
   );
 };
 
-const Home: VFC = () => {
+const Home = () => {
   const { setError } = useErrorDispatch();
   const { setAccessToken } = useAuthToken();
   const { httpPost } = useRequest();

@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
-import { VFC } from 'react';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
 
-const UserEdit: VFC = () => {
+const UserEdit = () => {
   const { id } = useParams();
   const { httpGet } = useRequest();
 

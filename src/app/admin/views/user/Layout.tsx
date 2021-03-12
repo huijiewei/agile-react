@@ -1,7 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
-import { VFC } from 'react';
 
-const UserLayout: VFC = () => {
+const UserLayout = () => {
   return (
     <div className={'ag-box'}>
       <div>

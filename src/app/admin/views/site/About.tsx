@@ -1,7 +1,6 @@
-import { VFC } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
-const About: VFC = () => {
+const About = () => {
   const { setError } = useErrorDispatch();
 
   const handleClick = () => {

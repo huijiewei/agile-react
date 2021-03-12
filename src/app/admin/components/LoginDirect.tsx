@@ -2,7 +2,7 @@ import { VFC } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { To } from 'history';
 
-const LoginDirect: VFC = () => {
+const LoginDirect = () => {
   const location = useLocation();
 
   const to: To = {

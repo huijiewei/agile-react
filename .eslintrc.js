@@ -26,7 +26,16 @@ module.exports = {
       extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
       rules: {
         'react/prop-types': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
       },
+      overrides: [
+        {
+          files: ['*.ts'],
+          rules: {
+            '@typescript-eslint/explicit-module-boundary-types': 'warn',
+          },
+        },
+      ],
     },
   ],
 };

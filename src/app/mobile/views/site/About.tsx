@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-const About: FC = () => {
+const About = () => {
   return <div className={'ag-box'}>About Agile Mobile</div>;
 };
 

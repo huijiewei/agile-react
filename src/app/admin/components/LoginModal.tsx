@@ -1,8 +1,7 @@
 import LoginForm from '@admin/components/LoginForm';
-import { VFC } from 'react';
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 
-const LoginModal: VFC = () => {
+const LoginModal = () => {
   return (
     <Modal isOpen={true} isCentered={true}>
       <ModalOverlay />

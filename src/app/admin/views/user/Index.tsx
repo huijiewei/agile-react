@@ -1,10 +1,11 @@
-import { useState, VFC } from 'react';
+import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
-const UserList: VFC = () => {
+
+const UserList = () => {
   const { httpGet } = useRequest();
   const [searchParams] = useSearchParams();
 
@@ -58,7 +59,7 @@ const UserList: VFC = () => {
   );
 };
 
-const UserDownload: VFC = () => {
+const UserDownload = () => {
   const { httpDownload } = useRequest();
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
@@ -82,7 +83,7 @@ const UserDownload: VFC = () => {
   );
 };
 
-const UserIndex: VFC = () => {
+const UserIndex = () => {
   console.log('UserIndex Render');
 
   return (

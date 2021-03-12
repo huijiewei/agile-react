@@ -1,4 +1,4 @@
-import { useRef, VFC } from 'react';
+import { useRef } from 'react';
 import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { AlertCircle } from 'react-feather';
 
-const ErrorDialog: VFC = () => {
+const ErrorDialog = () => {
   const error = useErrorState();
   const { resetError } = useErrorDispatch();
   const cancelRef = useRef();

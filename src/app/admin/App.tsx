@@ -11,11 +11,11 @@ import routes from '@admin/routers';
 import { AppAuthProvider } from '@admin/AppAuthProvider';
 import { AppHttpProvider } from '@admin/AppHttpProvider';
 
-const AppRoutes: FC = () => {
+const AppRoutes = () => {
   return useRoutes(routes, process.env.PUBLIC_URL);
 };
 
-const App: FC = () => {
+const App = () => {
   useSplash();
 
   return (

@@ -1,8 +1,7 @@
 import LoginForm from '@admin/components/LoginForm';
-import { VFC } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const Login: VFC = () => {
+const Login = () => {
   const navigator = useNavigate();
   const [searchParams] = useSearchParams();
 

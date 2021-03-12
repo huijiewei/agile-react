@@ -1,8 +1,7 @@
-import { VFC } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Box, Image } from '@chakra-ui/react';
 
-const AgileAside: VFC = () => {
+const AgileAside = () => {
   const menus = [
     {
       url: 'home',
@@ -36,10 +35,15 @@ const AgileAside: VFC = () => {
 
   return (
     <Box as={'aside'} width={'220px'} height={'100vh'} position={'fixed'} color={'#fff'} backgroundColor={'#2c343f'}>
-      <Box as="div">
+      <Box lineHeight={'50px'} height={'50px'} textAlign={'center'} verticalAlign={'middle'} as="div">
         <Link to={'home'}>
-          <Image alt="Agile" src={require('../assets/images/logo.png')} />
-          <Image alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
+          <Image display={'inline-block'} height={'39px'} alt="Agile" src={require('../assets/images/logo.png')} />
+          <Image
+            display={'inline-block'}
+            height={'39px'}
+            alt="Boilerplate"
+            src={require('../assets/images/banner-white.png')}
+          />
         </Link>
       </Box>
       <Box as={'nav'}>

@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 export interface IAccount {
   currentUser: IUser;
@@ -41,7 +41,7 @@ interface IAuthUserDispatch {
 const AuthUserStateContext = createContext<IAuthUserState | undefined>(undefined);
 const AuthUserDispatchContext = createContext<IAuthUserDispatch | undefined>(undefined);
 
-const AuthUserProvider: FC = ({ children }) => {
+const AuthUserProvider = ({ children }) => {
   const [authUserState, setAuthUserState] = useState<IAuthUserState>({
     user: null,
     menus: [],

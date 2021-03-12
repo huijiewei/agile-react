@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useState, VFC } from 'react';
+import { useState } from 'react';
 import { Button } from '@chakra-ui/react';
 import { flatry } from '@shared/utils/util';
 import useRequest from '@shared/hooks/useRequest';
@@ -11,7 +11,7 @@ interface LoginFormProps {
   onSuccess: () => void;
 }
 
-const LoginForm: VFC<LoginFormProps> = ({ onSuccess }) => {
+const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { register, handleSubmit, errors, formState } = useForm();
   const [loading, setLoading] = useState(false);
   const { setAccessToken } = useAuthToken();

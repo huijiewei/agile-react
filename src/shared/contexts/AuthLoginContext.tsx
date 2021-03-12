@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 export enum AuthLoginAction {
   NONE,
@@ -15,7 +15,7 @@ const AuthLoginStateContext = createContext<AuthLoginAction | undefined>(undefin
 
 const AuthLoginDispatchContext = createContext<IAuthLoginDispatch | undefined>(undefined);
 
-const AuthLoginProvider: FC = ({ children }) => {
+const AuthLoginProvider = ({ children }) => {
   const [authLoginState, setAuthLoginState] = useState<AuthLoginAction>(AuthLoginAction.NONE);
 
   const authLoginDispatch = useMemo(() => {

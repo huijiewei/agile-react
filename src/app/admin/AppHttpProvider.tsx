@@ -11,7 +11,7 @@ const UnprocessableEntityHttpCode = 422;
 
 const HttpGetMethod = ['GET', 'HEAD'];
 
-const AppAxiosProvider: FC = ({ children }) => {
+const AppAxiosProvider = ({ children }) => {
   const { setError } = useErrorDispatch();
   const { setLoginAction } = useAuthLoginDispatch();
   const { getAuthToken } = useAuthToken();
@@ -99,7 +99,7 @@ const AppAxiosProvider: FC = ({ children }) => {
   );
 };
 
-const AppHttpProvider: FC = ({ children }) => {
+const AppHttpProvider = ({ children }) => {
   return (
     <AppAxiosProvider>
       <SWRConfig

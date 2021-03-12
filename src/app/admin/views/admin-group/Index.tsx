@@ -1,6 +1,4 @@
-import { VFC } from 'react';
-
-const AdminGroupIndex: VFC = () => {
+const AdminGroupIndex = () => {
   return (
     <div className={'ag-box'}>
       <p>AdminGroup Index</p>
