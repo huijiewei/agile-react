@@ -1,11 +1,5 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 
-export interface IAccount {
-  currentUser: IUser;
-  groupMenus: IMenu[];
-  groupPermissions: string[];
-}
-
 export interface IMenu {
   label: string;
   url: string;
@@ -35,7 +29,8 @@ export interface IAuthUserState {
 }
 
 interface IAuthUserDispatch {
-  (user: IUser | null, menus?: IMenu[], permissions?: string[]): void;
+  setAuthUser: (user: IUser | null, menus?: IMenu[], permissions?: string[]) => void;
+  resetAuthUser: () => void;
 }
 
 const AuthUserStateContext = createContext<IAuthUserState | undefined>(undefined);
@@ -50,11 +45,11 @@ const AuthUserProvider = ({ children }) => {
 
   const authUserDispatch = useMemo(() => {
     return {
-      setAuthUser: (user, menus = [], permissions = []) => {
-        setAuthUserState({ user, menus, permissions });
+      setAuthUser(user, menus = [], permissions = []) {
+        setAuthUserState({user, menus, permissions});
       },
-      resetAuthUser: () => {
-        setAuthUserState({ user: null, menus: [], permissions: [] });
+      resetAuthUser() {
+        setAuthUserState({user: null, menus: [], permissions: []});
       },
     };
   }, []);

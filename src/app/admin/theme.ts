@@ -14,6 +14,17 @@ const theme = {
       },
     },
   },
+  radii: {
+    none: '0',
+    sm: '0.125rem',
+    base: '0.20rem',
+    md: '0.25rem',
+    lg: '0.375rem',
+    xl: '0.5rem',
+    '2xl': '0.75rem',
+    '3xl': '1rem',
+    full: '9999px',
+  },
   fontSizes: {
     xs: '0.5rem',
     sm: '0.75rem',
@@ -36,7 +47,6 @@ const theme = {
       },
       baseStyle: {
         fontWeight: 'medium',
-        borderRadius: 'base',
       },
       sizes: {
         lg: {
@@ -68,19 +78,10 @@ const theme = {
         link: {},
       },
     },
-    Alert: {},
     Menu: {
       parts: ['list'],
       baseStyle: {
         list: {
-          borderRadius: 'base',
-        },
-      },
-    },
-    Modal: {
-      parts: ['dialog'],
-      baseStyle: {
-        dialog: {
           borderRadius: 'base',
         },
       },

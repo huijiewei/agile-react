@@ -20,10 +20,10 @@ const AuthLoginProvider = ({ children }) => {
 
   const authLoginDispatch = useMemo(() => {
     return {
-      setLoginAction: (action) => {
+      setLoginAction(action) {
         setAuthLoginState(action);
       },
-      resetLoginAction: () => {
+      resetLoginAction() {
         setAuthLoginState(AuthLoginAction.NONE);
       },
     };

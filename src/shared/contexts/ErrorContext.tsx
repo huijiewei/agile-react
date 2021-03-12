@@ -18,10 +18,10 @@ const ErrorProvider = ({ children }) => {
 
   const errorDispatch = useMemo(() => {
     return {
-      setError: (message: string, historyBack = false) => {
+      setError(message: string, historyBack = false) {
         setErrorState({ message, historyBack });
       },
-      resetError: () => {
+      resetError() {
         setErrorState(null);
       },
     };
