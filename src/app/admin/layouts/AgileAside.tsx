@@ -36,13 +36,13 @@ const AgileAside: VFC = () => {
 
   return (
     <Box as={'aside'} width={'220px'} height={'100vh'} position={'fixed'} color={'#fff'} backgroundColor={'#2c343f'}>
-      <div className="ag-brand">
+      <Box as="div">
         <Link to={'home'}>
           <img alt="Agile" src={require('../assets/images/logo.png')} />
           <img alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
         </Link>
-      </div>
-      <nav className="list-none">
+      </Box>
+      <Box as={'nav'}>
         {menus.map((menu, index) => (
           <li key={'m-' + index} className="leading-8">
             <NavLink className="font-medium" to={menu.url}>
@@ -89,7 +89,7 @@ const AgileAside: VFC = () => {
         ].map((item) => (
           <li key={'ms-' + item}>搞出滚动条{item}</li>
         ))}
-      </nav>
+      </Box>
     </Box>
   );
 };

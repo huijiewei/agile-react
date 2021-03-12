@@ -1,4 +1,9 @@
 const theme = {
+  breakpoints: {
+    tablet: '640px',
+    laptop: '1024px',
+    desktop: '1280px',
+  },
   config: {
     cssVarsPrefix: 'ag',
   },
@@ -61,6 +66,22 @@ const theme = {
       },
       variants: {
         link: {},
+      },
+    },
+    Menu: {
+      parts: ['list'],
+      baseStyle: {
+        list: {
+          borderRadius: 'base',
+        },
+      },
+    },
+    Modal: {
+      parts: ['dialog'],
+      baseStyle: {
+        dialog: {
+          borderRadius: 'base',
+        },
       },
     },
   },

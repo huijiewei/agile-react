@@ -4,7 +4,7 @@ import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginCo
 import useRefreshUser from '@admin/hooks/useRefreshUser';
 import AgileHeader from '@admin/layouts/AgileHeader';
 import AgileAside from '@admin/layouts/AgileAside';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import LoginModal from '@admin/components/LoginModal';
 import LoginDirect from '@admin/components/LoginDirect';
 
@@ -24,15 +24,15 @@ const DefaultLayout: VFC = () => {
     <LoginDirect />
   ) : (
     <>
-      <Flex alignItems={'stretch'} width={'100%'}>
+      <Flex backgroundColor={'#f4f8fb'} alignItems={'stretch'} width={'100%'}>
+        <AgileHeader />
         <AgileAside />
-        <Flex direction={'column'}>
-          <AgileHeader />
-          <Flex as={'main'} minHeight={'100vh'} marginLeft={'220px'}>
+        <Flex as={'main'} minHeight={'100vh'} width={'100vw'} marginLeft={'220px'} padding={'16px'} paddingTop={'90px'}>
+          <Box padding={'16px'} width={'100%'} backgroundColor={'white'}>
             <Suspense fallback={null}>
               <Outlet />
             </Suspense>
-          </Flex>
+          </Box>
         </Flex>
       </Flex>
       {authLoginAction == AuthLoginAction.MODAL && <LoginModal />}

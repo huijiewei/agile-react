@@ -3,56 +3,57 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-
+import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 const UserList: VFC = () => {
   const { httpGet } = useRequest();
   const [searchParams] = useSearchParams();
 
-  const { data } = useSWR('users?page=' + searchParams.get('page'), async (url) => {
-    const { data } = await httpGet(url);
+  console.log(searchParams);
 
-    return data;
+  const { data } = useSWR('users?' + searchParams.toString(), async (url) => {
+    return await httpGet(url);
   });
 
   console.log('UserList Render');
 
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>手机号码</th>
-            <th>邮箱</th>
-            <th>姓名</th>
-            <th>头像</th>
-            <th>注册 IP</th>
-            <th>注册来源</th>
-            <th>注册时间</th>
-            <th align={'right'}>操作</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Id</Th>
+            <Th>手机号码</Th>
+            <Th>邮箱</Th>
+            <Th>姓名</Th>
+            <Th>头像</Th>
+            <Th>注册 IP</Th>
+            <Th>注册来源</Th>
+            <Th>注册时间</Th>
+            <Th>操作</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {data &&
             data.items.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.phone}</td>
-                <td>{user.email}</td>
-                <td>{user.name}</td>
-                <td>
+              <Tr key={user.id}>
+                <Td>{user.id}</Td>
+                <Td>{user.phone}</Td>
+                <Td>{user.email}</Td>
+                <Td>{user.name}</Td>
+                <Td>
                   <img style={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
-                </td>
-                <td>{user.createdIp}</td>
-                <td>{user.createdFrom.description}</td>
-                <td>{user.createdAt}</td>
-                <td align={'right'}>
+                </Td>
+                <Td>{user.createdIp}</Td>
+                <Td>{user.createdFrom.description}</Td>
+                <Td>{user.createdAt}</Td>
+                <Td>
                   <Link to={'edit/' + user.id}>编辑</Link>
-                </td>
-              </tr>
+                </Td>
+              </Tr>
             ))}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
+      {data && data.pages && <Stack></Stack>}
     </>
   );
 };
@@ -89,6 +90,12 @@ const UserIndex: VFC = () => {
       <h5>UserIndex</h5>
       <p>
         <Link to={'create'}>新建用户</Link>
+      </p>
+      <p>
+        <Link to={'../user'}>Index</Link>
+      </p>
+      <p>
+        <Link to={{ pathname: '../user', search: '?page=9&phone=139' }}>跳到搜索139号码的第9页</Link>
       </p>
       <p>
         <UserDownload />
