@@ -1,17 +1,5 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { createContext, PropsWithChildren, useContext } from 'react';
-
-interface EncodedQuery {
-  [key: string]: string | (string | null)[] | null | undefined;
-}
-
-interface AxiosProviderProps {
-  baseUrl: string;
-  onRequest: (config: AxiosRequestConfig) => AxiosRequestConfig;
-  onSuccess: (response: AxiosResponse) => Promise<unknown>;
-  onError: (error: AxiosError) => Promise<AxiosError>;
-  paramsSerializer: (params: EncodedQuery) => string;
-}
+import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 
 const AxiosContext = createContext<AxiosInstance | undefined>(undefined);
 
@@ -50,6 +38,14 @@ const createAxios = (baseUrl, onRequest, onSuccess, onError, paramsSerializer) =
   return axiosInstance;
 };
 
+type AxiosProviderProps = {
+  baseUrl: string;
+  onRequest: (config: AxiosRequestConfig) => AxiosRequestConfig;
+  onSuccess: (response: AxiosResponse) => Promise<unknown>;
+  onError: (error: AxiosError) => Promise<AxiosError>;
+  paramsSerializer: (params: Record<string, unknown>) => string;
+};
+
 const AxiosProvider = ({
   children,
   baseUrl,
@@ -58,8 +54,10 @@ const AxiosProvider = ({
   onError,
   paramsSerializer,
 }: PropsWithChildren<AxiosProviderProps>) => {
-  console.log('AxiosProvider render');
-  const axios = createAxios(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
+  const axios = useMemo(() => {
+    return createAxios(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <AxiosContext.Provider value={axios}>{children}</AxiosContext.Provider>;
 };

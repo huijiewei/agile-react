@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 
 import { useSplash } from '@shared/hooks/useSplash';

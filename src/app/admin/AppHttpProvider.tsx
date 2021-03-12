@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { AuthLoginAction, useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import queryString from 'query-string';

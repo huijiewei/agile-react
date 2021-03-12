@@ -14,13 +14,49 @@ import {
   Portal,
   Stack,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import { useAuthUserState } from '@admin/contexts/AuthUserContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthUserDispatch, useAuthUserState } from '@admin/contexts/AuthUserContext';
 import { ChevronDown, Home, LogOut, RefreshCw, RotateCw, User } from 'react-feather';
 import { noScrollbarsClassName } from 'react-remove-scroll-bar';
+import useRequest from '@shared/hooks/useRequest';
+import { useAuthToken } from '@admin/AppAuthProvider';
+import { useToast } from '@chakra-ui/react';
+import { flatry } from '@shared/utils/util';
+import useRefreshUser from '@admin/hooks/useRefreshUser';
 
 const HeaderUserMenu = () => {
   const { user } = useAuthUserState();
+  const { httpPost } = useRequest();
+  const { setAccessToken } = useAuthToken();
+  const { resetAuthUser } = useAuthUserDispatch();
+  const toast = useToast();
+  const navigate = useNavigate();
+  const refreshUser = useRefreshUser();
+
+  const handleRefreshProfile = async () => {
+    await refreshUser();
+  };
+
+  const handleLogout = async () => {
+    const { data } = await flatry(httpPost('auth/logout', null));
+
+    if (data) {
+      setAccessToken('');
+      resetAuthUser();
+
+      toast({
+        description: '退出登录成功',
+        status: 'success',
+        isClosable: false,
+        variant: 'subtle',
+        position: 'top',
+        duration: 1100,
+        onCloseComplete: () => {
+          navigate('login', { replace: true });
+        },
+      });
+    }
+  };
 
   return (
     user && (
@@ -35,9 +71,13 @@ const HeaderUserMenu = () => {
             <MenuItem isDisabled>{user.adminGroup.name}</MenuItem>
             <MenuDivider />
             <MenuItem icon={<User size={15} />}>个人资料</MenuItem>
-            <MenuItem icon={<RefreshCw size={15} />}>刷新资料</MenuItem>
+            <MenuItem onClick={handleRefreshProfile} icon={<RefreshCw size={15} />}>
+              刷新资料
+            </MenuItem>
             <MenuDivider />
-            <MenuItem icon={<LogOut size={15} />}>退出登录</MenuItem>
+            <MenuItem onClick={handleLogout} icon={<LogOut size={15} />}>
+              退出登录
+            </MenuItem>
           </MenuList>
         </Portal>
       </Menu>
@@ -58,7 +98,7 @@ const AgileHeader = () => {
       zIndex={30}
       backgroundColor={'white'}
     >
-      <Stack spacing={3} direction={'row'} float={'left'} as={'div'}>
+      <Stack spacing={2} direction={'row'} float={'left'} as={'div'}>
         <IconButton
           icon={<Icon as={RotateCw} />}
           float={'left'}

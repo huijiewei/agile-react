@@ -8,7 +8,7 @@ import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { useAuthToken } from '@admin/AppAuthProvider';
 
 interface LoginFormProps {
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
@@ -32,7 +32,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
       resetLoginAction();
 
-      onSuccess();
+      onSuccess && onSuccess();
     }
 
     setLoading(false);

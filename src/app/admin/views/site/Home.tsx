@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
-import { Box, Button, Stack } from '@chakra-ui/react';
+import { Box, Button, Stack, useToast } from '@chakra-ui/react';
 import useRequest from '@shared/hooks/useRequest';
 import { flatry } from '@shared/utils/util';
 import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
@@ -32,6 +32,7 @@ const Home = () => {
   const { setAccessToken } = useAuthToken();
   const { httpPost } = useRequest();
   const { setAuthUser } = useAuthUserDispatch();
+  const toast = useToast();
 
   const handleClick = () => {
     setError('No handler found for GET /admin-api/shop-products');
@@ -60,6 +61,17 @@ const Home = () => {
     console.log(data);
   };
 
+  const handleToastShow = () => {
+    toast({
+      description: '退出登录成功',
+      status: 'success',
+      isClosable: true,
+      variant: 'subtle',
+      position: 'top',
+      duration: null,
+    });
+  };
+
   console.log('Home Render');
 
   return (
@@ -67,7 +79,10 @@ const Home = () => {
       <Box>Hello Agile</Box>
       <Box>中文字体</Box>
       <Box>
-        <Button onClick={handleClick}>错误关闭</Button>
+        <Button onClick={handleToastShow}>显示一个 Toast</Button>
+      </Box>
+      <Box>
+        <Button onClick={handleClick}>显示个错误提示</Button>
       </Box>
       <Box>
         <RefreshUserButton>重新获取用户</RefreshUserButton>

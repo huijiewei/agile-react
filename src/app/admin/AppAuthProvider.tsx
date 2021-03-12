@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
 import { AuthUserProvider } from '@admin/contexts/AuthUserContext';
 
@@ -13,12 +13,12 @@ const AppAuthProvider = ({ children }) => {
 const ClientIdKey = 'ag:admin-client-id';
 const AccessTokenKey = 'ag:admin-access-token';
 
-type useAuthTokenReturnType = {
+type UseAuthTokenReturnType = {
   getAuthToken: () => { clientId: string; accessToken: string };
   setAccessToken: (accessToken: string) => void;
 };
 
-const useAuthToken = (): useAuthTokenReturnType => {
+const useAuthToken = (): UseAuthTokenReturnType => {
   const getAuthToken = useCallback(() => {
     let clientId = window.localStorage.getItem(ClientIdKey);
 

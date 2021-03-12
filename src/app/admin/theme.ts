@@ -68,6 +68,7 @@ const theme = {
         link: {},
       },
     },
+    Alert: {},
     Menu: {
       parts: ['list'],
       baseStyle: {

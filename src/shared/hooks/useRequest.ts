@@ -3,6 +3,8 @@ import { useAxios } from '@shared/contexts/AxiosContext';
 import { saveFile } from '@shared/utils/util';
 import { AxiosRequestConfig } from 'axios';
 
+export type UseRequestReturn = ReturnType<typeof useRequest>;
+
 const useRequest = (): UseRequestReturn => {
   const axios = useAxios();
 
@@ -70,9 +72,7 @@ const useRequest = (): UseRequestReturn => {
     []
   );
 
-  return { httpPut, httpGet, httpPost, httpDelete, httpDownload };
+  return { httpGet, httpPut, httpPost, httpDelete, httpDownload };
 };
-
-export type UseRequestReturn = ReturnType<typeof useRequest>;
 
 export default useRequest;
