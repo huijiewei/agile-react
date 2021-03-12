@@ -18,7 +18,7 @@ const ErrorProvider: FC = ({ children }) => {
 
   const errorDispatch = useMemo(() => {
     return {
-      setError: (message: string, historyBack: boolean) => {
+      setError: (message: string, historyBack = false) => {
         setErrorState({ message, historyBack });
       },
       resetError: () => {

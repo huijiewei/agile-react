@@ -2,10 +2,10 @@ import { FC, useState, VFC } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import useRefreshUser from '@admin/hooks/useRefreshUser';
 import { Box, Button, Stack } from '@chakra-ui/react';
-import { useAuthTokenDispatch } from '@shared/contexts/AuthTokenContext';
 import useRequest from '@shared/hooks/useRequest';
 import { flatry } from '@shared/utils/util';
 import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
+import { useAuthToken } from '@admin/AppAuthProvider';
 
 const RefreshUserButton: FC = ({ children }) => {
   const refreshUser = useRefreshUser();
@@ -29,20 +29,20 @@ const RefreshUserButton: FC = ({ children }) => {
 
 const Home: VFC = () => {
   const { setError } = useErrorDispatch();
-  const { setAccessToken } = useAuthTokenDispatch();
+  const { setAccessToken } = useAuthToken();
   const { httpPost } = useRequest();
-  const setAuthUser = useAuthUserDispatch();
+  const { setAuthUser } = useAuthUserDispatch();
 
   const handleClick = () => {
-    setError('No handler found for GET /admin-api/shop-products', false);
+    setError('No handler found for GET /admin-api/shop-products');
   };
 
   const handleSetIncorrectAccessToken = () => {
-    setAccessToken('1nzh07MZ7ca3A3w5AjPf1T2');
+    setAccessToken('1T0VCubVALBwvgHm51Hh6o2');
   };
 
   const handleSetCorrectAccessToken = () => {
-    setAccessToken('1nzh07MZ7ca3A3w5AjPf1T');
+    setAccessToken('1T0VCubVALBwvgHm51Hh6o');
   };
 
   const handleSendPost = async () => {

@@ -33,8 +33,6 @@ export const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<S
       if (event.storageArea === localStorage && event.key === key) {
         const newValue = event.newValue ? JSON.parse(event.newValue) : null;
 
-        console.log(newValue, storedValue);
-
         if (newValue !== storedValue) {
           setStoredValue(newValue);
         }

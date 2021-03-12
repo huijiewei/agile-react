@@ -1,7 +1,12 @@
 import { VFC } from 'react';
 import { Box } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
 
 const AgileHeader: VFC = () => {
+  const location = useLocation();
+
+  console.log(location);
+
   return (
     <Box as={'header'} position={'fixed'}>
       <div className="ag-header-nav flex flex-row justify-between">

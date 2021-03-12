@@ -2,19 +2,21 @@ import { useForm } from 'react-hook-form';
 import { useState, VFC } from 'react';
 import { Button } from '@chakra-ui/react';
 import { flatry } from '@shared/utils/util';
-import { useAuthTokenDispatch } from '@shared/contexts/AuthTokenContext';
 import useRequest from '@shared/hooks/useRequest';
 import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
-import { useNavigate } from 'react-router-dom';
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
+import { useAuthToken } from '@admin/AppAuthProvider';
 
-const LoginForm: VFC = () => {
+interface LoginFormProps {
+  onSuccess: () => void;
+}
+
+const LoginForm: VFC<LoginFormProps> = ({ onSuccess }) => {
   const { register, handleSubmit, errors, formState } = useForm();
   const [loading, setLoading] = useState(false);
-  const { setAccessToken } = useAuthTokenDispatch();
+  const { setAccessToken } = useAuthToken();
   const { httpPost } = useRequest();
-  const setAuthUser = useAuthUserDispatch();
-  const navigator = useNavigate();
+  const { setAuthUser } = useAuthUserDispatch();
   const { resetLoginAction } = useAuthLoginDispatch();
 
   const onSubmit = async (form) => {
@@ -30,7 +32,7 @@ const LoginForm: VFC = () => {
 
       resetLoginAction();
 
-      navigator('../home', { replace: true });
+      onSuccess();
     }
 
     setLoading(false);

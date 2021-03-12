@@ -1,16 +1,18 @@
 import LoginForm from '@admin/components/LoginForm';
 import { VFC } from 'react';
+import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 
 const LoginModal: VFC = () => {
   return (
-    <div>
-      <div>
-        <div>登录</div>
-        <div>
+    <Modal isOpen={true} isCentered={true}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>登录</ModalHeader>
+        <ModalBody>
           <LoginForm />
-        </div>
-      </div>
-    </div>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

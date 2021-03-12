@@ -31,12 +31,11 @@ const ErrorDialog: VFC = () => {
   return (
     error && (
       <AlertDialog
-        colorScheme="orange"
         isCentered
         closeOnOverlayClick={false}
         closeOnEsc={false}
         onClose={onClose}
-        isOpen={error}
+        isOpen={true}
         leastDestructiveRef={cancelRef}
       >
         <AlertDialogOverlay />

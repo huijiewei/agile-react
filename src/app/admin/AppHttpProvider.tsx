@@ -1,10 +1,10 @@
 import { FC, useCallback } from 'react';
-import { useAuthTokenState } from '@shared/contexts/AuthTokenContext';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { AuthLoginAction, useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import queryString from 'query-string';
 import { AxiosProvider } from '@shared/contexts/AxiosContext';
 import { SWRConfig } from 'swr';
+import { useAuthToken } from '@admin/AppAuthProvider';
 
 const UnauthorizedHttpCode = 401;
 const UnprocessableEntityHttpCode = 422;
@@ -12,17 +12,21 @@ const UnprocessableEntityHttpCode = 422;
 const HttpGetMethod = ['GET', 'HEAD'];
 
 const AppAxiosProvider: FC = ({ children }) => {
-  const authToken = useAuthTokenState();
   const { setError } = useErrorDispatch();
   const { setLoginAction } = useAuthLoginDispatch();
+  const { getAuthToken } = useAuthToken();
 
-  const onRequest = (config) => {
-    console.log(authToken);
-    config.headers['X-Client-Id'] = authToken.clientId;
-    config.headers['X-Access-Token'] = authToken.accessToken;
+  const onRequest = useCallback(
+    (config) => {
+      const authToken = getAuthToken();
 
-    return config;
-  };
+      config.headers['X-Client-Id'] = authToken.clientId;
+      config.headers['X-Access-Token'] = authToken.accessToken;
+
+      return config;
+    },
+    [getAuthToken]
+  );
 
   const onError = useCallback(
     (error) => {

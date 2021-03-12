@@ -35,7 +35,7 @@ const AgileAside: VFC = () => {
   ];
 
   return (
-    <Box as={'aside'} width={'220px'} height={'100vh'} position={'fixed'} backgroundColor={'#2c343f'}>
+    <Box as={'aside'} width={'220px'} height={'100vh'} position={'fixed'} color={'#fff'} backgroundColor={'#2c343f'}>
       <div className="ag-brand">
         <Link to={'home'}>
           <img alt="Agile" src={require('../assets/images/logo.png')} />

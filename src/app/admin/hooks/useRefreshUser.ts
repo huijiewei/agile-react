@@ -5,7 +5,7 @@ import { flatry } from '@shared/utils/util';
 
 const useRefreshUser = (): (() => void) => {
   const { httpGet } = useRequest();
-  const setAuthUser = useAuthUserDispatch();
+  const { setAuthUser } = useAuthUserDispatch();
 
   return useCallback(
     async () => {

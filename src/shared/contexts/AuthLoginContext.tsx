@@ -1,4 +1,4 @@
-import { createContext, FC, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, FC, useContext, useMemo, useState } from 'react';
 
 export enum AuthLoginAction {
   NONE,

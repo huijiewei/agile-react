@@ -1,4 +1,4 @@
-import { createContext, FC, useCallback, useContext, useState } from 'react';
+import { createContext, FC, useContext, useMemo, useState } from 'react';
 
 export interface IAccount {
   currentUser: IUser;
@@ -48,11 +48,19 @@ const AuthUserProvider: FC = ({ children }) => {
     permissions: [],
   });
 
-  const setAuthUser = useCallback((user, menus = [], permissions = []) => {
-    setAuthUserState({ user, menus, permissions });
+  const authUserDispatch = useMemo(() => {
+    return {
+      setAuthUser: (user, menus = [], permissions = []) => {
+        setAuthUserState({ user, menus, permissions });
+      },
+      resetAuthUser: () => {
+        setAuthUserState({ user: null, menus: [], permissions: [] });
+      },
+    };
   }, []);
+
   return (
-    <AuthUserDispatchContext.Provider value={setAuthUser}>
+    <AuthUserDispatchContext.Provider value={authUserDispatch}>
       <AuthUserStateContext.Provider value={authUserState}>{children}</AuthUserStateContext.Provider>
     </AuthUserDispatchContext.Provider>
   );
