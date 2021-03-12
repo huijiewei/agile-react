@@ -28,11 +28,9 @@ const DefaultLayout: VFC = () => {
         <AgileHeader />
         <AgileAside />
         <Flex as={'main'} minHeight={'100vh'} width={'100vw'} marginLeft={'220px'} padding={'16px'} paddingTop={'90px'}>
-          <Box padding={'16px'} width={'100%'} backgroundColor={'white'}>
-            <Suspense fallback={null}>
-              <Outlet />
-            </Suspense>
-          </Box>
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
         </Flex>
       </Flex>
       {authLoginAction == AuthLoginAction.MODAL && <LoginModal />}
