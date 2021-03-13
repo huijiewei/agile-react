@@ -1,37 +1,39 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 
+export interface EncodedQuery {
+  [key: string]: string | (string | null)[] | null | undefined;
+}
+
 const AxiosContext = createContext<AxiosInstance | undefined>(undefined);
 
-const createAxios = (baseUrl, onRequest, onSuccess, onError, paramsSerializer) => {
+const createAxios = (
+  baseUrl: string | undefined | null,
+  onRequest?: (config: AxiosRequestConfig) => AxiosRequestConfig,
+  onSuccess?: (response: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>,
+  onError?: (error: AxiosError) => Promise<AxiosError> | null,
+  paramsSerializer?: (params: unknown) => string
+) => {
   const axiosInstance = Axios.create({
-    baseURL: baseUrl,
+    baseURL: baseUrl || undefined,
     paramsSerializer: paramsSerializer,
   });
 
   axiosInstance.interceptors.request.use(
     (config) => {
-      if (onRequest) {
-        return onRequest(config);
-      }
-
-      return config;
+      return onRequest ? onRequest(config) : config;
     },
     (error) => {
-      return onError(error);
+      return onError ? onError(error) : error;
     }
   );
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      if (onSuccess) {
-        return onSuccess(response);
-      }
-
-      return response;
+      return onSuccess ? onSuccess(response) : response;
     },
     (error) => {
-      return onError(error);
+      return onError ? onError(error) : error;
     }
   );
 
@@ -39,11 +41,11 @@ const createAxios = (baseUrl, onRequest, onSuccess, onError, paramsSerializer) =
 };
 
 type AxiosProviderProps = {
-  baseUrl: string;
+  baseUrl: string | null | undefined;
   onRequest: (config: AxiosRequestConfig) => AxiosRequestConfig;
-  onSuccess: (response: AxiosResponse) => Promise<unknown>;
-  onError: (error: AxiosError) => Promise<AxiosError>;
-  paramsSerializer: (params: Record<string, unknown>) => string;
+  onSuccess: (response: AxiosResponse) => Promise<AxiosResponse> | AxiosResponse;
+  onError: (error: AxiosError) => Promise<AxiosError> | null;
+  paramsSerializer: (params: unknown) => string;
 };
 
 const AxiosProvider = ({

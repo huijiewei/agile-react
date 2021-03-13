@@ -1,18 +1,14 @@
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import { useSplash } from '@shared/hooks/useSplash';
 
 import { ErrorProvider } from '@shared/contexts/ErrorContext';
 import ErrorDialog from '@admin/components/ErrorDialog';
 
-import routes from '@admin/routers';
+import { AppAuthProvider } from '@admin/AppAuth';
+import { AppHttpProvider } from '@admin/AppHttp';
 
-import { AppAuthProvider } from '@admin/AppAuthProvider';
-import { AppHttpProvider } from '@admin/AppHttpProvider';
-
-const AppRoutes = () => {
-  return useRoutes(routes, process.env.PUBLIC_URL);
-};
+import AppRoutes from '@admin/routers';
 
 const App = () => {
   useSplash();

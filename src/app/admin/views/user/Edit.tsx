@@ -1,18 +1,17 @@
 import { useParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
+import ContentLayout from '@admin/layouts/ContentLayout';
 
 const UserEdit = () => {
   const { id } = useParams();
   const { httpGet } = useRequest();
 
-  const { data } = useSWR('users/' + id, async (url: string) => {
-    return await httpGet(url);
-  });
+  const { data } = useSWR('users/' + id, (url: string) => httpGet(url));
 
   console.log('UserEdit Render');
 
-  return <>{data && <div className={'ag-box'}>UserEdit: {data.name}</div>}</>;
+  return <ContentLayout>{data && <div className={'ag-box'}>UserEdit: {data.name}</div>}</ContentLayout>;
 };
 
 export default UserEdit;

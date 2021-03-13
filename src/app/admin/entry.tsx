@@ -1,4 +1,4 @@
-import './wdyr';
+import '@shared/utils/wdyr';
 
 import { StrictMode } from 'react';
 import { render } from 'react-dom';

@@ -1,17 +1,18 @@
-import { useCallback } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { AuthLoginAction, useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import queryString from 'query-string';
 import { AxiosProvider } from '@shared/contexts/AxiosContext';
 import { SWRConfig } from 'swr';
-import { useAuthToken } from '@admin/AppAuthProvider';
+import { useAuthToken } from '@admin/AppAuth';
+import { AxiosError } from 'axios';
 
 const UnauthorizedHttpCode = 401;
 const UnprocessableEntityHttpCode = 422;
 
 const HttpGetMethod = ['GET', 'HEAD'];
 
-const AppAxiosProvider = ({ children }) => {
+const AppHttpProvider = ({ children }: { children: ReactNode }) => {
   const { setError } = useErrorDispatch();
   const { setLoginAction } = useAuthLoginDispatch();
   const { getAuthToken } = useAuthToken();
@@ -29,7 +30,9 @@ const AppAxiosProvider = ({ children }) => {
   );
 
   const onError = useCallback(
-    (error) => {
+    (error: AxiosError) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const historyBack = error.config['__historyBack'];
 
       if (!error.response) {
@@ -39,7 +42,11 @@ const AppAxiosProvider = ({ children }) => {
       }
 
       if (error.response.status === UnauthorizedHttpCode) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (!error.config['__storeDispatch']) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           error.config['__storeDispatch'] = true;
 
           if (historyBack || HttpGetMethod.includes(error.config.method?.toUpperCase() as string)) {
@@ -51,7 +58,7 @@ const AppAxiosProvider = ({ children }) => {
           }
         }
 
-        return;
+        return null;
       }
 
       if (error.response.status === UnprocessableEntityHttpCode) {
@@ -88,20 +95,12 @@ const AppAxiosProvider = ({ children }) => {
 
   return (
     <AxiosProvider
-      baseUrl={document.querySelector('meta[name="api-host"]').getAttribute('content')}
+      baseUrl={document.querySelector('meta[name="api-host"]')?.getAttribute('content')}
       onRequest={onRequest}
       onSuccess={onSuccess}
       onError={onError}
       paramsSerializer={paramsSerializer}
     >
-      {children}
-    </AxiosProvider>
-  );
-};
-
-const AppHttpProvider = ({ children }) => {
-  return (
-    <AppAxiosProvider>
       <SWRConfig
         value={{
           revalidateOnFocus: false,
@@ -110,7 +109,7 @@ const AppHttpProvider = ({ children }) => {
       >
         {children}
       </SWRConfig>
-    </AppAxiosProvider>
+    </AxiosProvider>
   );
 };
 

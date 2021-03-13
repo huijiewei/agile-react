@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import useSWR from 'swr';
 
 const Home = () => {

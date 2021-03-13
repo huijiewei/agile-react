@@ -3,19 +3,14 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Avatar, Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import ContentLayout from '@admin/layouts/ContentLayout';
 
 const UserList = () => {
   const { httpGet } = useRequest();
   const [searchParams] = useSearchParams();
 
-  console.log(searchParams);
-
-  const { data } = useSWR('users?' + searchParams.toString(), async (url) => {
-    return await httpGet(url);
-  });
-
-  console.log('UserList Render');
+  const { data } = useSWR('users?' + searchParams.toString(), (url) => httpGet(url));
 
   return (
     <>
@@ -26,11 +21,11 @@ const UserList = () => {
             <Th>手机号码</Th>
             <Th>邮箱</Th>
             <Th>姓名</Th>
-            <Th>头像</Th>
+            <Th textAlign={'center'}>头像</Th>
             <Th>注册 IP</Th>
-            <Th>注册来源</Th>
+            <Th textAlign={'center'}>注册来源</Th>
             <Th>注册时间</Th>
-            <Th>操作</Th>
+            <Th textAlign={'right'}>操作</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -41,14 +36,20 @@ const UserList = () => {
                 <Td>{user.phone}</Td>
                 <Td>{user.email}</Td>
                 <Td>{user.name}</Td>
-                <Td>
-                  <img style={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
+                <Td textAlign={'center'}>
+                  <Avatar size={'sm'} name={user.name} src={user.avatar} />
                 </Td>
                 <Td>{user.createdIp}</Td>
-                <Td>{user.createdFrom.description}</Td>
+                <Td textAlign={'center'}>{user.createdFrom.description}</Td>
                 <Td>{user.createdAt}</Td>
-                <Td>
-                  <Link to={'edit/' + user.id}>编辑</Link>
+                <Td textAlign={'right'}>
+                  <Button as={Link} size={'xs'} variant={'outline'} to={'edit/' + user.id}>
+                    编辑
+                  </Button>
+                  &nbsp;
+                  <Button colorScheme={'red'} size={'xs'} variant={'outline'}>
+                    删除
+                  </Button>
                 </Td>
               </Tr>
             ))}
@@ -77,7 +78,7 @@ const UserDownload = () => {
   };
 
   return (
-    <Button size={'sm'} variant={'outlined'} isLoading={loading} onClick={handleDownload}>
+    <Button size={'sm'} variant={'outline'} isLoading={loading} onClick={handleDownload}>
       用户导出
     </Button>
   );
@@ -87,7 +88,7 @@ const UserIndex = () => {
   console.log('UserIndex Render');
 
   return (
-    <div className={'ag-box'}>
+    <ContentLayout>
       <h5>UserIndex</h5>
       <p>
         <Link to={'create'}>新建用户</Link>
@@ -102,7 +103,7 @@ const UserIndex = () => {
         <UserDownload />
       </p>
       <UserList />
-    </div>
+    </ContentLayout>
   );
 };
 

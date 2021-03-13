@@ -1,7 +1,13 @@
 import { Box, Button, Center, Flex, Image, Stack } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <Flex width={'100%'} alignContent={'center'} alignItems={'center'} justifyContent={'center'}>
       <Box margin={'0 auto'} backgroundColor={'white'} width={360} borderRadius={'base'} boxShadow="xl" padding={10}>
@@ -14,9 +20,7 @@ const NotFound = () => {
           </Box>
           <Box as={'p'}>页面不存在</Box>
           <Box as={'p'}>
-            <Button to={-1} as={Link}>
-              返回
-            </Button>
+            <Button onClick={handleBack}>返回</Button>
           </Box>
         </Stack>
       </Box>

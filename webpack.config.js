@@ -208,7 +208,7 @@ module.exports = (env, argv) => {
       runtimeChunk: true,
     };
 
-    config.devtool = 'eval-cheap-module-source-map';
+    config.devtool = 'eval-cheap-source-map';
   }
 
   return config;

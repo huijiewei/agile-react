@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { FC, Suspense } from 'react';
+import { Suspense } from 'react';
 
 const AgileHeader = (): JSX.Element => {
   return (

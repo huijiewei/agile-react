@@ -8,19 +8,23 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Stack,
   InputRightAddon,
+  Stack,
 } from '@chakra-ui/react';
-import { flatry } from '@shared/utils/util';
-import useRequest from '@shared/hooks/useRequest';
-import { useAuthUserDispatch } from '@admin/contexts/AuthUserContext';
+import useRequest, { requestFlatry } from '@shared/hooks/useRequest';
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
-import { useAuthToken } from '@admin/AppAuthProvider';
+import { useAuthToken } from '@admin/AppAuth';
 import { Eye, Lock, User } from 'react-feather';
 import useFormError from '@admin/hooks/useFormError';
+import { AuthUserLogin, setAuthUser } from '@admin/services/useAuthUser';
 
 interface LoginFormProps {
   onSuccess?: () => void;
+}
+
+interface Captcha {
+  image: string;
+  process: string;
 }
 
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
@@ -28,13 +32,12 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [loading, setLoading] = useState(false);
   const { setAccessToken } = useAuthToken();
   const { httpPost, httpGet } = useRequest();
-  const { setAuthUser } = useAuthUserDispatch();
   const { resetLoginAction } = useAuthLoginDispatch();
   const { bindErrors } = useFormError();
-  const [captcha, setCaptcha] = useState(null);
+  const [captcha, setCaptcha] = useState<Captcha | null>(null);
 
   const updateCaptcha = async () => {
-    const { data } = await flatry(httpGet('open/captcha', null, false));
+    const { data } = await requestFlatry<Captcha | undefined>(httpGet('open/captcha', null, false));
 
     if (data) {
       setCaptcha(data);
@@ -48,7 +51,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     setValue('captcha', '');
   };
 
-  const onSubmit = async (form) => {
+  const onSubmit = async (form: Record<string, unknown>) => {
     setLoading(true);
 
     if (captcha) {
@@ -58,11 +61,17 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       form.captcha = captchaProcess(form.captcha);
     }
 
-    const { data, error } = await flatry(httpPost('auth/login', form));
+    const { data, error } = await requestFlatry<AuthUserLogin>(httpPost('auth/login', form));
+
+    setLoading(false);
 
     if (data) {
       setAccessToken(data.accessToken);
-      setAuthUser(data.currentUser, data.groupMenus, data.groupPermissions);
+      await setAuthUser({
+        currentUser: data.currentUser,
+        groupMenus: data.groupMenus,
+        groupPermissions: data.groupPermissions,
+      });
 
       resetLoginAction();
 
@@ -77,11 +86,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       } else {
         removeCaptcha();
       }
-
-      console.log(errors);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -113,7 +118,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
               </InputLeftElement>
               <Input name="captcha" ref={register({ required: true })} type="password" placeholder="验证码" />
               <InputRightAddon>
-                <img onClick={updateCaptcha} src={captcha.image} />
+                <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />
               </InputRightAddon>
             </InputGroup>
             <FormErrorMessage>{errors.captcha && (errors.captcha.message || '请输入验证码')}</FormErrorMessage>

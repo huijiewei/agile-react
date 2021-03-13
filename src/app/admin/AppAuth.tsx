@@ -1,13 +1,8 @@
-import { useCallback } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
-import { AuthUserProvider } from '@admin/contexts/AuthUserContext';
 
-const AppAuthProvider = ({ children }) => {
-  return (
-    <AuthLoginProvider>
-      <AuthUserProvider>{children}</AuthUserProvider>
-    </AuthLoginProvider>
-  );
+const AppAuthProvider = ({ children }: { children: ReactNode }) => {
+  return <AuthLoginProvider>{children}</AuthLoginProvider>;
 };
 
 const ClientIdKey = 'ag:admin-client-id';

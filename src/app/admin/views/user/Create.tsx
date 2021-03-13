@@ -1,5 +1,7 @@
+import ContentLayout from '@admin/layouts/ContentLayout';
+
 const UserCreate = () => {
-  return <div className={'ag-box'}>UserCreate</div>;
+  return <ContentLayout>UserCreate</ContentLayout>;
 };
 
 export default UserCreate;

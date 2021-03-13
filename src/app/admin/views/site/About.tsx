@@ -1,4 +1,5 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
+import ContentLayout from '@admin/layouts/ContentLayout';
 
 const About = () => {
   const { setError } = useErrorDispatch();
@@ -8,14 +9,14 @@ const About = () => {
   };
 
   return (
-    <div className={'ag-box'}>
+    <ContentLayout>
       <p>About Agile</p>
       <p>
         <button className={'btn'} onClick={handleClick}>
           错误返回
         </button>
       </p>
-    </div>
+    </ContentLayout>
   );
 };
 

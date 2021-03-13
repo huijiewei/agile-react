@@ -1,6 +1,5 @@
 import { lazy } from 'react';
 
-const UserLayout = lazy(() => import(/* webpackChunkName: "chunk-user" */ '@admin/views/user/Layout'));
 const UserIndex = lazy(() => import(/* webpackChunkName: "chunk-user" */ '@admin/views/user/Index'));
 const UserCreate = lazy(() => import(/* webpackChunkName: "chunk-user" */ '@admin/views/user/Create'));
 const UserEdit = lazy(() => import(/* webpackChunkName: "chunk-user" */ '@admin/views/user/Edit'));
@@ -8,7 +7,6 @@ const UserEdit = lazy(() => import(/* webpackChunkName: "chunk-user" */ '@admin/
 const userRoutes = [
   {
     path: 'user',
-    element: <UserLayout />,
     children: [
       {
         path: '',

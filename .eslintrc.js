@@ -17,25 +17,26 @@ module.exports = {
       version: 'detect',
     },
   },
-  extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
-  rules: { 'react/jsx-uses-react': 'off', 'react/react-in-jsx-scope': 'off' },
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+  rules: {
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+  },
   overrides: [
     {
-      files: ['*.ts', '*.tsx'],
-      parser: '@typescript-eslint/parser',
-      extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
+      files: ['*.ts'],
       rules: {
-        'react/prop-types': 'off',
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'warn',
       },
-      overrides: [
-        {
-          files: ['*.ts'],
-          rules: {
-            '@typescript-eslint/explicit-module-boundary-types': 'warn',
-          },
-        },
-      ],
     },
   ],
 };

@@ -1,76 +1,81 @@
-import { useCallback } from 'react';
 import { useAxios } from '@shared/contexts/AxiosContext';
 import { saveFile } from '@shared/utils/util';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 
-export type UseRequestReturn = ReturnType<typeof useRequest>;
+type UseRequestType = {
+  httpGet: <T>(url: string, params: unknown, historyBack?: boolean) => Promise<T>;
+  httpPost: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
+  httpPut: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
+  httpDelete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
+  httpDownload: (method: Method, url: string, params?: unknown, data?: unknown, historyBack?: boolean) => void;
+};
 
-const useRequest = (): UseRequestReturn => {
+export const requestFlatry = async <T>(
+  promise: Promise<T>
+): Promise<{ data: T | undefined; error: AxiosError | undefined }> => {
+  return await promise.then((data) => ({ data, error: undefined })).catch((error) => ({ data: undefined, error }));
+};
+
+const useRequest = (): UseRequestType => {
   const axios = useAxios();
 
-  const httpGet = useCallback(
-    (url, params = null, historyBack = true) => {
-      return axios.get(url, {
-        params: params,
-        __historyBack: historyBack,
-      });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const httpGet = <T>(url: string, params: unknown = null, historyBack = true) => {
+    const config = {
+      params: params,
+      __historyBack: historyBack,
+    } as AxiosRequestConfig;
 
-  const httpPost = useCallback(
-    (url, data, params = null, historyBack = false) => {
-      return axios.post(url, data, {
-        params: params,
-        __historyBack: historyBack,
-      });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    return axios.get(url, config) as Promise<T>;
+  };
 
-  const httpPut = useCallback(
-    (url, data, params = null, historyBack = false) => {
-      return axios.put(url, data, {
-        params: params,
-        __historyBack: historyBack,
-      });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const httpPost = <T>(url: string, data: unknown, params: unknown = null, historyBack = false) => {
+    const config = {
+      params: params,
+      __historyBack: historyBack,
+    } as AxiosRequestConfig;
 
-  const httpDelete = useCallback(
-    (url, params = null, historyBack = false) => {
-      return axios.delete(url, {
-        params: params,
-        __historyBack: historyBack,
-      });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    return axios.post(url, data, config) as Promise<T>;
+  };
 
-  const httpDownload = useCallback(
-    (method, url, params = null, data = null, historyBack = false) => {
-      const config = {
-        url: url,
-        method: method,
-        timeout: 120 * 1000,
-        params: params,
-        data: data,
-        responseType: 'blob',
-        __historyBack: historyBack,
-      } as AxiosRequestConfig;
+  const httpPut = <T>(url: string, data: unknown, params: unknown = null, historyBack = false) => {
+    const config = {
+      params: params,
+      __historyBack: historyBack,
+    } as AxiosRequestConfig;
 
-      axios.request(config).then((response) => {
-        return saveFile(response);
-      });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    return axios.put(url, data, config) as Promise<T>;
+  };
+
+  const httpDelete = <T>(url: string, params: unknown = null, historyBack = false) => {
+    const config = {
+      params: params,
+      __historyBack: historyBack,
+    } as AxiosRequestConfig;
+
+    return axios.delete(url, config) as Promise<T>;
+  };
+
+  const httpDownload = (
+    method: Method,
+    url: string,
+    params: unknown = null,
+    data: unknown = null,
+    historyBack = false
+  ) => {
+    const config = {
+      url: url,
+      method: method,
+      timeout: 120 * 1000,
+      params: params,
+      data: data,
+      responseType: 'blob',
+      __historyBack: historyBack,
+    } as AxiosRequestConfig;
+
+    axios.request(config).then((response) => {
+      return saveFile(response);
+    });
+  };
 
   return { httpGet, httpPut, httpPost, httpDelete, httpDownload };
 };

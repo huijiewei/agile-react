@@ -1,34 +1,46 @@
 import { ErrorOption, FieldName, FieldValues } from 'react-hook-form';
 import { AxiosError } from 'axios';
+import { Dict } from '@shared/types';
 
-const useFormError = (): {
+interface Violation {
+  field: string;
+  message: string;
+}
+
+type UseFormErrorType = {
   bindErrors: (
     error: AxiosError,
     setError: (field: FieldName<FieldValues>, message: ErrorOption) => void,
     clearErrors: () => void
-  ) => Record<string, string> | undefined;
-} => {
-  const bindErrors = (error, setError, clearErrors) => {
-    const result = {};
+  ) => Dict<string> | null;
+};
+
+const useFormError = (): UseFormErrorType => {
+  const bindErrors = (
+    error: AxiosError,
+    setError: (field: FieldName<FieldValues>, message: ErrorOption) => void,
+    clearErrors: () => void
+  ) => {
+    const result: Dict<string> = {};
 
     clearErrors();
 
     if (!error || !error.response || !error.response.status || error.response.status !== 422) {
-      return;
+      return null;
     }
 
-    const violations = Array.isArray(error.response.data.violations)
+    const violations: Violation[] = Array.isArray(error.response.data.violations)
       ? error.response.data.violations
       : Array.isArray(error.response.data)
       ? error.response.data
       : [];
 
     if (violations.length === 0) {
-      return;
+      return null;
     }
 
     violations.map((violation) => {
-      const field = violation.field.split('.').pop();
+      const field = violation.field.split('.').pop() as string;
 
       setError(field, { type: 'manual', message: violation.message });
 

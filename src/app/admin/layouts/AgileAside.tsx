@@ -28,6 +28,10 @@ const AgileAside = () => {
       label: '组件',
     },
     {
+      url: 'nest',
+      label: '嵌套页面',
+    },
+    {
       url: '404',
       label: '404',
     },
@@ -48,10 +52,8 @@ const AgileAside = () => {
       </Box>
       <Box as={'nav'}>
         {menus.map((menu, index) => (
-          <li key={'m-' + index} className="leading-8">
-            <NavLink className="font-medium" to={menu.url}>
-              {menu.label}
-            </NavLink>
+          <li key={'m-' + index}>
+            <NavLink to={menu.url}>{menu.label}</NavLink>
           </li>
         ))}
         {[

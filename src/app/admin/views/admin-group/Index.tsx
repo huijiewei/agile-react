@@ -1,8 +1,10 @@
+import ContentLayout from '@admin/layouts/ContentLayout';
+
 const AdminGroupIndex = () => {
   return (
-    <div className={'ag-box'}>
+    <ContentLayout>
       <p>AdminGroup Index</p>
-    </div>
+    </ContentLayout>
   );
 };
 

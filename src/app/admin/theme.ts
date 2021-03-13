@@ -11,6 +11,7 @@ const theme = {
     global: {
       body: {
         fontSize: 'md',
+        overflowX: 'hidden',
       },
     },
   },
@@ -59,18 +60,18 @@ const theme = {
           h: 9,
           minW: 9,
           fontSize: 'md',
-          px: 5,
+          px: 4,
         },
         sm: {
-          h: 7,
+          h: '1.82rem',
           minW: 7,
           fontSize: 'sm',
           px: 3,
         },
         xs: {
-          h: 5,
-          minW: 5,
-          fontSize: 'xs',
+          h: '1.55rem',
+          minW: 6,
+          fontSize: 'sm',
           px: 2,
         },
       },
