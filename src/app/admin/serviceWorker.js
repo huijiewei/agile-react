@@ -1,7 +1,7 @@
-if ('serviceWorker' in navigator) {
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register(`${process.env.BASE_URL}/service-worker.js`)
+      .register(`${process.env.PUBLIC_URL}/service-worker.js`)
       .then((registration) => {
         console.log('SW registered: ', registration);
       })
