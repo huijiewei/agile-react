@@ -16,14 +16,16 @@ import { AlertCircle } from 'react-feather';
 const ErrorDialog = () => {
   const error = useErrorState();
   const { resetError } = useErrorDispatch();
-  const cancelRef = useRef();
+  const cancelRef = useRef(null);
 
   const navigate = useNavigate();
 
   const onClose = () => {
+    const historyBack = error && error.historyBack;
+
     resetError();
 
-    if (error.historyBack) {
+    if (historyBack) {
       navigate(-1);
     }
   };

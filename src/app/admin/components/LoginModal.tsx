@@ -1,19 +1,26 @@
 import LoginForm from '@admin/components/LoginForm';
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 const LoginModal = () => {
-  const handleClose = () => {
-    console.log(1);
-  };
+  const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
 
   return (
-    <Modal isOpen={true} isCentered={true} onClose={handleClose}>
+    <Modal size="sm" isOpen={isOpen} isCentered closeOnOverlayClick={false} closeOnEsc={false} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>登录</ModalHeader>
+        <ModalHeader textAlign="center">管理员登录</ModalHeader>
         <ModalBody>
           <LoginForm />
         </ModalBody>
+        <ModalFooter />
       </ModalContent>
     </Modal>
   );
