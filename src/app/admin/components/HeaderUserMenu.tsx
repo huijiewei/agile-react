@@ -22,7 +22,7 @@ const HeaderUserMenu = () => {
 
     if (data) {
       setAccessToken('');
-      await mutate(null);
+      await mutate(undefined, false);
 
       toast({
         description: '退出登录成功',

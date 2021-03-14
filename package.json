@@ -13,7 +13,7 @@
   "scripts": {
     "admin-dev": "webpack serve --hot --mode development --env APP_CONFIG=./app.admin.config.js",
     "admin-build": "webpack build --mode production --env APP_CONFIG=./app.admin.config.js",
-    "admin-serve": "http-server 'dist' -a 'www.agile.test' -o '/admin' -p 8011 --cros --proxy http://www.agile.test:8011/admin?",
+    "admin-serve": "http-server 'dist' -a 'localhost' -o '/admin' -p 8011 --cros --proxy http://localhost:8011/admin?",
     "mobile-dev": "webpack serve --hot --mode development --env APP_CONFIG=./app.mobile.config.js",
     "mobile-build": "webpack build --mode production --env APP_CONFIG=./app.mobile.config.js",
     "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
