@@ -9,7 +9,9 @@ export const deepSearch = (needle: string, haystack: Dict | Dict[], found: strin
       continue;
     }
 
-    if (key === needle) found.push(value);
+    if (key === needle) {
+      found.push(value);
+    }
 
     if (typeof value === 'object') {
       deepSearch(needle, value, found);
