@@ -1,6 +1,6 @@
 import { ErrorOption, FieldName, FieldValues } from 'react-hook-form';
 import { AxiosError } from 'axios';
-import { Dict } from '@shared/types';
+import { Dict } from '@shared/utils/types';
 
 interface Violation {
   field: string;

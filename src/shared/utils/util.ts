@@ -1,21 +1,20 @@
+import { Dict } from '@shared/utils/types';
 import { AxiosResponse } from 'axios';
 
-export const deepSearch = <T, K extends keyof T>(needle: string, haystack: T[], found: K[] = []): K[] => {
-  Object.keys(haystack).forEach((key) => {
-    if (!haystack[key]) {
-      return;
+export const deepSearch = (needle: string, haystack: Dict | Dict[], found: string[] = []): string[] => {
+  for (const key in haystack) {
+    const value = haystack[key];
+
+    if (!value) {
+      continue;
     }
 
-    if (key === needle) {
-      found.push(haystack[key]);
+    if (key === needle) found.push(value);
 
-      return found;
+    if (typeof value === 'object') {
+      deepSearch(needle, value, found);
     }
-    if (typeof haystack[key] === 'object') {
-      return deepSearch(needle, haystack[key], found);
-    }
-  });
-
+  }
   return found;
 };
 

@@ -38,7 +38,14 @@ const AgileAside = () => {
   ];
 
   return (
-    <Box as={'aside'} width={'220px'} height={'100vh'} position={'fixed'} color={'#fff'} backgroundColor={'#2c343f'}>
+    <Box
+      as={'aside'}
+      width={[0, 0, '60px', '220px']}
+      height={'100vh'}
+      position={'fixed'}
+      color={'#fff'}
+      backgroundColor={'#2c343f'}
+    >
       <Box lineHeight={'50px'} height={'50px'} textAlign={'center'} verticalAlign={'middle'} as="div">
         <Link to={'home'}>
           <Image display={'inline-block'} height={'39px'} alt="Agile" src={require('../assets/images/logo.png')} />

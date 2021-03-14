@@ -24,7 +24,7 @@ const DefaultLayout = () => {
           as={'main'}
           minHeight={'101vh'}
           width={'100vw'}
-          marginLeft={'220px'}
+          marginLeft={[0, 0, '60px', '220px']}
           padding={'16px'}
           paddingTop={'90px'}
         >

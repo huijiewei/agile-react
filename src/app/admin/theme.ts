@@ -1,12 +1,12 @@
+import { createBreakpoints } from '@chakra-ui/theme-tools';
+
 const theme = {
-  breakpoints: {
-    tablet: '640px',
-    laptop: '1024px',
-    desktop: '1280px',
-  },
-  config: {
-    cssVarsPrefix: 'ag',
-  },
+  breakpoints: createBreakpoints({
+    sm: '640px',
+    md: '1024px',
+    lg: '1280px',
+    xl: '1280px',
+  }),
   styles: {
     global: {
       body: {
