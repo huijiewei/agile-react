@@ -8,10 +8,10 @@ import About from '@admin/views/site/About';
 import NotFound from '@admin/views/site/NotFound';
 
 import adminRoutes from './admin/admin';
-import adminGroupRoutes from './admin/adminGroup';
+import adminGroupRoutes from './admin/admin-group';
 import userRoutes from './user/user';
 import NextLayout from '@admin/views/nest/Layout';
-import NestIndex from '@admin/views/nest';
+import NestIndex from '@admin/views/nest/Index';
 import Nest1 from '@admin/views/nest/1';
 import Nest2 from '@admin/views/nest/2';
 import Nest11 from '@admin/views/nest/1-1';

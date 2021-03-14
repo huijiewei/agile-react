@@ -3,7 +3,7 @@ import { saveFile } from '@shared/utils/util';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 
 type UseRequestType = {
-  httpGet: <T>(url: string, params: unknown, historyBack?: boolean) => Promise<T>;
+  httpGet: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
   httpPost: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   httpPut: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   httpDelete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
