@@ -31,7 +31,6 @@ const ErrorDialog = () => {
 
   return (
     <Dialog
-      transitionDuration={2000}
       TransitionProps={{
         onExited: handleDialogExited,
       }}
