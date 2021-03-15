@@ -2,14 +2,20 @@ import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import { useState, useEffect } from 'react';
 
 const ErrorDialog = () => {
   const error = useErrorState();
   const { resetError } = useErrorDispatch();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(Boolean(error));
+  }, [error, setOpen]);
 
   const navigate = useNavigate();
 
-  const handleDialogClose = () => {
+  const handleDialogExited = () => {
     const historyBack = error && error.historyBack;
 
     resetError();
@@ -19,22 +25,30 @@ const ErrorDialog = () => {
     }
   };
 
+  const handleButtonClick = () => {
+    setOpen(false);
+  };
+
   return (
-    error && (
-      <Dialog open={true} onClose={handleDialogClose}>
-        <DialogContent sx={{ textAlign: 'center', minWidth: '320px' }}>
-          <p>
-            <ErrorOutlineIcon fontSize={'large'} color={'error'} />
-          </p>
-          <p>{error.message}</p>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', marginBottom: '16px' }}>
-          <Button onClick={handleDialogClose} autoFocus={true}>
-            {error.historyBack ? '返回' : '关闭'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    )
+    <Dialog
+      transitionDuration={2000}
+      TransitionProps={{
+        onExited: handleDialogExited,
+      }}
+      open={open}
+    >
+      <DialogContent sx={{ textAlign: 'center', minWidth: '320px' }}>
+        <p>
+          <ErrorOutlineIcon fontSize={'large'} color={'error'} />
+        </p>
+        <p>{error?.message}</p>
+      </DialogContent>
+      <DialogActions sx={{ justifyContent: 'center', marginBottom: '16px' }}>
+        <Button onClick={handleButtonClick} autoFocus={true}>
+          {error?.historyBack ? '返回' : '关闭'}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
