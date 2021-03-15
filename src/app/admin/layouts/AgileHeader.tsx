@@ -1,13 +1,12 @@
 import { Box, Icon, IconButton, Stack } from '@chakra-ui/react';
 import { RotateCw } from 'react-feather';
-import { noScrollbarsClassName } from 'react-remove-scroll-bar';
 import HeaderUserMenu from '@admin/components/HeaderUserMenu';
 import HeaderBreadcrumb from '@admin/components/HeaderBreadcrumb';
 
 const AgileHeader = () => {
   return (
     <Box
-      className={noScrollbarsClassName}
+      className="mui-fixed"
       as={'header'}
       position={'fixed'}
       width={['calc(100% - 0)', 'calc(100% - 0)', 'calc(100% - 60px)', 'calc(100% - 220px)']}

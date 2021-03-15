@@ -1,26 +1,15 @@
-import { useRef } from 'react';
 import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  Center,
-} from '@chakra-ui/react';
-import { AlertCircle } from 'react-feather';
+import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const ErrorDialog = () => {
   const error = useErrorState();
   const { resetError } = useErrorDispatch();
-  const cancelRef = useRef(null);
 
   const navigate = useNavigate();
 
-  const onClose = () => {
+  const handleDialogClose = () => {
     const historyBack = error && error.historyBack;
 
     resetError();
@@ -32,30 +21,19 @@ const ErrorDialog = () => {
 
   return (
     error && (
-      <AlertDialog
-        isCentered
-        closeOnOverlayClick={false}
-        closeOnEsc={false}
-        onClose={onClose}
-        isOpen={true}
-        leastDestructiveRef={cancelRef}
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader />
-          <AlertDialogBody>
-            <Center marginBottom={5}>
-              <AlertCircle color="orange" size={36} />
-            </Center>
-            <Center>{error.message}</Center>
-          </AlertDialogBody>
-          <AlertDialogFooter justifyContent="center">
-            <Button ref={cancelRef} onClick={onClose}>
-              {error.historyBack ? '返回' : '关闭'}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <Dialog open={true} onClose={handleDialogClose}>
+        <DialogContent sx={{ textAlign: 'center', minWidth: '320px' }}>
+          <p>
+            <ErrorOutlineIcon fontSize={'large'} color={'error'} />
+          </p>
+          <p>{error.message}</p>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', marginBottom: '16px' }}>
+          <Button onClick={handleDialogClose} autoFocus={true}>
+            {error.historyBack ? '返回' : '关闭'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     )
   );
 };

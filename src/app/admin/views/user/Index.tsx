@@ -91,7 +91,11 @@ const UserIndex = () => {
     <ContentLayout>
       <h5>UserIndex</h5>
       <p>
-        <Link to={'create'}>新建用户</Link>
+        <Button as={Link} to={'create'}>
+          新建用户
+        </Button>
+        &nbsp;
+        <UserDownload />
       </p>
       <p>
         <Link to={'../user'}>Index</Link>
@@ -99,9 +103,7 @@ const UserIndex = () => {
       <p>
         <Link to={{ pathname: '../user', search: '?page=9&phone=139' }}>跳到搜索139号码的第9页</Link>
       </p>
-      <p>
-        <UserDownload />
-      </p>
+      <p></p>
       <UserList />
     </ContentLayout>
   );

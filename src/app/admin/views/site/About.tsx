@@ -1,5 +1,6 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
+import { Button, Box } from '@material-ui/core';
 
 const About = () => {
   const { setError } = useErrorDispatch();
@@ -11,11 +12,21 @@ const About = () => {
   return (
     <ContentLayout>
       <p>About Agile</p>
-      <p>
-        <button className={'btn'} onClick={handleClick}>
-          错误返回
-        </button>
-      </p>
+      <Box>
+        <Button onClick={handleClick}>中文</Button>
+        &nbsp;&nbsp;
+        <Button onClick={handleClick}>English</Button>
+        &nbsp;&nbsp;
+        <Button onClick={handleClick}>中文 English</Button>
+        &nbsp;&nbsp;
+        <Button size="small" onClick={handleClick}>
+          中文 English
+        </Button>
+        &nbsp;&nbsp;
+        <Button size="small" onClick={handleClick}>
+          中文 English
+        </Button>
+      </Box>
     </ContentLayout>
   );
 };

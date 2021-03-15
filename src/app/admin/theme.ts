@@ -63,16 +63,16 @@ const theme = {
           px: 4,
         },
         sm: {
-          h: '1.82rem',
+          h: 8,
           minW: 7,
           fontSize: 'sm',
           px: 3,
         },
         xs: {
-          h: '1.55rem',
-          minW: 6,
+          h: 6,
+          minW: 7,
           fontSize: 'sm',
-          px: 2,
+          px: 3,
         },
       },
       variants: {
