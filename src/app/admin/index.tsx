@@ -47,11 +47,6 @@ const agileTheme = createMuiTheme(
           disableElevation: true,
           variant: 'contained',
         },
-        styleOverrides: {
-          sizeSmall: {
-            lineHeight: 1.69,
-          },
-        },
       },
     },
   },
