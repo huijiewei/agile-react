@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { Button, InputAdornment, TextField } from '@material-ui/core';
+import { Button, colors, InputAdornment, TextField } from '@material-ui/core';
 import { AccountCircleOutlined, LockOutlined, Visibility } from '@material-ui/icons';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 
@@ -9,6 +9,7 @@ import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { useAuthToken } from '@admin/AppAuth';
 import useFormError from '@admin/hooks/useFormError';
 import { AuthUserLogin, setAuthUser } from '@admin/services/useAuthUser';
+import { grey } from '@material-ui/core/colors';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -112,7 +113,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <LockOutlined />
+              <LockOutlined color={'disabled'} />
             </InputAdornment>
           ),
         }}
@@ -130,7 +131,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Visibility />
+                <Visibility color={'disabled'} />
               </InputAdornment>
             ),
             endAdornment: <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />,
