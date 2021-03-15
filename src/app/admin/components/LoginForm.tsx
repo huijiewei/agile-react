@@ -84,7 +84,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
-        sx={{ marginBottom: 1.2 }}
+        sx={{ marginBottom: 1.5 }}
         error={!!errors.account}
         helperText={errors.account ? errors.account.message || '请输入帐号' : ' '}
         label="帐号"
@@ -101,7 +101,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         }}
       />
       <TextField
-        sx={{ marginBottom: 1.2 }}
+        sx={{ marginBottom: 1.5 }}
         error={!!errors.password}
         helperText={errors.password ? errors.password.message || '请输入密码' : ' '}
         label="密码"
@@ -119,7 +119,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       />
       {captcha && (
         <TextField
-          sx={{ marginBottom: 1.2 }}
+          sx={{ marginBottom: 1.5 }}
           error={!!errors.captcha}
           helperText={errors.captcha ? errors.captcha.message || '请输入验证码' : ' '}
           label="验证码"
