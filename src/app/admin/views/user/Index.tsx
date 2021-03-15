@@ -3,7 +3,21 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
 import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import { Avatar, Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Pagination,
+  PaginationItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
+
 import ContentLayout from '@admin/layouts/ContentLayout';
 
 const UserList = () => {
@@ -14,48 +28,57 @@ const UserList = () => {
 
   return (
     <>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Id</Th>
-            <Th>手机号码</Th>
-            <Th>邮箱</Th>
-            <Th>姓名</Th>
-            <Th textAlign={'center'}>头像</Th>
-            <Th>注册 IP</Th>
-            <Th textAlign={'center'}>注册来源</Th>
-            <Th>注册时间</Th>
-            <Th textAlign={'right'}>操作</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data &&
-            data.items.map((user) => (
-              <Tr key={user.id}>
-                <Td>{user.id}</Td>
-                <Td>{user.phone}</Td>
-                <Td>{user.email}</Td>
-                <Td>{user.name}</Td>
-                <Td textAlign={'center'}>
-                  <Avatar size={'sm'} name={user.name} src={user.avatar} />
-                </Td>
-                <Td>{user.createdIp}</Td>
-                <Td textAlign={'center'}>{user.createdFrom.description}</Td>
-                <Td>{user.createdAt}</Td>
-                <Td textAlign={'right'}>
-                  <Button as={Link} size={'xs'} variant={'outline'} to={'edit/' + user.id}>
-                    编辑
-                  </Button>
-                  &nbsp;
-                  <Button colorScheme={'red'} size={'xs'} variant={'outline'}>
-                    删除
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-        </Tbody>
-      </Table>
-      {data && data.pages && <Stack></Stack>}
+      {' '}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>手机号码</TableCell>
+              <TableCell>邮箱</TableCell>
+              <TableCell>姓名</TableCell>
+              <TableCell align="center">头像</TableCell>
+              <TableCell>注册 IP</TableCell>
+              <TableCell>注册来源</TableCell>
+              <TableCell>注册时间</TableCell>
+              <TableCell align={'right'}>操作</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.items.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell align="center">
+                    <Avatar sx={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
+                  </TableCell>
+                  <TableCell>{user.createdIp}</TableCell>
+                  <TableCell>{user.createdFrom.description}</TableCell>
+                  <TableCell>{user.createdAt}</TableCell>
+                  <TableCell align={'right'}>
+                    <Button></Button>
+                    <Link to={'edit/' + user.id}>编辑</Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box sx={{ textAlign: 'right', marginTop: '16px' }}>
+        {data && (
+          <Pagination
+            shape="rounded"
+            count={data.pages.pageCount}
+            page={data.pages.currentPage}
+            renderItem={(item) => (
+              <PaginationItem component={Link} to={`${item.page === 1 ? '' : `?page=${item.page}`}`} {...item} />
+            )}
+          />
+        )}
+      </Box>
     </>
   );
 };
