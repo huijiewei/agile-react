@@ -107,6 +107,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         helperText={errors.password ? errors.password.message || '请输入密码' : ' '}
         label="密码"
         name="password"
+        type="password"
         fullWidth
         placeholder="密码"
         inputRef={register({ required: true })}

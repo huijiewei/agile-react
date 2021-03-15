@@ -12,6 +12,18 @@ import { zhCN } from '@material-ui/core/locale';
 const agileTheme = createMuiTheme(
   {
     typography: {
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
       body1: {
         fontSize: '0.875rem',
       },
