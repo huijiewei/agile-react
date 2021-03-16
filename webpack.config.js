@@ -176,14 +176,14 @@ module.exports = (env, argv) => {
             name: 'react',
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
             chunks: 'initial',
-            priority: 20,
+            priority: 30,
             enforce: true,
           },
           material: {
             name: 'material',
             test: /[\\/]node_modules[\\/](@material-ui)[\\/]/,
             chunks: 'initial',
-            priority: 20,
+            priority: 25,
             enforce: true,
           },
           vendor: {
