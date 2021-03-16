@@ -1,42 +1,42 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Box, Image } from '@chakra-ui/react';
 
-const AgileAside = () => {
-  const menus = [
-    {
-      url: 'home',
-      label: '主页',
-    },
-    {
-      url: 'about',
-      label: '关于',
-    },
-    {
-      url: 'admin',
-      label: '管理员',
-    },
-    {
-      url: 'admin-group',
-      label: '管理组',
-    },
-    {
-      url: 'user',
-      label: '用户',
-    },
-    {
-      url: 'component',
-      label: '组件',
-    },
-    {
-      url: 'nest',
-      label: '嵌套页面',
-    },
-    {
-      url: '404',
-      label: '404',
-    },
-  ];
+const menus = [
+  {
+    url: 'home',
+    label: '主页',
+  },
+  {
+    url: 'about',
+    label: '关于',
+  },
+  {
+    url: 'admin',
+    label: '管理员',
+  },
+  {
+    url: 'admin-group',
+    label: '管理组',
+  },
+  {
+    url: 'user',
+    label: '用户',
+  },
+  {
+    url: 'component',
+    label: '组件',
+  },
+  {
+    url: 'nest',
+    label: '嵌套页面',
+  },
+  {
+    url: '404',
+    label: '404',
+  },
+];
 
+const AgileAside = () => {
   return (
     <Box
       as={'aside'}

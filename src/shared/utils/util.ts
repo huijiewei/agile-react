@@ -32,11 +32,15 @@ export const formatUrl = (url: string): string => {
   return url;
 };
 
-export const flatry = async <T, E>(promise: Promise<T>): Promise<{ data: T | undefined; error: E | undefined }> => {
-  return await promise.then((data) => ({ data, error: undefined })).catch((error) => ({ data: undefined, error }));
+export const flatry = <T, E>(promise: Promise<T>): Promise<{ data: T | undefined; error: E | undefined }> => {
+  return promise.then((data) => ({ data, error: undefined })).catch((error) => ({ data: undefined, error }));
 };
 
-export const saveFile = (response: AxiosResponse): boolean => {
+export const saveFile = (response: AxiosResponse | undefined): boolean => {
+  if (!response) {
+    return false;
+  }
+
   let filename = response.headers['x-suggested-filename'];
 
   if (!filename) {

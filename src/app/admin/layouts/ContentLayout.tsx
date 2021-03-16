@@ -1,12 +1,8 @@
-import { Box } from '@chakra-ui/react';
+import { Box } from '@material-ui/core';
 import { ReactNode } from 'react';
 
 const ContentLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <Box width={'100%'} backgroundColor={'white'} padding={'16px'}>
-      {children}
-    </Box>
-  );
+  return <Box>{children}</Box>;
 };
 
 export default ContentLayout;

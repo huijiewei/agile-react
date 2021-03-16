@@ -1,12 +1,11 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { Box, Stack, useToast } from '@chakra-ui/react';
-import useRequest from '@shared/hooks/useRequest';
-import { flatry } from '@shared/utils/util';
+import useRequest, { requestFlatry } from '@shared/hooks/useRequest';
 import { useAuthToken } from '@admin/AppAuth';
 import { refreshAuthUser } from '@admin/services/useAuthUser';
 import useAuthPermission from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { Button } from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 
 const Home = () => {
   const { setError } = useErrorDispatch();
@@ -33,7 +32,7 @@ const Home = () => {
   };
 
   const handleSendPost = async () => {
-    const { data } = await flatry(httpPost('user/create', {}));
+    const { data } = await requestFlatry(httpPost('user/create', {}));
 
     if (data) {
       console.log(data);
@@ -82,6 +81,10 @@ const Home = () => {
           <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
         </Box>
         <Box>
+          <Button variant="outlined" size={'large'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;
           <Button variant="outlined" onClick={handleClick}>
             显示个错误提示
           </Button>
@@ -90,11 +93,31 @@ const Home = () => {
             显示个错误提示
           </Button>
           &nbsp;
-          <Button variant="outlined" size={'small'} onClick={handleClick}>
+          <Button variant="outlined" size={'tiny'} onClick={handleClick}>
             显示个错误提示
           </Button>
         </Box>
-        <div>TEST</div>
+        <Box>
+          <Button size={'large'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;
+          <Button onClick={handleClick}>显示个错误提示</Button>
+          &nbsp;
+          <Button size={'small'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;
+          <Button size={'tiny'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+        </Box>
+        <div>
+          <ButtonGroup variant="outlined" size={'small'}>
+            <Button>是</Button>
+            <Button>否</Button>
+          </ButtonGroup>
+        </div>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>

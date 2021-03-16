@@ -19,16 +19,13 @@ import {
 } from '@material-ui/core';
 
 import ContentLayout from '@admin/layouts/ContentLayout';
+import { useUserAll } from '@admin/services/useUser';
 
 const UserList = () => {
-  const { httpGet } = useRequest();
-  const [searchParams] = useSearchParams();
-
-  const { data } = useSWR('users?' + searchParams.toString(), (url) => httpGet(url));
+  const { data } = useUserAll();
 
   return (
     <>
-      {' '}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -59,8 +56,13 @@ const UserList = () => {
                   <TableCell>{user.createdFrom.description}</TableCell>
                   <TableCell>{user.createdAt}</TableCell>
                   <TableCell align={'right'}>
-                    <Button></Button>
-                    <Link to={'edit/' + user.id}>编辑</Link>
+                    <Button size="tiny" variant="outlined" component={Link} to={'edit/' + user.id}>
+                      编辑
+                    </Button>
+                    &nbsp;
+                    <Button size="tiny" color="secondary" variant="outlined">
+                      删除
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

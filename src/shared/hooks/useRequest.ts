@@ -1,5 +1,5 @@
 import { useAxios } from '@shared/contexts/AxiosContext';
-import { saveFile } from '@shared/utils/util';
+import { flatry, saveFile } from '@shared/utils/util';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 
 type UseRequestType = {
@@ -7,13 +7,19 @@ type UseRequestType = {
   httpPost: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   httpPut: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   httpDelete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
-  httpDownload: (method: Method, url: string, params?: unknown, data?: unknown, historyBack?: boolean) => void;
+  httpDownload: (
+    method: Method,
+    url: string,
+    params?: unknown,
+    data?: unknown,
+    historyBack?: boolean
+  ) => Promise<boolean>;
 };
 
-export const requestFlatry = async <T>(
+export const requestFlatry = <T>(
   promise: Promise<T>
 ): Promise<{ data: T | undefined; error: AxiosError | undefined }> => {
-  return await promise.then((data) => ({ data, error: undefined })).catch((error) => ({ data: undefined, error }));
+  return flatry<T, AxiosError>(promise);
 };
 
 const useRequest = (): UseRequestType => {
@@ -55,11 +61,11 @@ const useRequest = (): UseRequestType => {
     return axios.delete(url, config) as Promise<T>;
   };
 
-  const httpDownload = (
+  const httpDownload = async (
     method: Method,
     url: string,
     params: unknown = null,
-    data: unknown = null,
+    body: unknown = null,
     historyBack = false
   ) => {
     const config = {
@@ -67,14 +73,14 @@ const useRequest = (): UseRequestType => {
       method: method,
       timeout: 120 * 1000,
       params: params,
-      data: data,
+      data: body,
       responseType: 'blob',
       __historyBack: historyBack,
     } as AxiosRequestConfig;
 
-    axios.request(config).then((response) => {
-      return saveFile(response);
-    });
+    const { data } = await requestFlatry(axios.request(config));
+
+    return saveFile(data);
   };
 
   return { httpGet, httpPut, httpPost, httpDelete, httpDownload };
