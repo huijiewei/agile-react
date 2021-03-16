@@ -45,7 +45,7 @@ const Home = () => {
 
   return (
     <ContentLayout>
-      <Box sx={{ marginBottom: 2 }}>
+      <Box sx={{ '& > div': { marginBottom: 1 } }}>
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
         <Box>
