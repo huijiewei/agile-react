@@ -1,6 +1,6 @@
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { Link, Outlet } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
+import { Box } from '@material-ui/core';
 
 const NestLayout = () => {
   return (

@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useRequest from '@shared/hooks/useRequest';
-import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import {
   Avatar,
@@ -20,6 +19,7 @@ import {
 
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 
 const UserList = () => {
   const { data } = useUserAll();
@@ -103,9 +103,9 @@ const UserDownload = () => {
   };
 
   return (
-    <Button size={'sm'} variant={'outline'} isLoading={loading} onClick={handleDownload}>
+    <LoadingButton pending={loading} onClick={handleDownload}>
       用户导出
-    </Button>
+    </LoadingButton>
   );
 };
 
@@ -116,7 +116,7 @@ const UserIndex = () => {
     <ContentLayout>
       <h5>UserIndex</h5>
       <p>
-        <Button as={Link} to={'create'}>
+        <Button component={Link} to={'create'}>
           新建用户
         </Button>
         &nbsp;

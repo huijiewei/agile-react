@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Box, Image } from '@chakra-ui/react';
+import { Box } from '@material-ui/core';
 
 const menus = [
   {
@@ -39,25 +39,25 @@ const menus = [
 const AgileAside = () => {
   return (
     <Box
-      as={'aside'}
-      width={[0, 0, '60px', '220px']}
-      height={'100vh'}
-      position={'fixed'}
-      color={'#fff'}
-      backgroundColor={'#2c343f'}
+      sx={{
+        color: 'white',
+        backgroundColor: '#2c343f',
+        width: 220,
+      }}
+      component="aside"
     >
-      <Box lineHeight={'50px'} height={'50px'} textAlign={'center'} verticalAlign={'middle'} as="div">
+      <Box>
         <Link to={'home'}>
-          <Image display={'inline-block'} height={'39px'} alt="Agile" src={require('../assets/images/logo.png')} />
-          <Image
-            display={'inline-block'}
-            height={'39px'}
+          <Box sx={{ height: 39 }} component="img" alt="Agile" src={require('../assets/images/logo.png')} />
+          <Box
+            sx={{ height: 39 }}
+            component="img"
             alt="Boilerplate"
             src={require('../assets/images/banner-white.png')}
           />
         </Link>
       </Box>
-      <Box as={'nav'}>
+      <Box component={'nav'}>
         {menus.map((menu, index) => (
           <li key={'m-' + index}>
             <NavLink to={menu.url}>{menu.label}</NavLink>

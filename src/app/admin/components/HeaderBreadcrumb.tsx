@@ -1,10 +1,9 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbProps, Icon } from '@chakra-ui/react';
+import { Breadcrumbs, BreadcrumbsProps } from '@material-ui/core';
 import { Link, matchRoutes, useLocation, useResolvedPath } from 'react-router-dom';
 import { useMemo } from 'react';
 import { getRouters } from '@admin/routers';
-import { Home } from 'react-feather';
 
-const HeaderBreadcrumb = (props: BreadcrumbProps) => {
+const HeaderBreadcrumb = (props: BreadcrumbsProps) => {
   const location = useLocation();
 
   const routes = useMemo(() => {
@@ -19,22 +18,9 @@ const HeaderBreadcrumb = (props: BreadcrumbProps) => {
   console.log(match);
 
   return (
-    <Breadcrumb {...props}>
-      <BreadcrumbItem>
-        <Link to={'home'}>
-          <Icon marginTop={'-3px'} marginRight={'3px'} as={Home} />
-          管理后台
-        </Link>
-      </BreadcrumbItem>
-
-      <BreadcrumbItem>
-        <BreadcrumbLink href="#">Docs</BreadcrumbLink>
-      </BreadcrumbItem>
-
-      <BreadcrumbItem isCurrentPage>
-        <BreadcrumbLink href="#">Breadcrumb</BreadcrumbLink>
-      </BreadcrumbItem>
-    </Breadcrumb>
+    <Breadcrumbs {...props}>
+      <Link to={'home'}>管理后台</Link>
+    </Breadcrumbs>
   );
 };
 

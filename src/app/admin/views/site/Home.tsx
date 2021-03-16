@@ -1,17 +1,15 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import { Box, Stack, useToast } from '@chakra-ui/react';
 import useRequest, { requestFlatry } from '@shared/hooks/useRequest';
 import { useAuthToken } from '@admin/AppAuth';
 import { refreshAuthUser } from '@admin/services/useAuthUser';
 import useAuthPermission from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup, Box } from '@material-ui/core';
 
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { setAccessToken } = useAuthToken();
   const { httpPost } = useRequest();
-  const toast = useToast();
   const canDeleteAdmin = useAuthPermission('admin/delete');
   const canDeleteUser = useAuthPermission('user/delete');
 
@@ -40,21 +38,14 @@ const Home = () => {
   };
 
   const handleToastShow = () => {
-    toast({
-      description: '退出登录成功',
-      status: 'success',
-      isClosable: true,
-      variant: 'subtle',
-      position: 'top',
-      duration: null,
-    });
+    console.log(1);
   };
 
   console.log('Home Render');
 
   return (
     <ContentLayout>
-      <Stack spacing={3}>
+      <Box sx={{ marginBottom: 2 }}>
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
         <Box>
@@ -112,6 +103,19 @@ const Home = () => {
             显示个错误提示
           </Button>
         </Box>
+        <Box>
+          <Button onClick={handleClick}>显示个错误提示</Button>
+          &nbsp;
+          <Button variant="outlined" onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;
+          <Button variant="text" onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;
+          <Button onClick={handleClick}>显示个错误提示</Button>
+        </Box>
         <div>
           <ButtonGroup variant="outlined" size={'small'}>
             <Button>是</Button>
@@ -148,7 +152,7 @@ const Home = () => {
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>
-      </Stack>
+      </Box>
     </ContentLayout>
   );
 };

@@ -7,12 +7,6 @@ declare module '@material-ui/core/Button/Button' {
   }
 }
 
-declare module '@material-ui/core/ButtonGroup/ButtonGroup' {
-  interface ButtonGroupPropsSizeOverrides {
-    tiny: true;
-  }
-}
-
 const agileTheme = createMuiTheme(
   {
     typography: {
@@ -56,8 +50,8 @@ const agileTheme = createMuiTheme(
             props: { size: 'tiny' },
             style: {
               minWidth: 36,
-              padding: '1px 6px',
               fontSize: '0.75rem',
+              padding: '1px 6px',
             },
           },
         ],
