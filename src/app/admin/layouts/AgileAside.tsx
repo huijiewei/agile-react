@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Box } from '@material-ui/core';
+import { Box, Drawer } from '@material-ui/core';
 
 const menus = [
   {
@@ -38,13 +38,13 @@ const menus = [
 
 const AgileAside = () => {
   return (
-    <Box
+    <Drawer
       sx={{
         color: 'white',
         backgroundColor: '#2c343f',
         width: 220,
       }}
-      component="aside"
+      variant="permanent"
     >
       <Box>
         <Link to={'home'}>
@@ -103,7 +103,7 @@ const AgileAside = () => {
           <li key={'ms-' + item}>搞出滚动条{item}</li>
         ))}
       </Box>
-    </Box>
+    </Drawer>
   );
 };
 
