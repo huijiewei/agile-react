@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useMemo, useState, useRef } from 'react';
+import { createContext, ReactNode, useContext, useState, Dispatch, SetStateAction, useCallback } from 'react';
 
 interface IErrorState {
   message: string;
@@ -10,48 +10,48 @@ interface IErrorDispatch {
   resetError: () => void;
 }
 
-const ErrorStateContext = createContext<IErrorState | null | undefined>(undefined);
-const ErrorDispatchContext = createContext<IErrorDispatch | undefined>(undefined);
+type ErrorDispatchContextType = Dispatch<SetStateAction<IErrorState | null>>;
 
-const ErrorProvider = ({ children }: { children: ReactNode }) => {
+const ErrorStateContext = createContext<IErrorState | null | undefined>(undefined);
+const ErrorDispatchContext = createContext<ErrorDispatchContextType | undefined>(undefined);
+
+export const ErrorProvider = ({ children }: { children: ReactNode }) => {
   const [errorState, setErrorState] = useState<IErrorState | null>(null);
 
-  const errorDispatch = useMemo(() => {
-    return {
-      setError(message: string, historyBack = false) {
-        setErrorState({ message, historyBack });
-      },
-      resetError() {
-        setErrorState(null);
-      },
-    };
-  }, []);
-
   return (
-    <ErrorDispatchContext.Provider value={errorDispatch}>
+    <ErrorDispatchContext.Provider value={setErrorState}>
       <ErrorStateContext.Provider value={errorState}>{children}</ErrorStateContext.Provider>
     </ErrorDispatchContext.Provider>
   );
 };
 
-const useErrorState = (): IErrorState | null => {
-  const context = useContext(ErrorStateContext);
+export const useErrorState = (): IErrorState | null => {
+  const errorState = useContext(ErrorStateContext);
 
-  if (context === undefined) {
+  if (errorState === undefined) {
     throw new Error('useErrorState must be used within a ErrorProvider');
   }
 
-  return context;
+  return errorState;
 };
 
-const useErrorDispatch = (): IErrorDispatch => {
-  const context = useContext(ErrorDispatchContext);
+export const useErrorDispatch = (): IErrorDispatch => {
+  const errorDispatch = useContext(ErrorDispatchContext);
 
-  if (context === undefined) {
+  if (errorDispatch === undefined) {
     throw new Error('useErrorDispatch must be used within a ErrorProvider');
   }
 
-  return context;
-};
+  const setError = useCallback(
+    (message: string, historyBack = false) => {
+      errorDispatch({ message, historyBack });
+    },
+    [errorDispatch]
+  );
 
-export { ErrorProvider, useErrorState, useErrorDispatch };
+  const resetError = useCallback(() => {
+    errorDispatch(null);
+  }, [errorDispatch]);
+
+  return { setError, resetError };
+};
