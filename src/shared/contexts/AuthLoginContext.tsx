@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useState } from 'react';
 
 export enum AuthLoginAction {
   NONE,
@@ -11,49 +11,49 @@ interface IAuthLoginDispatch {
   resetLoginAction: () => void;
 }
 
+type AuthLoginDispatchContextType = Dispatch<SetStateAction<AuthLoginAction>>;
+
 const AuthLoginStateContext = createContext<AuthLoginAction | undefined>(undefined);
 
-const AuthLoginDispatchContext = createContext<IAuthLoginDispatch | undefined>(undefined);
+const AuthLoginDispatchContext = createContext<AuthLoginDispatchContextType | undefined>(undefined);
 
-const AuthLoginProvider = ({ children }: { children: ReactNode }) => {
+export const AuthLoginProvider = ({ children }: { children: ReactNode }) => {
   const [authLoginState, setAuthLoginState] = useState<AuthLoginAction>(AuthLoginAction.NONE);
 
-  const authLoginDispatch = useMemo(() => {
-    return {
-      setLoginAction(action: AuthLoginAction) {
-        setAuthLoginState(action);
-      },
-      resetLoginAction() {
-        setAuthLoginState(AuthLoginAction.NONE);
-      },
-    };
-  }, []);
-
   return (
-    <AuthLoginDispatchContext.Provider value={authLoginDispatch}>
+    <AuthLoginDispatchContext.Provider value={setAuthLoginState}>
       <AuthLoginStateContext.Provider value={authLoginState}>{children}</AuthLoginStateContext.Provider>
     </AuthLoginDispatchContext.Provider>
   );
 };
 
-const useAuthLoginState = (): AuthLoginAction => {
-  const context = useContext(AuthLoginStateContext);
+export const useAuthLoginState = (): AuthLoginAction => {
+  const authLoginState = useContext(AuthLoginStateContext);
 
-  if (context === undefined) {
+  if (authLoginState === undefined) {
     throw new Error('useAuthLoginState must be used within a AuthLoginProvider');
   }
 
-  return context;
+  return authLoginState;
 };
 
-const useAuthLoginDispatch = (): IAuthLoginDispatch => {
-  const context = useContext(AuthLoginDispatchContext);
+export const useAuthLoginDispatch = (): IAuthLoginDispatch => {
+  const authLoginDispatch = useContext(AuthLoginDispatchContext);
 
-  if (context === undefined) {
+  if (authLoginDispatch === undefined) {
     throw new Error('useAuthLoginDispatch must be used within a AuthLoginProvider');
   }
 
-  return context;
-};
+  const setLoginAction = useCallback(
+    (action: AuthLoginAction) => {
+      authLoginDispatch(action);
+    },
+    [authLoginDispatch]
+  );
 
-export { AuthLoginProvider, useAuthLoginState, useAuthLoginDispatch };
+  const resetLoginAction = useCallback(() => {
+    authLoginDispatch(AuthLoginAction.NONE);
+  }, [authLoginDispatch]);
+
+  return { setLoginAction, resetLoginAction };
+};
