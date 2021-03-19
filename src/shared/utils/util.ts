@@ -1,5 +1,5 @@
 import { Dict } from '@shared/utils/types';
-import { AxiosResponse } from 'axios';
+import { HttpResponse } from '@shared/utils/http';
 
 export const deepSearch = (needle: string, haystack: Dict | Dict[], found: string[] = []): string[] => {
   for (const key in haystack) {
@@ -36,7 +36,7 @@ export const flatry = <T, E>(promise: Promise<T>): Promise<{ data: T | undefined
   return promise.then((data) => ({ data, error: undefined })).catch((error) => ({ data: undefined, error }));
 };
 
-export const saveFile = (response: AxiosResponse | undefined): boolean => {
+export const saveFile = (response: HttpResponse | undefined): boolean => {
   if (!response) {
     return false;
   }

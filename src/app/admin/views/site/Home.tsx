@@ -10,7 +10,7 @@ import { useHttp } from '@shared/contexts/HttpContext';
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { setAccessToken } = useAuthToken();
-  const { post } = useHttp();
+  const { get, post } = useHttp();
   const canDeleteAdmin = useAuthPermission('admin/delete');
   const canDeleteUser = useAuthPermission('user/delete');
 
@@ -28,6 +28,14 @@ const Home = () => {
 
   const handleSetCorrectAccessToken = () => {
     setAccessToken('1T0VCubVALBwvgHm51Hh6o');
+  };
+
+  const handleSendGet = async () => {
+    const { data } = await requestFlatry(get('user/create', {}));
+
+    if (data) {
+      console.log(data);
+    }
   };
 
   const handleSendPost = async () => {
@@ -54,13 +62,16 @@ const Home = () => {
         </Box>
         <Box>
           <Button disabled={!canDeleteUser}>是否有删除用户权限</Button>
-        </Box>
-        <Box>
+          &nbsp;&nbsp;
           <Button disabled={!canDeleteAdmin}>是否有删除管理员权限</Button>
         </Box>
         <Box>
+          <Button size={'small'} onClick={handleSendGet}>
+            随便发送一个 GET 请求
+          </Button>
+          &nbsp;&nbsp;
           <Button size={'small'} onClick={handleSendPost}>
-            随便发送一个请求
+            随便发送一个 POST 请求
           </Button>
         </Box>
         <Box>
@@ -68,23 +79,22 @@ const Home = () => {
         </Box>
         <Box>
           <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>
-        </Box>
-        <Box>
+          &nbsp;&nbsp;
           <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
         </Box>
         <Box>
           <Button variant="outlined" size={'large'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button variant="outlined" onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button variant="outlined" size={'small'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button variant="outlined" size={'tiny'} onClick={handleClick}>
             显示个错误提示
           </Button>
@@ -93,28 +103,28 @@ const Home = () => {
           <Button size={'large'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button onClick={handleClick}>显示个错误提示</Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button size={'small'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button size={'tiny'} onClick={handleClick}>
             显示个错误提示
           </Button>
         </Box>
         <Box>
           <Button onClick={handleClick}>显示个错误提示</Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button variant="outlined" onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button variant="text" onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;
+          &nbsp;&nbsp;
           <Button onClick={handleClick}>显示个错误提示</Button>
         </Box>
         <div>

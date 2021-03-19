@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import { flatry, saveFile } from '@shared/utils/util';
 
 export interface HttpRequestConfig extends AxiosRequestConfig {
@@ -10,7 +10,8 @@ export interface HttpResponse<T = any> {
   data: T;
   status: number;
   statusText: string;
-  headers: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  headers: any;
   config: HttpRequestConfig;
   request?: unknown;
 }
@@ -28,16 +29,21 @@ export interface HttpInstance {
   post: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   put: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   delete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
-  download: (method: Method, url: string, params?: unknown, data?: unknown, historyBack?: boolean) => Promise<boolean>;
+  download: (
+    method: HttpMethod,
+    url: string,
+    params?: unknown,
+    data?: unknown,
+    historyBack?: boolean
+  ) => Promise<boolean>;
 }
 
-export type HttpParams = Record<string, unknown>;
-
-export type httpBaseUrl = string | undefined | null;
+export type HttpMethod = 'GET' | 'POST' | 'PUT';
+export type httpBaseUrl = string | null;
 export type httpOnRequest = (config: HttpRequestConfig) => HttpRequestConfig;
 export type httpOnSuccess = (response: HttpResponse) => HttpResponse | Promise<HttpResponse>;
 export type httpOnError = (error: HttpError) => HttpError | Promise<HttpError> | null;
-export type httpParamsSerializer = (params: HttpParams) => string;
+export type httpParamsSerializer = (params: Record<string, unknown> | URLSearchParams | undefined) => string;
 
 export const requestFlatry = <T>(
   promise: Promise<T>
@@ -61,16 +67,16 @@ const createAxios = (
     (config) => {
       return onRequest ? onRequest(config as HttpRequestConfig) : config;
     },
-    (error) => {
+    (error: HttpError) => {
       return onError ? onError(error) : error;
     }
   );
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      return onSuccess ? (onSuccess(response as HttpResponse) as AxiosResponse) : response;
+      return onSuccess ? onSuccess(response as HttpResponse) : response;
     },
-    (error) => {
+    (error: HttpError) => {
       return onError ? onError(error) : error;
     }
   );
@@ -121,7 +127,7 @@ export const createHttp = (
       return axios.delete(url, config);
     },
     download: async (
-      method: Method,
+      method: HttpMethod,
       url: string,
       params: unknown = null,
       body: unknown = null,
@@ -139,7 +145,7 @@ export const createHttp = (
 
       const { data } = await requestFlatry(axios.request(config));
 
-      return saveFile(data);
+      return saveFile(data as HttpResponse);
     },
   };
 };
