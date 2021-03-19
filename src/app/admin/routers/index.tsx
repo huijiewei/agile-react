@@ -26,7 +26,6 @@ const BASE_NAME = process.env.PUBLIC_URL;
 const routes = [
   {
     path: '/login',
-    title: '登录',
     element: <Login />,
   },
   {
@@ -39,10 +38,12 @@ const routes = [
       },
       {
         path: 'home',
+        title: '首页',
         element: <Home />,
       },
       {
         path: 'about',
+        title: '关于',
         element: <About />,
       },
       ...adminRoutes,
@@ -50,48 +51,58 @@ const routes = [
       ...userRoutes,
       {
         path: 'nest',
+        title: 'nest',
         element: <NextLayout />,
         children: [
           {
             path: '',
+            title: 'index',
             element: <NestIndex />,
           },
           {
             path: '1',
+            title: 'next-1',
             element: <Nest1 />,
             children: [
               {
                 path: '1-1',
+                title: 'next-1-1',
                 element: <Nest11 />,
                 children: [
                   {
                     path: '1-1-1',
+                    title: 'next-1-1-1',
                     element: <Nest111 />,
                     children: [
                       {
                         path: '1-1-1-1',
+                        title: 'next-1-1-1-1',
                         element: <Nest1111 />,
                       },
                       {
                         path: '1-1-1-2',
+                        title: 'next-1-1-1-2',
                         element: <Nest1112 />,
                       },
                     ],
                   },
                   {
                     path: '1-1-2',
+                    title: 'next-1-1-2',
                     element: <Nest112 />,
                   },
                 ],
               },
               {
                 path: '1-2',
+                title: 'next-1-2',
                 element: <Nest12 />,
               },
             ],
           },
           {
             path: '2',
+            title: 'next-2',
             element: <Nest2 />,
           },
         ],
