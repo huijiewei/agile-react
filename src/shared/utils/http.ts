@@ -39,7 +39,7 @@ export interface HttpInstance {
 }
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT';
-export type httpBaseUrl = string | null;
+export type httpBaseUrl = string | null | undefined;
 export type httpOnRequest = (config: HttpRequestConfig) => HttpRequestConfig;
 export type httpOnSuccess = (response: HttpResponse) => HttpResponse | Promise<HttpResponse>;
 export type httpOnError = (error: HttpError) => HttpError | Promise<HttpError> | null;
