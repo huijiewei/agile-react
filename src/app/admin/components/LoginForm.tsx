@@ -4,11 +4,12 @@ import { InputAdornment, TextField, Box } from '@material-ui/core';
 import { AccountCircleOutlined, LockOutlined, Visibility } from '@material-ui/icons';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 
-import useRequest, { requestFlatry } from '@shared/hooks/useRequest';
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { useAuthToken } from '@admin/AppAuth';
 import useFormError from '@admin/hooks/useFormError';
 import { AuthUserLogin, setAuthUser } from '@admin/services/useAuthUser';
+import { useHttp } from '@shared/contexts/HttpContext';
+import { requestFlatry } from '@shared/utils/http';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -23,13 +24,13 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { register, handleSubmit, errors, setError, clearErrors, setValue } = useForm();
   const [loading, setLoading] = useState(false);
   const { setAccessToken } = useAuthToken();
-  const { httpPost, httpGet } = useRequest();
+  const { post, get } = useHttp();
   const { resetLoginAction } = useAuthLoginDispatch();
   const { bindErrors } = useFormError();
   const [captcha, setCaptcha] = useState<Captcha | null>(null);
 
   const updateCaptcha = async () => {
-    const { data } = await requestFlatry<Captcha | undefined>(httpGet('open/captcha', null, false));
+    const { data } = await requestFlatry<Captcha | undefined>(get('open/captcha', null, false));
 
     if (data) {
       setCaptcha(data);
@@ -53,7 +54,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       form.captcha = captchaProcess(form.captcha);
     }
 
-    const { data, error } = await requestFlatry<AuthUserLogin>(httpPost('auth/login', form));
+    const { data, error } = await requestFlatry<AuthUserLogin>(post('auth/login', form));
 
     setLoading(false);
 

@@ -1,6 +1,6 @@
 import { ErrorOption, FieldName, FieldValues } from 'react-hook-form';
-import { AxiosError } from 'axios';
 import { Dict } from '@shared/utils/types';
+import { HttpError } from '@shared/utils/http';
 
 interface Violation {
   field: string;
@@ -9,7 +9,7 @@ interface Violation {
 
 type UseFormErrorType = {
   bindErrors: (
-    error: AxiosError,
+    error: HttpError,
     setError: (field: FieldName<FieldValues>, message: ErrorOption) => void,
     clearErrors: () => void
   ) => Dict<string> | null;
@@ -17,7 +17,7 @@ type UseFormErrorType = {
 
 const useFormError = (): UseFormErrorType => {
   const bindErrors = (
-    error: AxiosError,
+    error: HttpError,
     setError: (field: FieldName<FieldValues>, message: ErrorOption) => void,
     clearErrors: () => void
   ) => {

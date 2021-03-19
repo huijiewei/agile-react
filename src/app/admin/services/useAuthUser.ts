@@ -1,7 +1,6 @@
-import useSWR, { mutate, cache } from 'swr';
-import useRequest from '@shared/hooks/useRequest';
-import { AxiosError } from 'axios';
-import { MutatorCallback } from 'swr/dist/types';
+import useSWR, {cache, mutate} from 'swr';
+import {MutatorCallback} from 'swr/dist/types';
+import {useHttp} from "@shared/contexts/HttpContext";
 
 interface AuthUserMenu {
   label: string;
@@ -47,9 +46,9 @@ type UseAuthUserReturn = {
 };
 
 const useAuthUser = (): UseAuthUserReturn => {
-  const { httpGet } = useRequest();
+  const {get} = useHttp();
 
-  const { data, error, mutate } = useSWR<AuthUser, AxiosError>(AUTH_USER_API, (url: string) => httpGet<AuthUser>(url), {
+  const {data, error, mutate} = useSWR<AuthUser>(AUTH_USER_API, (url: string) => get<AuthUser>(url), {
     revalidateOnMount: !cache.has(AUTH_USER_API),
   });
 

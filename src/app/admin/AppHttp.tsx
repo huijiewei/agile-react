@@ -2,10 +2,10 @@ import { ReactNode, useCallback } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { AuthLoginAction, useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import queryString from 'query-string';
-import { AxiosProvider } from '@shared/contexts/AxiosContext';
+import { HttpProvider } from '@shared/contexts/HttpContext';
 import { SWRConfig } from 'swr';
 import { useAuthToken } from '@admin/AppAuth';
-import { AxiosError } from 'axios';
+import { HttpError } from '@shared/utils/http';
 
 const UnauthorizedHttpCode = 401;
 const UnprocessableEntityHttpCode = 422;
@@ -30,10 +30,10 @@ const AppHttpProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const onError = useCallback(
-    (error: AxiosError) => {
+    (error: HttpError) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const historyBack = error.config['__historyBack'];
+      const historyBack = Boolean(error.config['__historyBack']);
 
       if (!error.response) {
         setError(error.message, historyBack);
@@ -94,7 +94,7 @@ const AppHttpProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AxiosProvider
+    <HttpProvider
       baseUrl={document.querySelector('meta[name="api-host"]')?.getAttribute('content')}
       onRequest={onRequest}
       onSuccess={onSuccess}
@@ -109,7 +109,7 @@ const AppHttpProvider = ({ children }: { children: ReactNode }) => {
       >
         {children}
       </SWRConfig>
-    </AxiosProvider>
+    </HttpProvider>
   );
 };
 

@@ -6,7 +6,7 @@ const AgileHeader = () => {
   return (
     <Box>
       <Box>
-        <HeaderBreadcrumb float={'left'} />
+        <HeaderBreadcrumb />
       </Box>
       <Box>
         <HeaderUserMenu />

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import useRequest from '@shared/hooks/useRequest';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import {
   Avatar,
@@ -20,6 +19,7 @@ import {
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import LoadingButton from '@material-ui/lab/LoadingButton';
+import { useHttp } from '@shared/contexts/HttpContext';
 
 const UserList = () => {
   const { data } = useUserAll();
@@ -86,14 +86,14 @@ const UserList = () => {
 };
 
 const UserDownload = () => {
-  const { httpDownload } = useRequest();
+  const { download } = useHttp();
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {
     setLoading(true);
 
-    const result = await httpDownload('GET', 'users/export');
+    const result = await download('GET', 'users/export');
 
     setLoading(false);
 

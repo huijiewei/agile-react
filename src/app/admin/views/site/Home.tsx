@@ -1,15 +1,16 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import useRequest, { requestFlatry } from '@shared/hooks/useRequest';
 import { useAuthToken } from '@admin/AppAuth';
 import { refreshAuthUser } from '@admin/services/useAuthUser';
 import useAuthPermission from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { Button, ButtonGroup, Box } from '@material-ui/core';
+import { requestFlatry } from '@shared/utils/http';
+import { useHttp } from '@shared/contexts/HttpContext';
 
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { setAccessToken } = useAuthToken();
-  const { httpPost } = useRequest();
+  const { post } = useHttp();
   const canDeleteAdmin = useAuthPermission('admin/delete');
   const canDeleteUser = useAuthPermission('user/delete');
 
@@ -30,7 +31,7 @@ const Home = () => {
   };
 
   const handleSendPost = async () => {
-    const { data } = await requestFlatry(httpPost('user/create', {}));
+    const { data } = await requestFlatry(post('user/create', {}));
 
     if (data) {
       console.log(data);
