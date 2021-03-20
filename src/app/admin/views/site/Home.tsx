@@ -6,6 +6,9 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { Box, Button, ButtonGroup } from '@material-ui/core';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
+import { useState } from 'react';
+import { LoadingButton } from '@material-ui/lab';
+import { timeout } from '@shared/utils/util';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -19,16 +22,29 @@ const DeleteAdminButton = () => {
   return <Button disabled={!canDeleteAdmin}>是否有删除管理员权限</Button>;
 };
 
+const RefreshUserButton = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleRefreshUser = async () => {
+    setLoading(true);
+    await refreshAuth();
+    await timeout(500);
+    await setLoading(false);
+  };
+
+  return (
+    <LoadingButton pending={loading} onClick={handleRefreshUser}>
+      重新获取用户
+    </LoadingButton>
+  );
+};
+
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { get, post } = useHttp();
 
   const handleClick = () => {
     setError('No handler found for GET /admin-api/shop-products');
-  };
-
-  const handleRefreshUser = async () => {
-    await refreshAuth();
   };
 
   const handleSetIncorrectAccessToken = () => {
@@ -84,7 +100,7 @@ const Home = () => {
           </Button>
         </Box>
         <Box>
-          <Button onClick={handleRefreshUser}>重新获取用户</Button>
+          <RefreshUserButton />
         </Box>
         <Box>
           <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>

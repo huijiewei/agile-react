@@ -1,6 +1,14 @@
 import { Dict } from '@shared/utils/types';
 import { HttpResponse } from '@shared/utils/http';
 
+export const timeout = (delay: number): Promise<null> => {
+  return new Promise((resolve) => {
+    setTimeout(function () {
+      resolve(null);
+    }, delay);
+  });
+};
+
 export const deepSearch = (needle: string, haystack: Dict | Dict[], found: string[] = []): string[] => {
   for (const key in haystack) {
     const value = haystack[key];
