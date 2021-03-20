@@ -5,7 +5,7 @@ import { AccountCircleOutlined, LockOutlined, Visibility } from '@material-ui/ic
 import LoadingButton from '@material-ui/lab/LoadingButton';
 
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
-import { useAuthToken } from '@admin/AppAuth';
+import { setAuthAccessToken } from '@admin/AppAuth';
 import useFormError from '@admin/hooks/useFormError';
 import { AuthUserLogin, setAuthUser } from '@admin/services/useAuthUser';
 import { useHttp } from '@shared/contexts/HttpContext';
@@ -23,7 +23,6 @@ interface Captcha {
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { register, handleSubmit, errors, setError, clearErrors, setValue } = useForm();
   const [loading, setLoading] = useState(false);
-  const { setAccessToken } = useAuthToken();
   const { post, get } = useHttp();
   const { resetLoginAction } = useAuthLoginDispatch();
   const { bindErrors } = useFormError();
@@ -59,7 +58,8 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     setLoading(false);
 
     if (data) {
-      setAccessToken(data.accessToken);
+      setAuthAccessToken(data.accessToken);
+
       await setAuthUser({
         currentUser: data.currentUser,
         groupMenus: data.groupMenus,

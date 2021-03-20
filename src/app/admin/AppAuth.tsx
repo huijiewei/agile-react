@@ -1,43 +1,34 @@
-import { ReactNode, useCallback } from 'react';
+import { ReactNode } from 'react';
 import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
-
-const AppAuthProvider = ({ children }: { children: ReactNode }) => {
-  return <AuthLoginProvider>{children}</AuthLoginProvider>;
-};
 
 const ClientIdKey = 'ag:admin-client-id';
 const AccessTokenKey = 'ag:admin-access-token';
 
-type UseAuthTokenReturnType = {
-  getAuthToken: () => { clientId: string; accessToken: string };
-  setAccessToken: (accessToken: string) => void;
+export const AppAuthProvider = ({ children }: { children: ReactNode }) => {
+  return <AuthLoginProvider>{children}</AuthLoginProvider>;
 };
 
-const useAuthToken = (): UseAuthTokenReturnType => {
-  const getAuthToken = useCallback(() => {
-    let clientId = window.localStorage.getItem(ClientIdKey);
+interface AuthToken {
+  clientId: string;
+  accessToken: string;
+}
 
-    if (clientId == null) {
-      clientId = Math.random().toString(36).substr(2);
-      window.localStorage.setItem(ClientIdKey, clientId);
-    }
+export const getAuthToken = (): AuthToken => {
+  let clientId = window.localStorage.getItem(ClientIdKey);
 
-    const accessToken = window.localStorage.getItem(AccessTokenKey) || '';
+  if (clientId == null) {
+    clientId = Math.random().toString(36).substr(2);
+    window.localStorage.setItem(ClientIdKey, clientId);
+  }
 
-    return {
-      clientId,
-      accessToken,
-    };
-  }, []);
-
-  const setAccessToken = useCallback((accessToken) => {
-    window.localStorage.setItem(AccessTokenKey, accessToken);
-  }, []);
+  const accessToken = window.localStorage.getItem(AccessTokenKey) || '';
 
   return {
-    getAuthToken,
-    setAccessToken,
+    clientId,
+    accessToken,
   };
 };
 
-export { AppAuthProvider, useAuthToken };
+export const setAuthAccessToken = (accessToken: string) => {
+  window.localStorage.setItem(AccessTokenKey, accessToken);
+};

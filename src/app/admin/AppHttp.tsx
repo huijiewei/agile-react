@@ -1,11 +1,11 @@
-import { ReactNode, useCallback } from 'react';
+import { ReactNode } from 'react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { AuthLoginAction, useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import queryString from 'query-string';
 import { HttpProvider } from '@shared/contexts/HttpContext';
 import { SWRConfig } from 'swr';
-import { useAuthToken } from '@admin/AppAuth';
-import { HttpError } from '@shared/utils/http';
+import { getAuthToken } from '@admin/AppAuth';
+import { HttpError, HttpParams, HttpRequestConfig, HttpResponse } from '@shared/utils/http';
 
 const UnauthorizedHttpCode = 401;
 const UnprocessableEntityHttpCode = 422;
@@ -15,83 +15,74 @@ const HttpGetMethod = ['GET', 'HEAD'];
 const AppHttpProvider = ({ children }: { children: ReactNode }) => {
   const { setError } = useErrorDispatch();
   const { setLoginAction } = useAuthLoginDispatch();
-  const { getAuthToken } = useAuthToken();
 
-  const onRequest = useCallback(
-    (config) => {
-      const authToken = getAuthToken();
+  const onRequest = (config: HttpRequestConfig) => {
+    const authToken = getAuthToken();
 
-      config.headers['X-Client-Id'] = authToken.clientId;
-      config.headers['X-Access-Token'] = authToken.accessToken;
+    config.headers['X-Client-Id'] = authToken.clientId;
+    config.headers['X-Access-Token'] = authToken.accessToken;
 
-      return config;
-    },
-    [getAuthToken]
-  );
+    return config;
+  };
 
-  const onError = useCallback(
-    (error: HttpError) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const historyBack = Boolean(error.config['__historyBack']);
+  const onError = (error: HttpError) => {
+    const historyBack = Boolean(error.config['__historyBack']);
 
-      if (!error.response) {
-        setError(error.message, historyBack);
-
-        return Promise.reject(error);
-      }
-
-      if (error.response.status === UnauthorizedHttpCode) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (!error.config['__storeDispatch']) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          error.config['__storeDispatch'] = true;
-
-          if (historyBack || HttpGetMethod.includes(error.config.method?.toUpperCase() as string)) {
-            // 跳转登录
-            setLoginAction(AuthLoginAction.DIRECT);
-          } else {
-            // 弹出登录框
-            setLoginAction(AuthLoginAction.MODAL);
-          }
-        }
-
-        return null;
-      }
-
-      if (error.response.status === UnprocessableEntityHttpCode) {
-        return Promise.reject(error);
-      }
-
-      setError(
-        error.response.data.detail ||
-          error.response.data.message ||
-          error.response.data.title ||
-          error.response.statusText ||
-          '网络请求错误',
-        historyBack
-      );
+    if (!error.response) {
+      setError(error.message, historyBack);
 
       return Promise.reject(error);
-    },
-    [setError, setLoginAction]
-  );
+    }
 
-  const paramsSerializer = useCallback((params) => {
-    return queryString.stringify(params, {
-      arrayFormat: (process.env.QS_ARRAY_FORMAT as 'bracket' | 'index' | 'comma' | 'separator' | 'none') || 'bracket',
-    });
-  }, []);
+    if (error.response.status === UnauthorizedHttpCode) {
+      if (!error.config['__storeDispatch']) {
+        error.config['__storeDispatch'] = true;
 
-  const onSuccess = useCallback((response) => {
+        if (historyBack || HttpGetMethod.includes(error.config.method?.toUpperCase() as string)) {
+          // 跳转登录
+          setLoginAction(AuthLoginAction.DIRECT);
+        } else {
+          // 弹出登录框
+          setLoginAction(AuthLoginAction.MODAL);
+        }
+      }
+
+      return null;
+    }
+
+    if (error.response.status === UnprocessableEntityHttpCode) {
+      return Promise.reject(error);
+    }
+
+    setError(
+      error.response.data.detail ||
+        error.response.data.message ||
+        error.response.data.title ||
+        error.response.statusText ||
+        '网络请求错误',
+      historyBack
+    );
+
+    return Promise.reject(error);
+  };
+
+  const paramsSerializer = (params: HttpParams) => {
+    if (params) {
+      return queryString.stringify(params, {
+        arrayFormat: (process.env.QS_ARRAY_FORMAT as 'bracket' | 'index' | 'comma' | 'separator' | 'none') || 'bracket',
+      });
+    }
+
+    return '';
+  };
+
+  const onSuccess = (response: HttpResponse) => {
     if (response.config.responseType === 'blob') {
       return Promise.resolve(response);
     }
 
     return Promise.resolve(response.data);
-  }, []);
+  };
 
   return (
     <HttpProvider

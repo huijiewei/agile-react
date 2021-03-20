@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
+import { createContext, PropsWithChildren, useContext } from 'react';
 import {
   createHttp,
   httpBaseUrl,
@@ -27,10 +27,7 @@ const HttpProvider = ({
   onError,
   paramsSerializer,
 }: PropsWithChildren<AxiosProviderProps>) => {
-  const http = useMemo(() => {
-    return createHttp(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const http = createHttp(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
 
   return <HttpContext.Provider value={http}>{children}</HttpContext.Provider>;
 };

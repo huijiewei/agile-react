@@ -38,12 +38,13 @@ export interface HttpInstance {
   ) => Promise<boolean>;
 }
 
+export type HttpParams = Record<string, unknown> | URLSearchParams | undefined;
 export type HttpMethod = 'GET' | 'POST' | 'PUT';
 export type httpBaseUrl = string | null | undefined;
 export type httpOnRequest = (config: HttpRequestConfig) => HttpRequestConfig;
 export type httpOnSuccess = (response: HttpResponse) => HttpResponse | Promise<HttpResponse>;
 export type httpOnError = (error: HttpError) => HttpError | Promise<HttpError> | null;
-export type httpParamsSerializer = (params: Record<string, unknown> | URLSearchParams | undefined) => string;
+export type httpParamsSerializer = (params: HttpParams) => string;
 
 export const requestFlatry = <T>(
   promise: Promise<T>

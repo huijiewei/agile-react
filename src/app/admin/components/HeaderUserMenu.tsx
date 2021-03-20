@@ -1,15 +1,13 @@
-import { useAuthToken } from '@admin/AppAuth';
+import { setAuthAccessToken } from '@admin/AppAuth';
 import { useNavigate } from 'react-router-dom';
-import useAuthUser, { AuthUserUser } from '@admin/services/useAuthUser';
-import { flatry } from '@shared/utils/util';
-import { Avatar, ButtonBase, Menu, Box, MenuItem } from '@material-ui/core';
-import { useState, MouseEvent } from 'react';
+import useAuthUser from '@admin/services/useAuthUser';
+import { Avatar, Box, ButtonBase, Menu, MenuItem } from '@material-ui/core';
+import { MouseEvent, useState } from 'react';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
 
 const HeaderUserMenu = () => {
   const { post } = useHttp();
-  const { setAccessToken } = useAuthToken();
   const navigate = useNavigate();
   const { authUser, mutate } = useAuthUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -30,7 +28,8 @@ const HeaderUserMenu = () => {
     const { data } = await requestFlatry(post('auth/logout', null));
 
     if (data) {
-      setAccessToken('');
+      setAuthAccessToken('');
+
       await mutate(undefined, false);
 
       navigate('login', { replace: true });

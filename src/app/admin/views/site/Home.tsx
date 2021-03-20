@@ -1,15 +1,14 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import { useAuthToken } from '@admin/AppAuth';
+import { setAuthAccessToken } from '@admin/AppAuth';
 import { refreshAuthUser } from '@admin/services/useAuthUser';
 import useAuthPermission from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { Button, ButtonGroup, Box } from '@material-ui/core';
+import { Box, Button, ButtonGroup } from '@material-ui/core';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 
 const Home = () => {
   const { setError } = useErrorDispatch();
-  const { setAccessToken } = useAuthToken();
   const { get, post } = useHttp();
   const canDeleteAdmin = useAuthPermission('admin/delete');
   const canDeleteUser = useAuthPermission('user/delete');
@@ -23,11 +22,11 @@ const Home = () => {
   };
 
   const handleSetIncorrectAccessToken = () => {
-    setAccessToken('1T0VCubVALBwvgHm51Hh6o2');
+    setAuthAccessToken('1T0VCubVALBwvgHm51Hh6o2');
   };
 
   const handleSetCorrectAccessToken = () => {
-    setAccessToken('1T0VCubVALBwvgHm51Hh6o');
+    setAuthAccessToken('1T0VCubVALBwvgHm51Hh6o');
   };
 
   const handleSendGet = async () => {
