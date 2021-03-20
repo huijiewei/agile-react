@@ -7,11 +7,21 @@ import { Box, Button, ButtonGroup } from '@material-ui/core';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 
+const DeleteUserButton = () => {
+  const canDeleteUser = useAuthPermission('user/delete');
+
+  return <Button disabled={!canDeleteUser}>是否有删除用户权限</Button>;
+};
+
+const DeleteAdminButton = () => {
+  const canDeleteAdmin = useAuthPermission('admin/delete');
+
+  return <Button disabled={!canDeleteAdmin}>是否有删除管理员权限</Button>;
+};
+
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { get, post } = useHttp();
-  const canDeleteAdmin = useAuthPermission('admin/delete');
-  const canDeleteUser = useAuthPermission('user/delete');
 
   const handleClick = () => {
     setError('No handler found for GET /admin-api/shop-products');
@@ -60,9 +70,9 @@ const Home = () => {
           <Button onClick={handleToastShow}>显示一个 Toast</Button>
         </Box>
         <Box>
-          <Button disabled={!canDeleteUser}>是否有删除用户权限</Button>
+          <DeleteUserButton />
           &nbsp;&nbsp;
-          <Button disabled={!canDeleteAdmin}>是否有删除管理员权限</Button>
+          <DeleteAdminButton />
         </Box>
         <Box>
           <Button size={'small'} onClick={handleSendGet}>

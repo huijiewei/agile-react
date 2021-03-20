@@ -24,8 +24,8 @@ export interface AuthUser {
   };
 }
 
-interface Auth {
-  currentUser: AuthUser;
+export interface Auth {
+  currentUser: AuthUser | null;
   groupMenus: AuthMenu[];
   groupPermissions: string[];
 }
@@ -36,14 +36,15 @@ export interface AuthLogin extends Auth {
 
 const AUTH_API = 'auth/account';
 
-const useAuth = (): {
+interface UseAuth extends Auth {
   loading: boolean;
-  authUser: Auth | undefined;
   mutate: (
     data?: Promise<Auth> | MutatorCallback<Auth> | Auth,
     shouldRevalidate?: boolean
   ) => Promise<Auth | undefined>;
-} => {
+}
+
+const useAuth = (): UseAuth => {
   const { get } = useHttp();
 
   const { data, error, mutate } = useSWR<Auth>(AUTH_API, (url: string) => get<Auth>(url), {
@@ -53,8 +54,8 @@ const useAuth = (): {
   const loading = !data && !error;
 
   return {
+    ...(data || { currentUser: null, groupMenus: [], groupPermissions: [] }),
     loading,
-    authUser: data,
     mutate,
   };
 };

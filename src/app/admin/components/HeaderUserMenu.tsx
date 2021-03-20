@@ -9,7 +9,7 @@ import { requestFlatry } from '@shared/utils/http';
 const HeaderUserMenu = () => {
   const { post } = useHttp();
   const navigate = useNavigate();
-  const { authUser, mutate } = useAuth();
+  const { currentUser, mutate } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -36,17 +36,15 @@ const HeaderUserMenu = () => {
     }
   };
 
-  if (authUser && authUser.currentUser) {
-    const user = authUser.currentUser;
-
+  if (currentUser) {
     return (
       <>
         <ButtonBase onClick={handleButtonClick}>
-          <Avatar src={user.avatar} alt={user.name} />
-          <Box component="span">{user.name}</Box>
+          <Avatar src={currentUser.avatar} alt={currentUser.name} />
+          <Box component="span">{currentUser.name}</Box>
         </ButtonBase>
         <Menu onClose={handleMenuClose} anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}>
-          <MenuItem disabled>{user.adminGroup.name}</MenuItem>
+          <MenuItem disabled>{currentUser.adminGroup.name}</MenuItem>
           <MenuItem>个人资料</MenuItem>
           <MenuItem onClick={handleRefresh}>刷新资料</MenuItem>
           <MenuItem onClick={handleLogout}>退出登录</MenuItem>

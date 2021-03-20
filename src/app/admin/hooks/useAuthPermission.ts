@@ -1,6 +1,5 @@
-import { deepSearch, formatUrl } from '@shared/utils/util';
 import useAuth from '@admin/services/useAuth';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 const isRouteInPermissions = (route: string, permissions: string[]) => {
   if (route.length === 0) {
@@ -32,38 +31,16 @@ const isRouteInPermissions = (route: string, permissions: string[]) => {
   );
 };
 
-const isRouteInMenus = (route: string, menus: string[]) => {
-  const path = route.startsWith('/') ? route.substr(1) : route;
+const useAuthPermission = (route: string): boolean => {
+  const { groupPermissions } = useAuth();
 
-  return menus.map((menu) => formatUrl(menu)).includes(path);
-};
+  const [hasPermissions, setHasPermission] = useState(false);
 
-export const useAuthPermission = (route: string): boolean => {
-  const { authUser } = useAuth();
+  useEffect(() => {
+    setHasPermission(groupPermissions.length > 0 && isRouteInPermissions(route, groupPermissions));
+  }, [route, groupPermissions]);
 
-  if (authUser && authUser.groupPermissions && authUser.groupPermissions.length > 0) {
-    return isRouteInPermissions(route, authUser.groupPermissions);
-  }
-
-  return false;
-};
-
-export const useRouteInMenus = (route: string): boolean => {
-  const { authUser } = useAuth();
-
-  const menuUrls = useMemo<string[]>(() => {
-    if (authUser && authUser.groupMenus && authUser.groupMenus.length > 0) {
-      return deepSearch('url', authUser.groupMenus);
-    }
-
-    return [];
-  }, [authUser]);
-
-  if (menuUrls.length > 0) {
-    return isRouteInMenus(route, menuUrls);
-  }
-
-  return false;
+  return hasPermissions;
 };
 
 export default useAuthPermission;
