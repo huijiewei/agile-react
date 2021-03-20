@@ -1,6 +1,6 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { setAuthAccessToken } from '@admin/AppAuth';
-import { refreshAuthUser } from '@admin/services/useAuthUser';
+import { refreshAuth } from '@admin/services/useAuth';
 import useAuthPermission from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { Box, Button, ButtonGroup } from '@material-ui/core';
@@ -18,7 +18,7 @@ const Home = () => {
   };
 
   const handleRefreshUser = async () => {
-    await refreshAuthUser();
+    await refreshAuth();
   };
 
   const handleSetIncorrectAccessToken = () => {

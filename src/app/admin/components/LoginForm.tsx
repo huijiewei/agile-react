@@ -7,7 +7,7 @@ import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { setAuthAccessToken } from '@admin/AppAuth';
 import useFormError from '@admin/hooks/useFormError';
-import { AuthUserLogin, setAuthUser } from '@admin/services/useAuthUser';
+import { AuthLogin, setAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
 
@@ -53,14 +53,14 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       form.captcha = captchaProcess(form.captcha);
     }
 
-    const { data, error } = await requestFlatry<AuthUserLogin>(post('auth/login', form));
+    const { data, error } = await requestFlatry<AuthLogin>(post('auth/login', form));
 
     setLoading(false);
 
     if (data) {
       setAuthAccessToken(data.accessToken);
 
-      await setAuthUser({
+      await setAuth({
         currentUser: data.currentUser,
         groupMenus: data.groupMenus,
         groupPermissions: data.groupPermissions,

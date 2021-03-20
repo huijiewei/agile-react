@@ -1,6 +1,6 @@
 import { setAuthAccessToken } from '@admin/AppAuth';
 import { useNavigate } from 'react-router-dom';
-import useAuthUser from '@admin/services/useAuthUser';
+import useAuth from '@admin/services/useAuth';
 import { Avatar, Box, ButtonBase, Menu, MenuItem } from '@material-ui/core';
 import { MouseEvent, useState } from 'react';
 import { useHttp } from '@shared/contexts/HttpContext';
@@ -9,7 +9,7 @@ import { requestFlatry } from '@shared/utils/http';
 const HeaderUserMenu = () => {
   const { post } = useHttp();
   const navigate = useNavigate();
-  const { authUser, mutate } = useAuthUser();
+  const { authUser, mutate } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {

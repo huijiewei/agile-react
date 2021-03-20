@@ -1,5 +1,5 @@
 import { deepSearch, formatUrl } from '@shared/utils/util';
-import useAuthUser from '@admin/services/useAuthUser';
+import useAuth from '@admin/services/useAuth';
 import { useMemo } from 'react';
 
 const isRouteInPermissions = (route: string, permissions: string[]) => {
@@ -39,7 +39,7 @@ const isRouteInMenus = (route: string, menus: string[]) => {
 };
 
 export const useAuthPermission = (route: string): boolean => {
-  const { authUser } = useAuthUser();
+  const { authUser } = useAuth();
 
   if (authUser && authUser.groupPermissions && authUser.groupPermissions.length > 0) {
     return isRouteInPermissions(route, authUser.groupPermissions);
@@ -49,7 +49,7 @@ export const useAuthPermission = (route: string): boolean => {
 };
 
 export const useRouteInMenus = (route: string): boolean => {
-  const { authUser } = useAuthUser();
+  const { authUser } = useAuth();
 
   const menuUrls = useMemo<string[]>(() => {
     if (authUser && authUser.groupMenus && authUser.groupMenus.length > 0) {
