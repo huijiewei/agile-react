@@ -8,6 +8,5 @@ module.exports = (appProduction) => {
     pwaEnable: true,
     apiHost: appProduction ? 'https://agile.huijiewei.com/admin-api' : 'https://agile.huijiewei.com/admin-api',
     qsArrayFormat: 'none',
-    htmlChunks: ['react', 'vendor', 'shared', 'mobile'],
   };
 };

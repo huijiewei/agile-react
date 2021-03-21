@@ -51,9 +51,6 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
           loader: 'babel-loader',
-          options: {
-            plugins: [!isProduction && require.resolve('react-refresh/babel')].filter(Boolean),
-          },
         },
         {
           test: /\.css$/,
