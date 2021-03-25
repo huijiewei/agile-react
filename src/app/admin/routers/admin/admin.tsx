@@ -9,4 +9,4 @@ const adminRoutes = [
   },
 ];
 
-export default adminRoutes;
+export { adminRoutes };

@@ -1,5 +1,5 @@
 import { deepSearch, formatUrl } from '@shared/utils/util';
-import useAuth from '@admin/services/useAuth';
+import { useAuth } from '@admin/services/useAuth';
 import { useEffect, useMemo, useState } from 'react';
 
 const isRouteInMenus = (route: string, menus: string[]) => {
@@ -8,7 +8,7 @@ const isRouteInMenus = (route: string, menus: string[]) => {
   return menus.map((menu) => formatUrl(menu)).includes(path);
 };
 
-export const useAuthMenu = (route: string): boolean => {
+const useAuthMenu = (route: string): boolean => {
   const { groupMenus } = useAuth();
 
   const [hasMenu, setHasMenu] = useState(false);
@@ -28,4 +28,4 @@ export const useAuthMenu = (route: string): boolean => {
   return hasMenu;
 };
 
-export default useAuthMenu;
+export { useAuthMenu };

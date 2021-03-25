@@ -50,7 +50,7 @@ module.exports = (env, argv) => {
         {
           test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
-          loader: 'babel-loader',
+          use: [{ loader: 'babel-loader' }],
         },
         {
           test: /\.css$/,
@@ -59,8 +59,31 @@ module.exports = (env, argv) => {
             {
               loader: 'css-loader',
               options: {
+                modules: false,
                 importLoaders: 1,
               },
+            },
+            {
+              loader: 'postcss-loader',
+            },
+          ],
+        },
+        {
+          test: /\.less$/,
+          use: [
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: false,
+                importLoaders: 2,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+            },
+            {
+              loader: 'less-loader',
             },
           ],
         },
@@ -117,7 +140,7 @@ module.exports = (env, argv) => {
       },
       host: appConfig.serverHost,
       port: appConfig.serverPort,
-      public: `${appConfig.serverHost}:${appConfig.serverPort}${appConfig.publicPath}`,
+      openPage: `${appConfig.serverHost}:${appConfig.serverPort}${appConfig.publicPath}`,
     },
     plugins: [
       new EnvironmentPlugin({
@@ -174,13 +197,6 @@ module.exports = (env, argv) => {
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
             chunks: 'initial',
             priority: 30,
-            enforce: true,
-          },
-          material: {
-            name: 'material',
-            test: /[\\/]node_modules[\\/](@material-ui)[\\/]/,
-            chunks: 'initial',
-            priority: 25,
             enforce: true,
           },
           vendor: {

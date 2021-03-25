@@ -4,16 +4,16 @@ import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
 const ClientIdKey = 'ag:admin-client-id';
 const AccessTokenKey = 'ag:admin-access-token';
 
-export const AppAuthProvider = ({ children }: { children: ReactNode }) => {
+const AppAuthProvider = ({ children }: { children: ReactNode }) => {
   return <AuthLoginProvider>{children}</AuthLoginProvider>;
 };
 
-interface AuthToken {
+type AuthToken = {
   clientId: string;
   accessToken: string;
-}
+};
 
-export const getAuthToken = (): AuthToken => {
+const getAuthToken = (): AuthToken => {
   let clientId = window.localStorage.getItem(ClientIdKey);
 
   if (clientId == null) {
@@ -29,6 +29,8 @@ export const getAuthToken = (): AuthToken => {
   };
 };
 
-export const setAuthAccessToken = (accessToken: string) => {
+const setAuthAccessToken = (accessToken: string) => {
   window.localStorage.setItem(AccessTokenKey, accessToken);
 };
+
+export { AppAuthProvider, getAuthToken, setAuthAccessToken };

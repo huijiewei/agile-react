@@ -1,5 +1,9 @@
 import { createRoutesFromArray, Navigate, useRoutes } from 'react-router-dom';
 
+import { adminRoutes } from './admin/admin';
+import { adminGroupRoutes } from './admin/admin-group';
+import { userRoutes } from './user/user';
+
 import Login from '@admin/views/site/Login';
 
 import DefaultLayout from '@admin/layouts/DefaultLayout';
@@ -7,9 +11,6 @@ import Home from '@admin/views/site/Home';
 import About from '@admin/views/site/About';
 import NotFound from '@admin/views/site/NotFound';
 
-import adminRoutes from './admin/admin';
-import adminGroupRoutes from './admin/admin-group';
-import userRoutes from './user/user';
 import NextLayout from '@admin/views/nest/Layout';
 import NestIndex from '@admin/views/nest/Index';
 import Nest1 from '@admin/views/nest/1';
@@ -123,4 +124,4 @@ const AppRoutes = () => {
   return useRoutes(routes, BASE_NAME);
 };
 
-export default AppRoutes;
+export { AppRoutes };

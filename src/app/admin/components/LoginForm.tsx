@@ -1,31 +1,30 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { InputAdornment, TextField, Box } from '@material-ui/core';
-import { AccountCircleOutlined, LockOutlined, Visibility } from '@material-ui/icons';
-import LoadingButton from '@material-ui/lab/LoadingButton';
 
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { setAuthAccessToken } from '@admin/AppAuth';
-import useFormError from '@admin/hooks/useFormError';
-import { AuthLogin, setAuth } from '@admin/services/useAuth';
+import { Auth, setAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { requestFlatry } from '@shared/utils/http';
+import { bindUnprocessableEntityErrors, requestFlatry } from '@shared/utils/http';
 
-interface LoginFormProps {
+type LoginFormProps = {
   onSuccess?: () => void;
-}
+};
 
-interface Captcha {
+type Captcha = {
   image: string;
   process: string;
-}
+};
+
+type AuthLogin = Auth & {
+  accessToken: string;
+};
 
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { register, handleSubmit, errors, setError, clearErrors, setValue } = useForm();
   const [loading, setLoading] = useState(false);
   const { post, get } = useHttp();
   const { resetLoginAction } = useAuthLoginDispatch();
-  const { bindErrors } = useFormError();
   const [captcha, setCaptcha] = useState<Captcha | null>(null);
 
   const updateCaptcha = async () => {
@@ -72,7 +71,13 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     }
 
     if (error) {
-      const result = bindErrors(error, setError, clearErrors);
+      const result = bindUnprocessableEntityErrors(
+        error,
+        (field, message) => {
+          setError(field, { type: 'manual', message: message });
+        },
+        () => clearErrors
+      );
 
       if (result && result.captcha) {
         await updateCaptcha();
@@ -83,69 +88,41 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        sx={{ marginBottom: 1.5 }}
-        error={!!errors.account}
-        helperText={errors.account?.message || ' '}
-        label="帐号"
-        name="account"
-        fullWidth
-        variant="outlined"
-        placeholder="手机号码或者电子邮箱"
-        inputRef={register({ required: '请输入帐号' })}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <AccountCircleOutlined color={'disabled'} />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        sx={{ marginBottom: 1.5 }}
-        error={!!errors.password}
-        helperText={errors.password?.message || ' '}
-        label="密码"
-        name="password"
-        type="password"
-        fullWidth
-        placeholder="密码"
-        inputRef={register({ required: '请输入密码' })}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockOutlined color={'disabled'} />
-            </InputAdornment>
-          ),
-        }}
-      />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label id="account">
+        <div>
+          <input
+            name="account"
+            ref={register({ required: '请输入帐号' })}
+            type="text"
+            placeholder="手机号码或者电子邮箱"
+          />
+        </div>
+        <span>{errors.account?.message || ' '}</span>
+      </label>
+      <label id="password">
+        <div>
+          <input name="password" ref={register({ required: '请输入密码' })} type="password" placeholder="密码" />
+        </div>
+        <span>{errors.password?.message || ' '}</span>
+      </label>
       {captcha && (
-        <TextField
-          sx={{ marginBottom: 1.5 }}
-          error={!!errors.captcha}
-          helperText={errors.captcha?.message || ' '}
-          label="验证码"
-          name="captcha"
-          fullWidth
-          placeholder="验证码"
-          inputRef={register({ required: '请输入验证码' })}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Visibility color={'disabled'} />
-              </InputAdornment>
-            ),
-            endAdornment: <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />,
-          }}
-        />
+        <label id="captcha">
+          <div>
+            <input name="captcha" ref={register({ required: '请输入验证码' })} type="text" placeholder="验证码" />
+            <span>
+              <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />
+            </span>
+          </div>
+          <span>{errors.captcha?.message || ' '}</span>
+        </label>
       )}
 
-      <LoadingButton pending={loading} type={'submit'} fullWidth>
+      <button disabled={loading} type={'submit'}>
         确 定
-      </LoadingButton>
-    </Box>
+      </button>
+    </form>
   );
 };
 
-export default LoginForm;
+export { LoginForm };

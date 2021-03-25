@@ -1,5 +1,4 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Box, Drawer } from '@material-ui/core';
 
 const menus = [
   {
@@ -38,26 +37,14 @@ const menus = [
 
 const AgileAside = () => {
   return (
-    <Drawer
-      sx={{
-        color: 'white',
-        backgroundColor: '#2c343f',
-        width: 220,
-      }}
-      variant="permanent"
-    >
-      <Box>
+    <div>
+      <div>
         <Link to={'home'}>
-          <Box sx={{ height: 39 }} component="img" alt="Agile" src={require('../assets/images/logo.png')} />
-          <Box
-            sx={{ height: 39 }}
-            component="img"
-            alt="Boilerplate"
-            src={require('../assets/images/banner-white.png')}
-          />
+          <img style={{ height: '39px' }} alt="Agile" src={require('../assets/images/logo.png')} />
+          <img style={{ height: '39px' }} alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
         </Link>
-      </Box>
-      <Box component={'nav'}>
+      </div>
+      <nav>
         {menus.map((menu, index) => (
           <li key={'m-' + index}>
             <NavLink to={menu.url}>{menu.label}</NavLink>
@@ -102,8 +89,8 @@ const AgileAside = () => {
         ].map((item) => (
           <li key={'ms-' + item}>搞出滚动条{item}</li>
         ))}
-      </Box>
-    </Drawer>
+      </nav>
+    </div>
   );
 };
 

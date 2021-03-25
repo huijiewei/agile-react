@@ -1,9 +1,8 @@
-import { Breadcrumbs, BreadcrumbsProps } from '@material-ui/core';
 import { Link, matchRoutes, useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
+import { HTMLAttributes, useMemo } from 'react';
 import { getRouters } from '@admin/routers';
 
-const HeaderBreadcrumb = (props: BreadcrumbsProps) => {
+const HeaderBreadcrumb = (props: HTMLAttributes<HTMLDivElement>) => {
   const location = useLocation();
 
   const routes = useMemo(() => {
@@ -15,10 +14,10 @@ const HeaderBreadcrumb = (props: BreadcrumbsProps) => {
   console.log(match);
 
   return (
-    <Breadcrumbs {...props}>
+    <div {...props}>
       <Link to={'home'}>管理后台</Link>
-    </Breadcrumbs>
+    </div>
   );
 };
 
-export default HeaderBreadcrumb;
+export { HeaderBreadcrumb };

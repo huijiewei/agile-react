@@ -1,22 +1,22 @@
 import { createContext, ReactNode, useContext, useState, Dispatch, SetStateAction, useCallback } from 'react';
 
-interface IErrorState {
+type ErrorState = {
   message: string;
   historyBack: boolean;
-}
+};
 
-interface IErrorDispatch {
+type ErrorDispatch = {
   setError: (message: string, historyBack?: boolean) => void;
   resetError: () => void;
-}
+};
 
-type ErrorDispatchContextType = Dispatch<SetStateAction<IErrorState | null>>;
+type ErrorDispatchContextType = Dispatch<SetStateAction<ErrorState | null>>;
 
-const ErrorStateContext = createContext<IErrorState | null | undefined>(undefined);
+const ErrorStateContext = createContext<ErrorState | null | undefined>(undefined);
 const ErrorDispatchContext = createContext<ErrorDispatchContextType | undefined>(undefined);
 
 export const ErrorProvider = ({ children }: { children: ReactNode }) => {
-  const [errorState, setErrorState] = useState<IErrorState | null>(null);
+  const [errorState, setErrorState] = useState<ErrorState | null>(null);
 
   return (
     <ErrorDispatchContext.Provider value={setErrorState}>
@@ -25,7 +25,7 @@ export const ErrorProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useErrorState = (): IErrorState | null => {
+export const useErrorState = (): ErrorState | null => {
   const errorState = useContext(ErrorStateContext);
 
   if (errorState === undefined) {
@@ -35,7 +35,7 @@ export const useErrorState = (): IErrorState | null => {
   return errorState;
 };
 
-export const useErrorDispatch = (): IErrorDispatch => {
+export const useErrorDispatch = (): ErrorDispatch => {
   const errorDispatch = useContext(ErrorDispatchContext);
 
   if (errorDispatch === undefined) {

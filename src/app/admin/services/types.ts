@@ -1,4 +1,4 @@
-export interface SearchField {
+export type SearchField = {
   type: 'keyword' | 'br' | 'select' | 'dateTimeRange';
   field: string;
   label: string;
@@ -8,18 +8,18 @@ export interface SearchField {
   shortcuts?: { text: string; start: string; end: string }[];
   labelStart?: string;
   labelEnd?: string;
-}
+};
 
-export interface ListResponse<T> {
+export type ListResponse<T> = {
   items: T[];
   searchFields?: SearchField[];
-}
+};
 
-export interface PageResponse<T> extends ListResponse<T> {
+export type PageResponse<T> = ListResponse<T> & {
   pages: {
     currentPage: number;
     pageCount: number;
     perPage: number;
     totalCount: number;
   };
-}
+};

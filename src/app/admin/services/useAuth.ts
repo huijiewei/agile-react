@@ -2,15 +2,15 @@ import useSWR, { cache, mutate } from 'swr';
 import { MutatorCallback } from 'swr/dist/types';
 import { useHttp } from '@shared/contexts/HttpContext';
 
-interface AuthMenu {
+type AuthMenu = {
   label: string;
   url: string;
   open: boolean;
   icon: string;
   children: AuthMenu[] | null;
-}
+};
 
-export interface AuthUser {
+type AuthUser = {
   id: number;
   name: string;
   email: string;
@@ -22,27 +22,23 @@ export interface AuthUser {
     id: number;
     name: string;
   };
-}
+};
 
-export interface Auth {
+export type Auth = {
   currentUser: AuthUser | null;
   groupMenus: AuthMenu[];
   groupPermissions: string[];
-}
+};
 
-export interface AuthLogin extends Auth {
-  accessToken: string;
-}
-
-const AUTH_API = 'auth/account';
-
-interface UseAuth extends Auth {
+type UseAuth = Auth & {
   loading: boolean;
   mutate: (
     data?: Promise<Auth> | MutatorCallback<Auth> | Auth,
     shouldRevalidate?: boolean
   ) => Promise<Auth | undefined>;
-}
+};
+
+const AUTH_API = 'auth/account';
 
 const useAuth = (): UseAuth => {
   const { get } = useHttp();
@@ -60,12 +56,12 @@ const useAuth = (): UseAuth => {
   };
 };
 
-export const setAuth = async (auth: Auth): Promise<void> => {
+const setAuth = async (auth: Auth): Promise<void> => {
   await mutate(AUTH_API, auth, false);
 };
 
-export const refreshAuth = async (): Promise<void> => {
+const refreshAuth = async (): Promise<void> => {
   await mutate(AUTH_API);
 };
 
-export default useAuth;
+export { useAuth, setAuth, refreshAuth };

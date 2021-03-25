@@ -1,7 +1,5 @@
-import { Box } from '@material-ui/core';
-
 const NestIndex = () => {
-  return <Box>Nest Index</Box>;
+  return <div>Nest Index</div>;
 };
 
 export default NestIndex;

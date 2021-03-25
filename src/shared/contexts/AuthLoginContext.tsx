@@ -6,10 +6,10 @@ export enum AuthLoginAction {
   DIRECT,
 }
 
-interface IAuthLoginDispatch {
+type IAuthLoginDispatch = {
   setLoginAction: (action: AuthLoginAction) => void;
   resetLoginAction: () => void;
-}
+};
 
 type AuthLoginDispatchContextType = Dispatch<SetStateAction<AuthLoginAction>>;
 
@@ -17,7 +17,7 @@ const AuthLoginStateContext = createContext<AuthLoginAction | undefined>(undefin
 
 const AuthLoginDispatchContext = createContext<AuthLoginDispatchContextType | undefined>(undefined);
 
-export const AuthLoginProvider = ({ children }: { children: ReactNode }) => {
+const AuthLoginProvider = ({ children }: { children: ReactNode }) => {
   const [authLoginState, setAuthLoginState] = useState<AuthLoginAction>(AuthLoginAction.NONE);
 
   return (
@@ -27,7 +27,7 @@ export const AuthLoginProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useAuthLoginState = (): AuthLoginAction => {
+const useAuthLoginState = (): AuthLoginAction => {
   const authLoginState = useContext(AuthLoginStateContext);
 
   if (authLoginState === undefined) {
@@ -37,7 +37,7 @@ export const useAuthLoginState = (): AuthLoginAction => {
   return authLoginState;
 };
 
-export const useAuthLoginDispatch = (): IAuthLoginDispatch => {
+const useAuthLoginDispatch = (): IAuthLoginDispatch => {
   const authLoginDispatch = useContext(AuthLoginDispatchContext);
 
   if (authLoginDispatch === undefined) {
@@ -57,3 +57,5 @@ export const useAuthLoginDispatch = (): IAuthLoginDispatch => {
 
   return { setLoginAction, resetLoginAction };
 };
+
+export { AuthLoginProvider, useAuthLoginState, useAuthLoginDispatch };

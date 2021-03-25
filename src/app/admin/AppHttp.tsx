@@ -5,12 +5,15 @@ import queryString from 'query-string';
 import { HttpProvider } from '@shared/contexts/HttpContext';
 import { SWRConfig } from 'swr';
 import { getAuthToken } from '@admin/AppAuth';
-import { HttpError, HttpParams, HttpRequestConfig, HttpResponse } from '@shared/utils/http';
-
-const UnauthorizedHttpCode = 401;
-const UnprocessableEntityHttpCode = 422;
-
-const HttpGetMethod = ['GET', 'HEAD'];
+import {
+  HttpError,
+  HttpGetMethod,
+  HttpParams,
+  HttpRequestConfig,
+  HttpResponse,
+  UnauthorizedHttpCode,
+  UnprocessableEntityHttpCode,
+} from '@shared/utils/http';
 
 const AppHttpProvider = ({ children }: { children: ReactNode }) => {
   const { setError } = useErrorDispatch();

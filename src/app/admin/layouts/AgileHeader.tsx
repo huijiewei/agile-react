@@ -1,17 +1,16 @@
-import { Box } from '@material-ui/core';
-import HeaderUserMenu from '@admin/components/HeaderUserMenu';
-import HeaderBreadcrumb from '@admin/components/HeaderBreadcrumb';
+import { HeaderUserMenu } from '@admin/components/HeaderUserMenu';
+import { HeaderBreadcrumb } from '@admin/components/HeaderBreadcrumb';
 
 const AgileHeader = () => {
   return (
-    <Box>
-      <Box>
+    <div>
+      <div>
         <HeaderBreadcrumb />
-      </Box>
-      <Box>
+      </div>
+      <div>
         <HeaderUserMenu />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

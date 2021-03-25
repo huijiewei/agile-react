@@ -3,19 +3,15 @@ import '@shared/utils/wdyr';
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
 
-import App from './App';
+import { App } from './App';
 
 import './serviceWorker';
-import { ThemeProvider, CssBaseline } from '@material-ui/core';
 
-import agileTheme from './theme';
+import '@shared/assets/styles/agile.less';
 
 render(
   <StrictMode>
-    <ThemeProvider theme={agileTheme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <App />
   </StrictMode>,
   document.getElementById('root')
 );

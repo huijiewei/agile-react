@@ -1,4 +1,4 @@
-import useAuth from '@admin/services/useAuth';
+import { useAuth } from '@admin/services/useAuth';
 import { useEffect, useState } from 'react';
 
 const isRouteInPermissions = (route: string, permissions: string[]) => {
@@ -43,4 +43,4 @@ const useAuthPermission = (route: string): boolean => {
   return hasPermissions;
 };
 
-export default useAuthPermission;
+export { useAuthPermission };

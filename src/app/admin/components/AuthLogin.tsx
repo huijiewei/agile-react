@@ -2,8 +2,7 @@ import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginCo
 import { To } from 'history';
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import LoginForm from '@admin/components/LoginForm';
-import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import { LoginForm } from '@admin/components/LoginForm';
 
 const LoginDirect = () => {
   const location = useLocation();
@@ -19,30 +18,31 @@ const LoginDirect = () => {
   return <Navigate to={to} replace={true} />;
 };
 
-const LoginModal = ({ open }: { open: boolean }) => {
-  return (
-    <Dialog open={open}>
-      <DialogTitle sx={{ textAlign: 'center' }}>管理员登录</DialogTitle>
-      <DialogContent sx={{ marginBottom: 2, width: 390 }}>
+const LoginModal = ({ isOpen }: { isOpen: boolean }) => {
+  return isOpen ? (
+    <div>
+      <div />
+      <header>管理员登录</header>
+      <main>
         <LoginForm />
-      </DialogContent>
-    </Dialog>
-  );
+      </main>
+    </div>
+  ) : null;
 };
 
 const AuthLogin = ({ children }: { children: ReactNode }) => {
   const authLoginAction = useAuthLoginState();
 
   if (authLoginAction == AuthLoginAction.DIRECT) {
-    return <LoginDirect></LoginDirect>;
+    return <LoginDirect />;
   }
 
   return (
     <>
       {children}
-      <LoginModal open={authLoginAction == AuthLoginAction.MODAL}></LoginModal>
+      <LoginModal isOpen={authLoginAction == AuthLoginAction.MODAL} />
     </>
   );
 };
 
-export default AuthLogin;
+export { AuthLogin };

@@ -9,4 +9,4 @@ const adminGroupRoutes = [
   },
 ];
 
-export default adminGroupRoutes;
+export { adminGroupRoutes };

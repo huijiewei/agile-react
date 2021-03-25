@@ -1,6 +1,5 @@
-import LoginForm from '@admin/components/LoginForm';
+import { LoginForm } from '@admin/components/LoginForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Box, Container, Typography } from '@material-ui/core';
 
 const Login = () => {
   const navigator = useNavigate();
@@ -11,10 +10,8 @@ const Login = () => {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth={false}
-      sx={{
+    <main
+      style={{
         display: 'flex',
         height: '100vh',
         alignItems: 'center',
@@ -23,43 +20,39 @@ const Login = () => {
         backgroundImage: `url(${require('../../assets/images/login-bg.jpg')})`,
       }}
     >
-      <Box
-        sx={{
+      <div
+        style={{
           backgroundColor: '#ffffff',
           padding: 4,
           width: 390,
           borderRadius: 1,
-          boxShadow: 3,
           marginTop: -5,
         }}
       >
-        <Box
-          sx={{
+        <div
+          style={{
             textAlign: 'center',
           }}
         >
-          <Box
-            component="img"
-            sx={{
+          <img
+            style={{
               width: '50px',
             }}
             alt="Agile"
             src={require('../../assets/images/logo.png')}
           />
-          <Typography
-            sx={{
+          <h1
+            style={{
               fontWeight: 'bold',
               marginBottom: 3,
             }}
-            component="h1"
-            variant="subtitle1"
           >
             管理员登陆
-          </Typography>
-        </Box>
+          </h1>
+        </div>
         <LoginForm onSuccess={handleSuccess} />
-      </Box>
-    </Container>
+      </div>
+    </main>
   );
 };
 

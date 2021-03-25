@@ -3,12 +3,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { useSplash } from '@shared/hooks/useSplash';
 
 import { ErrorProvider } from '@shared/contexts/ErrorContext';
-import ErrorDialog from '@admin/components/ErrorDialog';
+import { ErrorDialog } from '@admin/components/ErrorDialog';
 
 import { AppAuthProvider } from '@admin/AppAuth';
 import { AppHttpProvider } from '@admin/AppHttp';
 
-import AppRoutes from '@admin/routers';
+import { AppRoutes } from '@admin/routers';
 
 const App = () => {
   useSplash();
@@ -27,4 +27,4 @@ const App = () => {
   );
 };
 
-export default App;
+export { App };

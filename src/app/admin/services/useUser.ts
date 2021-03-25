@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { PageResponse } from './types';
 import { useHttp } from '@shared/contexts/HttpContext';
 
-interface User {
+type User = {
   id: number;
   name: string;
   phone: string;
@@ -14,11 +14,11 @@ interface User {
     description: string;
   };
   createdAt: string;
-}
+};
 
 const USER_API = 'users';
 
-export const useUserAll = (withSearchFields = false): { loading: boolean; data: PageResponse<User> | undefined } => {
+const useUserAll = (withSearchFields = false): { loading: boolean; data: PageResponse<User> | undefined } => {
   const { get } = useHttp();
   const [searchParams] = useSearchParams();
   const { data, error } = useSWR<PageResponse<User>>(
@@ -34,7 +34,7 @@ export const useUserAll = (withSearchFields = false): { loading: boolean; data: 
   };
 };
 
-export const useUseView = (id: string): { data: User | undefined; loading: boolean } => {
+const useUserView = (id: string): { data: User | undefined; loading: boolean } => {
   const { get } = useHttp();
   const { data, error } = useSWR<User | undefined>(USER_API + '/' + id, (url) => get(url));
 
@@ -45,3 +45,5 @@ export const useUseView = (id: string): { data: User | undefined; loading: boole
     data,
   };
 };
+
+export { useUserAll, useUserView };
