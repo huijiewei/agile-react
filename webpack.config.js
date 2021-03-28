@@ -10,6 +10,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { CompiledExtractPlugin } = require('@compiled/webpack-loader');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -50,7 +51,16 @@ module.exports = (env, argv) => {
         {
           test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
-          use: [{ loader: 'babel-loader' }],
+          use: [
+            { loader: 'babel-loader' },
+            isProduction && {
+              loader: '@compiled/webpack-loader',
+              options: {
+                importReact: false,
+                extract: true,
+              },
+            },
+          ].filter(Boolean),
         },
         {
           test: /\.css$/,
@@ -184,6 +194,7 @@ module.exports = (env, argv) => {
       !isProduction && new ReactRefreshWebpackPlugin(),
       isProduction && new CleanWebpackPlugin(),
       isProduction && new BundleAnalyzerPlugin(),
+      isProduction && new CompiledExtractPlugin(),
     ].filter(Boolean),
   };
 

@@ -3,11 +3,12 @@ import '@shared/utils/wdyr';
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
 
+import { globalStyles } from '@shared/theme/stitches.config';
 import { App } from './App';
 
 import './serviceWorker';
 
-import '@shared/assets/styles/agile.less';
+globalStyles();
 
 render(
   <StrictMode>

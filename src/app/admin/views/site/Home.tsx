@@ -5,7 +5,7 @@ import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { timeout } from '@shared/utils/util';
 import { Button } from '@shared/components/button/Button';
 import { Link } from 'react-router-dom';
@@ -39,12 +39,16 @@ const RefreshUserButton = () => {
   );
 };
 
+const MarginDiv = ({ children }: { children: ReactNode }) => {
+  return <div style={{ marginBottom: '15px' }}>{children}</div>;
+};
+
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { get, post } = useHttp();
 
   const handleClick = () => {
-    setError('No handler found for GET /admin-api/shop-products');
+    setError('出现错误');
   };
 
   const handleSetIncorrectAccessToken = () => {
@@ -80,57 +84,64 @@ const Home = () => {
   return (
     <ContentLayout>
       <div>
-        <div>Hello Agile</div>
-        <div>中文字体</div>
-        <div>
-          <Button isFullWidth onClick={handleToastShow}>
-            显示一个 Toast
-          </Button>
+        <MarginDiv>Hello Agile</MarginDiv>
+        <MarginDiv>中文字体</MarginDiv>
+        <MarginDiv>
+          <Button onClick={handleToastShow}>显示一个 Toast</Button>
           &nbsp;
           <Button as={Link} isDisabled to={'about'}>
             显示一个 Toast
           </Button>
-        </div>
-        <div>
+        </MarginDiv>
+        <MarginDiv>
           <DeleteUserButton />
           &nbsp;&nbsp;
           <DeleteAdminButton />
-        </div>
-        <div>
+        </MarginDiv>
+        <MarginDiv>
           <button onClick={handleSendGet}>随便发送一个 GET 请求</button>
           &nbsp;&nbsp;
           <button onClick={handleSendPost}>随便发送一个 POST 请求</button>
-        </div>
-        <div>
+        </MarginDiv>
+        <MarginDiv>
           <RefreshUserButton />
-        </div>
-        <div>
+        </MarginDiv>
+        <MarginDiv>
           <button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</button>
           &nbsp;&nbsp;
           <button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</button>
-        </div>
-        <div>
+        </MarginDiv>
+        <MarginDiv>
+          <Button isFullWidth onClick={handleClick}>
+            显示个错误提示
+          </Button>
+        </MarginDiv>
+        <MarginDiv>
+          <Button onClick={handleClick}>显示个错误提示</Button>
           <button onClick={handleClick}>显示个错误提示</button>
           <button onClick={handleClick}>显示个错误提示</button>
           <button onClick={handleClick}>显示个错误提示</button>
+        </MarginDiv>
+        <MarginDiv>
+          <Button size={'lg'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
           <button onClick={handleClick}>显示个错误提示</button>
-        </div>
-        <div>
           <button onClick={handleClick}>显示个错误提示</button>
           <button onClick={handleClick}>显示个错误提示</button>
-          <button onClick={handleClick}>显示个错误提示</button>
-          <button onClick={handleClick}>显示个错误提示</button>
-        </div>
-        <div>
-          <button onClick={handleClick}>显示个错误提示</button>
+        </MarginDiv>
+        <MarginDiv>
+          <Button size={'lg'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
           &nbsp;&nbsp;
-          <button onClick={handleClick}>显示个错误提示</button>
+          <Button onClick={handleClick}>显示个错误提示</Button>
           &nbsp;&nbsp;
-          <button onClick={handleClick}>显示个错误提示</button>
-          &nbsp;&nbsp;
-          <button onClick={handleClick}>显示个错误提示</button>
-        </div>
-        <p>TEST</p>
+          <Button size={'sm'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+        </MarginDiv>
+        <MarginDiv>TEST</MarginDiv>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>

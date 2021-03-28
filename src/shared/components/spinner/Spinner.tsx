@@ -1,20 +1,31 @@
+import styled from '@emotion/styled';
 import { VisuallyHidden } from '@shared/components/visually-hidden/VisuallyHidden';
 import { __DEV__ } from '@shared/utils/assertion';
 import { forwardRefWithAs } from '@shared/utils/react';
 
 type SpinnerProps = {
-  size?: 'sm' | 'base' | 'lg' | 'xl';
-  color?: 'primary' | 'secondary' | 'tertiary' | 'link' | 'success' | 'warning' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  emptyColor?: string;
+  palette?: 'primary' | 'secondary' | 'tertiary' | 'link' | 'success' | 'warning' | 'danger';
   label?: string;
+  speed?: string;
+  thickness?: string;
 };
+
+const SpinnerStyled = styled.span({
+  display: 'inline-block',
+  borderColor: 'currentcolor',
+  borderRadius: '9999px',
+  borderStyle: 'solid',
+});
 
 const Spinner = forwardRefWithAs<SpinnerProps, 'span'>((props, ref) => {
   const { as: Comp = 'span', label = 'Loading...', ...restProps } = props;
 
   return (
-    <Comp ref={ref} {...restProps}>
+    <SpinnerStyled as={Comp} ref={ref} {...restProps}>
       {label && <VisuallyHidden>{label}</VisuallyHidden>}
-    </Comp>
+    </SpinnerStyled>
   );
 });
 
