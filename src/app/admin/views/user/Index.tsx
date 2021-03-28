@@ -5,7 +5,7 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Button } from '@shared/components/button/Button';
+import { Button } from '@chakra-ui/react';
 
 const UserList = () => {
   const { data } = useUserAll();

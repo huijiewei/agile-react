@@ -1,5 +1,13 @@
 import { useErrorDispatch, useErrorState } from '@shared/contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogOverlay,
+  Button,
+} from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 
 const ErrorDialog = () => {
@@ -29,19 +37,25 @@ const ErrorDialog = () => {
   };
 
   return (
-    <div>
-      <div />
-      <main>
-        <div>
+    <AlertDialog
+      closeOnOverlayClick={false}
+      closeOnEsc={false}
+      leastDestructiveRef={cancelRef}
+      isOpen={isOpen}
+      onClose={handleDialogClose}
+    >
+      <AlertDialogOverlay />
+      <AlertDialogContent>
+        <AlertDialogBody>
           <p>{error?.message}</p>
-        </div>
-        <div>
-          <button onClick={handleButtonClick} ref={cancelRef}>
+        </AlertDialogBody>
+        <AlertDialogFooter>
+          <Button onClick={handleButtonClick} ref={cancelRef}>
             {error?.historyBack ? '返回' : '关闭'}
-          </button>
-        </div>
-      </main>
-    </div>
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

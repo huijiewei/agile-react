@@ -7,8 +7,8 @@ import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { ReactNode, useState } from 'react';
 import { timeout } from '@shared/utils/util';
-import { Button } from '@shared/components/button/Button';
 import { Link } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -118,17 +118,33 @@ const Home = () => {
         </MarginDiv>
         <MarginDiv>
           <Button onClick={handleClick}>显示个错误提示</Button>
-          <button onClick={handleClick}>显示个错误提示</button>
-          <button onClick={handleClick}>显示个错误提示</button>
-          <button onClick={handleClick}>显示个错误提示</button>
+          &nbsp;&nbsp;
+          <Button variant={'outline'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;&nbsp;
+          <Button variant={'ghost'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;&nbsp;
+          <Button variant={'link'} onClick={handleClick}>
+            显示个错误提示
+          </Button>
         </MarginDiv>
         <MarginDiv>
           <Button size={'lg'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          <button onClick={handleClick}>显示个错误提示</button>
-          <button onClick={handleClick}>显示个错误提示</button>
-          <button onClick={handleClick}>显示个错误提示</button>
+          &nbsp;&nbsp;
+          <Button onClick={handleClick}>显示个错误提示</Button>
+          &nbsp;&nbsp;
+          <Button size="sm" onClick={handleClick}>
+            显示个错误提示
+          </Button>
+          &nbsp;&nbsp;
+          <Button size="xs" onClick={handleClick}>
+            显示个错误提示
+          </Button>
         </MarginDiv>
         <MarginDiv>
           <Button size={'lg'} onClick={handleClick}>

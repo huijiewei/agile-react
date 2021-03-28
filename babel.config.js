@@ -20,15 +20,6 @@ module.exports = (api) => {
       ],
       '@babel/preset-typescript',
     ],
-    plugins: [
-      '@babel/plugin-transform-runtime',
-      !api.env('production') && 'react-refresh/babel',
-      !api.env('production') && [
-        '@compiled/babel-plugin',
-        {
-          importReact: false,
-        },
-      ],
-    ].filter(Boolean),
+    plugins: ['@babel/plugin-transform-runtime', !api.env('production') && 'react-refresh/babel'].filter(Boolean),
   };
 };

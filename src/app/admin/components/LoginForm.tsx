@@ -6,6 +6,18 @@ import { setAuthAccessToken } from '@admin/AppAuth';
 import { Auth, setAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { bindUnprocessableEntityErrors, requestFlatry } from '@shared/utils/http';
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightAddon,
+  Stack,
+} from '@chakra-ui/react';
+import { Eye, Lock, User } from 'react-feather';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -88,40 +100,49 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label id="account">
-        <div>
-          <input
+    <Stack spacing={4} as="form" onSubmit={handleSubmit(onSubmit)}>
+      <FormControl id="account" isInvalid={errors.account}>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Icon as={User} color="gray.300" />
+          </InputLeftElement>
+          <Input
             name="account"
             ref={register({ required: '请输入帐号' })}
             type="text"
             placeholder="手机号码或者电子邮箱"
           />
-        </div>
-        <span>{errors.account?.message || ' '}</span>
-      </label>
-      <label id="password">
-        <div>
-          <input name="password" ref={register({ required: '请输入密码' })} type="password" placeholder="密码" />
-        </div>
-        <span>{errors.password?.message || ' '}</span>
-      </label>
+        </InputGroup>
+        <FormErrorMessage>{errors.account?.message || ' '}</FormErrorMessage>
+      </FormControl>
+      <FormControl id="password" isInvalid={errors.password}>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Icon as={Lock} color="gray.300" />
+          </InputLeftElement>
+          <Input name="password" ref={register({ required: '请输入密码' })} type="password" placeholder="密码" />
+        </InputGroup>
+        <FormErrorMessage>{errors.password?.message || ' '}</FormErrorMessage>
+      </FormControl>
       {captcha && (
-        <label id="captcha">
-          <div>
-            <input name="captcha" ref={register({ required: '请输入验证码' })} type="text" placeholder="验证码" />
-            <span>
+        <FormControl id="captcha" isInvalid={errors.captcha}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <Icon as={Eye} color="gray.300" />
+            </InputLeftElement>
+            <Input name="captcha" ref={register({ required: '请输入验证码' })} type="text" placeholder="验证码" />
+            <InputRightAddon>
               <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />
-            </span>
-          </div>
-          <span>{errors.captcha?.message || ' '}</span>
-        </label>
+            </InputRightAddon>
+          </InputGroup>
+          <FormErrorMessage>{errors.captcha?.message || ' '}</FormErrorMessage>
+        </FormControl>
       )}
 
-      <button disabled={loading} type={'submit'}>
+      <Button isLoading={loading} type={'submit'} isFullWidth>
         确 定
-      </button>
-    </form>
+      </Button>
+    </Stack>
   );
 };
 

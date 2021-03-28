@@ -2,15 +2,12 @@ const path = require('path');
 const { EnvironmentPlugin } = require('webpack');
 
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const { CompiledExtractPlugin } = require('@compiled/webpack-loader');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -21,7 +18,6 @@ module.exports = (env, argv) => {
   const appName = appConfig.name;
 
   const fileName = `assets/js/${isProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
-  const cssFileName = `assets/css/${isProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
 
   const config = {
     entry: {
@@ -51,51 +47,7 @@ module.exports = (env, argv) => {
         {
           test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
-          use: [
-            { loader: 'babel-loader' },
-            isProduction && {
-              loader: '@compiled/webpack-loader',
-              options: {
-                importReact: false,
-                extract: true,
-              },
-            },
-          ].filter(Boolean),
-        },
-        {
-          test: /\.css$/,
-          use: [
-            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                modules: false,
-                importLoaders: 1,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-            },
-          ],
-        },
-        {
-          test: /\.less$/,
-          use: [
-            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                modules: false,
-                importLoaders: 2,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-            },
-            {
-              loader: 'less-loader',
-            },
-          ],
+          use: [{ loader: 'babel-loader' }].filter(Boolean),
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -158,10 +110,6 @@ module.exports = (env, argv) => {
         QS_ARRAY_FORMAT: appConfig.qsArrayFormat,
       }),
       new ESLintPlugin(),
-      new MiniCssExtractPlugin({
-        filename: cssFileName,
-        chunkFilename: cssFileName,
-      }),
       new HtmlWebPackPlugin({
         title: appConfig.title,
         template: `./public/app/${appName}/index.html`,
@@ -194,13 +142,11 @@ module.exports = (env, argv) => {
       !isProduction && new ReactRefreshWebpackPlugin(),
       isProduction && new CleanWebpackPlugin(),
       isProduction && new BundleAnalyzerPlugin(),
-      isProduction && new CompiledExtractPlugin(),
     ].filter(Boolean),
   };
 
   if (isProduction) {
     config.optimization = {
-      minimizer: ['...', new CssMinimizerPlugin()],
       splitChunks: {
         cacheGroups: {
           react: {
@@ -208,6 +154,13 @@ module.exports = (env, argv) => {
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
             chunks: 'initial',
             priority: 30,
+            enforce: true,
+          },
+          chakra: {
+            name: 'chakra',
+            test: /[\\/]node_modules[\\/](chakra-ui|framer-motion)[\\/]/,
+            chunks: 'initial',
+            priority: 25,
             enforce: true,
           },
           vendor: {
