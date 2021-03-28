@@ -7,8 +7,12 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  Center,
+  Icon,
+  Text,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
+import { AlertCircle } from 'react-feather';
 
 const ErrorDialog = () => {
   const error = useErrorState();
@@ -38,6 +42,7 @@ const ErrorDialog = () => {
 
   return (
     <AlertDialog
+      isCentered
       closeOnOverlayClick={false}
       closeOnEsc={false}
       leastDestructiveRef={cancelRef}
@@ -45,11 +50,16 @@ const ErrorDialog = () => {
       onClose={handleDialogClose}
     >
       <AlertDialogOverlay />
-      <AlertDialogContent>
+      <AlertDialogContent padding={3}>
         <AlertDialogBody>
-          <p>{error?.message}</p>
+          <Center marginTop={2} marginBottom={3}>
+            <Icon boxSize={12} color={'red.300'} as={AlertCircle} />
+          </Center>
+          <Center fontSize="md" as={Text}>
+            {error?.message}
+          </Center>
         </AlertDialogBody>
-        <AlertDialogFooter>
+        <AlertDialogFooter sx={{ justifyContent: 'center' }}>
           <Button onClick={handleButtonClick} ref={cancelRef}>
             {error?.historyBack ? '返回' : '关闭'}
           </Button>

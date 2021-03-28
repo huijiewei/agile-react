@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 import { setAuthAccessToken } from '@admin/AppAuth';
 import { Auth, setAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
@@ -36,7 +35,6 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { register, handleSubmit, errors, setError, clearErrors, setValue } = useForm();
   const [loading, setLoading] = useState(false);
   const { post, get } = useHttp();
-  const { resetLoginAction } = useAuthLoginDispatch();
   const [captcha, setCaptcha] = useState<Captcha | null>(null);
 
   const updateCaptcha = async () => {
@@ -76,8 +74,6 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         groupMenus: data.groupMenus,
         groupPermissions: data.groupPermissions,
       });
-
-      resetLoginAction();
 
       onSuccess && onSuccess();
     }

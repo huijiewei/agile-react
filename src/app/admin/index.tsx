@@ -8,9 +8,11 @@ import { App } from './App';
 import './serviceWorker';
 import { ChakraProvider } from '@chakra-ui/react';
 
+import agileTheme from './theme';
+
 render(
   <StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={agileTheme}>
       <App />
     </ChakraProvider>
   </StrictMode>,

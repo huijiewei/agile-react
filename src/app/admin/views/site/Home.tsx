@@ -99,17 +99,17 @@ const Home = () => {
           <DeleteAdminButton />
         </MarginDiv>
         <MarginDiv>
-          <button onClick={handleSendGet}>随便发送一个 GET 请求</button>
+          <Button onClick={handleSendGet}>随便发送一个 GET 请求</Button>
           &nbsp;&nbsp;
-          <button onClick={handleSendPost}>随便发送一个 POST 请求</button>
+          <Button onClick={handleSendPost}>随便发送一个 POST 请求</Button>
         </MarginDiv>
         <MarginDiv>
           <RefreshUserButton />
         </MarginDiv>
         <MarginDiv>
-          <button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</button>
+          <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>
           &nbsp;&nbsp;
-          <button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</button>
+          <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
         </MarginDiv>
         <MarginDiv>
           <Button isFullWidth onClick={handleClick}>

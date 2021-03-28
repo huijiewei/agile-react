@@ -5,49 +5,60 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Button } from '@chakra-ui/react';
+import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text } from '@chakra-ui/react';
 
 const UserList = () => {
   const { data } = useUserAll();
 
   return (
     <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>手机号码</th>
-            <th>邮箱</th>
-            <th>姓名</th>
-            <th align="center">头像</th>
-            <th>注册 IP</th>
-            <th>注册来源</th>
-            <th>注册时间</th>
-            <th align={'right'}>操作</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Id</Th>
+            <Th>手机号码</Th>
+            <Th>邮箱</Th>
+            <Th>姓名</Th>
+            <Th sx={{ textAlign: 'center' }}>头像</Th>
+            <Th>注册 IP</Th>
+            <Th>注册来源</Th>
+            <Th>注册时间</Th>
+            <Th sx={{ textAlign: 'right' }}>操作</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {data &&
             data.items.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.phone}</td>
-                <td>{user.email}</td>
-                <td>{user.name}</td>
-                <td align="center">
-                  <img style={{ height: '32px', width: '32px' }} alt={user.name} src={user.avatar} />
-                </td>
-                <td>{user.createdIp}</td>
-                <td>{user.createdFrom.description}</td>
-                <td>{user.createdAt}</td>
-                <td align={'right'}>
-                  <Link to={'edit/' + user.id}>编辑</Link>
-                  <button>删除</button>
-                </td>
-              </tr>
+              <Tr key={user.id}>
+                <Td>{user.id}</Td>
+                <Td>{user.phone}</Td>
+                <Td>{user.email}</Td>
+                <Td>{user.name}</Td>
+                <Td>
+                  <Center>
+                    <Avatar size="sm" name={user.name} src={user.avatar} />
+                  </Center>
+                </Td>
+                <Td>
+                  <Text as="pre">{user.createdIp}</Text>
+                </Td>
+                <Td>{user.createdFrom.description}</Td>
+                <Td>
+                  <Text as="pre">{user.createdAt}</Text>
+                </Td>
+                <Td sx={{ textAlign: 'right' }}>
+                  <Button variant="outline" size="xs" as={Link} to={'edit/' + user.id}>
+                    编辑
+                  </Button>
+                  &nbsp;&nbsp;
+                  <Button colorScheme="red" variant="outline" size="xs">
+                    删除
+                  </Button>
+                </Td>
+              </Tr>
             ))}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
     </div>
   );
 };
@@ -70,9 +81,9 @@ const UserDownload = () => {
   };
 
   return (
-    <button disabled={loading} onClick={handleDownload}>
+    <Button size="sm" variant="outline" disabled={loading} onClick={handleDownload}>
       用户导出
-    </button>
+    </Button>
   );
 };
 

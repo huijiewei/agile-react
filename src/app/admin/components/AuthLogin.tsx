@@ -1,8 +1,10 @@
-import { AuthLoginAction, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
+import { AuthLoginAction, useAuthLoginDispatch, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
 import { To } from 'history';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { LoginForm } from '@admin/components/LoginForm';
+import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal';
+import { Center } from '@chakra-ui/layout';
 
 const LoginDirect = () => {
   const location = useLocation();
@@ -18,16 +20,43 @@ const LoginDirect = () => {
   return <Navigate to={to} replace={true} />;
 };
 
-const LoginModal = ({ isOpen }: { isOpen: boolean }) => {
-  return isOpen ? (
-    <div>
-      <div />
-      <header>管理员登录</header>
-      <main>
-        <LoginForm />
-      </main>
-    </div>
-  ) : null;
+const LoginModal = ({ isOpened }: { isOpened: boolean }) => {
+  const { resetLoginAction } = useAuthLoginDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(isOpened);
+  }, [isOpened, setIsOpen]);
+
+  const handleClose = () => {
+    resetLoginAction();
+  };
+
+  const handleSuccess = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <Modal
+      isCentered
+      motionPreset={'slideInBottom'}
+      size="sm"
+      closeOnEsc={false}
+      closeOnOverlayClick={false}
+      isOpen={isOpen}
+      onClose={handleClose}
+    >
+      <ModalOverlay />
+      <ModalContent padding={6}>
+        <ModalHeader>
+          <Center>管理员登录</Center>
+        </ModalHeader>
+        <ModalBody>
+          <LoginForm onSuccess={handleSuccess} />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
 };
 
 const AuthLogin = ({ children }: { children: ReactNode }) => {
@@ -40,7 +69,7 @@ const AuthLogin = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {children}
-      <LoginModal isOpen={authLoginAction == AuthLoginAction.MODAL} />
+      <LoginModal isOpened={authLoginAction == AuthLoginAction.MODAL} />
     </>
   );
 };
