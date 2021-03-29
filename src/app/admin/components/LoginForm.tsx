@@ -15,6 +15,7 @@ import {
   InputLeftElement,
   InputRightAddon,
   Stack,
+  FormLabel,
 } from '@chakra-ui/react';
 import { Eye, Lock, User } from 'react-feather';
 
@@ -98,6 +99,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   return (
     <Stack spacing={4} as="form" onSubmit={handleSubmit(onSubmit)}>
       <FormControl id="account" isInvalid={errors.account}>
+        <FormLabel>帐号</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <Icon as={User} color="gray.300" />
@@ -112,6 +114,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormErrorMessage>{errors.account?.message || ' '}</FormErrorMessage>
       </FormControl>
       <FormControl id="password" isInvalid={errors.password}>
+        <FormLabel>密码</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <Icon as={Lock} color="gray.300" />
@@ -122,6 +125,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       </FormControl>
       {captcha && (
         <FormControl id="captcha" isInvalid={errors.captcha}>
+          <FormLabel>验证码</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Icon as={Eye} color="gray.300" />

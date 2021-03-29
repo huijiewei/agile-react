@@ -6,9 +6,9 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { ReactNode, useState } from 'react';
-import { timeout } from '@shared/utils/util';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
+import { useIsMounted } from '@shared/hooks/useIsMounted';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -24,12 +24,16 @@ const DeleteAdminButton = () => {
 
 const RefreshUserButton = () => {
   const [loading, setLoading] = useState(false);
+  const isMounted = useIsMounted();
 
   const handleRefreshUser = async () => {
     setLoading(true);
+
     await refreshAuth();
-    await timeout(500);
-    await setLoading(false);
+
+    if (isMounted) {
+      setLoading(false);
+    }
   };
 
   return (

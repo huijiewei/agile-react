@@ -1,4 +1,13 @@
 import { extendTheme } from '@chakra-ui/react';
+import { createBreakpoints } from '@chakra-ui/theme-tools';
+
+const breakpoints = createBreakpoints({
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
+});
 
 const themeSpaces = {
   px: '1px',
@@ -51,6 +60,7 @@ const agileTheme = extendTheme({
       },
     },
   },
+  breakpoints: breakpoints,
   fonts: {
     heading:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
@@ -77,11 +87,11 @@ const agileTheme = extendTheme({
     none: '0',
     sm: '0.125rem',
     base: '0.125rem',
-    md: '0.125rem',
-    lg: '0.25rem',
-    xl: '0.375rem',
-    '2xl': '0.5rem',
-    '3xl': '1rem',
+    md: '0.15rem',
+    lg: '0.2rem',
+    xl: '0.25rem',
+    '2xl': '0.375rem',
+    '3xl': '0.5rem',
     full: '9999px',
   },
   space: themeSpaces,
@@ -116,10 +126,11 @@ const agileTheme = extendTheme({
       defaultProps: {
         colorScheme: 'blue',
       },
-      baseStyle: {},
+      baseStyle: {
+        fontWeight: 'medium',
+      },
       sizes: {
         sm: {
-          fontWeight: 'medium',
           height: 9,
         },
         xs: {
@@ -134,6 +145,13 @@ const agileTheme = extendTheme({
         },
       },
     },
+    Menu: {
+      baseStyle: {
+        list: {
+          minWidth: 36,
+        },
+      },
+    },
     FormError: {
       baseStyle: {
         text: {
@@ -143,5 +161,7 @@ const agileTheme = extendTheme({
     },
   },
 });
+
+console.log(agileTheme.breakpoints);
 
 export default agileTheme;

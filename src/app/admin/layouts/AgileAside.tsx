@@ -38,12 +38,6 @@ const menus = [
 const AgileAside = () => {
   return (
     <div>
-      <div>
-        <Link to={'home'}>
-          <img style={{ height: '39px' }} alt="Agile" src={require('../assets/images/logo.png')} />
-          <img style={{ height: '39px' }} alt="Boilerplate" src={require('../assets/images/banner-white.png')} />
-        </Link>
-      </div>
       <nav>
         {menus.map((menu, index) => (
           <li key={'m-' + index}>

@@ -1,8 +1,10 @@
 import { Link, matchRoutes, useLocation } from 'react-router-dom';
-import { HTMLAttributes, useMemo } from 'react';
+import { useMemo } from 'react';
 import { getRouters } from '@admin/routers';
+import { Box, Icon } from '@chakra-ui/react';
+import { Home } from 'react-feather';
 
-const HeaderBreadcrumb = (props: HTMLAttributes<HTMLDivElement>) => {
+const HeaderBreadcrumb = ({ height }: { height: string }) => {
   const location = useLocation();
 
   const routes = useMemo(() => {
@@ -14,9 +16,11 @@ const HeaderBreadcrumb = (props: HTMLAttributes<HTMLDivElement>) => {
   console.log(match);
 
   return (
-    <div {...props}>
-      <Link to={'home'}>管理后台</Link>
-    </div>
+    <Box paddingStart="5" lineHeight={height}>
+      <Link to={'home'}>
+        <Icon as={Home} marginTop="-3px" /> 管理后台
+      </Link>
+    </Box>
   );
 };
 

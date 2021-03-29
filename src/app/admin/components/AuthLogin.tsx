@@ -37,15 +37,7 @@ const LoginModal = ({ isOpened }: { isOpened: boolean }) => {
   };
 
   return (
-    <Modal
-      isCentered
-      motionPreset={'slideInBottom'}
-      size="sm"
-      closeOnEsc={false}
-      closeOnOverlayClick={false}
-      isOpen={isOpen}
-      onClose={handleClose}
-    >
+    <Modal isCentered size="sm" closeOnEsc={false} closeOnOverlayClick={false} isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent padding={6}>
         <ModalHeader>
