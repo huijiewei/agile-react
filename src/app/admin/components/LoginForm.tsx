@@ -18,6 +18,7 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import { Eye, Lock, User } from 'react-feather';
+import { LockIcon } from '@chakra-ui/icons';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -117,7 +118,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormLabel>密码</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <Icon as={Lock} color="gray.300" />
+            <LockIcon color="gray.300" />
           </InputLeftElement>
           <Input name="password" ref={register({ required: '请输入密码' })} type="password" placeholder="密码" />
         </InputGroup>

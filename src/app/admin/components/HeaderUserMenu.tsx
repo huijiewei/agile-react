@@ -4,7 +4,7 @@ import { useAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
 import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar, Icon, Center } from '@chakra-ui/react';
-import { ChevronDown, User, LogOut, RotateCw } from 'react-feather';
+import { Down, Logout, Refresh, User } from '@icon-park/react';
 
 const HeaderUserMenu = ({ height }: { height: string }) => {
   const { post } = useHttp();
@@ -37,29 +37,24 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
           height={height}
           lineHeight={height}
         >
-          <Avatar verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
-          &nbsp;
+          <Avatar marginEnd="6px" verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
           {currentUser.name}
-          &nbsp;
-          <Icon as={ChevronDown}></Icon>
+          <Icon marginStart="6px" verticalAlign="-3px" as={Down}></Icon>
         </MenuButton>
         <MenuList>
           <MenuItem as={Center} isDisabled>
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />
-          <MenuItem>
-            <Icon as={User} />
-            &nbsp;&nbsp;个人资料
+          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-3px" as={User} />}>
+            个人资料
           </MenuItem>
-          <MenuItem onClick={handleRefresh}>
-            <Icon as={RotateCw} />
-            &nbsp;&nbsp;刷新资料
+          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-3px" as={Refresh} />} onClick={handleRefresh}>
+            刷新资料
           </MenuItem>
           <MenuDivider />
-          <MenuItem onClick={handleLogout}>
-            <Icon as={LogOut} />
-            &nbsp;&nbsp;退出登录
+          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-3px" as={Logout} />} onClick={handleLogout}>
+            退出登录
           </MenuItem>
         </MenuList>
       </Menu>

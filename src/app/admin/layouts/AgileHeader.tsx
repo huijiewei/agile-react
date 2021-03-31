@@ -3,7 +3,7 @@ import { HeaderBreadcrumb } from '@admin/components/HeaderBreadcrumb';
 import { Box, Flex, Icon, IconButton, Image } from '@chakra-ui/react';
 import { useLayoutState } from '@shared/components/layout/LayoutContext';
 import { Link } from 'react-router-dom';
-import { AlignLeft } from 'react-feather';
+import { MenuUnfoldOne } from '@icon-park/react';
 
 const AgileHeader = () => {
   const { headerHeight, asideWidth, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
@@ -35,7 +35,7 @@ const AgileHeader = () => {
           height={headerHeight}
           width={headerHeight}
           aria-label="展开收缩菜单"
-          icon={<Icon as={AlignLeft}></Icon>}
+          icon={<Icon size="16px" as={MenuUnfoldOne}></Icon>}
         />
         <HeaderBreadcrumb height={headerHeight} />
       </Flex>
