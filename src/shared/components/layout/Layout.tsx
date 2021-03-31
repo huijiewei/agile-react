@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { PropsWithChildren, ReactNode } from 'react';
-import { LayoutAsideState, LayoutProvider, useLayoutState } from './LayoutContext';
+import { LayoutProvider, LayoutState, useLayoutState } from './LayoutContext';
 import { noScrollbarsClassName } from 'react-remove-scroll-bar';
 
 const LayoutHeader = ({ children }: { children: ReactNode }) => {
@@ -24,7 +24,7 @@ const LayoutHeader = ({ children }: { children: ReactNode }) => {
 };
 
 const LayoutAside = ({ children }: { children: ReactNode }) => {
-  const { asideBackgroundColor, asideWidth, asideCollapsedWidth, headerHeight } = useLayoutState();
+  const { asideWidth, asideCollapsedWidth, headerHeight, asideBackgroundColor } = useLayoutState();
 
   return (
     <Box
@@ -34,7 +34,9 @@ const LayoutAside = ({ children }: { children: ReactNode }) => {
       zIndex="docked"
       display={['none', 'none', 'none', 'block']}
       top={headerHeight}
+      bottom="0"
       width={[asideWidth, asideWidth, asideWidth, asideCollapsedWidth, asideWidth]}
+      boxShadow="sm"
     >
       {children}
     </Box>
@@ -45,13 +47,19 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
   const { asideWidth, asideCollapsedWidth, headerHeight } = useLayoutState();
 
   return (
-    <Box marginTop={headerHeight} padding="5" marginStart={[0, 0, 0, asideCollapsedWidth, asideWidth]}>
+    <Box
+      height={`calc(100vh - ${headerHeight} )`}
+      marginTop={headerHeight}
+      padding="5"
+      marginStart={[0, 0, 0, asideCollapsedWidth, asideWidth]}
+    >
       {children}
     </Box>
   );
 };
 
-const LayoutResponsive = ({ children, backgroundColor }: { children: ReactNode; backgroundColor: string }) => {
+const LayoutResponsive = ({ children }: { children: ReactNode }) => {
+  const { backgroundColor } = useLayoutState();
   return (
     <Box backgroundColor={backgroundColor} display="block">
       {children}
@@ -59,26 +67,19 @@ const LayoutResponsive = ({ children, backgroundColor }: { children: ReactNode; 
   );
 };
 
-type LayoutProp = {
-  asideWidth: string;
-  asideCollapsedWidth: string;
-  asideBackgroundColor: string;
-  headerHeight: string;
-  headerBackgroundColor: string;
-  backgroundColor: string;
-};
+type LayoutProp = LayoutState;
 
 const Layout = ({ children, ...layoutProps }: PropsWithChildren<LayoutProp>) => {
   return (
     <LayoutProvider
+      backgroundColor={layoutProps.backgroundColor}
       headerHeight={layoutProps.headerHeight}
       headerBackgroundColor={layoutProps.headerBackgroundColor}
       asideWidth={layoutProps.asideWidth}
       asideCollapsedWidth={layoutProps.asideCollapsedWidth}
       asideBackgroundColor={layoutProps.asideBackgroundColor}
-      asideDefaultState={LayoutAsideState.EXPANDED}
     >
-      <LayoutResponsive backgroundColor={layoutProps.backgroundColor}>{children}</LayoutResponsive>
+      <LayoutResponsive>{children}</LayoutResponsive>
     </LayoutProvider>
   );
 };

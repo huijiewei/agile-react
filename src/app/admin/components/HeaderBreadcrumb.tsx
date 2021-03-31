@@ -1,7 +1,7 @@
 import { Link, matchRoutes, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import { getRouters } from '@admin/routers';
-import { Box, Icon } from '@chakra-ui/react';
+import { Breadcrumb, Icon, BreadcrumbItem, BreadcrumbLink, Text } from '@chakra-ui/react';
 import { Home } from 'react-feather';
 
 const HeaderBreadcrumb = ({ height }: { height: string }) => {
@@ -16,11 +16,16 @@ const HeaderBreadcrumb = ({ height }: { height: string }) => {
   console.log(match);
 
   return (
-    <Box paddingStart="5" lineHeight={height}>
-      <Link to={'home'}>
-        <Icon as={Home} marginTop="-3px" /> 管理后台
-      </Link>
-    </Box>
+    <Breadcrumb paddingStart="3" height={height} lineHeight={height}>
+      <BreadcrumbItem>
+        <BreadcrumbLink as={Link} to={'home'}>
+          <Icon marginTop="-3px" as={Home}></Icon> 管理后台
+        </BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbItem isLastChild>
+        <Text color="gray.600">首页</Text>
+      </BreadcrumbItem>
+    </Breadcrumb>
   );
 };
 

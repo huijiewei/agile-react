@@ -158,7 +158,7 @@ module.exports = (env, argv) => {
           },
           chakra: {
             name: 'chakra',
-            test: /[\\/]node_modules[\\/](chakra-ui|framer-motion)[\\/]/,
+            test: /[\\/]node_modules[\\/](@chakra-ui|framer-motion)[\\/]/,
             chunks: 'initial',
             priority: 25,
             enforce: true,

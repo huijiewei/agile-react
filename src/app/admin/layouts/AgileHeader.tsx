@@ -1,6 +1,6 @@
 import { HeaderUserMenu } from '@admin/components/HeaderUserMenu';
 import { HeaderBreadcrumb } from '@admin/components/HeaderBreadcrumb';
-import { Box, Flex, IconButton, Image } from '@chakra-ui/react';
+import { Box, Flex, Icon, IconButton, Image } from '@chakra-ui/react';
 import { useLayoutState } from '@shared/components/layout/LayoutContext';
 import { Link } from 'react-router-dom';
 import { AlignLeft } from 'react-feather';
@@ -35,7 +35,7 @@ const AgileHeader = () => {
           height={headerHeight}
           width={headerHeight}
           aria-label="展开收缩菜单"
-          icon={<AlignLeft></AlignLeft>}
+          icon={<Icon as={AlignLeft}></Icon>}
         />
         <HeaderBreadcrumb height={headerHeight} />
       </Flex>

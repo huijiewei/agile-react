@@ -7,6 +7,7 @@
     "react",
     "typescript",
     "webpack 5",
+    "chakra-ui",
     "react components",
     "admin boilerplate"
   ],
@@ -27,6 +28,7 @@
     "axios": "^0.21.1",
     "framer-motion": "^4.0.3",
     "history": "^5.0.0",
+    "metismenujs": "^1.2.1",
     "query-string": "^7.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

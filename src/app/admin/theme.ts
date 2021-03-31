@@ -54,6 +54,16 @@ const agileTheme = extendTheme({
     global: {
       body: {
         fontSize: 'md',
+        '&::-webkit-scrollbar': {
+          width: '7px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '9px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'gray.400',
+          borderRadius: 'sm',
+        },
       },
       'a[disabled]': {
         pointerEvents: 'none',
@@ -161,7 +171,5 @@ const agileTheme = extendTheme({
     },
   },
 });
-
-console.log(agileTheme.breakpoints);
 
 export default agileTheme;

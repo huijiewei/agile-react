@@ -2,7 +2,7 @@ import useSWR, { cache, mutate } from 'swr';
 import { MutatorCallback } from 'swr/dist/types';
 import { useHttp } from '@shared/contexts/HttpContext';
 
-type AuthMenu = {
+export type AuthMenu = {
   label: string;
   url: string;
   open: boolean;

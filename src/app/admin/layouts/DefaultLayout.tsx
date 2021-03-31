@@ -3,7 +3,6 @@ import { Suspense } from 'react';
 import AgileHeader from '@admin/layouts/AgileHeader';
 import AgileAside from '@admin/layouts/AgileAside';
 import { AuthLogin } from '@admin/components/AuthLogin';
-import { Box } from '@chakra-ui/react';
 import { Layout, LayoutAside, LayoutContent, LayoutHeader } from '@shared/components/layout/Layout';
 
 const DefaultLayout = () => {
@@ -12,12 +11,12 @@ const DefaultLayout = () => {
   return (
     <AuthLogin>
       <Layout
-        asideWidth="220px"
+        backgroundColor="gray.50"
         headerHeight="50px"
+        headerBackgroundColor="white"
+        asideWidth="220px"
         asideCollapsedWidth="60px"
         asideBackgroundColor="gray.700"
-        headerBackgroundColor="white"
-        backgroundColor="gray.50"
       >
         <LayoutHeader>
           <AgileHeader />

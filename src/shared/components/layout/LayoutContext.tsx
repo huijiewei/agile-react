@@ -1,38 +1,55 @@
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
-export type LayoutState = {
+type LayoutBase = {
   asideWidth: string;
-  asideCollapsedWidth: string;
-  asideBackgroundColor: string;
   headerHeight: string;
+  backgroundColor: string;
+  asideBackgroundColor: string;
   headerBackgroundColor: string;
-  asideDefaultState: LayoutAsideState;
 };
 
-export enum LayoutAsideState {
-  HIDDEN,
-  EXPANDED,
-  COLLAPSED,
-}
+export type LayoutState = LayoutBase & {
+  asideDisplay: 'block' | 'none';
+};
+
+type LayoutProviderProps = LayoutBase & {
+  asideCollapsedWidth: string;
+};
 
 type LayoutAsideDispatch = {
-  setAsideState: (collapsed: LayoutAsideState) => void;
+  toggleAsideState: () => void;
 };
 
-type LayoutDispatchContextType = Dispatch<SetStateAction<LayoutAsideState>>;
+type LayoutDispatchContextType = Dispatch<SetStateAction<boolean>>;
 
 const LayoutStateContext = createContext<LayoutState | undefined>(undefined);
-const LayoutAsideStateContext = createContext<LayoutAsideState | undefined>(undefined);
+const LayoutAsideStateContext = createContext<boolean>(false);
 const LayoutAsideDispatchContext = createContext<LayoutDispatchContextType | undefined>(undefined);
 
-export const LayoutProvider = ({ children, ...layoutState }: PropsWithChildren<LayoutState>) => {
-  const [layoutAsideState, setLayoutAsideState] = useState<LayoutAsideState>(layoutState.asideDefaultState);
+const LayoutAsideProvider = ({ children }: { children: ReactNode }) => {
+  const [layoutAsideState, setLayoutAsideState] = useState<boolean>(true);
 
   return (
+    <LayoutAsideDispatchContext.Provider value={setLayoutAsideState}>
+      <LayoutAsideStateContext.Provider value={layoutAsideState}>{children}</LayoutAsideStateContext.Provider>
+    </LayoutAsideDispatchContext.Provider>
+  );
+};
+
+export const LayoutProvider = ({ children, ...layoutState }: PropsWithChildren<LayoutProviderProps>) => {
+  return (
     <LayoutStateContext.Provider value={layoutState}>
-      <LayoutAsideDispatchContext.Provider value={setLayoutAsideState}>
-        <LayoutAsideStateContext.Provider value={layoutAsideState}>{children}</LayoutAsideStateContext.Provider>
-      </LayoutAsideDispatchContext.Provider>
+      <LayoutAsideProvider>{children}</LayoutAsideProvider>
     </LayoutStateContext.Provider>
   );
 };
@@ -47,16 +64,6 @@ export const useLayoutState = (): LayoutState => {
   return layoutState;
 };
 
-export const useLayoutAsideState = (): LayoutAsideState => {
-  const layoutAsideState = useContext(LayoutAsideStateContext);
-
-  if (layoutAsideState === undefined) {
-    throw new Error('useLayoutAsideState must be used within a LayoutProvider');
-  }
-
-  return layoutAsideState;
-};
-
 export const useLayoutAsideDispatch = (): LayoutAsideDispatch => {
   const layoutDispatch = useContext(LayoutAsideDispatchContext);
 
@@ -64,12 +71,9 @@ export const useLayoutAsideDispatch = (): LayoutAsideDispatch => {
     throw new Error('useLayoutDispatch must be used within a LayoutProvider');
   }
 
-  const setAsideState = useCallback(
-    (state: LayoutAsideState) => {
-      layoutDispatch(state);
-    },
-    [layoutDispatch]
-  );
+  const toggleAsideState = useCallback(() => {
+    layoutDispatch((prevState) => !prevState);
+  }, [layoutDispatch]);
 
-  return { setAsideState };
+  return { toggleAsideState };
 };

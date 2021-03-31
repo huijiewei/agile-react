@@ -1,90 +1,72 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const menus = [
-  {
-    url: 'home',
-    label: '主页',
-  },
-  {
-    url: 'about',
-    label: '关于',
-  },
-  {
-    url: 'admin',
-    label: '管理员',
-  },
-  {
-    url: 'admin-group',
-    label: '管理组',
-  },
-  {
-    url: 'user',
-    label: '用户',
-  },
-  {
-    url: 'component',
-    label: '组件',
-  },
-  {
-    url: 'nest',
-    label: '嵌套页面',
-  },
-  {
-    url: '404',
-    label: '404',
-  },
-];
+import { Metismenu } from '@shared/components/metismenu/Metismenu';
+import { AuthMenu, useAuth } from '@admin/services/useAuth';
+import { formatUrl } from '@shared/utils/util';
+import { Box, List, ListItem } from '@chakra-ui/react';
+
+const AsideMenuElem = ({ menu }: { menu: AuthMenu }) => {
+  return menu.url ? (
+    <Box height="10" lineHeight="10" as={NavLink} to={formatUrl(menu.url)}>
+      {menu.label}
+    </Box>
+  ) : (
+    <Box height="10" lineHeight="10">
+      {menu.label}
+    </Box>
+  );
+};
+
+const AsideMenuItem = ({ menu, keyPrefix }: { menu: AuthMenu; keyPrefix: string }) => {
+  return (
+    <ListItem color="white">
+      <AsideMenuElem menu={menu}></AsideMenuElem>
+
+      {menu.children && (
+        <List>
+          {menu.children.map((subMenu, subIdx) => (
+            <AsideMenuItem
+              key={keyPrefix + '-' + subIdx}
+              keyPrefix={keyPrefix + '-' + subIdx}
+              menu={subMenu}
+            ></AsideMenuItem>
+          ))}
+        </List>
+      )}
+    </ListItem>
+  );
+};
 
 const AgileAside = () => {
+  const { groupMenus } = useAuth();
+
   return (
-    <div>
-      <nav>
-        {menus.map((menu, index) => (
-          <li key={'m-' + index}>
-            <NavLink to={menu.url}>{menu.label}</NavLink>
-          </li>
+    <Box
+      overflowY="hidden"
+      _hover={{
+        overflowY: 'auto',
+      }}
+      height="full"
+      sx={{
+        '&::-webkit-scrollbar': {
+          width: '6px',
+          height: '100px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '9px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'gray',
+          borderRadius: 'sm',
+        },
+      }}
+    >
+      <Metismenu className="ag-metismenu" toggle={false}>
+        {groupMenus.map((menu, idx) => (
+          <AsideMenuItem key={'mm-' + idx} keyPrefix={'mm-' + idx} menu={menu}></AsideMenuItem>
         ))}
-        {[
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19,
-          20,
-          21,
-          22,
-          23,
-          24,
-          25,
-          26,
-          27,
-          28,
-          29,
-          30,
-          31,
-          32,
-          33,
-          34,
-          35,
-        ].map((item) => (
-          <li key={'ms-' + item}>搞出滚动条{item}</li>
-        ))}
-      </nav>
-    </div>
+      </Metismenu>
+    </Box>
   );
 };
 

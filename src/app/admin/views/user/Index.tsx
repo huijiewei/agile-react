@@ -5,7 +5,7 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text } from '@chakra-ui/react';
+import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text, Flex, Stack, Box } from '@chakra-ui/react';
 
 const UserList = () => {
   const { data } = useUserAll();
@@ -31,7 +31,9 @@ const UserList = () => {
             data.items.map((user) => (
               <Tr key={user.id}>
                 <Td>{user.id}</Td>
-                <Td>{user.phone}</Td>
+                <Td>
+                  <Text as="pre">{user.phone}</Text>
+                </Td>
                 <Td>{user.email}</Td>
                 <Td>{user.name}</Td>
                 <Td>
@@ -81,7 +83,7 @@ const UserDownload = () => {
   };
 
   return (
-    <Button size="sm" variant="outline" disabled={loading} onClick={handleDownload}>
+    <Button size="sm" variant="outline" isLoading={loading} onClick={handleDownload}>
       用户导出
     </Button>
   );
@@ -92,20 +94,15 @@ const UserIndex = () => {
 
   return (
     <ContentLayout>
-      <h5>UserIndex</h5>
-      <p>
-        <Button as={Link} to={'create'}>
-          新建用户
-        </Button>
-        &nbsp;
-        <UserDownload />
-      </p>
-      <p>
-        <Link to={'../user'}>Index</Link>
-      </p>
-      <p>
-        <Link to={{ pathname: '../user', search: '?page=9&phone=139' }}>跳到搜索139号码的第9页</Link>
-      </p>
+      <Flex marginBottom="6" justifyContent="space-between">
+        <Box>
+          <Button as={Link} to={'create'}>
+            新建用户
+          </Button>
+          &nbsp;&nbsp;&nbsp;
+          <UserDownload />
+        </Box>
+      </Flex>
       <UserList />
     </ContentLayout>
   );
