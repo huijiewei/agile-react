@@ -17,8 +17,7 @@ import {
   Stack,
   FormLabel,
 } from '@chakra-ui/react';
-import { Eye, Lock, User } from 'react-feather';
-import { LockIcon } from '@chakra-ui/icons';
+import { Eyes, Lock, User } from '@icon-park/react';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -103,7 +102,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormLabel>帐号</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <Icon as={User} color="gray.300" />
+            <Icon verticalAlign="-0.125em" as={User} color="gray.300" />
           </InputLeftElement>
           <Input
             name="account"
@@ -118,7 +117,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormLabel>密码</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <LockIcon color="gray.300" />
+            <Icon verticalAlign="-0.125em" as={Lock} color="gray.300" />
           </InputLeftElement>
           <Input name="password" ref={register({ required: '请输入密码' })} type="password" placeholder="密码" />
         </InputGroup>
@@ -129,7 +128,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <FormLabel>验证码</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
-              <Icon as={Eye} color="gray.300" />
+              <Icon verticalAlign="-0.125em" as={Eyes} color="gray.300" />
             </InputLeftElement>
             <Input name="captcha" ref={register({ required: '请输入验证码' })} type="text" placeholder="验证码" />
             <InputRightAddon>

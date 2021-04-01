@@ -46,14 +46,14 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-3px" as={User} />}>
+          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-2px" as={User} />}>
             个人资料
           </MenuItem>
-          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-3px" as={Refresh} />} onClick={handleRefresh}>
+          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-2px" as={Refresh} />} onClick={handleRefresh}>
             刷新资料
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-3px" as={Logout} />} onClick={handleLogout}>
+          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-2px" as={Logout} />} onClick={handleLogout}>
             退出登录
           </MenuItem>
         </MenuList>

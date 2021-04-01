@@ -8,11 +8,11 @@ import {
   AlertDialogOverlay,
   Button,
   Center,
-  Icon,
   Text,
+  Icon,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
-import { AlertCircle } from 'react-feather';
+import { Info } from '@icon-park/react';
 
 const ErrorDialog = () => {
   const error = useErrorState();
@@ -52,12 +52,10 @@ const ErrorDialog = () => {
       <AlertDialogOverlay />
       <AlertDialogContent padding={3}>
         <AlertDialogBody>
-          <Center marginTop={2} marginBottom={3}>
-            <Icon boxSize={12} color={'red.300'} as={AlertCircle} />
+          <Center marginTop={3} marginBottom={5}>
+            <Icon strokeWidth={3} boxSize={50} size="50" as={Info} color="yellow.500" />
           </Center>
-          <Center fontSize="md" as={Text}>
-            {error?.message}
-          </Center>
+          <Center as={Text}>{error?.message}</Center>
         </AlertDialogBody>
         <AlertDialogFooter sx={{ justifyContent: 'center' }}>
           <Button onClick={handleButtonClick} ref={cancelRef}>

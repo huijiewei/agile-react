@@ -5,10 +5,11 @@ import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@chakra-ui/react';
+import { Button, HStack, Stack, Box, Icon, IconButton } from '@chakra-ui/react';
 import { useIsMounted } from '@shared/hooks/useIsMounted';
+import { Config, Delete, Minus } from '@icon-park/react';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -41,10 +42,6 @@ const RefreshUserButton = () => {
       重新获取用户
     </Button>
   );
-};
-
-const MarginDiv = ({ children }: { children: ReactNode }) => {
-  return <div style={{ marginBottom: '15px' }}>{children}</div>;
 };
 
 const Home = () => {
@@ -87,81 +84,136 @@ const Home = () => {
 
   return (
     <ContentLayout>
-      <div>
-        <MarginDiv>Hello Agile</MarginDiv>
-        <MarginDiv>中文字体</MarginDiv>
-        <MarginDiv>
+      <Stack>
+        <Box>Hello Agile</Box>
+        <Box>中文字体</Box>
+        <HStack>
           <Button onClick={handleToastShow}>显示一个 Toast</Button>
-          &nbsp;
           <Button as={Link} isDisabled to={'about'}>
             显示一个 Toast
           </Button>
-        </MarginDiv>
-        <MarginDiv>
+        </HStack>
+        <HStack>
           <DeleteUserButton />
-          &nbsp;&nbsp;
           <DeleteAdminButton />
-        </MarginDiv>
-        <MarginDiv>
+        </HStack>
+        <HStack>
           <Button onClick={handleSendGet}>随便发送一个 GET 请求</Button>
-          &nbsp;&nbsp;
           <Button onClick={handleSendPost}>随便发送一个 POST 请求</Button>
-        </MarginDiv>
-        <MarginDiv>
+        </HStack>
+        <Box>
           <RefreshUserButton />
-        </MarginDiv>
-        <MarginDiv>
+        </Box>
+        <HStack>
           <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>
-          &nbsp;&nbsp;
           <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
-        </MarginDiv>
-        <MarginDiv>
+        </HStack>
+        <Box>
           <Button isFullWidth onClick={handleClick}>
             显示个错误提示
           </Button>
-        </MarginDiv>
-        <MarginDiv>
+        </Box>
+        <HStack>
           <Button onClick={handleClick}>显示个错误提示</Button>
-          &nbsp;&nbsp;
           <Button variant={'outline'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;&nbsp;
           <Button variant={'ghost'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;&nbsp;
           <Button variant={'link'} onClick={handleClick}>
             显示个错误提示
           </Button>
-        </MarginDiv>
-        <MarginDiv>
-          <Button size={'lg'} onClick={handleClick}>
+        </HStack>
+        <HStack>
+          <Button isLoading onClick={handleClick}>
+            加载中
+          </Button>
+          <Button isLoading size="sm" onClick={handleClick}>
+            加载中
+          </Button>
+          <Button isLoading size="xs" onClick={handleClick}>
+            加载中
+          </Button>
+          <Button isLoading variant="outline" onClick={handleClick}>
+            加载中
+          </Button>
+          <Button isLoading size="sm" variant="outline" onClick={handleClick}>
+            加载中
+          </Button>
+          <Button isLoading size="xs" variant="outline" onClick={handleClick}>
+            加载中
+          </Button>
+        </HStack>
+        <HStack>
+          <Button variant="outline" onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;&nbsp;
           <Button onClick={handleClick}>显示个错误提示</Button>
-          &nbsp;&nbsp;
-          <Button size="sm" onClick={handleClick}>
+          <Button variant="outline" size={'sm'} onClick={handleClick}>
             显示个错误提示
           </Button>
-          &nbsp;&nbsp;
-          <Button size="xs" onClick={handleClick}>
-            显示个错误提示
-          </Button>
-        </MarginDiv>
-        <MarginDiv>
-          <Button size={'lg'} onClick={handleClick}>
-            显示个错误提示
-          </Button>
-          &nbsp;&nbsp;
-          <Button onClick={handleClick}>显示个错误提示</Button>
-          &nbsp;&nbsp;
           <Button size={'sm'} onClick={handleClick}>
             显示个错误提示
           </Button>
-        </MarginDiv>
-        <MarginDiv>TEST</MarginDiv>
+          <Button variant="outline" size={'xs'} onClick={handleClick}>
+            中文
+          </Button>
+          <Button size={'xs'} onClick={handleClick}>
+            中文
+          </Button>
+        </HStack>
+        <HStack>
+          <Button leftIcon={<Config strokeWidth={3} />} variant="outline" onClick={handleClick}>
+            图标按钮
+          </Button>
+          <Button leftIcon={<Icon verticalAlign="-0.125em" as={Config} />} onClick={handleClick}>
+            图标按钮
+          </Button>
+          <Button
+            iconSpacing="0.35em"
+            leftIcon={<Icon verticalAlign="-0.125em" as={Config} />}
+            variant="outline"
+            size={'sm'}
+            onClick={handleClick}
+          >
+            图标按钮
+          </Button>
+          <Button
+            iconSpacing="0.35em"
+            leftIcon={<Icon verticalAlign="-0.125em" as={Config} />}
+            size={'sm'}
+            onClick={handleClick}
+          >
+            图标按钮
+          </Button>
+          <Button
+            iconSpacing="0.25em"
+            leftIcon={<Delete strokeWidth={3} />}
+            variant="outline"
+            size={'xs'}
+            onClick={handleClick}
+          >
+            图标按钮
+          </Button>
+          <Button iconSpacing="0.25em" leftIcon={<Minus />} size={'xs'} onClick={handleClick}>
+            图标按钮
+          </Button>
+        </HStack>
+        <HStack>
+          <IconButton aria-label="" variant="outline" icon={<Icon as={Config} />} onClick={handleClick}></IconButton>
+          <IconButton aria-label="" icon={<Delete />} onClick={handleClick}></IconButton>
+          <IconButton
+            aria-label=""
+            variant="outline"
+            icon={<Icon as={Delete} />}
+            size={'sm'}
+            onClick={handleClick}
+          ></IconButton>
+          <IconButton aria-label="" icon={<Config />} size={'sm'} onClick={handleClick}></IconButton>
+          <IconButton aria-label="" variant="outline" icon={<Minus />} size={'xs'} onClick={handleClick}></IconButton>
+          <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick}></IconButton>
+        </HStack>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>
@@ -190,8 +242,7 @@ const Home = () => {
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>
-        <p>TEST</p>
-      </div>
+      </Stack>
     </ContentLayout>
   );
 };
