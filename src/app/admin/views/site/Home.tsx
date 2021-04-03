@@ -158,7 +158,7 @@ const Home = () => {
             显示个错误提示
           </Button>
           <Button variant="outline" size={'xs'} onClick={handleClick}>
-            中文
+            中文 English
           </Button>
           <Button size={'xs'} onClick={handleClick}>
             中文
