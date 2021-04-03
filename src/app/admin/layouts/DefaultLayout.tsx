@@ -15,6 +15,7 @@ const DefaultLayout = () => {
         headerHeight="50px"
         headerBackgroundColor="white"
         asideWidth="220px"
+        asideColor="gray.50"
         asideCollapsedWidth="60px"
         asideBackgroundColor="gray.700"
       >

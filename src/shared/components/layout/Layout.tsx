@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Slide } from '@chakra-ui/react';
 import { PropsWithChildren, ReactNode } from 'react';
 import { LayoutProvider, LayoutState, useLayoutState } from './LayoutContext';
 import { noScrollbarsClassName } from 'react-remove-scroll-bar';
@@ -24,12 +24,13 @@ const LayoutHeader = ({ children }: { children: ReactNode }) => {
 };
 
 const LayoutAside = ({ children }: { children: ReactNode }) => {
-  const { asideWidth, asideCollapsedWidth, headerHeight, asideBackgroundColor } = useLayoutState();
+  const { headerHeight, asideWidth, asideColor, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
 
   return (
     <Box
       as="aside"
       backgroundColor={asideBackgroundColor}
+      color={asideColor}
       position="fixed"
       zIndex="docked"
       display={['none', 'none', 'none', 'block']}
@@ -76,6 +77,7 @@ const Layout = ({ children, ...layoutProps }: PropsWithChildren<LayoutProp>) => 
       headerHeight={layoutProps.headerHeight}
       headerBackgroundColor={layoutProps.headerBackgroundColor}
       asideWidth={layoutProps.asideWidth}
+      asideColor={layoutProps.asideColor}
       asideCollapsedWidth={layoutProps.asideCollapsedWidth}
       asideBackgroundColor={layoutProps.asideBackgroundColor}
     >

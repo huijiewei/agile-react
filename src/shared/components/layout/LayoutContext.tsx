@@ -6,7 +6,6 @@ import {
   SetStateAction,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 
@@ -14,6 +13,7 @@ type LayoutBase = {
   asideWidth: string;
   headerHeight: string;
   backgroundColor: string;
+  asideColor: string;
   asideBackgroundColor: string;
   headerBackgroundColor: string;
 };
