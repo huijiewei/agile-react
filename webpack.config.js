@@ -3,7 +3,6 @@ const { EnvironmentPlugin } = require('webpack');
 
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const WorkboxPlugin = require('workbox-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -121,11 +120,6 @@ module.exports = (env, argv) => {
         filename: 'index.html',
         chunks: appConfig.htmlChunks,
       }),
-      isProduction &&
-        new WorkboxPlugin.GenerateSW({
-          clientsClaim: true,
-          skipWaiting: true,
-        }),
       isProduction &&
         new CopyPlugin({
           patterns: [
