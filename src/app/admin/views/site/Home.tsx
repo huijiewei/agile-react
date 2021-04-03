@@ -7,9 +7,10 @@ import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, HStack, Stack, Box, Icon, IconButton } from '@chakra-ui/react';
+import { Button, HStack, Stack, Box, IconButton } from '@chakra-ui/react';
 import { useIsMounted } from '@shared/hooks/useIsMounted';
 import { Config, Delete, Minus } from '@icon-park/react';
+import { Icon } from '@shared/components/icon/Icon';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -164,36 +165,19 @@ const Home = () => {
           </Button>
         </HStack>
         <HStack>
-          <Button leftIcon={<Config strokeWidth={3} />} variant="outline" onClick={handleClick}>
+          <Button leftIcon={<Delete />} variant="outline" onClick={handleClick}>
             图标按钮
           </Button>
-          <Button leftIcon={<Icon verticalAlign="-0.125em" as={Config} />} onClick={handleClick}>
+          <Button leftIcon={<Config />} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button
-            iconSpacing="0.35em"
-            leftIcon={<Icon verticalAlign="-0.125em" as={Config} />}
-            variant="outline"
-            size={'sm'}
-            onClick={handleClick}
-          >
+          <Button iconSpacing="0.35em" leftIcon={<Config />} variant="outline" size={'sm'} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button
-            iconSpacing="0.35em"
-            leftIcon={<Icon verticalAlign="-0.125em" as={Config} />}
-            size={'sm'}
-            onClick={handleClick}
-          >
+          <Button iconSpacing="0.35em" leftIcon={<Config />} size={'sm'} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button
-            iconSpacing="0.25em"
-            leftIcon={<Delete strokeWidth={3} />}
-            variant="outline"
-            size={'xs'}
-            onClick={handleClick}
-          >
+          <Button iconSpacing="0.25em" leftIcon={<Delete />} variant="outline" size={'xs'} onClick={handleClick}>
             图标按钮
           </Button>
           <Button iconSpacing="0.25em" leftIcon={<Minus />} size={'xs'} onClick={handleClick}>
@@ -201,8 +185,8 @@ const Home = () => {
           </Button>
         </HStack>
         <HStack>
-          <IconButton aria-label="" variant="outline" icon={<Icon as={Config} />} onClick={handleClick}></IconButton>
-          <IconButton aria-label="" icon={<Delete />} onClick={handleClick}></IconButton>
+          <IconButton aria-label="" variant="outline" icon={<Config />} onClick={handleClick}></IconButton>
+          <IconButton aria-label="" icon={<Icon as={Delete} />} onClick={handleClick}></IconButton>
           <IconButton
             aria-label=""
             variant="outline"

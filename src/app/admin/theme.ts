@@ -175,7 +175,7 @@ const agileTheme = extendTheme({
         },
         xs: {
           height: 8,
-          fontSize: 'base',
+          fontSize: 'xs',
           paddingStart: 3,
           paddingEnd: 3,
           minWidth: 8,

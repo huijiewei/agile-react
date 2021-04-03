@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
-import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar, Icon, Center } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar, Center } from '@chakra-ui/react';
 import { Down, Logout, Refresh, User } from '@icon-park/react';
+import { Icon } from '@shared/components/icon/Icon';
 
 const HeaderUserMenu = ({ height }: { height: string }) => {
   const { post } = useHttp();
@@ -46,14 +47,14 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-2px" as={User} />}>
+          <MenuItem iconSpacing="10px" icon={<User />}>
             个人资料
           </MenuItem>
-          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-2px" as={Refresh} />} onClick={handleRefresh}>
+          <MenuItem iconSpacing="10px" icon={<Icon as={Refresh} />} onClick={handleRefresh}>
             刷新资料
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon verticalAlign="-2px" as={Logout} />} onClick={handleLogout}>
+          <MenuItem iconSpacing="10px" icon={<Icon as={Logout} />} onClick={handleLogout}>
             退出登录
           </MenuItem>
         </MenuList>

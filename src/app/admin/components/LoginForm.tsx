@@ -9,7 +9,6 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  Icon,
   Input,
   InputGroup,
   InputLeftElement,
@@ -18,6 +17,7 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import { Eyes, Lock, User } from '@icon-park/react';
+import { Icon } from '@shared/components/icon/Icon';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -33,7 +33,15 @@ type AuthLogin = Auth & {
 };
 
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  const { register, handleSubmit, errors, setError, clearErrors, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    setValue,
+
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false);
   const { post, get } = useHttp();
   const [captcha, setCaptcha] = useState<Captcha | null>(null);
@@ -102,14 +110,9 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormLabel>帐号</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <Icon verticalAlign="-0.125em" as={User} color="gray.300" />
+            <Icon as={User} color="gray.300" />
           </InputLeftElement>
-          <Input
-            name="account"
-            ref={register({ required: '请输入帐号' })}
-            type="text"
-            placeholder="手机号码或者电子邮箱"
-          />
+          <Input {...register('account', { required: '请输入帐号' })} type="text" placeholder="手机号码或者电子邮箱" />
         </InputGroup>
         <FormErrorMessage>{errors.account?.message || ' '}</FormErrorMessage>
       </FormControl>
@@ -117,9 +120,9 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormLabel>密码</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <Icon verticalAlign="-0.125em" as={Lock} color="gray.300" />
+            <Icon as={Lock} color="gray.300" />
           </InputLeftElement>
-          <Input name="password" ref={register({ required: '请输入密码' })} type="password" placeholder="密码" />
+          <Input {...register('password', { required: '请输入密码' })} type="password" placeholder="密码" />
         </InputGroup>
         <FormErrorMessage>{errors.password?.message || ' '}</FormErrorMessage>
       </FormControl>
@@ -128,9 +131,9 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <FormLabel>验证码</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
-              <Icon verticalAlign="-0.125em" as={Eyes} color="gray.300" />
+              <Icon as={Eyes} color="gray.300" />
             </InputLeftElement>
-            <Input name="captcha" ref={register({ required: '请输入验证码' })} type="text" placeholder="验证码" />
+            <Input {...register('captcha', { required: '请输入验证码' })} type="text" placeholder="验证码" />
             <InputRightAddon>
               <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />
             </InputRightAddon>
