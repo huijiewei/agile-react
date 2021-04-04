@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import metismenujs from 'metismenujs';
-import { useEffect, useRef } from 'react';
+import { createRef, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
 
@@ -75,6 +75,8 @@ const Metismenu = (props: MetismenuProps) => {
   useEffect(() => {
     const mm =
       elemRef.current && new metismenujs(elemRef.current, { toggle: toggle, subMenu: 'ul', triggerElement: 'span' });
+
+    console.log(mm);
 
     return () => {
       mm && mm.dispose();

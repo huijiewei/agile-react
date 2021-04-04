@@ -15,6 +15,7 @@ import {
   InputRightAddon,
   Stack,
   FormLabel,
+  useToast,
 } from '@chakra-ui/react';
 import { Eyes, Lock, User } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
@@ -45,6 +46,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [loading, setLoading] = useState(false);
   const { post, get } = useHttp();
   const [captcha, setCaptcha] = useState<Captcha | null>(null);
+  const toast = useToast();
 
   const updateCaptcha = async () => {
     const { data } = await requestFlatry<Captcha | undefined>(get('open/captcha', null, false));
@@ -82,6 +84,14 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         currentUser: data.currentUser,
         groupMenus: data.groupMenus,
         groupPermissions: data.groupPermissions,
+      });
+
+      toast({
+        position: 'top-right',
+        description: '欢迎使用 Agile React',
+        status: 'success',
+        duration: 2000,
+        variant: 'subtle',
       });
 
       onSuccess && onSuccess();

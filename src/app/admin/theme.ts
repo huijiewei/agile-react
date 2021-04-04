@@ -160,6 +160,11 @@ const agileTheme = extendTheme({
     },
   },
   components: {
+    Alert: {
+      variants: {
+        subtle: {},
+      },
+    },
     Button: {
       defaultProps: {
         colorScheme: 'blue',
@@ -169,16 +174,24 @@ const agileTheme = extendTheme({
         lineHeight: 'base',
       },
       sizes: {
-        sm: {
+        lg: {
+          height: 10,
+          minWidth: 10,
+        },
+        md: {
           height: 9,
           minWidth: 9,
         },
-        xs: {
+        sm: {
           height: 8,
+          minWidth: 8,
+        },
+        xs: {
+          height: 7,
+          minWidth: 7,
           fontSize: 'xs',
           paddingStart: 3,
           paddingEnd: 3,
-          minWidth: 8,
         },
       },
     },

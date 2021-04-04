@@ -7,7 +7,7 @@ import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, HStack, Stack, Box, IconButton } from '@chakra-ui/react';
+import { Button, HStack, Stack, Box, IconButton, useToast } from '@chakra-ui/react';
 import { useIsMounted } from '@shared/hooks/useIsMounted';
 import { Config, Delete, Minus } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
@@ -48,6 +48,7 @@ const RefreshUserButton = () => {
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { get, post } = useHttp();
+  const toast = useToast();
 
   const handleClick = () => {
     setError('出现错误');
@@ -78,7 +79,13 @@ const Home = () => {
   };
 
   const handleToastShow = () => {
-    console.log(1);
+    toast({
+      position: 'top-right',
+      description: '欢迎使用 Agile React',
+      status: 'success',
+      duration: 2000,
+      variant: 'subtle',
+    });
   };
 
   console.log('Home Render');

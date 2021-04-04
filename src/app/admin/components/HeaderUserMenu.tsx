@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
-import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar, Center } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar, Center, useToast } from '@chakra-ui/react';
 import { Down, Logout, Refresh, User } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
 
 const HeaderUserMenu = ({ height }: { height: string }) => {
   const { post } = useHttp();
   const navigate = useNavigate();
+  const toast = useToast();
   const { currentUser, mutate } = useAuth();
 
   const handleRefresh = async () => {
@@ -17,14 +18,23 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
   };
 
   const handleLogout = async () => {
-    const { data } = await requestFlatry(post('auth/logout', null));
+    const { data } = await requestFlatry<{ message: string }>(post('auth/logout', null));
 
     if (data) {
       setAuthAccessToken('');
 
       await mutate(undefined, false);
 
-      navigate('login', { replace: true });
+      toast({
+        description: data.message,
+        duration: 1000,
+        status: 'success',
+        variant: 'subtle',
+        position: 'top',
+        onCloseComplete: () => {
+          navigate('login', { replace: true });
+        },
+      });
     }
   };
 

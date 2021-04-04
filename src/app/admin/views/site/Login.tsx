@@ -32,7 +32,7 @@ const Login = () => {
           padding: 7,
           width: 360,
           borderRadius: 1,
-          marginTop: -5,
+          marginTop: -32,
         }}
       >
         <Stack sx={{ marginBottom: 4 }} spacing={3}>
