@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import { createBreakpoints } from '@chakra-ui/theme-tools';
+import { createBreakpoints, mode, getColor, transparentize } from '@chakra-ui/theme-tools';
 
 const breakpoints = createBreakpoints({
   sm: '640px',
@@ -161,8 +161,36 @@ const agileTheme = extendTheme({
   },
   components: {
     Alert: {
+      baseStyle: {
+        icon: { height: 7, width: 4 },
+      },
       variants: {
-        subtle: {},
+        subtle: (props) => ({
+          container: {
+            bg: mode(
+              getColor(props.theme, `${props.colorScheme}.50`, props.colorScheme),
+              transparentize(`${props.colorScheme}.100`, 0.16)(props.theme)
+            )(props),
+          },
+        }),
+      },
+    },
+    Link: {
+      baseStyle: {
+        _hover: {
+          color: 'blue.500',
+          textDecoration: 'none',
+        },
+      },
+    },
+    Breadcrumb: {
+      baseStyle: {
+        link: {
+          _hover: {
+            color: 'blue.500',
+            textDecoration: 'none',
+          },
+        },
       },
     },
     Button: {
@@ -172,6 +200,14 @@ const agileTheme = extendTheme({
       baseStyle: {
         fontWeight: 'medium',
         lineHeight: 'base',
+      },
+      variants: {
+        link: (props) => ({
+          _hover: {
+            color: mode(`${props.colorScheme}.600`, `${props.colorScheme}.400`)(props),
+            textDecoration: 'none',
+          },
+        }),
       },
       sizes: {
         lg: {

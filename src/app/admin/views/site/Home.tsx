@@ -81,10 +81,33 @@ const Home = () => {
   const handleToastShow = () => {
     toast({
       position: 'top-right',
-      description: '欢迎使用 Agile React',
+      title: '标题',
+      description: '内容，内容',
       status: 'success',
-      duration: 2000,
+      duration: null,
       variant: 'subtle',
+      isClosable: true,
+    });
+  };
+
+  const handleToastShow2 = () => {
+    toast({
+      position: 'top',
+      description: '内容，内容',
+      status: 'success',
+      variant: 'subtle',
+    });
+  };
+
+  const handleToastShow3 = () => {
+    toast({
+      position: 'top',
+      title: '标题',
+      description: '内容，内容',
+      status: 'success',
+      duration: null,
+      variant: 'subtle',
+      isClosable: true,
     });
   };
 
@@ -97,6 +120,8 @@ const Home = () => {
         <Box>中文字体</Box>
         <HStack>
           <Button onClick={handleToastShow}>显示一个 Toast</Button>
+          <Button onClick={handleToastShow2}>显示一个 Toast</Button>
+          <Button onClick={handleToastShow3}>显示一个 Toast</Button>
           <Button as={Link} isDisabled to={'about'}>
             显示一个 Toast
           </Button>
