@@ -8,7 +8,6 @@ import Login from '@admin/views/site/Login';
 
 import DefaultLayout from '@admin/layouts/DefaultLayout';
 import Home from '@admin/views/site/Home';
-import About from '@admin/views/site/About';
 import NotFound from '@admin/views/site/NotFound';
 
 import NextLayout from '@admin/views/nest/Layout';
@@ -21,12 +20,14 @@ import Nest111 from '@admin/views/nest/1-1-1';
 import Nest112 from '@admin/views/nest/1-1-2';
 import Nest1111 from '@admin/views/nest/1-1-1-1';
 import Nest1112 from '@admin/views/nest/1-1-1-2';
+import { Dict } from '@shared/utils/types';
 
-const BASE_NAME = process.env.PUBLIC_URL;
+export const BASE_NAME = process.env.PUBLIC_URL;
 
 const routes = [
   {
     path: '/login',
+    title: '登录',
     element: <Login />,
   },
   {
@@ -41,11 +42,6 @@ const routes = [
         path: 'home',
         title: '首页',
         element: <Home />,
-      },
-      {
-        path: 'about',
-        title: '关于',
-        element: <About />,
       },
       ...adminRoutes,
       ...adminGroupRoutes,
@@ -110,11 +106,37 @@ const routes = [
       },
       {
         path: '*',
+        title: '页面不存在',
         element: <NotFound />,
       },
     ],
   },
 ];
+
+export const getBreadcrumbs = () => {
+  return createBreadcrumbsFromArray(routes);
+};
+
+type Breadcrumb = {
+  path: string;
+  title: string;
+  children?: Breadcrumb[];
+};
+
+const createBreadcrumbsFromArray = (array: Dict[]) => {
+  return array.map((partialRoute) => {
+    let breadcrumb: Breadcrumb = {
+      path: partialRoute.path,
+      title: partialRoute.title,
+    };
+
+    if (partialRoute.children) {
+      breadcrumb.children = createBreadcrumbsFromArray(partialRoute.children);
+    }
+
+    return breadcrumb;
+  });
+};
 
 export const getRouters = () => {
   return createRoutesFromArray(routes);

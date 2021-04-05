@@ -10,7 +10,7 @@ const NotFound = () => {
 
   return (
     <Flex height="full" alignContent="center" alignItems="center" justifyContent="center">
-      <Stack spacing="3" padding="5" boxShadow="sm" width="xs" backgroundColor="white">
+      <Stack spacing="3" padding="5" boxShadow="md" width="xs" backgroundColor="white">
         <Center>
           <Image height="50px" alt="Not Found" src={require('../../assets/images/logo.png')} />
         </Center>

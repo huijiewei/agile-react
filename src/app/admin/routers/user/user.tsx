@@ -10,14 +10,17 @@ const userRoutes = [
     children: [
       {
         path: '',
+        title: '用户列表',
         element: <UserIndex />,
       },
       {
         path: 'create',
+        title: '用户新建',
         element: <UserCreate />,
       },
       {
         path: 'edit/:id',
+        title: '用户编辑',
         element: <UserEdit />,
       },
     ],

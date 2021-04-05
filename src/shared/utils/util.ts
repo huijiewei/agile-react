@@ -25,6 +25,7 @@ export const deepSearch = (needle: string, haystack: Dict | Dict[], found: strin
       deepSearch(needle, value, found);
     }
   }
+
   return found;
 };
 

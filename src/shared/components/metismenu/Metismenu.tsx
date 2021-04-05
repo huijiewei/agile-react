@@ -3,6 +3,7 @@ import metismenujs from 'metismenujs';
 import { createRef, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
+import { formatUrl } from '@shared/utils/util';
 
 type MetismenuProps = {
   toggle: boolean;
@@ -39,7 +40,7 @@ const metismenu = css`
 
 const MetismenuElem = ({ menu }) => {
   return menu.url ? (
-    <chakra.a as={NavLink} className="mm-item" to={menu.url}>
+    <chakra.a as={NavLink} className="mm-item" to={formatUrl(menu.url)}>
       {menu.label}
     </chakra.a>
   ) : (
@@ -81,7 +82,7 @@ const Metismenu = (props: MetismenuProps) => {
     return () => {
       mm && mm.dispose();
     };
-  }, [toggle]);
+  }, [toggle, elemRef]);
 
   return (
     <chakra.ul css={metismenu} ref={elemRef}>

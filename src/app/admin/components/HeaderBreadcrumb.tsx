@@ -1,6 +1,6 @@
 import { Link, matchRoutes, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
-import { getRouters } from '@admin/routers';
+import { getRouters, BASE_NAME, getBreadcrumbs } from '@admin/routers';
 import { Breadcrumb, Icon, BreadcrumbItem, BreadcrumbLink, Text } from '@chakra-ui/react';
 import { Home } from '@icon-park/react';
 
@@ -11,9 +11,24 @@ const HeaderBreadcrumb = ({ height }: { height: string }) => {
     return getRouters();
   }, []);
 
-  const match = matchRoutes(routes, location, process.env.PUBLIC_URL);
+  const match = matchRoutes(routes, location, BASE_NAME);
 
   console.log(match);
+
+  if (match) {
+    const [, ...rest] = match;
+
+    const matchUrl = rest?.reduce<string[]>((url, item) => {
+      url.push(item.route.path);
+
+      return url;
+    }, []);
+
+    console.log(matchUrl.join('/'));
+  }
+
+  const breadcrumbs = getBreadcrumbs();
+  console.log(breadcrumbs);
 
   return (
     <Breadcrumb paddingStart="3" height={height} lineHeight={height}>

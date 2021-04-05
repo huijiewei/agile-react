@@ -6,12 +6,14 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text, Flex, Stack, Box } from '@chakra-ui/react';
+import { Pagination } from '@shared/components/pagination/Pagination';
+import { PaginationItem } from '@shared/components/pagination/PaginationItem';
 
 const UserList = () => {
   const { data } = useUserAll();
 
   return (
-    <div>
+    <>
       <Table>
         <Thead>
           <Tr>
@@ -61,7 +63,16 @@ const UserList = () => {
             ))}
         </Tbody>
       </Table>
-    </div>
+      {data && (
+        <Pagination
+          total={data.pages.totalCount}
+          page={data.pages.currentPage}
+          renderPage={(page) => (
+            <PaginationItem as={Link} to={`${page.page === 1 ? '' : `?page=${page.page}`}`} {...page}></PaginationItem>
+          )}
+        ></Pagination>
+      )}
+    </>
   );
 };
 
