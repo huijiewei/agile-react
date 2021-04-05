@@ -1,5 +1,5 @@
 import { Link, matchRoutes, useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { getRouters, BASE_NAME, getBreadcrumbs } from '@admin/routers';
 import { Breadcrumb, Icon, BreadcrumbItem, BreadcrumbLink, Text } from '@chakra-ui/react';
 import { Home } from '@icon-park/react';
@@ -11,24 +11,28 @@ const HeaderBreadcrumb = ({ height }: { height: string }) => {
     return getRouters();
   }, []);
 
-  const match = matchRoutes(routes, location, BASE_NAME);
+  const breadcrumbs = useMemo(() => {
+    return getBreadcrumbs();
+  }, []);
 
-  console.log(match);
+  useEffect(() => {
+    const match = matchRoutes(routes, location, BASE_NAME);
 
-  if (match) {
-    const [, ...rest] = match;
+    console.log(match);
 
-    const matchUrl = rest?.reduce<string[]>((url, item) => {
-      url.push(item.route.path);
+    if (match) {
+      const [, ...rest] = match;
 
-      return url;
-    }, []);
+      const matchUrl = rest?.reduce<string[]>((url, item) => {
+        url.push(item.route.path);
 
-    console.log(matchUrl.join('/'));
-  }
+        return url;
+      }, []);
 
-  const breadcrumbs = getBreadcrumbs();
-  console.log(breadcrumbs);
+      console.log(matchUrl.join('/'));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   return (
     <Breadcrumb paddingStart="3" height={height} lineHeight={height}>

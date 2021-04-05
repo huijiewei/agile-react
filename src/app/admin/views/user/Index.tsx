@@ -68,7 +68,11 @@ const UserList = () => {
           total={data.pages.totalCount}
           page={data.pages.currentPage}
           renderPage={(page) => (
-            <PaginationItem as={Link} to={`${page.page === 1 ? '' : `?page=${page.page}`}`} {...page}></PaginationItem>
+            <PaginationItem
+              as={Link}
+              to={`../user${page.page === 1 ? '' : `?page=${page.page}`}`}
+              {...page}
+            ></PaginationItem>
           )}
         ></Pagination>
       )}
