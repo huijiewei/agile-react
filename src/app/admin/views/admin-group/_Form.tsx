@@ -1,11 +1,12 @@
 import { AdminGroup } from '@admin/services/useAdminGroup';
 import { Box, Checkbox, CheckboxGroup, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StringOrNumber } from '@shared/utils/types';
 
 type AdminGroupPermissionCheckGroup = {
   name: string;
+  index: number;
   checkAll: boolean;
   checkIndeterminate: boolean;
   checkedPermissions: string[];
@@ -14,39 +15,48 @@ type AdminGroupPermissionCheckGroup = {
 };
 
 const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
-  const permissions = useRef<AdminGroupPermissionCheckGroup[]>([]);
-  const checkboxDisabled = useRef<string[]>([]);
+  const [permissions, setPermissions] = useState<AdminGroupPermissionCheckGroup[]>([]);
+  const [disablePermissions, setDisablePermissions] = useState<string[]>([]);
 
   const { data } = useAdminGroupPermissions();
 
-  const disableCombinesCheckbox = (item: AdminGroupPermission) => {
-    if (!item.combines || item.combines.length === 0) {
-      return;
-    }
-
-    item.combines.map((combine) => {
-      if (!checkboxDisabled.current.includes(combine)) {
-        checkboxDisabled.current.push(combine);
-      }
-    });
-  };
+  const updateDisablePermissions = useCallback(
+    (item: AdminGroupPermission) => {
+      item.combines?.map((combine) => {
+        if (!disablePermissions.includes(combine)) {
+          setDisablePermissions((prev) => [...prev, combine]);
+        }
+      });
+    },
+    [disablePermissions]
+  );
 
   const onAllChange = (group: AdminGroupPermissionCheckGroup) => {
     group.checkIndeterminate = false;
 
-    if (group.checkAll) {
+    if (!group.checkAll) {
       group.children?.map((child) => {
         if (child.children) {
-          child.children.forEach((item) => {
+          child.children.map((item) => {
             group.checkedPermissions.push(item.actionId);
+            updateDisablePermissions(item);
           });
         } else {
           group.checkedPermissions.push(child.actionId);
+          updateDisablePermissions(child);
         }
       });
     } else {
       group.checkedPermissions = [];
     }
+
+    group.checkAll = !group.checkAll;
+
+    setPermissions((prev) =>
+      prev.map((item) => {
+        return item.index === group.index ? group : item;
+      })
+    );
   };
 
   const onGroupChange = (group: AdminGroupPermissionCheckGroup, event: StringOrNumber[]) => {
@@ -54,10 +64,17 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
 
     group.checkAll = group.permissionsCount === checkedCount;
     group.checkIndeterminate = checkedCount > 0 && checkedCount < group.permissionsCount;
+    group.checkedPermissions = event as string[];
+
+    setPermissions((prev) =>
+      prev.map((item) => {
+        return item.index === group.index ? group : item;
+      })
+    );
   };
 
-  const onItemChange = (event: any) => {
-    console.log(event);
+  const onItemChange = (item: AdminGroupPermission, event) => {
+    console.log(item);
   };
 
   const isPermissionChecked = useCallback(
@@ -72,9 +89,10 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
 
     console.log(data);
 
-    data?.map((permission) => {
+    data?.map((permission, index) => {
       const group: AdminGroupPermissionCheckGroup = {
         name: permission.name,
+        index: index,
         checkAll: false,
         checkIndeterminate: false,
         checkedPermissions: [],
@@ -90,7 +108,7 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
             if (isPermissionChecked(item.actionId)) {
               group.checkedPermissions.push(item.actionId);
 
-              disableCombinesCheckbox(item);
+              updateDisablePermissions(item);
             }
           });
         } else {
@@ -99,7 +117,7 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
           if (isPermissionChecked(child.actionId)) {
             group.checkedPermissions.push(child.actionId);
 
-            disableCombinesCheckbox(child);
+            updateDisablePermissions(child);
           }
         }
       });
@@ -112,8 +130,8 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
       groupPermissions.push(group);
     });
 
-    permissions.current = groupPermissions;
-  }, [data, isPermissionChecked]);
+    setPermissions(groupPermissions);
+  }, [data, updateDisablePermissions, isPermissionChecked]);
 
   return (
     <Stack as="form" spacing={4}>
@@ -124,7 +142,7 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
       <FormControl>
         <FormLabel>权限</FormLabel>
         <Stack spacing={2}>
-          {permissions.current.map((group, groupIdx) => (
+          {permissions.map((group, groupIdx) => (
             <Box key={'gp-' + groupIdx}>
               <Box
                 sx={{ backgroundColor: 'gray.50', color: 'gray.500', fontWeight: 'medium', paddingX: 5, paddingY: 2 }}
@@ -138,18 +156,18 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
                 </Checkbox>
               </Box>
               <Box sx={{ paddingX: 5, paddingY: 2 }}>
-                <CheckboxGroup onChange={(e) => onGroupChange(group, e)} defaultValue={group.checkedPermissions}>
+                <CheckboxGroup onChange={(e) => onGroupChange(group, e)} value={group.checkedPermissions}>
                   {group.children &&
                     group.children.map((item, itemIdx) =>
                       item.children ? (
                         <Box key={'gp-' + groupIdx + '-' + itemIdx}>
                           {item.children.map((checkbox, checkboxIdx) => (
                             <Checkbox
-                              sx={{ marginEnd: 10 }}
+                              sx={{ marginEnd: 12, paddingY: 1 }}
                               key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
                               value={checkbox.actionId}
                               onChange={() => onItemChange(item)}
-                              isDisabled={checkboxDisabled.current.includes(checkbox.actionId)}
+                              isDisabled={disablePermissions.includes(checkbox.actionId)}
                             >
                               {checkbox.name}
                             </Checkbox>
@@ -157,11 +175,11 @@ const AdminGroupFrom = ({ adminGroup }: { adminGroup: AdminGroup }) => {
                         </Box>
                       ) : (
                         <Checkbox
-                          sx={{ marginEnd: 10 }}
+                          sx={{ marginEnd: 12, paddingY: 1 }}
                           key={'gp-' + groupIdx + '-' + itemIdx}
                           value={item.actionId}
                           onChange={() => onItemChange(item)}
-                          isDisabled={checkboxDisabled.current.includes(item.actionId)}
+                          isDisabled={disablePermissions.includes(item.actionId)}
                         >
                           {item.name}
                         </Checkbox>
