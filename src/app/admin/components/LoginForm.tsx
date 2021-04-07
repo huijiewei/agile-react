@@ -4,6 +4,7 @@ import { useAuthLogin } from '@admin/services/useAuth';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 
 import {
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -31,7 +32,6 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     setError,
     clearErrors,
     setValue,
-
     formState: { errors },
   } = useForm();
 
@@ -120,9 +120,11 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         </FormControl>
       )}
 
-      <Button isLoading={loading} type={'submit'} isFullWidth>
-        确 定
-      </Button>
+      <Box>
+        <Button isLoading={loading} type={'submit'} isFullWidth>
+          确 定
+        </Button>
+      </Box>
     </Stack>
   );
 };
