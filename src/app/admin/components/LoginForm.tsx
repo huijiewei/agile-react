@@ -1,20 +1,18 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useCaptcha, processCaptcha } from '@admin/services/useCaptcha';
+import { useAuthLogin } from '@admin/services/useAuth';
+import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 
-import { setAuthAccessToken } from '@admin/AppAuth';
-import { Auth, setAuth } from '@admin/services/useAuth';
-import { useHttp } from '@shared/contexts/HttpContext';
-import { bindUnprocessableEntityErrors, requestFlatry } from '@shared/utils/http';
 import {
   Button,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightAddon,
   Stack,
-  FormLabel,
   useToast,
 } from '@chakra-ui/react';
 import { Eyes, Lock, User } from '@icon-park/react';
@@ -24,14 +22,7 @@ type LoginFormProps = {
   onSuccess?: () => void;
 };
 
-type Captcha = {
-  image: string;
-  process: string;
-};
-
-type AuthLogin = Auth & {
-  accessToken: string;
-};
+type LoginForm = Record<string, unknown>;
 
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const {
@@ -43,49 +34,21 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
     formState: { errors },
   } = useForm();
-  const [loading, setLoading] = useState(false);
-  const { post, get } = useHttp();
-  const [captcha, setCaptcha] = useState<Captcha | null>(null);
+
   const toast = useToast();
-
-  const updateCaptcha = async () => {
-    const { data } = await requestFlatry<Captcha | undefined>(get('open/captcha', null, false));
-
-    if (data) {
-      setCaptcha(data);
-    }
-
+  const { login, loading } = useAuthLogin();
+  const { captcha, updateCaptcha, removeCaptcha } = useCaptcha(() => {
     setValue('captcha', '');
-  };
+  });
 
-  const removeCaptcha = () => {
-    setCaptcha(null);
-    setValue('captcha', '');
-  };
-
-  const onSubmit = async (form: Record<string, unknown>) => {
-    setLoading(true);
-
+  const onSubmit = async (form: LoginForm) => {
     if (captcha) {
-      // eslint-disable-next-line no-new-func
-      const captchaProcess = new Function('captcha', captcha.process);
-
-      form.captcha = captchaProcess(form.captcha);
+      form.captcha = processCaptcha(form.captcha, captcha.process);
     }
 
-    const { data, error } = await requestFlatry<AuthLogin>(post('auth/login', form));
-
-    setLoading(false);
+    const { data, error } = await login<LoginForm>(form);
 
     if (data) {
-      setAuthAccessToken(data.accessToken);
-
-      await setAuth({
-        currentUser: data.currentUser,
-        groupMenus: data.groupMenus,
-        groupPermissions: data.groupPermissions,
-      });
-
       toast({
         position: 'top-right',
         description: '欢迎使用 Agile React',
@@ -143,7 +106,12 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <InputLeftElement pointerEvents="none">
               <Icon as={Eyes} color="gray.300" />
             </InputLeftElement>
-            <Input {...register('captcha', { required: '请输入验证码' })} type="text" placeholder="验证码" />
+            <Input
+              textTransform={'uppercase'}
+              {...register('captcha', { required: '请输入验证码' })}
+              type="text"
+              placeholder="验证码"
+            />
             <InputRightAddon>
               <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />
             </InputRightAddon>

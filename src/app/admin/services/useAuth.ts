@@ -1,6 +1,9 @@
 import useSWR, { cache, mutate } from 'swr';
 import { MutatorCallback } from 'swr/dist/types';
 import { useHttp } from '@shared/contexts/HttpContext';
+import { HttpError, requestFlatry } from '@shared/utils/http';
+import { setAuthAccessToken } from '@admin/AppAuth';
+import { useState } from 'react';
 
 export type AuthMenu = {
   label: string;
@@ -64,4 +67,43 @@ const refreshAuth = async (): Promise<void> => {
   await mutate(AUTH_API);
 };
 
-export { useAuth, setAuth, refreshAuth };
+type AuthLogin = Auth & {
+  accessToken: string;
+};
+
+type UseAuthLogin = {
+  loading: boolean;
+  login: <T>(form: T) => Promise<{ data: AuthLogin | undefined; error: HttpError | undefined }>;
+};
+
+const useAuthLogin = (): UseAuthLogin => {
+  const { post } = useHttp();
+  const [loading, setLoading] = useState(false);
+
+  const login = async <T>(form: T) => {
+    setLoading(true);
+
+    const { data, error } = await requestFlatry<AuthLogin>(post('auth/login', form));
+
+    setLoading(false);
+
+    if (data) {
+      setAuthAccessToken(data.accessToken);
+
+      await setAuth({
+        currentUser: data.currentUser,
+        groupMenus: data.groupMenus,
+        groupPermissions: data.groupPermissions,
+      });
+    }
+
+    return {
+      data,
+      error,
+    };
+  };
+
+  return { loading, login };
+};
+
+export { useAuth, setAuth, refreshAuth, useAuthLogin };
