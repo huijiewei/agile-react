@@ -217,18 +217,12 @@ const Home = () => {
           </Button>
         </HStack>
         <HStack>
-          <IconButton aria-label="" variant="outline" icon={<Config />} onClick={handleClick}></IconButton>
-          <IconButton aria-label="" icon={<Icon as={Delete} />} onClick={handleClick}></IconButton>
-          <IconButton
-            aria-label=""
-            variant="outline"
-            icon={<Icon as={Delete} />}
-            size={'sm'}
-            onClick={handleClick}
-          ></IconButton>
-          <IconButton aria-label="" icon={<Config />} size={'sm'} onClick={handleClick}></IconButton>
-          <IconButton aria-label="" variant="outline" icon={<Minus />} size={'xs'} onClick={handleClick}></IconButton>
-          <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick}></IconButton>
+          <IconButton aria-label="" variant="outline" icon={<Config />} onClick={handleClick} />
+          <IconButton aria-label="" icon={<Icon as={Delete} />} onClick={handleClick} />
+          <IconButton aria-label="" variant="outline" icon={<Icon as={Delete} />} size={'sm'} onClick={handleClick} />
+          <IconButton aria-label="" icon={<Config />} size={'sm'} onClick={handleClick} />
+          <IconButton aria-label="" variant="outline" icon={<Minus />} size={'xs'} onClick={handleClick} />
+          <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick} />
         </HStack>
         <p>TEST</p>
         <p>TEST</p>
