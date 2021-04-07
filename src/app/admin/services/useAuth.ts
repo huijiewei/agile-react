@@ -73,14 +73,14 @@ type AuthLogin = Auth & {
 
 type UseAuthLogin = {
   loading: boolean;
-  login: <T>(form: T) => Promise<{ data: AuthLogin | undefined; error: HttpError | undefined }>;
+  authLogin: <T>(form: T) => Promise<{ data: AuthLogin | undefined; error: HttpError | undefined }>;
 };
 
 const useAuthLogin = (): UseAuthLogin => {
   const { post } = useHttp();
   const [loading, setLoading] = useState(false);
 
-  const login = async <T>(form: T) => {
+  const authLogin = async <T>(form: T) => {
     setLoading(true);
 
     const { data, error } = await requestFlatry<AuthLogin>(post('auth/login', form));
@@ -103,7 +103,7 @@ const useAuthLogin = (): UseAuthLogin => {
     };
   };
 
-  return { loading, login };
+  return { loading, authLogin };
 };
 
 export { useAuth, setAuth, refreshAuth, useAuthLogin };
