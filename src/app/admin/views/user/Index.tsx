@@ -5,7 +5,7 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text, Flex, Stack, Box } from '@chakra-ui/react';
+import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text, Flex, Box, Tfoot } from '@chakra-ui/react';
 import { Pagination } from '@shared/components/pagination/Pagination';
 import { PaginationItem } from '@shared/components/pagination/PaginationItem';
 
@@ -25,7 +25,7 @@ const UserList = () => {
             <Th>注册 IP</Th>
             <Th>注册来源</Th>
             <Th>注册时间</Th>
-            <Th sx={{ textAlign: 'right' }}>操作</Th>
+            <Th />
           </Tr>
         </Thead>
         <Tbody>
@@ -65,16 +65,13 @@ const UserList = () => {
       </Table>
       {data && (
         <Pagination
+          sx={{ marginTop: 5 }}
           total={data.pages.totalCount}
           page={data.pages.currentPage}
           renderPage={(page) => (
-            <PaginationItem
-              as={Link}
-              to={`../user${page.page === 1 ? '' : `?page=${page.page}`}`}
-              {...page}
-            ></PaginationItem>
+            <PaginationItem as={Link} to={`../user${page.page === 1 ? '' : `?page=${page.page}`}`} {...page} />
           )}
-        ></Pagination>
+        />
       )}
     </>
   );
