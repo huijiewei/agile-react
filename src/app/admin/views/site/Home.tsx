@@ -224,8 +224,10 @@ const Home = () => {
           <IconButton aria-label="" variant="outline" icon={<Minus />} size={'xs'} onClick={handleClick} />
           <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick} />
         </HStack>
-        <p>TEST</p>
-        <p>TEST</p>
+        <div>
+          <Link to={'../nest'}>Nest</Link>
+        </div>
+        <div>TEST</div>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>

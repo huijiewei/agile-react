@@ -12,7 +12,7 @@
     "admin boilerplate"
   ],
   "scripts": {
-    "admin-dev": "webpack serve --hot --open 'Google Chrome' --mode development --env APP_CONFIG=./app.admin.config.js",
+    "admin-dev": "webpack serve --hot --mode development --env APP_CONFIG=./app.admin.config.js",
     "admin-build": "webpack build --mode production --env APP_CONFIG=./app.admin.config.js",
     "admin-serve": "http-server 'dist' -a 'localhost' -o '/admin' -p 8011 --cros --proxy http://localhost:8011/admin?",
     "mobile-dev": "webpack serve --hot --mode development --env APP_CONFIG=./app.mobile.config.js",
@@ -69,7 +69,7 @@
     "webpack": "^5.30.0",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^4.0.0-beta.1"
+    "webpack-dev-server": "^4.0.0-beta.2"
   },
   "repository": {
     "type": "git",

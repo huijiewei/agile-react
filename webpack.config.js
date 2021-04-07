@@ -101,7 +101,6 @@ module.exports = (env, argv) => {
       },
       host: appConfig.serverHost,
       port: appConfig.serverPort,
-      openPage: `${appConfig.serverHost}:${appConfig.serverPort}${appConfig.publicPath}`,
     },
     plugins: [
       new EnvironmentPlugin({
