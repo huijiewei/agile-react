@@ -8,7 +8,7 @@ const AdminGroupList = () => {
 
   return (
     <>
-      <Table>
+      <Table variant={'striped'}>
         <Thead>
           <Tr>
             <Th>Id</Th>
