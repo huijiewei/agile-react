@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { Eyes, Lock, User } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
+import { Form } from '@shared/components/form/Form';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -78,8 +79,8 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   };
 
   return (
-    <Stack spacing={4} as="form" onSubmit={handleSubmit(onSubmit)}>
-      <FormControl id="account" isInvalid={errors.account}>
+    <Form spacing={4} onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isRequired id="account" isInvalid={errors.account}>
         <FormLabel>帐号</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -89,7 +90,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         </InputGroup>
         <FormErrorMessage>{errors.account?.message || ' '}</FormErrorMessage>
       </FormControl>
-      <FormControl id="password" isInvalid={errors.password}>
+      <FormControl isRequired id="password" isInvalid={errors.password}>
         <FormLabel>密码</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -100,7 +101,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <FormErrorMessage>{errors.password?.message || ' '}</FormErrorMessage>
       </FormControl>
       {captcha && (
-        <FormControl id="captcha" isInvalid={errors.captcha}>
+        <FormControl isRequired id="captcha" isInvalid={errors.captcha}>
           <FormLabel>验证码</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
@@ -125,7 +126,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
           确 定
         </Button>
       </Box>
-    </Stack>
+    </Form>
   );
 };
 
