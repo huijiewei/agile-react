@@ -1,21 +1,9 @@
 import { AdminGroup, useAdminGroupEdit } from '@admin/services/useAdminGroup';
-import {
-  Box,
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Grid,
-  GridItem,
-  Stack,
-} from '@chakra-ui/react';
+import { Box, Button, Checkbox, CheckboxGroup, FormErrorMessage, Input } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
 import { useCallback, useEffect, useState } from 'react';
 import { StringOrNumber } from '@shared/utils/types';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';
 import { FormItem } from '@shared/components/form/FormItem';
@@ -42,6 +30,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
     handleSubmit,
     setError,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm();
   const [permissions, setPermissions] = useState<AdminGroupPermissionCheckGroup[]>([]);
@@ -89,18 +78,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
     );
   };
 
-  const onGroupChange = (group: AdminGroupPermissionCheckGroup, event: StringOrNumber[]) => {
-    const checkedCount = event.length;
-
-    group.checkAll = group.permissionsCount === checkedCount;
-    group.checkIndeterminate = checkedCount > 0 && checkedCount < group.permissionsCount;
-    group.checkedPermissions = event as string[];
-
-    setPermissions((prev) =>
-      prev.map((item) => {
-        return item.index === group.index ? group : item;
-      })
-    );
+  const onChange = (event: StringOrNumber[]) => {
+    console.log(event);
   };
 
   const isPermissionChecked = useCallback(
@@ -111,6 +90,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   );
 
   const onSubmit = async (form: AdminGroup) => {
+    console.log(form);
+
     const { data, error } = await edit(adminGroup.id, form);
 
     if (data) {
@@ -178,58 +159,68 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   return (
     <Form spacing={10} onSubmit={handleSubmit(onSubmit)}>
       <FormItem id="name" isRequired label={'名称'} isInvalid={errors.name} fieldWidth={10}>
-        <Input
-          type={'text'}
-          {...register('name', { required: '请输入管理组名称' })}
-          name={'name'}
-          defaultValue={adminGroup.name}
-        />
+        <Input type={'text'} {...register('name', { required: '请输入管理组名称' })} defaultValue={adminGroup.name} />
         <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
       </FormItem>
-      <FormItem label={'权限'}>
-        {permissions.map((group, groupIdx) => (
-          <Box key={'gp-' + groupIdx}>
-            <Box sx={{ backgroundColor: 'gray.50', color: 'gray.500', fontWeight: 'medium', paddingX: 3, paddingY: 2 }}>
-              <Checkbox
-                onChange={() => onAllChange(group)}
-                isIndeterminate={group.checkIndeterminate}
-                isChecked={group.checkAll}
-              >
-                {group.name}
-              </Checkbox>
-            </Box>
-            <Box sx={{ paddingX: 3, paddingY: 2 }}>
-              <CheckboxGroup onChange={(e) => onGroupChange(group, e)} value={group.checkedPermissions}>
-                {group.children &&
-                  group.children.map((item, itemIdx) =>
-                    item.children ? (
-                      <Box key={'gp-' + groupIdx + '-' + itemIdx}>
-                        {item.children.map((checkbox, checkboxIdx) => (
+      <FormItem id="permissions" label={'权限'}>
+        <Controller
+          control={control}
+          name={'permissions'}
+          defaultValue={adminGroup.permissions}
+          render={({ field }) => (
+            <CheckboxGroup {...field} onChange={onChange}>
+              {permissions.map((group, groupIdx) => (
+                <Box key={'gp-' + groupIdx}>
+                  <Box
+                    sx={{
+                      backgroundColor: 'gray.50',
+                      color: 'gray.500',
+                      fontWeight: 'medium',
+                      paddingX: 3,
+                      paddingY: 2,
+                    }}
+                  >
+                    <Checkbox
+                      onChange={() => onAllChange(group)}
+                      isIndeterminate={group.checkIndeterminate}
+                      isChecked={group.checkAll}
+                    >
+                      {group.name}
+                    </Checkbox>
+                  </Box>
+                  <Box sx={{ paddingX: 3, paddingY: 2 }}>
+                    {group.children &&
+                      group.children.map((item, itemIdx) =>
+                        item.children ? (
+                          <Box key={'gp-' + groupIdx + '-' + itemIdx}>
+                            {item.children.map((checkbox, checkboxIdx) => (
+                              <Checkbox
+                                sx={{ marginEnd: 12, paddingY: 1 }}
+                                key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
+                                value={checkbox.actionId}
+                                isDisabled={disablePermissions.includes(checkbox.actionId)}
+                              >
+                                {checkbox.name}
+                              </Checkbox>
+                            ))}
+                          </Box>
+                        ) : (
                           <Checkbox
                             sx={{ marginEnd: 12, paddingY: 1 }}
-                            key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
-                            value={checkbox.actionId}
-                            isDisabled={disablePermissions.includes(checkbox.actionId)}
+                            key={'gp-' + groupIdx + '-' + itemIdx}
+                            value={item.actionId}
+                            isDisabled={disablePermissions.includes(item.actionId)}
                           >
-                            {checkbox.name}
+                            {item.name}
                           </Checkbox>
-                        ))}
-                      </Box>
-                    ) : (
-                      <Checkbox
-                        sx={{ marginEnd: 12, paddingY: 1 }}
-                        key={'gp-' + groupIdx + '-' + itemIdx}
-                        value={item.actionId}
-                        isDisabled={disablePermissions.includes(item.actionId)}
-                      >
-                        {item.name}
-                      </Checkbox>
-                    )
-                  )}
-              </CheckboxGroup>
-            </Box>
-          </Box>
-        ))}
+                        )
+                      )}
+                  </Box>
+                </Box>
+              ))}
+            </CheckboxGroup>
+          )}
+        />
       </FormItem>
       <FormAction>
         <Button isLoading={loading} type={'submit'}>

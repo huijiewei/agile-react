@@ -110,4 +110,6 @@ const useAdminGroupEdit = (): UseAdminGroupEdit => {
   };
 };
 
-export { useAdminGroupAll, useAdminGroupView, useAdminGroupCreate, useAdminGroupEdit };
+const useAdminGroupDelete = () => {};
+
+export { useAdminGroupAll, useAdminGroupView, useAdminGroupCreate, useAdminGroupEdit, useAdminGroupDelete };
