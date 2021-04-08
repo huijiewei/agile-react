@@ -21,7 +21,7 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
     label,
     labelWidth = 2,
     labelTextAlign = 'right',
-    fieldWidth = 20,
+    fieldWidth = 22,
     ...restProps
   } = props;
 

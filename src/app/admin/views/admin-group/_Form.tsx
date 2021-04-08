@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';
 import { FormItem } from '@shared/components/form/FormItem';
+import { FormAction } from '@shared/components/form/FormAction';
 
 type AdminGroupPermissionCheckGroup = {
   name: string;
@@ -176,7 +177,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
 
   return (
     <Form spacing={10} onSubmit={handleSubmit(onSubmit)}>
-      <FormItem id="name" isRequired label={'名称'} isInvalid={errors.name}>
+      <FormItem id="name" isRequired label={'名称'} isInvalid={errors.name} fieldWidth={10}>
         <Input
           type={'text'}
           {...register('name', { required: '请输入管理组名称' })}
@@ -230,6 +231,11 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
           </Box>
         ))}
       </FormItem>
+      <FormAction>
+        <Button isLoading={loading} type={'submit'}>
+          提交
+        </Button>
+      </FormAction>
     </Form>
   );
 };
