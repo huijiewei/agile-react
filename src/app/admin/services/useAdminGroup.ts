@@ -52,22 +52,19 @@ const useAdminGroupView = (id: string): UseAdminGroupView => {
 
 type UseAdminGroupPost = {
   loading: boolean;
+  submit: (adminGroup: AdminGroup) => Promise<{ data: AdminGroup | undefined; error: HttpError | undefined }>;
 };
 
-type UseAdminGroupPostResult = Promise<{ data: AdminGroup | undefined; error: HttpError | undefined }>;
-
-type UseAdminGroupCreate = UseAdminGroupPost & {
-  create: (form: AdminGroup) => UseAdminGroupPostResult;
-};
-
-const useAdminGroupCreate = (): UseAdminGroupCreate => {
-  const { post } = useHttp();
+const useAdminGroupSubmit = (): UseAdminGroupPost => {
+  const { post, put } = useHttp();
   const [loading, setLoading] = useState(false);
 
-  const create = async <T>(form: T) => {
+  const submit = async (adminGroup: AdminGroup) => {
     setLoading(true);
 
-    const { data, error } = await requestFlatry<AdminGroup>(post('admin-groups', form));
+    const { data, error } = await requestFlatry<AdminGroup>(
+      adminGroup.id > 0 ? put(ADMIN_GROUP_API + '/' + adminGroup.id, adminGroup) : post(ADMIN_GROUP_API, adminGroup)
+    );
 
     setLoading(false);
 
@@ -79,37 +76,10 @@ const useAdminGroupCreate = (): UseAdminGroupCreate => {
 
   return {
     loading,
-    create,
-  };
-};
-
-type UseAdminGroupEdit = UseAdminGroupPost & {
-  edit: (id: number, form: AdminGroup) => UseAdminGroupPostResult;
-};
-
-const useAdminGroupEdit = (): UseAdminGroupEdit => {
-  const { put } = useHttp();
-  const [loading, setLoading] = useState(false);
-
-  const edit = async <T>(id: number, form: T) => {
-    setLoading(true);
-
-    const { data, error } = await requestFlatry<AdminGroup>(put('admin-groups/' + id, form));
-
-    setLoading(false);
-
-    return {
-      data,
-      error,
-    };
-  };
-
-  return {
-    loading,
-    edit,
+    submit,
   };
 };
 
 const useAdminGroupDelete = () => {};
 
-export { useAdminGroupAll, useAdminGroupView, useAdminGroupCreate, useAdminGroupEdit, useAdminGroupDelete };
+export { useAdminGroupAll, useAdminGroupView, useAdminGroupSubmit, useAdminGroupDelete };

@@ -1,11 +1,12 @@
 import { forwardRef } from '@chakra-ui/system';
-import { FormControl, FormControlProps, FormLabel, Grid, GridItem, GridProps, ResponsiveValue } from '@chakra-ui/react';
+import { FormControl, FormControlProps, Grid, GridItem, GridProps, ResponsiveValue } from '@chakra-ui/react';
 import { ReactNode } from 'react';
+import { FormLabel } from './FormLabel';
 
 type FormItemOptions = {
   label: ReactNode;
   labelWidth?: ResponsiveValue<number | 'auto'> | undefined;
-  labelTextAlign?: 'left' | 'right';
+  labelAlign?: 'start' | 'end';
   fieldWidth?: ResponsiveValue<number | 'auto'> | undefined;
 };
 
@@ -20,7 +21,7 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
     gap = 2.5,
     label,
     labelWidth = 2,
-    labelTextAlign = 'right',
+    labelAlign = 'end',
     fieldWidth = 22,
     ...restProps
   } = props;
@@ -36,14 +37,7 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
       ref={ref}
       {...restProps}
     >
-      <GridItem
-        textAlign={labelTextAlign}
-        colSpan={labelWidth}
-        as={FormLabel}
-        lineHeight={10}
-        height={10}
-        marginBottom={0}
-      >
+      <GridItem align={labelAlign} colSpan={labelWidth} as={FormLabel} lineHeight={10} height={10} marginBottom={0}>
         {label}
       </GridItem>
       <GridItem colSpan={fieldWidth}>{children}</GridItem>

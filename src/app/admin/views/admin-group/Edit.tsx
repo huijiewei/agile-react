@@ -13,7 +13,7 @@ const AdminGroupEdit = () => {
   const onSuccess = async (adminGroup: AdminGroup) => {
     toast({
       position: 'top',
-      description: '管理组编辑成功',
+      description: `管理组${adminGroup.name}编辑成功`,
       status: 'success',
       duration: 2000,
       variant: 'subtle',
