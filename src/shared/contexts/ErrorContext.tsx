@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState, Dispatch, SetStateAction, useCallback } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useState } from 'react';
 
 type ErrorState = {
   message: string;
@@ -13,6 +13,7 @@ type ErrorDispatch = {
 type ErrorDispatchContextType = Dispatch<SetStateAction<ErrorState | null>>;
 
 const ErrorStateContext = createContext<ErrorState | null | undefined>(undefined);
+
 const ErrorDispatchContext = createContext<ErrorDispatchContextType | undefined>(undefined);
 
 export const ErrorProvider = ({ children }: { children: ReactNode }) => {

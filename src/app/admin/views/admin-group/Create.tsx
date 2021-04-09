@@ -1,21 +1,15 @@
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { AdminGroupFrom } from '@admin/views/admin-group/_Form';
 import { AdminGroup } from '@admin/services/useAdminGroup';
-import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useMessage } from '@shared/hooks/useMessage';
 
 const AdminGroupCreate = () => {
-  const toast = useToast();
+  const { success } = useMessage();
   const navigate = useNavigate();
 
   const onSuccess = async (adminGroup: AdminGroup) => {
-    toast({
-      position: 'top',
-      description: `管理组${adminGroup.name}新建成功`,
-      status: 'success',
-      duration: 2000,
-      variant: 'subtle',
-    });
+    success(`管理组 ${adminGroup.name} 新建成功`);
 
     navigate('../../admin-group');
   };
