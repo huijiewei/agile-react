@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import metismenujs from 'metismenujs';
-import { createRef, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
 import { formatUrl } from '@shared/utils/util';
@@ -21,7 +21,7 @@ const metismenu = css`
   }
 
   .mm-item:hover {
-    background-color: gray.700;
+    background-color: gray;
   }
 
   .mm-collapse:not(.mm-show) {
@@ -51,16 +51,12 @@ const MetismenuElem = ({ menu }) => {
 const MetismenuItem = ({ menu, keyPrefix }) => {
   return (
     <li>
-      <MetismenuElem menu={menu}></MetismenuElem>
+      <MetismenuElem menu={menu} />
 
       {menu.children && (
         <chakra.ul>
           {menu.children.map((subMenu, subIdx) => (
-            <MetismenuItem
-              key={keyPrefix + '-' + subIdx}
-              keyPrefix={keyPrefix + '-' + subIdx}
-              menu={subMenu}
-            ></MetismenuItem>
+            <MetismenuItem key={keyPrefix + '-' + subIdx} keyPrefix={keyPrefix + '-' + subIdx} menu={subMenu} />
           ))}
         </chakra.ul>
       )}
@@ -77,17 +73,15 @@ const Metismenu = (props: MetismenuProps) => {
     const mm =
       elemRef.current && new metismenujs(elemRef.current, { toggle: toggle, subMenu: 'ul', triggerElement: 'span' });
 
-    console.log(mm);
-
     return () => {
       mm && mm.dispose();
     };
-  }, [toggle, elemRef]);
+  }, [toggle]);
 
   return (
     <chakra.ul css={metismenu} ref={elemRef}>
       {menus.map((menu, idx) => (
-        <MetismenuItem key={'mm-' + idx} keyPrefix={'mm-' + idx} menu={menu}></MetismenuItem>
+        <MetismenuItem key={'mm-' + idx} keyPrefix={'mm-' + idx} menu={menu} />
       ))}
     </chakra.ul>
   );
