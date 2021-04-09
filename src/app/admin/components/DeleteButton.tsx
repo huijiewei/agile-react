@@ -2,6 +2,10 @@ import {
   Button,
   ButtonGroup,
   ButtonProps,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -12,9 +16,10 @@ import {
   Portal,
   useDisclosure,
 } from '@chakra-ui/react';
-import { PropsWithChildren, ReactNode, useRef } from 'react';
+import { PropsWithChildren, ReactNode, useEffect, useRef } from 'react';
 import { HttpMessage } from '@shared/contexts/HttpContext';
 import { HttpError } from '@shared/utils/http';
+import { useForm } from 'react-hook-form';
 
 type DeleteButtonProps = ButtonProps & {
   title?: ReactNode;
@@ -44,6 +49,14 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
     ...restProps
   } = props;
   const initialFocusRef = useRef(null);
+  const {
+    register,
+    trigger,
+    reset,
+    formState: { isValid },
+  } = useForm({
+    mode: 'all',
+  });
 
   const { onOpen, onClose, isOpen } = useDisclosure();
 
@@ -57,27 +70,30 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
     }
   };
 
+  useEffect(() => {
+    if (prompt) {
+      trigger('phone');
+    }
+  }, [prompt, trigger]);
+
   const onDeleteClick = async () => {
     if (prompt) {
+      if (isValid) {
+        await deleteClick();
+      }
     } else {
       await deleteClick();
     }
   };
 
   const onCancelClick = async () => {
+    reset();
     onCancel && (await onCancel());
     onClose();
   };
 
   return (
-    <Popover
-      closeOnBlur={false}
-      closeOnEsc={false}
-      isOpen={isOpen}
-      onOpen={onOpen}
-      initialFocusRef={initialFocusRef}
-      isLazy
-    >
+    <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
       <PopoverTrigger>
         <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
           {children}
@@ -87,13 +103,43 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
         <PopoverContent>
           <PopoverHeader fontWeight="semibold">{title}</PopoverHeader>
           <PopoverArrow />
-          <PopoverBody>{message}</PopoverBody>
+          <PopoverBody>
+            {prompt ? (
+              <>
+                <FormControl id="phone" isInvalid={isValid}>
+                  <FormLabel color={'gray.500'}>{prompt.label}</FormLabel>
+                  <Input
+                    {...register('phone', {
+                      required: true,
+                      validate: (v) => {
+                        return v == prompt.value;
+                      },
+                    })}
+                    autoComplete={'off'}
+                    type="text"
+                  />
+                </FormControl>
+              </>
+            ) : (
+              message
+            )}
+          </PopoverBody>
           <PopoverFooter display={'flex'} justifyContent="flex-end">
             <ButtonGroup spacing={5} size="sm">
-              <Button isLoading={isLoading} onClick={onCancelClick} variant="outline" ref={initialFocusRef}>
+              <Button
+                isLoading={isLoading}
+                onClick={onCancelClick}
+                variant="outline"
+                ref={prompt ? null : initialFocusRef}
+              >
                 取消
               </Button>
-              <Button isLoading={isLoading} onClick={onDeleteClick} colorScheme="red">
+              <Button
+                isDisabled={prompt ? !isValid : false}
+                isLoading={isLoading}
+                onClick={onDeleteClick}
+                colorScheme="red"
+              >
                 删除
               </Button>
             </ButtonGroup>
