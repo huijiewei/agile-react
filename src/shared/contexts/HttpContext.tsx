@@ -11,7 +11,7 @@ import {
 
 const HttpContext = createContext<HttpInstance | undefined>(undefined);
 
-type AxiosProviderProps = {
+type HttpProviderProps = {
   baseUrl: httpBaseUrl;
   onRequest: httpOnRequest;
   onSuccess: httpOnSuccess;
@@ -26,7 +26,7 @@ const HttpProvider = ({
   onSuccess,
   onError,
   paramsSerializer,
-}: PropsWithChildren<AxiosProviderProps>) => {
+}: PropsWithChildren<HttpProviderProps>) => {
   const http = createHttp(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
 
   return <HttpContext.Provider value={http}>{children}</HttpContext.Provider>;
