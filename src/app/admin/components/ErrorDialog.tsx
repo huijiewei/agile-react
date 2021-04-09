@@ -8,37 +8,37 @@ import {
   AlertDialogOverlay,
   Button,
   Center,
-  Text,
   Icon,
+  Text,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Info } from '@icon-park/react';
 
 const ErrorDialog = () => {
   const error = useErrorState();
-  const { resetError } = useErrorDispatch();
-  const [isOpen, setIsOpen] = useState(false);
   const cancelRef = useRef(null);
 
+  const { resetError } = useErrorDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    onClose() {
+      const historyBack = error && error.historyBack;
+
+      resetError();
+
+      if (historyBack) {
+        navigate(-1);
+      }
+    },
+  });
+
   useEffect(() => {
-    setIsOpen(Boolean(error));
-  }, [error, setIsOpen]);
+    if (error) {
+      onOpen();
+    }
+  }, [error, onOpen]);
 
   const navigate = useNavigate();
-
-  const handleDialogClose = () => {
-    const historyBack = error && error.historyBack;
-
-    resetError();
-
-    if (historyBack) {
-      navigate(-1);
-    }
-  };
-
-  const handleButtonClick = () => {
-    setIsOpen(false);
-  };
 
   return (
     <AlertDialog
@@ -47,7 +47,7 @@ const ErrorDialog = () => {
       closeOnEsc={false}
       leastDestructiveRef={cancelRef}
       isOpen={isOpen}
-      onClose={handleDialogClose}
+      onClose={onClose}
     >
       <AlertDialogOverlay />
       <AlertDialogContent padding={3}>
@@ -58,7 +58,7 @@ const ErrorDialog = () => {
           <Center as={Text}>{error?.message}</Center>
         </AlertDialogBody>
         <AlertDialogFooter sx={{ justifyContent: 'center' }}>
-          <Button onClick={handleButtonClick} ref={cancelRef}>
+          <Button onClick={onClose} ref={cancelRef}>
             {error?.historyBack ? '返回' : '关闭'}
           </Button>
         </AlertDialogFooter>
