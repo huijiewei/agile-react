@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAdminGroupAll } from '@admin/services/useAdminGroup';
 
 const AdminGroupList = () => {
-  const { data } = useAdminGroupAll();
+  const { adminGroups } = useAdminGroupAll();
 
   return (
     <>
@@ -17,8 +17,8 @@ const AdminGroupList = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {data &&
-            data.items.map((adminGroup) => (
+          {adminGroups &&
+            adminGroups.items.map((adminGroup) => (
               <Tr key={adminGroup.id}>
                 <Td>{adminGroup.id}</Td>
                 <Td>{adminGroup.name}</Td>

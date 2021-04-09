@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { ListResponse } from '@admin/services/types';
-import { useHttp } from '@shared/contexts/HttpContext';
+import { HttpMessage, useHttp } from '@shared/contexts/HttpContext';
 import { MutatorCallback } from 'swr/dist/types';
 import { useState } from 'react';
 import { HttpError, requestFlatry } from '@shared/utils/http';
@@ -13,57 +13,59 @@ export type AdminGroup = {
 
 const ADMIN_GROUP_API = 'admin-groups';
 
-type UseAdminGroupAll = { loading: boolean; data: ListResponse<AdminGroup> | undefined };
+type UseAdminGroupAll = { loading: boolean; adminGroups: ListResponse<AdminGroup> | undefined };
 
 const useAdminGroupAll = (): UseAdminGroupAll => {
-  const { get } = useHttp();
+  const { apiGet } = useHttp();
 
-  const { data, error } = useSWR<ListResponse<AdminGroup>>(ADMIN_GROUP_API, (url) => get(url));
+  const { data, error } = useSWR<ListResponse<AdminGroup>>(ADMIN_GROUP_API, (url) => apiGet(url));
 
   const loading = !data && !error;
 
   return {
     loading,
-    data,
+    adminGroups: data,
   };
 };
 
 type UseAdminGroupView = {
+  loading: boolean;
+  adminGroup: AdminGroup | undefined;
   mutate: (
     data?: Promise<AdminGroup | undefined> | MutatorCallback<AdminGroup | undefined> | AdminGroup | undefined,
     shouldRevalidate?: boolean
   ) => Promise<AdminGroup | undefined>;
-  data: AdminGroup | undefined;
-  loading: boolean;
 };
 
 const useAdminGroupView = (id: string): UseAdminGroupView => {
-  const { get } = useHttp();
-  const { data, error, mutate } = useSWR<AdminGroup | undefined>(ADMIN_GROUP_API + '/' + id, (url) => get(url));
+  const { apiGet } = useHttp();
+  const { data, error, mutate } = useSWR<AdminGroup | undefined>(ADMIN_GROUP_API + '/' + id, (url) => apiGet(url));
 
   const loading = !data && !error;
 
   return {
     loading,
-    data,
+    adminGroup: data,
     mutate,
   };
 };
 
-type UseAdminGroupPost = {
+type UseAdminGroupSubmit = {
   loading: boolean;
-  submit: (adminGroup: AdminGroup) => Promise<{ data: AdminGroup | undefined; error: HttpError | undefined }>;
+  submitAdminGroup: (adminGroup: AdminGroup) => Promise<{ data: AdminGroup | undefined; error: HttpError | undefined }>;
 };
 
-const useAdminGroupSubmit = (): UseAdminGroupPost => {
-  const { post, put } = useHttp();
+const useAdminGroupSubmit = (): UseAdminGroupSubmit => {
+  const { apiPost, apiPut } = useHttp();
   const [loading, setLoading] = useState(false);
 
-  const submit = async (adminGroup: AdminGroup) => {
+  const submitAdminGroup = async (adminGroup: AdminGroup) => {
     setLoading(true);
 
     const { data, error } = await requestFlatry<AdminGroup>(
-      adminGroup.id > 0 ? put(ADMIN_GROUP_API + '/' + adminGroup.id, adminGroup) : post(ADMIN_GROUP_API, adminGroup)
+      adminGroup.id > 0
+        ? apiPut(`${ADMIN_GROUP_API}/${adminGroup.id}`, adminGroup)
+        : apiPost(ADMIN_GROUP_API, adminGroup)
     );
 
     setLoading(false);
@@ -76,10 +78,37 @@ const useAdminGroupSubmit = (): UseAdminGroupPost => {
 
   return {
     loading,
-    submit,
+    submitAdminGroup,
   };
 };
 
-const useAdminGroupDelete = () => {};
+type UseAdminGroupDelete = {
+  loading: boolean;
+  deleteAdminGroup: (id: number) => Promise<{ data: HttpMessage | undefined; error: HttpError | undefined }>;
+};
+
+const useAdminGroupDelete = (): UseAdminGroupDelete => {
+  const [loading, setLoading] = useState(false);
+
+  const { apiDelete } = useHttp();
+
+  const deleteAdminGroup = async (id: number) => {
+    setLoading(true);
+
+    const { data, error } = await requestFlatry<HttpMessage>(apiDelete(`${ADMIN_GROUP_API}/${id}`));
+
+    setLoading(false);
+
+    return {
+      data,
+      error,
+    };
+  };
+
+  return {
+    loading,
+    deleteAdminGroup,
+  };
+};
 
 export { useAdminGroupAll, useAdminGroupView, useAdminGroupSubmit, useAdminGroupDelete };

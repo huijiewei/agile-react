@@ -31,11 +31,11 @@ export type HttpError<T = any> = Error & {
 };
 
 export type HttpInstance = {
-  get: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
-  post: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
-  put: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
-  delete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
-  download: (
+  apiGet: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
+  apiPost: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
+  apiPut: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
+  apiDelete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
+  apiDownload: (
     method: HttpMethod,
     url: string,
     params?: unknown,
@@ -138,7 +138,7 @@ export const createHttp = (
   const axios = createAxios(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
 
   return {
-    get: (url: string, params: unknown = null, historyBack = true) => {
+    apiGet: (url: string, params: unknown = null, historyBack = true) => {
       const config = {
         params: params,
         __historyBack: historyBack,
@@ -146,7 +146,7 @@ export const createHttp = (
 
       return axios.get(url, config);
     },
-    post: (url: string, data: unknown, params: unknown = null, historyBack = false) => {
+    apiPost: (url: string, data: unknown, params: unknown = null, historyBack = false) => {
       const config = {
         params: params,
         __historyBack: historyBack,
@@ -154,7 +154,7 @@ export const createHttp = (
 
       return axios.post(url, data, config);
     },
-    put: (url: string, data: unknown, params: unknown = null, historyBack = false) => {
+    apiPut: (url: string, data: unknown, params: unknown = null, historyBack = false) => {
       const config = {
         params: params,
         __historyBack: historyBack,
@@ -162,7 +162,7 @@ export const createHttp = (
 
       return axios.put(url, data, config);
     },
-    delete: (url: string, params: unknown = null, historyBack = false) => {
+    apiDelete: (url: string, params: unknown = null, historyBack = false) => {
       const config = {
         params: params,
         __historyBack: historyBack,
@@ -170,7 +170,7 @@ export const createHttp = (
 
       return axios.delete(url, config);
     },
-    download: async (
+    apiDownload: async (
       method: HttpMethod,
       url: string,
       params: unknown = null,

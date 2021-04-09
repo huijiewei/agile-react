@@ -32,6 +32,10 @@ const HttpProvider = ({
   return <HttpContext.Provider value={http}>{children}</HttpContext.Provider>;
 };
 
+export type HttpMessage = {
+  message: string;
+};
+
 const useHttp = (): HttpInstance => {
   const context = useContext(HttpContext);
 

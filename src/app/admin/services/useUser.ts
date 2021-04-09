@@ -19,11 +19,11 @@ type User = {
 const USER_API = 'users';
 
 const useUserAll = (withSearchFields = false): { loading: boolean; data: PageResponse<User> | undefined } => {
-  const { get } = useHttp();
+  const { apiGet } = useHttp();
   const [searchParams] = useSearchParams();
   const { data, error } = useSWR<PageResponse<User>>(
     USER_API + '?' + (withSearchFields ? 'withSearchFields=true' : '') + searchParams.toString(),
-    (url) => get(url)
+    (url) => apiGet(url)
   );
 
   const loading = !data && !error;
@@ -35,8 +35,8 @@ const useUserAll = (withSearchFields = false): { loading: boolean; data: PageRes
 };
 
 const useUserView = (id: string): { data: User | undefined; loading: boolean } => {
-  const { get } = useHttp();
-  const { data, error } = useSWR<User | undefined>(USER_API + '/' + id, (url) => get(url));
+  const { apiGet } = useHttp();
+  const { data, error } = useSWR<User | undefined>(USER_API + '/' + id, (url) => apiGet(url));
 
   const loading = !data && !error;
 

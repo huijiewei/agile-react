@@ -78,14 +78,14 @@ const UserList = () => {
 };
 
 const UserDownload = () => {
-  const { download } = useHttp();
+  const { apiDownload } = useHttp();
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {
     setLoading(true);
 
-    const result = await download('GET', 'users/export');
+    const result = await apiDownload('GET', 'users/export');
 
     setLoading(false);
 

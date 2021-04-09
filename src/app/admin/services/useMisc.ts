@@ -9,17 +9,19 @@ export type AdminGroupPermission = {
 };
 
 const useAdminGroupPermissions = (): {
-  data: AdminGroupPermission[] | undefined;
   loading: boolean;
+  adminGroupPermissions: AdminGroupPermission[] | undefined;
 } => {
-  const { get } = useHttp();
-  const { data, error } = useSWR<AdminGroupPermission[] | undefined>('misc/admin-group-permissions', (url) => get(url));
+  const { apiGet } = useHttp();
+  const { data, error } = useSWR<AdminGroupPermission[] | undefined>('misc/admin-group-permissions', (url) =>
+    apiGet(url)
+  );
 
   const loading = !data && !error;
 
   return {
     loading,
-    data,
+    adminGroupPermissions: data,
   };
 };
 

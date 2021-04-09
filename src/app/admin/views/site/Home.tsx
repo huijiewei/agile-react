@@ -59,7 +59,7 @@ const RefreshUserButton = () => {
 
 const Home = () => {
   const { setError } = useErrorDispatch();
-  const { get, post } = useHttp();
+  const { apiGet, apiPost } = useHttp();
   const toast = useToast();
 
   const handleClick = () => {
@@ -75,7 +75,7 @@ const Home = () => {
   };
 
   const handleSendGet = async () => {
-    const { data } = await requestFlatry(get('user/create', {}));
+    const { data } = await requestFlatry(apiGet('user/create', {}));
 
     if (data) {
       console.log(data);
@@ -83,7 +83,7 @@ const Home = () => {
   };
 
   const handleSendPost = async () => {
-    const { data } = await requestFlatry(post('user/create', {}));
+    const { data } = await requestFlatry(apiPost('user/create', {}));
 
     if (data) {
       console.log(data);

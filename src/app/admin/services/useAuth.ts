@@ -44,9 +44,9 @@ type UseAuth = Auth & {
 const AUTH_API = 'auth/account';
 
 const useAuth = (): UseAuth => {
-  const { get } = useHttp();
+  const { apiGet } = useHttp();
 
-  const { data, error, mutate } = useSWR<Auth>(AUTH_API, (url: string) => get<Auth>(url), {
+  const { data, error, mutate } = useSWR<Auth>(AUTH_API, (url: string) => apiGet<Auth>(url), {
     revalidateOnMount: !cache.has(AUTH_API),
   });
 
@@ -77,13 +77,13 @@ type UseAuthLogin = {
 };
 
 const useAuthLogin = (): UseAuthLogin => {
-  const { post } = useHttp();
+  const { apiPost } = useHttp();
   const [loading, setLoading] = useState(false);
 
   const login = async <T>(form: T) => {
     setLoading(true);
 
-    const { data, error } = await requestFlatry<AuthLogin>(post('auth/login', form));
+    const { data, error } = await requestFlatry<AuthLogin>(apiPost('auth/login', form));
 
     setLoading(false);
 

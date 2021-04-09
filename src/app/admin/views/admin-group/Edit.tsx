@@ -8,7 +8,7 @@ const AdminGroupEdit = () => {
   const toast = useToast();
   const { id } = useParams();
 
-  const { data, mutate } = useAdminGroupView(id);
+  const { adminGroup, mutate } = useAdminGroupView(id);
 
   const onSuccess = async (adminGroup: AdminGroup) => {
     toast({
@@ -22,7 +22,9 @@ const AdminGroupEdit = () => {
     await mutate(adminGroup, false);
   };
 
-  return <ContentLayout>{data && <AdminGroupFrom onSuccess={onSuccess} adminGroup={data} />}</ContentLayout>;
+  return (
+    <ContentLayout>{adminGroup && <AdminGroupFrom onSuccess={onSuccess} adminGroup={adminGroup} />}</ContentLayout>
+  );
 };
 
 export default AdminGroupEdit;

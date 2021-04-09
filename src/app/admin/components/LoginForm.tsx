@@ -13,7 +13,6 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightAddon,
-  Stack,
   useToast,
 } from '@chakra-ui/react';
 import { Eyes, Lock, User } from '@icon-park/react';

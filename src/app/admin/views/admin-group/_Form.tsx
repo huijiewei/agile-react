@@ -36,11 +36,9 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   } = useForm();
   const [groupPermissions, setGroupPermissions] = useState<AdminGroupPermissionCheckGroup[]>([]);
   const [disablePermissions, setDisablePermissions] = useState<string[]>([]);
-  const { loading, submit } = useAdminGroupSubmit();
+  const { loading, submitAdminGroup } = useAdminGroupSubmit();
 
-  const { data } = useAdminGroupPermissions();
-
-  console.log('AdminGroupFrom');
+  const { adminGroupPermissions } = useAdminGroupPermissions();
 
   const onGroupChange = (group: AdminGroupPermissionCheckGroup) => {
     const children: string[] = [];
@@ -138,7 +136,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   };
 
   const onSubmit = async (adminGroup: AdminGroup) => {
-    const { data, error } = await submit(adminGroup);
+    const { data, error } = await submitAdminGroup(adminGroup);
 
     if (data) {
       onSuccess && onSuccess(data);
@@ -158,7 +156,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   useEffect(() => {
     const groupPermissions: AdminGroupPermissionCheckGroup[] = [];
 
-    data?.map((permission, index) => {
+    adminGroupPermissions?.map((permission, index) => {
       const group: AdminGroupPermissionCheckGroup = {
         name: permission.name,
         index: index,
@@ -197,7 +195,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
     });
 
     setGroupPermissions(groupPermissions);
-  }, [data, adminGroup.permissions]);
+  }, [adminGroupPermissions, adminGroup.permissions]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

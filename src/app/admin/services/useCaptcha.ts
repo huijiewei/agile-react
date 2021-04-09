@@ -13,22 +13,22 @@ type UseCaptcha = {
   removeCaptcha: () => void;
 };
 
-const useCaptcha = (emptyCaptcha: () => void): UseCaptcha => {
-  const { get } = useHttp();
+const useCaptcha = (emptyCaptchaField: () => void): UseCaptcha => {
+  const { apiGet } = useHttp();
   const [captcha, setCaptcha] = useState<Captcha | null>(null);
 
   const updateCaptcha = async () => {
-    const { data } = await requestFlatry<Captcha | undefined>(get('open/captcha', null, false));
+    const { data } = await requestFlatry<Captcha | undefined>(apiGet('open/captcha', null, false));
 
     if (data) {
       setCaptcha(data);
-      emptyCaptcha();
+      emptyCaptchaField();
     }
   };
 
   const removeCaptcha = () => {
     setCaptcha(null);
-    emptyCaptcha();
+    emptyCaptchaField();
   };
 
   return {
