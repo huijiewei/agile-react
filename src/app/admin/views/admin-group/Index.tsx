@@ -2,9 +2,10 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { Box, Button, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useAdminGroupAll } from '@admin/services/useAdminGroup';
+import { AdminGroupDeleteButton } from '@admin/views/admin-group/_Delete';
 
 const AdminGroupList = () => {
-  const { adminGroups } = useAdminGroupAll();
+  const { adminGroups, mutate } = useAdminGroupAll();
 
   return (
     <>
@@ -27,9 +28,12 @@ const AdminGroupList = () => {
                     编辑
                   </Button>
                   &nbsp;&nbsp;
-                  <Button colorScheme="red" variant="outline" size="xs">
-                    删除
-                  </Button>
+                  <AdminGroupDeleteButton
+                    adminGroup={adminGroup}
+                    onSuccess={async () => {
+                      await mutate();
+                    }}
+                  />
                 </Td>
               </Tr>
             ))}

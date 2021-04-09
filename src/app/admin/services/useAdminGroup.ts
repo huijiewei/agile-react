@@ -13,18 +13,30 @@ export type AdminGroup = {
 
 const ADMIN_GROUP_API = 'admin-groups';
 
-type UseAdminGroupAll = { loading: boolean; adminGroups: ListResponse<AdminGroup> | undefined };
+type UseAdminGroupAll = {
+  loading: boolean;
+  adminGroups: ListResponse<AdminGroup> | undefined;
+  mutate: (
+    data?:
+      | ListResponse<AdminGroup>
+      | Promise<ListResponse<AdminGroup>>
+      | MutatorCallback<ListResponse<AdminGroup>>
+      | undefined,
+    shouldRevalidate?: boolean | undefined
+  ) => Promise<ListResponse<AdminGroup> | undefined>;
+};
 
 const useAdminGroupAll = (): UseAdminGroupAll => {
   const { apiGet } = useHttp();
 
-  const { data, error } = useSWR<ListResponse<AdminGroup>>(ADMIN_GROUP_API, (url) => apiGet(url));
+  const { data, error, mutate } = useSWR<ListResponse<AdminGroup>>(ADMIN_GROUP_API, (url) => apiGet(url));
 
   const loading = !data && !error;
 
   return {
     loading,
     adminGroups: data,
+    mutate,
   };
 };
 

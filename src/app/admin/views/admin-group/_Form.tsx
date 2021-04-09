@@ -1,4 +1,4 @@
-import { AdminGroup, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
+import { AdminGroup, useAdminGroupDelete, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
 import { Box, Button, Checkbox, CheckboxGroup, FormErrorMessage, Input, Stack } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -7,6 +7,10 @@ import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';
 import { FormItem } from '@shared/components/form/FormItem';
 import { FormAction } from '@shared/components/form/FormAction';
+import { DeleteButton } from '@admin/components/DeleteButton';
+import { useSameWidth } from '@shared/hooks/useSameWidth';
+import { AdminGroupDeleteButton } from '@admin/views/admin-group/_Delete';
+import { useNavigate } from 'react-router-dom';
 
 type AdminGroupPermissionCheckGroup = {
   name: string;
@@ -37,6 +41,9 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   const [groupPermissions, setGroupPermissions] = useState<AdminGroupPermissionCheckGroup[]>([]);
   const [disablePermissions, setDisablePermissions] = useState<string[]>([]);
   const { loading, submitAdminGroup } = useAdminGroupSubmit();
+  const navigate = useNavigate();
+
+  const { sameWidthRefs } = useSameWidth();
 
   const { adminGroupPermissions } = useAdminGroupPermissions();
 
@@ -135,8 +142,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
     );
   };
 
-  const onSubmit = async (adminGroup: AdminGroup) => {
-    const { data, error } = await submitAdminGroup(adminGroup);
+  const onSubmit = async (form: AdminGroup) => {
+    const { data, error } = await submitAdminGroup(adminGroup.id, form);
 
     if (data) {
       onSuccess && onSuccess(data);
@@ -230,13 +237,17 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
                         {group.name}
                       </Checkbox>
                     </Box>
-                    <Box sx={{ paddingX: 3, paddingY: 2 }}>
+                    <Box
+                      ref={(element) => sameWidthRefs.current.push({ element, childrenClassName: 'sw-checkbox' })}
+                      sx={{ paddingX: 3, paddingY: 2 }}
+                    >
                       {group.children &&
                         group.children.map((item, itemIdx) =>
                           item.children ? (
                             <Box key={'gp-' + groupIdx + '-' + itemIdx}>
                               {item.children.map((checkbox, checkboxIdx) => (
                                 <Checkbox
+                                  className={'sw-checkbox'}
                                   sx={{ marginEnd: 12, paddingY: 1 }}
                                   key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
                                   value={checkbox.actionId}
@@ -249,6 +260,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
                             </Box>
                           ) : (
                             <Checkbox
+                              className={'sw-checkbox'}
                               sx={{ marginEnd: 12, paddingY: 1 }}
                               key={'gp-' + groupIdx + '-' + itemIdx}
                               value={item.actionId}
@@ -272,9 +284,13 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
           提交
         </Button>
         {adminGroup.id > 0 && (
-          <Button size={'sm'} variant={'outline'} colorScheme={'red'}>
-            删除
-          </Button>
+          <AdminGroupDeleteButton
+            size={'sm'}
+            adminGroup={adminGroup}
+            onSuccess={() => {
+              navigate('../../../admin-group');
+            }}
+          />
         )}
       </FormAction>
     </Form>
