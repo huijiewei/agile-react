@@ -36,7 +36,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
   } = useForm();
 
   const toast = useToast();
-  const { login, loading } = useAuthLogin();
+  const { authLogin, loading } = useAuthLogin();
   const { captcha, updateCaptcha, removeCaptcha } = useCaptcha(() => {
     setValue('captcha', '');
   });
@@ -46,7 +46,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       form.captcha = processCaptcha(form.captcha, captcha.process);
     }
 
-    const { data, error } = await login<LoginForm>(form);
+    const { data, error } = await authLogin<LoginForm>(form);
 
     if (data) {
       toast({
