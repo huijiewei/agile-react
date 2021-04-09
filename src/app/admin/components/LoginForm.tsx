@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useCaptcha, processCaptcha } from '@admin/services/useCaptcha';
+import { processCaptcha, useCaptcha } from '@admin/services/useCaptcha';
 import { useAuthLogin } from '@admin/services/useAuth';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 
@@ -13,11 +13,11 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightAddon,
-  useToast,
 } from '@chakra-ui/react';
 import { Eyes, Lock, User } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
 import { Form } from '@shared/components/form/Form';
+import { useMessage } from '@shared/hooks/useMessage';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -35,7 +35,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     formState: { errors },
   } = useForm();
 
-  const toast = useToast();
+  const { success } = useMessage();
   const { login, loading } = useAuthLogin();
   const { captcha, updateCaptcha, removeCaptcha } = useCaptcha(() => {
     setValue('captcha', '');
@@ -49,12 +49,9 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     const { data, error } = await login<LoginForm>(form);
 
     if (data) {
-      toast({
+      success('Agile React 是一个基于 React, TypeScript, Chakra UI, Webpack 5 的后台管理演示项目.', {
         position: 'top-right',
-        description: '欢迎使用 Agile React',
-        status: 'success',
-        duration: 2000,
-        variant: 'subtle',
+        title: '欢迎使用 Agile React',
       });
 
       onSuccess && onSuccess();

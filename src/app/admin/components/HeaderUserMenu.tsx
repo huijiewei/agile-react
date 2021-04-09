@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
-import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar, Center, useToast } from '@chakra-ui/react';
+import { Avatar, Center, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react';
 import { Down, Logout, Refresh, User } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
+import { useMessage } from '@shared/hooks/useMessage';
 
 const HeaderUserMenu = ({ height }: { height: string }) => {
   const { apiPost } = useHttp();
   const navigate = useNavigate();
-  const toast = useToast();
+  const { success } = useMessage();
   const { currentUser, mutate } = useAuth();
 
   const handleRefresh = async () => {
@@ -25,12 +26,8 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
 
       await mutate(undefined, false);
 
-      toast({
-        description: data.message,
+      success(data.message, {
         duration: 1000,
-        status: 'success',
-        variant: 'subtle',
-        position: 'top',
         onCloseComplete: () => {
           navigate('login', { replace: true });
         },
@@ -50,7 +47,7 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
         >
           <Avatar marginEnd="6px" verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
           {currentUser.name}
-          <Icon marginStart="6px" verticalAlign="-3px" as={Down}></Icon>
+          <Icon marginStart="6px" verticalAlign="-3px" as={Down} />
         </MenuButton>
         <MenuList>
           <MenuItem as={Center} isDisabled>

@@ -52,20 +52,21 @@ const useAdminGroupView = (id: string): UseAdminGroupView => {
 
 type UseAdminGroupSubmit = {
   loading: boolean;
-  submitAdminGroup: (adminGroup: AdminGroup) => Promise<{ data: AdminGroup | undefined; error: HttpError | undefined }>;
+  submitAdminGroup: (
+    id: number,
+    adminGroup: AdminGroup
+  ) => Promise<{ data: AdminGroup | undefined; error: HttpError | undefined }>;
 };
 
 const useAdminGroupSubmit = (): UseAdminGroupSubmit => {
   const { apiPost, apiPut } = useHttp();
   const [loading, setLoading] = useState(false);
 
-  const submitAdminGroup = async (adminGroup: AdminGroup) => {
+  const submitAdminGroup = async (id: number, adminGroup: AdminGroup) => {
     setLoading(true);
 
     const { data, error } = await requestFlatry<AdminGroup>(
-      adminGroup.id > 0
-        ? apiPut(`${ADMIN_GROUP_API}/${adminGroup.id}`, adminGroup)
-        : apiPost(ADMIN_GROUP_API, adminGroup)
+      id > 0 ? apiPut(`${ADMIN_GROUP_API}/${id}`, adminGroup) : apiPost(ADMIN_GROUP_API, adminGroup)
     );
 
     setLoading(false);
