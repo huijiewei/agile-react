@@ -76,7 +76,7 @@ const Metismenu = (props: MetismenuProps) => {
     return () => {
       mm && mm.dispose();
     };
-  }, [toggle]);
+  }, [toggle, elemRef.current]);
 
   return (
     <chakra.ul css={metismenu} ref={elemRef}>
