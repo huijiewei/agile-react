@@ -7,7 +7,19 @@ import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, HStack, Stack, Box, IconButton, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  HStack,
+  Stack,
+  Box,
+  IconButton,
+  useToast,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react';
 import { useIsMounted } from '@shared/hooks/useIsMounted';
 import { Config, Delete, Minus } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
@@ -118,6 +130,42 @@ const Home = () => {
       <Stack>
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
+        <Box>
+          <NumberInput size={'lg'} width={300}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
+        <Box>
+          <NumberInput width={300}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
+        <Box>
+          <NumberInput size={'sm'} width={300}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
+        <Box>
+          <NumberInput size={'xs'} width={300}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
         <HStack>
           <Button onClick={handleToastShow}>显示一个 Toast</Button>
           <Button onClick={handleToastShow2}>显示一个 Toast</Button>

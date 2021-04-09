@@ -211,23 +211,22 @@ const agileTheme = extendTheme({
       },
       sizes: {
         lg: {
-          height: 10,
-          minWidth: 10,
+          h: 10,
+          minW: 10,
         },
         md: {
-          height: 9,
-          minWidth: 9,
+          h: 9,
+          minW: 9,
         },
         sm: {
-          height: 8,
-          minWidth: 8,
+          h: 8,
+          minW: 8,
         },
         xs: {
-          height: 7,
-          minWidth: 7,
+          h: 7,
+          minW: 7,
           fontSize: 'xs',
-          paddingStart: 3,
-          paddingEnd: 3,
+          px: 3,
         },
       },
     },
@@ -249,6 +248,48 @@ const agileTheme = extendTheme({
       baseStyle: {
         text: {
           fontSize: 'xs',
+        },
+      },
+    },
+    NumberInput: {
+      sizes: {
+        lg: {
+          stepper: {
+            fontSize: '0.6em',
+            _first: {
+              borderTopEndRadius: 'lg',
+            },
+          },
+        },
+        md: {
+          stepper: {
+            fontSize: '0.55em',
+            _first: {
+              borderTopEndRadius: 'md',
+            },
+          },
+        },
+        sm: {
+          stepper: {
+            fontSize: '0.5em',
+            _first: {
+              borderTopEndRadius: 'sm',
+            },
+          },
+        },
+        xs: {
+          root: {
+            lineHeight: 'normal',
+          },
+          stepper: {
+            fontSize: '0.375em',
+            _first: {
+              borderTopEndRadius: 'xs',
+            },
+            _last: {
+              borderBottomEndRadius: 'xs',
+            },
+          },
         },
       },
     },
