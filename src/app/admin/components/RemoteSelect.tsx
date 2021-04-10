@@ -1,6 +1,6 @@
 import { forwardRef } from '@chakra-ui/system';
-import { IconButton, Select, SelectProps, Stack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { IconButton, Select, SelectProps, Skeleton, Stack } from '@chakra-ui/react';
+import { useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
 import { Dict } from '@shared/utils/types';
 
@@ -15,7 +15,7 @@ type RemoteSelectProps = SelectProps & {
 
 const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
   const {
-    id,
+    name,
     remoteMethod,
     optionLabel,
     optionValue,
@@ -26,9 +26,9 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
   } = props;
 
   const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<RemoteSelectOptionType>([]);
+  const [options, setOptions] = useState<RemoteSelectOptionType | null>(null);
 
-  const loadOptions = () => {
+  const loadOptions = useCallback(() => {
     setLoading(true);
 
     remoteMethod((optionData) => {
@@ -36,7 +36,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
       setLoading(false);
     });
-  };
+  }, [remoteMethod]);
 
   useEffect(() => {
     loadOptions();
@@ -45,13 +45,17 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
-      <Select isDisabled={isDisabled} ref={ref} {...restProps}>
-        {options.map((option, idx) => (
-          <option selected={defaultValue == option[optionValue]} key={id + '-' + idx} value={option[optionValue]}>
-            {option[optionLabel]}
-          </option>
-        ))}
-      </Select>
+      {options ? (
+        <Select defaultValue={`${defaultValue}`} name={name} isDisabled={isDisabled} ref={ref} {...restProps}>
+          {options.map((option, idx) => (
+            <option key={name + '-' + idx} value={`${option[optionValue]}`}>
+              {option[optionLabel]}
+            </option>
+          ))}
+        </Select>
+      ) : (
+        <Skeleton width={'100%'} height={10} />
+      )}
       <IconButton
         onClick={loadOptions}
         size={'sm'}

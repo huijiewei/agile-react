@@ -241,6 +241,15 @@ const agileTheme = extendTheme({
       baseStyle: {
         list: {
           minWidth: 36,
+          py: 0,
+        },
+        item: {
+          py: 0,
+          height: '39px',
+          lineHeight: '39px',
+        },
+        divider: {
+          my: 0,
         },
       },
     },
@@ -362,6 +371,23 @@ const agileTheme = extendTheme({
             px: '5',
             py: '2',
           },
+        },
+      },
+    },
+    Input: {
+      sizes: {
+        md: {
+          field: {
+            px: 3,
+          },
+        },
+      },
+    },
+    Select: {
+      baseStyle: {
+        field: {
+          paddingBottom: 0,
+          lineHeight: 'base',
         },
       },
     },

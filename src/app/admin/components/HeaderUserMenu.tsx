@@ -54,7 +54,7 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<User />}>
+          <MenuItem iconSpacing="10px" icon={<Icon as={User} />}>
             个人资料
           </MenuItem>
           <MenuItem iconSpacing="10px" icon={<Icon as={Refresh} />} onClick={handleRefresh}>

@@ -14,8 +14,8 @@ type FormItemProps = GridProps & FormControlProps & FormItemOptions;
 
 const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
   const {
-    children,
     id,
+    children,
     isInvalid = false,
     isRequired = false,
     gap = 2.5,
