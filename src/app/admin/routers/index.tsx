@@ -2,6 +2,7 @@ import { createRoutesFromArray, Navigate, useRoutes } from 'react-router-dom';
 
 import { adminRoutes } from './admin/admin';
 import { adminGroupRoutes } from './admin/admin-group';
+import { adminLogRoutes } from './admin/admin-log';
 import { userRoutes } from './user/user';
 
 import Login from '@admin/views/site/Login';
@@ -45,6 +46,7 @@ const routes = [
       },
       ...adminRoutes,
       ...adminGroupRoutes,
+      ...adminLogRoutes,
       ...userRoutes,
       {
         path: 'nest',

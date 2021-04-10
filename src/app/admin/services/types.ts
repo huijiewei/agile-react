@@ -43,3 +43,8 @@ export type UseView<T> = {
     shouldRevalidate?: boolean | undefined
   ) => Promise<T | undefined>;
 };
+
+export type Description<T> = {
+  value: T;
+  description: string;
+};

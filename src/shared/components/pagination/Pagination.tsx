@@ -35,7 +35,7 @@ const Pagination = forwardRef<PaginationProps, 'nav'>((props, ref) => {
       <StylesProvider value={styles}>
         <chakra.ul className="chakra-pagination__list">
           {pages.map((page, index) => (
-            <chakra.li className="chakra-pagination__item" key={index}>
+            <chakra.li display={'inline-block'} className="chakra-pagination__item" key={index}>
               {renderPage({ ...page })}
             </chakra.li>
           ))}

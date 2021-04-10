@@ -80,7 +80,7 @@ const agileTheme = extendTheme({
   },
   fontSizes: {
     xs: '0.75rem',
-    sm: '0.875rem',
+    sm: '0.75rem',
     md: '0.875rem',
     lg: '1rem',
     xl: '1.125rem',
@@ -294,6 +294,9 @@ const agileTheme = extendTheme({
       },
     },
     Table: {
+      baseStyle: {
+        fontWeight: 'medium',
+      },
       variants: {
         simple: (props) => ({
           th: {
@@ -329,8 +332,9 @@ const agileTheme = extendTheme({
         md: {
           th: {
             px: '3',
-            py: '3',
+            py: '2',
             lineHeight: 'base',
+            fontSize: 'md',
           },
           td: {
             px: '3',
@@ -340,6 +344,7 @@ const agileTheme = extendTheme({
           caption: {
             px: '3',
             py: '3',
+            fontSize: 'md',
           },
         },
         lg: {
