@@ -19,14 +19,18 @@ const UserTable = () => {
       <Table>
         <Thead>
           <Tr>
-            <Th>Id</Th>
-            <Th>手机号码</Th>
-            <Th>邮箱</Th>
-            <Th>姓名</Th>
-            <Th sx={{ textAlign: 'center' }}>头像</Th>
-            <Th>注册 IP</Th>
-            <Th>注册来源</Th>
-            <Th>注册时间</Th>
+            <Th width={'90px'}>Id</Th>
+            <Th width={'130px'}>手机号码</Th>
+            <Th minW={'320px'}>邮箱</Th>
+            <Th width={'120px'}>姓名</Th>
+            <Th width={'60px'} textAlign={'center'}>
+              头像
+            </Th>
+            <Th width={'160px'}>注册 IP</Th>
+            <Th width={'90px'} textAlign={'center'}>
+              注册来源
+            </Th>
+            <Th width={'160px'}>注册时间</Th>
             <Th />
           </Tr>
         </Thead>
@@ -48,7 +52,7 @@ const UserTable = () => {
                 <Td>
                   <Text as="pre">{user.createdIp}</Text>
                 </Td>
-                <Td>{user.createdFrom.description}</Td>
+                <Td textAlign={'center'}>{user.createdFrom.description}</Td>
                 <Td>
                   <Text as="pre">{user.createdAt}</Text>
                 </Td>

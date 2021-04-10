@@ -15,7 +15,7 @@ const PaginationItem = forwardRef<PaginationRenderItemParams, 'div'>((props, ref
       cursor={isSelected ? 'default' : 'pointer'}
       color={isSelected ? 'white' : 'gray.900'}
       backgroundColor={isSelected ? 'blue.500' : 'gray.100'}
-      marginX={2}
+      marginX={1.5}
       lineHeight={6}
       height={7}
       minW={6}
@@ -25,7 +25,7 @@ const PaginationItem = forwardRef<PaginationRenderItemParams, 'div'>((props, ref
       ref={ref}
       {...restProps}
     >
-      {type == 'previous' ? <Icon as={Left} /> : type == 'next' ? '>' : page}
+      {type == 'previous' ? '<' : type == 'next' ? '>' : page}
     </chakra.span>
   );
 });
