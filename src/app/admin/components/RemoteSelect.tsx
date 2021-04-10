@@ -46,9 +46,9 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
       {options ? (
-        <Select defaultValue={`${defaultValue}`} name={name} isDisabled={isDisabled} ref={ref} {...restProps}>
+        <Select defaultValue={defaultValue} name={name} isDisabled={isDisabled} ref={ref} {...restProps}>
           {options.map((option, idx) => (
-            <option key={name + '-' + idx} value={`${option[optionValue]}`}>
+            <option key={name + '-' + idx} value={option[optionValue]}>
               {option[optionLabel]}
             </option>
           ))}

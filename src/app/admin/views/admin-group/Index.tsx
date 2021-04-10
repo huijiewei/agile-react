@@ -8,29 +8,27 @@ const AdminGroupTable = () => {
   const { data } = useAdminGroupAll();
 
   return (
-    <>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th width={90}>Id</Th>
-            <Th width={150}>名称</Th>
-            <Th />
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data &&
-            data.items.map((adminGroup) => (
-              <Tr key={adminGroup.id}>
-                <Td>{adminGroup.id}</Td>
-                <Td>{adminGroup.name}</Td>
-                <Td sx={{ textAlign: 'right' }}>
-                  <AdminGroupEditButton adminGroup={adminGroup} />
-                </Td>
-              </Tr>
-            ))}
-        </Tbody>
-      </Table>
-    </>
+    <Table>
+      <Thead>
+        <Tr>
+          <Th width={90}>Id</Th>
+          <Th width={150}>名称</Th>
+          <Th />
+        </Tr>
+      </Thead>
+      <Tbody>
+        {data &&
+          data.items.map((adminGroup) => (
+            <Tr key={adminGroup.id}>
+              <Td>{adminGroup.id}</Td>
+              <Td>{adminGroup.name}</Td>
+              <Td sx={{ textAlign: 'right' }}>
+                <AdminGroupEditButton adminGroup={adminGroup} />
+              </Td>
+            </Tr>
+          ))}
+      </Tbody>
+    </Table>
   );
 };
 
