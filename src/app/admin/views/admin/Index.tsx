@@ -2,10 +2,9 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { Avatar, Box, Button, Center, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useAdminAll } from '@admin/services/useAdmin';
-import { AdminDeleteButton } from '@admin/views/admin/_Delete';
 
 const AdminList = () => {
-  const { admins, mutate } = useAdminAll();
+  const { admins } = useAdminAll();
 
   return (
     <>
@@ -39,19 +38,12 @@ const AdminList = () => {
                     <Avatar size="sm" name={admin.name} src={admin.avatar} />
                   </Center>
                 </Td>
-                <Td textAlign={'center'}>{admin.adminGroup.name}</Td>
+                <Td textAlign={'center'}>{admin.adminGroup?.name}</Td>
                 <Td>{admin.createdAt}</Td>
                 <Td sx={{ textAlign: 'right' }}>
                   <Button variant="outline" size="xs" as={Link} to={'edit/' + admin.id}>
                     编辑
                   </Button>
-                  &nbsp;&nbsp;
-                  <AdminDeleteButton
-                    admin={admin}
-                    onSuccess={async () => {
-                      await mutate();
-                    }}
-                  />
                 </Td>
               </Tr>
             ))}

@@ -33,7 +33,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     clearErrors,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: 'all' });
 
   const { success } = useMessage();
   const { login, loading } = useAuthLogin();
@@ -41,12 +41,12 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     setValue('captcha', '');
   });
 
-  const onSubmit = async (form: LoginForm) => {
+  const onSubmit = async (formData: LoginForm) => {
     if (captcha) {
-      form.captcha = processCaptcha(form.captcha, captcha.process);
+      formData.captcha = processCaptcha(formData.captcha, captcha.process);
     }
 
-    const { data, error } = await login<LoginForm>(form);
+    const { data, error } = await login<LoginForm>(formData);
 
     if (data) {
       success('Agile React 是一个基于 React, TypeScript, Chakra UI, Webpack 5 的后台管理演示项目.', {

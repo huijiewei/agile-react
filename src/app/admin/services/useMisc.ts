@@ -1,5 +1,7 @@
 import { useHttp } from '@shared/contexts/HttpContext';
 import useSWR from 'swr';
+import { AdminGroup } from '@admin/services/useAdminGroup';
+import { HttpError, requestFlatry } from '@shared/utils/http';
 
 export type AdminGroupPermission = {
   name: string;
@@ -25,4 +27,18 @@ const useAdminGroupPermissions = (): {
   };
 };
 
-export { useAdminGroupPermissions };
+const useAdminGroups = (): {
+  fetch: () => Promise<{ data: AdminGroup[] | undefined; error: HttpError | undefined }>;
+} => {
+  const { apiGet } = useHttp();
+
+  const fetch = async () => {
+    return requestFlatry<AdminGroup[]>(apiGet('misc/admin-groups'));
+  };
+
+  return {
+    fetch,
+  };
+};
+
+export { useAdminGroupPermissions, useAdminGroups };

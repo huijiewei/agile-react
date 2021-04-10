@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import { createBreakpoints, mode, getColor, transparentize } from '@chakra-ui/theme-tools';
+import { createBreakpoints, getColor, mode, transparentize } from '@chakra-ui/theme-tools';
 
 const breakpoints = createBreakpoints({
   sm: '640px',

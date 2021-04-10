@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Image, Stack } from '@chakra-ui/react';
+import { Button, Center, Flex, Image, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {

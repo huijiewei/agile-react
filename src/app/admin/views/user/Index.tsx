@@ -5,7 +5,7 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Button, Table, Tbody, Thead, Tr, Th, Td, Center, Avatar, Text, Flex, Box, Tfoot } from '@chakra-ui/react';
+import { Avatar, Box, Button, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { Pagination } from '@shared/components/pagination/Pagination';
 import { PaginationItem } from '@shared/components/pagination/PaginationItem';
 

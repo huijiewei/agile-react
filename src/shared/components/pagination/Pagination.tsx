@@ -1,15 +1,15 @@
 import {
   chakra,
   forwardRef,
+  HTMLChakraProps,
   omitThemingProps,
   StylesProvider,
   ThemingProps,
   useMultiStyleConfig,
-  HTMLChakraProps,
 } from '@chakra-ui/system';
-import { cx, __DEV__ } from '@chakra-ui/utils';
+import { __DEV__, cx } from '@chakra-ui/utils';
 import { ReactNode } from 'react';
-import { UsePaginationItem, UsePaginationProps, usePagination } from './usePagination';
+import { usePagination, UsePaginationItem, UsePaginationProps } from './usePagination';
 import { PaginationItem } from './PaginationItem';
 
 export type PaginationRenderItemParams = UsePaginationItem & ThemingProps<'Pagination'>;

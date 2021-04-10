@@ -12,8 +12,9 @@ export type Admin = {
   phone: string;
   email: string;
   avatar: string;
-  adminGroup: AdminGroup;
-  createdAt: string;
+  adminGroupId: number;
+  adminGroup?: AdminGroup;
+  createdAt?: string;
 };
 
 const ADMIN_API = 'admins';

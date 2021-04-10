@@ -1,4 +1,4 @@
-import { Box, Slide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { PropsWithChildren, ReactNode } from 'react';
 import { LayoutProvider, LayoutState, useLayoutState } from './LayoutContext';
 import { noScrollbarsClassName } from 'react-remove-scroll-bar';

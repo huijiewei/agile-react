@@ -14,9 +14,11 @@ const AdminGroupCreate = () => {
     navigate('../../admin-group');
   };
 
+  const adminGroup = { id: 0, name: '', permissions: [] };
+
   return (
     <ContentLayout>
-      <AdminGroupFrom onSuccess={onSuccess} adminGroup={{ id: 0, name: '', permissions: [] }} />
+      <AdminGroupFrom onSuccess={onSuccess} adminGroup={adminGroup} />
     </ContentLayout>
   );
 };

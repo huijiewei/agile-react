@@ -1,6 +1,6 @@
 import { useControllableState } from '@chakra-ui/react';
 import { UseClickableProps } from '@chakra-ui/clickable';
-import { ChangeEvent, ReactEventHandler, useRef } from 'react';
+import { ChangeEvent, ReactEventHandler } from 'react';
 
 export type UsePaginationItem = {
   onClick: ReactEventHandler;

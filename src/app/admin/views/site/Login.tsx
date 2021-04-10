@@ -1,6 +1,6 @@
 import { LoginForm } from '@admin/components/LoginForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Box, Center, Image, Text, Stack } from '@chakra-ui/react';
+import { Box, Center, Image, Stack, Text } from '@chakra-ui/react';
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 
 const Login = () => {

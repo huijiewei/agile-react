@@ -1,4 +1,4 @@
-import { Grid, GridItem, GridProps, ResponsiveValue, HStack } from '@chakra-ui/react';
+import { Grid, GridItem, GridProps, HStack, ResponsiveValue } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 
 type FormActionProps = GridProps & { labelWidth?: ResponsiveValue<number | 'auto'> | undefined };

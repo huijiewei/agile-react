@@ -1,4 +1,4 @@
-import { AdminGroup, useAdminGroupDelete, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
+import { AdminGroup, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
 import { Box, Button, Checkbox, CheckboxGroup, FormErrorMessage, Input, Stack } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -7,7 +7,6 @@ import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';
 import { FormItem } from '@shared/components/form/FormItem';
 import { FormAction } from '@shared/components/form/FormAction';
-import { DeleteButton } from '@admin/components/DeleteButton';
 import { useSameWidth } from '@shared/hooks/useSameWidth';
 import { AdminGroupDeleteButton } from '@admin/views/admin-group/_Delete';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +36,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: 'all' });
   const [groupPermissions, setGroupPermissions] = useState<AdminGroupPermissionCheckGroup[]>([]);
   const [disablePermissions, setDisablePermissions] = useState<string[]>([]);
   const { loading, submitAdminGroup } = useAdminGroupSubmit();
@@ -142,8 +141,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
     );
   };
 
-  const onSubmit = async (form: AdminGroup) => {
-    const { data, error } = await submitAdminGroup(adminGroup.id, form);
+  const onSubmit = async (formData: AdminGroup) => {
+    const { data, error } = await submitAdminGroup(adminGroup.id, formData);
 
     if (data) {
       onSuccess && onSuccess(data);
@@ -206,7 +205,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormItem id="name" isRequired label={'名称：'} isInvalid={errors.name} fieldWidth={10}>
+      <FormItem id="name" isRequired label={'名称：'} isInvalid={errors.name} fieldWidth={9}>
         <Input type={'text'} {...register('name', { required: '请输入管理组名称' })} defaultValue={adminGroup.name} />
         <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
       </FormItem>
