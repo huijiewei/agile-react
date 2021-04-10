@@ -1,7 +1,7 @@
 import { Admin, useAdminSubmit } from '@admin/services/useAdmin';
 import { useForm } from 'react-hook-form';
 import { Form } from '@shared/components/form/Form';
-import { Button, FormErrorMessage, Input, Select } from '@chakra-ui/react';
+import { Button, FormErrorMessage, Input } from '@chakra-ui/react';
 import { FormItem } from '@shared/components/form/FormItem';
 import { RemoteSelect } from '@admin/components/RemoteSelect';
 import { useAdminGroups } from '@admin/services/useMisc';
@@ -11,7 +11,6 @@ import { AdminDeleteButton } from '@admin/views/admin/_Delete';
 import { useNavigate } from 'react-router-dom';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { useAuth } from '@admin/services/useAuth';
-import { timeout } from '@shared/utils/util';
 
 type AdminFromProps = {
   admin: Admin;

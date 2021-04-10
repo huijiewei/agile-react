@@ -1,7 +1,5 @@
 import { chakra, forwardRef, omitThemingProps } from '@chakra-ui/system';
 import { PaginationRenderItemParams } from './Pagination';
-import { Icon } from '@shared/components/icon/Icon';
-import { Left } from '@icon-park/react';
 
 const PaginationItem = forwardRef<PaginationRenderItemParams, 'div'>((props, ref) => {
   const ownProps = omitThemingProps(props);
