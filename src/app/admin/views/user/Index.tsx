@@ -5,27 +5,13 @@ import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { User, useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import {
-  Avatar,
-  Box,
-  Button,
-  ButtonGroup,
-  Center,
-  Flex,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Avatar, Button, ButtonGroup, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { Pagination } from '@shared/components/pagination/Pagination';
 import { PaginationItem } from '@shared/components/pagination/PaginationItem';
 import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 import { UserDeleteButton } from '@admin/views/user/_Delete';
 
-const UserList = () => {
+const UserTable = () => {
   const { data, mutate } = useUserAll();
 
   return (
@@ -150,7 +136,7 @@ const UserIndex = () => {
           <UserExportButton />
         </ButtonGroup>
       </Flex>
-      <UserList />
+      <UserTable />
     </ContentLayout>
   );
 };

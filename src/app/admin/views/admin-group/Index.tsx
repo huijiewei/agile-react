@@ -9,7 +9,7 @@ const AdminGroupTable = () => {
 
   return (
     <>
-      <Table variant={'striped'}>
+      <Table>
         <Thead>
           <Tr>
             <Th width={90}>Id</Th>

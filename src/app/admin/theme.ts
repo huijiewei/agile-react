@@ -293,6 +293,73 @@ const agileTheme = extendTheme({
         },
       },
     },
+    Table: {
+      variants: {
+        simple: (props) => ({
+          th: {
+            color: mode(`gray.400`, `gray.200`)(props),
+          },
+        }),
+        striped: (props) => ({
+          th: {
+            color: mode(`gray.400`, `gray.200`)(props),
+          },
+        }),
+      },
+      sizes: {
+        sm: {
+          th: {
+            px: '3',
+            py: '1',
+            lineHeight: '3',
+            fontSize: 'sm',
+          },
+          td: {
+            px: '3',
+            py: '2',
+            fontSize: 'sm',
+            lineHeight: '3',
+          },
+          caption: {
+            px: '3',
+            py: '2',
+            fontSize: 'sm',
+          },
+        },
+        md: {
+          th: {
+            px: '3',
+            py: '3',
+            lineHeight: 'base',
+          },
+          td: {
+            px: '3',
+            py: '3',
+            lineHeight: 'base',
+          },
+          caption: {
+            px: '3',
+            py: '3',
+          },
+        },
+        lg: {
+          th: {
+            px: '7',
+            py: '4',
+            lineHeight: 'base',
+          },
+          td: {
+            px: '7',
+            py: '5',
+            lineHeight: 'base',
+          },
+          caption: {
+            px: '5',
+            py: '2',
+          },
+        },
+      },
+    },
   },
 });
 

@@ -9,14 +9,14 @@ const AdminTable = () => {
 
   return (
     <>
-      <Table variant={'striped'}>
+      <Table>
         <Thead>
           <Tr>
             <Th width={90}>Id</Th>
             <Th width={130}>手机号码</Th>
             <Th width={300}>邮箱</Th>
             <Th width={120}>名称</Th>
-            <Th width={55} textAlign={'center'}>
+            <Th width={69} textAlign={'center'}>
               头像
             </Th>
             <Th width={120} textAlign={'center'}>

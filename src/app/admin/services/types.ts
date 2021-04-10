@@ -1,7 +1,4 @@
 import { MutatorCallback } from 'swr/dist/types';
-import { User } from '@admin/services/useUser';
-import { HttpMessage } from '@shared/contexts/HttpContext';
-import { HttpError } from '@shared/utils/http';
 
 export type SearchField = {
   type: 'keyword' | 'br' | 'select' | 'dateTimeRange';
@@ -45,8 +42,4 @@ export type UseView<T> = {
     data?: T | Promise<T | undefined> | MutatorCallback<T | undefined> | undefined,
     shouldRevalidate?: boolean | undefined
   ) => Promise<T | undefined>;
-};
-
-export type UseDelete = { loading: boolean } & {
-  [key: string]: (id: number) => Promise<{ data: HttpMessage | undefined; error: HttpError | undefined }>;
 };
