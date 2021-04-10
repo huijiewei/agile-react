@@ -1,9 +1,10 @@
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { Box, Button, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { useAdminGroupAll } from '@admin/services/useAdminGroup';
+import { AdminGroup, useAdminGroupAll } from '@admin/services/useAdminGroup';
+import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
-const AdminGroupList = () => {
+const AdminGroupTable = () => {
   const { adminGroups } = useAdminGroupAll();
 
   return (
@@ -11,8 +12,8 @@ const AdminGroupList = () => {
       <Table variant={'striped'}>
         <Thead>
           <Tr>
-            <Th>Id</Th>
-            <Th>名称</Th>
+            <Th width={90}>Id</Th>
+            <Th width={150}>名称</Th>
             <Th />
           </Tr>
         </Thead>
@@ -23,9 +24,7 @@ const AdminGroupList = () => {
                 <Td>{adminGroup.id}</Td>
                 <Td>{adminGroup.name}</Td>
                 <Td sx={{ textAlign: 'right' }}>
-                  <Button variant="outline" size="xs" as={Link} to={'edit/' + adminGroup.id}>
-                    编辑
-                  </Button>
+                  <AdminGroupEditButton adminGroup={adminGroup} />
                 </Td>
               </Tr>
             ))}
@@ -35,17 +34,35 @@ const AdminGroupList = () => {
   );
 };
 
+const AdminGroupEditButton = ({ adminGroup }: { adminGroup: AdminGroup }) => {
+  const canEditAdminGroup = useAuthPermission('admin-group/edit');
+
+  return (
+    <Button isDisabled={!canEditAdminGroup} variant="outline" size="xs" as={Link} to={'edit/' + adminGroup.id}>
+      编辑
+    </Button>
+  );
+};
+
+const AdminGroupCreateButton = () => {
+  const canCreateAdminGroup = useAuthPermission('admin-group/create');
+
+  return (
+    <Button isDisabled={!canCreateAdminGroup} as={Link} to={'create'}>
+      新建管理组
+    </Button>
+  );
+};
+
 const AdminGroupIndex = () => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
         <Box>
-          <Button as={Link} to={'create'}>
-            新建管理组
-          </Button>
+          <AdminGroupCreateButton />
         </Box>
       </Flex>
-      <AdminGroupList />
+      <AdminGroupTable />
     </ContentLayout>
   );
 };

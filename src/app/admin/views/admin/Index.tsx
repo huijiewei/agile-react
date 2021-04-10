@@ -1,9 +1,10 @@
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { Avatar, Box, Button, Center, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { useAdminAll } from '@admin/services/useAdmin';
+import { Admin, useAdminAll } from '@admin/services/useAdmin';
+import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
-const AdminList = () => {
+const AdminTable = () => {
   const { admins } = useAdminAll();
 
   return (
@@ -41,9 +42,7 @@ const AdminList = () => {
                 <Td textAlign={'center'}>{admin.adminGroup?.name}</Td>
                 <Td>{admin.createdAt}</Td>
                 <Td sx={{ textAlign: 'right' }}>
-                  <Button variant="outline" size="xs" as={Link} to={'edit/' + admin.id}>
-                    编辑
-                  </Button>
+                  <AdminEditButton admin={admin} />
                 </Td>
               </Tr>
             ))}
@@ -53,17 +52,35 @@ const AdminList = () => {
   );
 };
 
+const AdminEditButton = ({ admin }: { admin: Admin }) => {
+  const canEditAdmin = useAuthPermission('admin/edit');
+
+  return (
+    <Button isDisabled={!canEditAdmin} variant="outline" size="xs" as={Link} to={'edit/' + admin.id}>
+      编辑
+    </Button>
+  );
+};
+
+const AdminCreateButton = () => {
+  const canCreateAdmin = useAuthPermission('admin/create');
+
+  return (
+    <Button isDisabled={!canCreateAdmin} as={Link} to={'create'}>
+      新建管理员
+    </Button>
+  );
+};
+
 const AdminIndex = () => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
         <Box>
-          <Button as={Link} to={'create'}>
-            新建管理员
-          </Button>
+          <AdminCreateButton />
         </Box>
       </Flex>
-      <AdminList />
+      <AdminTable />
     </ContentLayout>
   );
 };

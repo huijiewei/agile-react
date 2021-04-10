@@ -2,6 +2,7 @@ import { DeleteButton } from '@admin/components/DeleteButton';
 import { AdminGroup, useAdminGroupDelete } from '@admin/services/useAdminGroup';
 import { PropsWithChildren } from 'react';
 import { useMessage } from '@shared/hooks/useMessage';
+import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
 type AdminGroupDeleteButtonProps = { size?: 'sm' | 'xs'; adminGroup: AdminGroup; onSuccess: () => void };
 
@@ -9,10 +10,13 @@ const AdminGroupDeleteButton = (props: PropsWithChildren<AdminGroupDeleteButtonP
   const { loading, deleteAdminGroup } = useAdminGroupDelete();
   const { success } = useMessage();
 
+  const canDeleteAdminGroup = useAuthPermission('admin-group/delete');
+
   const { children = '删除', size = 'xs', adminGroup, onSuccess } = props;
 
   return (
     <DeleteButton
+      isDisabled={!canDeleteAdminGroup}
       isLoading={loading}
       size={size}
       message={

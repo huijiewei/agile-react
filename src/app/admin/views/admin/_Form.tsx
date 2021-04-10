@@ -107,7 +107,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
             size={'sm'}
             admin={admin}
             onSuccess={() => {
-              navigate('../../../admin-group');
+              navigate('../../../admin');
             }}
           />
         )}
