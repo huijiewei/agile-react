@@ -8,14 +8,14 @@ const AdminEdit = () => {
   const { success } = useMessage();
   const { id } = useParams();
 
-  const { admin, mutate } = useAdminView(id);
+  const { data, mutate } = useAdminView(id);
 
   const onSuccess = async (admin: Admin) => {
     success(`管理员 ${admin.phone} 编辑成功`);
 
     await mutate(admin, false);
   };
-  return <ContentLayout>{admin && <AdminFrom admin={admin} onSuccess={onSuccess} />}</ContentLayout>;
+  return <ContentLayout>{data && <AdminFrom admin={data} onSuccess={onSuccess} />}</ContentLayout>;
 };
 
 export default AdminEdit;

@@ -5,7 +5,7 @@ import { AdminGroup, useAdminGroupAll } from '@admin/services/useAdminGroup';
 import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
 const AdminGroupTable = () => {
-  const { adminGroups } = useAdminGroupAll();
+  const { data } = useAdminGroupAll();
 
   return (
     <>
@@ -18,8 +18,8 @@ const AdminGroupTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {adminGroups &&
-            adminGroups.items.map((adminGroup) => (
+          {data &&
+            data.items.map((adminGroup) => (
               <Tr key={adminGroup.id}>
                 <Td>{adminGroup.id}</Td>
                 <Td>{adminGroup.name}</Td>

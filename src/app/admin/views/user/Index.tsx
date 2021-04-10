@@ -3,14 +3,30 @@ import { Link } from 'react-router-dom';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { useUserAll } from '@admin/services/useUser';
+import { User, useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Avatar, Box, Button, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonGroup,
+  Center,
+  Flex,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react';
 import { Pagination } from '@shared/components/pagination/Pagination';
 import { PaginationItem } from '@shared/components/pagination/PaginationItem';
+import { useAuthPermission } from '@admin/hooks/useAuthPermission';
+import { UserDeleteButton } from '@admin/views/user/_Delete';
 
 const UserList = () => {
-  const { data } = useUserAll();
+  const { data, mutate } = useUserAll();
 
   return (
     <>
@@ -51,13 +67,15 @@ const UserList = () => {
                   <Text as="pre">{user.createdAt}</Text>
                 </Td>
                 <Td sx={{ textAlign: 'right' }}>
-                  <Button variant="outline" size="xs" as={Link} to={'edit/' + user.id}>
-                    编辑
-                  </Button>
-                  &nbsp;&nbsp;
-                  <Button colorScheme="red" variant="outline" size="xs">
-                    删除
-                  </Button>
+                  <ButtonGroup>
+                    <UserEditButton user={user} />
+                    <UserDeleteButton
+                      user={user}
+                      onSuccess={async () => {
+                        await mutate();
+                      }}
+                    />
+                  </ButtonGroup>
                 </Td>
               </Tr>
             ))}
@@ -77,10 +95,12 @@ const UserList = () => {
   );
 };
 
-const UserDownload = () => {
+const UserExportButton = () => {
   const { apiDownload } = useHttp();
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
+
+  const canExportUser = useAuthPermission('user/export');
 
   const handleDownload = async () => {
     setLoading(true);
@@ -95,25 +115,40 @@ const UserDownload = () => {
   };
 
   return (
-    <Button size="sm" variant="outline" isLoading={loading} onClick={handleDownload}>
+    <Button isDisabled={!canExportUser} size="sm" variant="outline" isLoading={loading} onClick={handleDownload}>
       用户导出
     </Button>
   );
 };
 
-const UserIndex = () => {
-  console.log('UserIndex Render');
+const UserCreateButton = () => {
+  const canCreateUser = useAuthPermission('user/create');
 
+  return (
+    <Button isDisabled={!canCreateUser} as={Link} to={'create'}>
+      新建用户
+    </Button>
+  );
+};
+
+const UserEditButton = ({ user }: { user: User }) => {
+  const canEditUser = useAuthPermission('user/edit');
+
+  return (
+    <Button isDisabled={!canEditUser} variant="outline" size="xs" as={Link} to={'edit/' + user.id}>
+      编辑
+    </Button>
+  );
+};
+
+const UserIndex = () => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
-        <Box>
-          <Button as={Link} to={'create'}>
-            新建用户
-          </Button>
-          &nbsp;&nbsp;&nbsp;
-          <UserDownload />
-        </Box>
+        <ButtonGroup alignItems={'center'} spacing={3}>
+          <UserCreateButton />
+          <UserExportButton />
+        </ButtonGroup>
       </Flex>
       <UserList />
     </ContentLayout>

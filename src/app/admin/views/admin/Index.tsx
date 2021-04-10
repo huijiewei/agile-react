@@ -5,7 +5,7 @@ import { Admin, useAdminAll } from '@admin/services/useAdmin';
 import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
 const AdminTable = () => {
-  const { admins } = useAdminAll();
+  const { data } = useAdminAll();
 
   return (
     <>
@@ -27,8 +27,8 @@ const AdminTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {admins &&
-            admins.items.map((admin) => (
+          {data &&
+            data.items.map((admin) => (
               <Tr key={admin.id}>
                 <Td>{admin.id}</Td>
                 <Td>{admin.phone}</Td>

@@ -1,7 +1,6 @@
 import useSWR from 'swr';
-import { ListResponse } from '@admin/services/types';
+import { ListResponse, UseAll, UseView } from '@admin/services/types';
 import { HttpMessage, useHttp } from '@shared/contexts/HttpContext';
-import { MutatorCallback } from 'swr/dist/types';
 import { useState } from 'react';
 import { HttpError, requestFlatry } from '@shared/utils/http';
 
@@ -13,20 +12,7 @@ export type AdminGroup = {
 
 const ADMIN_GROUP_API = 'admin-groups';
 
-type UseAdminGroupAll = {
-  loading: boolean;
-  adminGroups: ListResponse<AdminGroup> | undefined;
-  mutate: (
-    data?:
-      | ListResponse<AdminGroup>
-      | Promise<ListResponse<AdminGroup>>
-      | MutatorCallback<ListResponse<AdminGroup>>
-      | undefined,
-    shouldRevalidate?: boolean | undefined
-  ) => Promise<ListResponse<AdminGroup> | undefined>;
-};
-
-const useAdminGroupAll = (): UseAdminGroupAll => {
+const useAdminGroupAll = (): UseAll<ListResponse<AdminGroup>> => {
   const { apiGet } = useHttp();
 
   const { data, error, mutate } = useSWR<ListResponse<AdminGroup>>(ADMIN_GROUP_API, (url) => apiGet(url));
@@ -35,21 +21,12 @@ const useAdminGroupAll = (): UseAdminGroupAll => {
 
   return {
     loading,
-    adminGroups: data,
+    data,
     mutate,
   };
 };
 
-type UseAdminGroupView = {
-  loading: boolean;
-  adminGroup: AdminGroup | undefined;
-  mutate: (
-    data?: Promise<AdminGroup | undefined> | MutatorCallback<AdminGroup | undefined> | AdminGroup | undefined,
-    shouldRevalidate?: boolean
-  ) => Promise<AdminGroup | undefined>;
-};
-
-const useAdminGroupView = (id: string): UseAdminGroupView => {
+const useAdminGroupView = (id: string): UseView<AdminGroup> => {
   const { apiGet } = useHttp();
   const { data, error, mutate } = useSWR<AdminGroup | undefined>(ADMIN_GROUP_API + '/' + id, (url) => apiGet(url));
 
@@ -57,7 +34,7 @@ const useAdminGroupView = (id: string): UseAdminGroupView => {
 
   return {
     loading,
-    adminGroup: data,
+    data,
     mutate,
   };
 };

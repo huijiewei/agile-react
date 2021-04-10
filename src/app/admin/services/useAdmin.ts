@@ -1,7 +1,6 @@
 import useSWR from 'swr';
-import { ListResponse } from '@admin/services/types';
+import { ListResponse, UseAll, UseView } from '@admin/services/types';
 import { HttpMessage, useHttp } from '@shared/contexts/HttpContext';
-import { MutatorCallback } from 'swr/dist/types';
 import { useState } from 'react';
 import { HttpError, requestFlatry } from '@shared/utils/http';
 import { AdminGroup } from '@admin/services/useAdminGroup';
@@ -19,16 +18,7 @@ export type Admin = {
 
 const ADMIN_API = 'admins';
 
-type UseAdminAll = {
-  loading: boolean;
-  admins: ListResponse<Admin> | undefined;
-  mutate: (
-    data?: ListResponse<Admin> | Promise<ListResponse<Admin>> | MutatorCallback<ListResponse<Admin>> | undefined,
-    shouldRevalidate?: boolean | undefined
-  ) => Promise<ListResponse<Admin> | undefined>;
-};
-
-const useAdminAll = (): UseAdminAll => {
+const useAdminAll = (): UseAll<ListResponse<Admin>> => {
   const { apiGet } = useHttp();
 
   const { data, error, mutate } = useSWR<ListResponse<Admin>>(ADMIN_API, (url) => apiGet(url));
@@ -37,21 +27,12 @@ const useAdminAll = (): UseAdminAll => {
 
   return {
     loading,
-    admins: data,
+    data,
     mutate,
   };
 };
 
-type UseAdminView = {
-  loading: boolean;
-  admin: Admin | undefined;
-  mutate: (
-    data?: Promise<Admin | undefined> | MutatorCallback<Admin | undefined> | Admin | undefined,
-    shouldRevalidate?: boolean
-  ) => Promise<Admin | undefined>;
-};
-
-const useAdminView = (id: string): UseAdminView => {
+const useAdminView = (id: string): UseView<Admin> => {
   const { apiGet } = useHttp();
   const { data, error, mutate } = useSWR<Admin | undefined>(ADMIN_API + '/' + id, (url) => apiGet(url));
 
@@ -59,7 +40,7 @@ const useAdminView = (id: string): UseAdminView => {
 
   return {
     loading,
-    admin: data,
+    data,
     mutate,
   };
 };

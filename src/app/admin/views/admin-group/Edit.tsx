@@ -8,7 +8,7 @@ const AdminGroupEdit = () => {
   const { success } = useMessage();
   const { id } = useParams();
 
-  const { adminGroup, mutate } = useAdminGroupView(id);
+  const { data, mutate } = useAdminGroupView(id);
 
   const onSuccess = async (adminGroup: AdminGroup) => {
     success(`管理组 ${adminGroup.name} 编辑成功`);
@@ -16,9 +16,7 @@ const AdminGroupEdit = () => {
     await mutate(adminGroup, false);
   };
 
-  return (
-    <ContentLayout>{adminGroup && <AdminGroupFrom onSuccess={onSuccess} adminGroup={adminGroup} />}</ContentLayout>
-  );
+  return <ContentLayout>{data && <AdminGroupFrom onSuccess={onSuccess} adminGroup={data} />}</ContentLayout>;
 };
 
 export default AdminGroupEdit;
