@@ -37,7 +37,15 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
       ref={ref}
       {...restProps}
     >
-      <GridItem align={labelAlign} colSpan={labelWidth} as={FormLabel} lineHeight={10} height={10} marginBottom={0}>
+      <GridItem
+        align={labelAlign}
+        colSpan={labelWidth}
+        as={FormLabel}
+        paddingTop={'0.055em'}
+        lineHeight={9}
+        height={10}
+        marginBottom={0}
+      >
         {label}
       </GridItem>
       <GridItem colSpan={fieldWidth}>{children}</GridItem>
