@@ -1,4 +1,4 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
 
 type ErrorState = {
   message: string;
@@ -43,16 +43,13 @@ export const useErrorDispatch = (): ErrorDispatch => {
     throw new Error('useErrorDispatch must be used within a ErrorProvider');
   }
 
-  const setError = useCallback(
-    (message: string, historyBack = false) => {
-      errorDispatch({ message, historyBack });
-    },
-    [errorDispatch]
-  );
+  const setError = (message: string, historyBack = false) => {
+    errorDispatch({ message, historyBack });
+  };
 
-  const resetError = useCallback(() => {
+  const resetError = () => {
     errorDispatch(null);
-  }, [errorDispatch]);
+  };
 
   return { setError, resetError };
 };

@@ -1,4 +1,4 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
 
 export enum AuthLoginAction {
   NONE,
@@ -44,16 +44,13 @@ const useAuthLoginDispatch = (): IAuthLoginDispatch => {
     throw new Error('useAuthLoginDispatch must be used within a AuthLoginProvider');
   }
 
-  const setLoginAction = useCallback(
-    (action: AuthLoginAction) => {
-      authLoginDispatch(action);
-    },
-    [authLoginDispatch]
-  );
+  const setLoginAction = (action: AuthLoginAction) => {
+    authLoginDispatch(action);
+  };
 
-  const resetLoginAction = useCallback(() => {
+  const resetLoginAction = () => {
     authLoginDispatch(AuthLoginAction.NONE);
-  }, [authLoginDispatch]);
+  };
 
   return { setLoginAction, resetLoginAction };
 };

@@ -32,6 +32,11 @@ type UsePagination = Omit<PaginationProps, keyof UsePaginationProps> & {
   pages: PaginationItemProps[];
 };
 
+const range = (start: number, end: number) => {
+  const length = end - start + 1;
+  return Array.from({ length }, (_, i) => start + i);
+};
+
 const usePagination = (props: PaginationProps): UsePagination => {
   const {
     total = 1,
@@ -59,11 +64,6 @@ const usePagination = (props: PaginationProps): UsePagination => {
     if (onChange) {
       onChange(event, value);
     }
-  };
-
-  const range = (start: number, end: number) => {
-    const length = end - start + 1;
-    return Array.from({ length }, (_, i) => start + i);
   };
 
   const startPages = range(1, Math.min(boundarySize, totalPage));
