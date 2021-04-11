@@ -65,6 +65,7 @@ const UserTable = () => {
       {data && (
         <Pagination
           marginTop={5}
+          showTotal
           total={data.pages.totalCount}
           currentPage={data.pages.currentPage}
           renderPage={(page) => (

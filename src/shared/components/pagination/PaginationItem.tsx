@@ -26,6 +26,9 @@ const PaginationItem = forwardRef<PaginationItemProps, 'button'>((props, ref) =>
       _disabled={{
         color: 'gray.300',
       }}
+      _hover={{
+        color: isSelected ? 'white' : 'blue.500',
+      }}
       ref={ref}
       {...restProps}
     >

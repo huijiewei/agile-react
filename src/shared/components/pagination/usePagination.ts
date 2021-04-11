@@ -23,6 +23,8 @@ export type UsePaginationProps = {
 
 export type PaginationProps = HTMLChakraProps<'nav'> &
   UsePaginationProps & {
+    showTotal?: boolean;
+    showQuickJumper?: boolean;
     renderPage?: (page: PaginationItemProps) => ReactNode;
   };
 
