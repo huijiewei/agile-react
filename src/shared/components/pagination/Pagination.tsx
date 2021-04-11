@@ -16,9 +16,16 @@ const Pagination = forwardRef<PaginationProps, 'nav'>((props, ref) => {
 
   return (
     <chakra.nav ref={ref} aria-label="pagination navigation" className={_className} {...restProps}>
-      <chakra.ul className="chakra-pagination__list">
+      <chakra.ul listStyleType={'none'} className="chakra-pagination__list">
         {pages.map((page, index) => (
-          <chakra.li display={'inline-block'} className="chakra-pagination__item" key={index}>
+          <chakra.li
+            _first={{ marginInlineStart: 0 }}
+            _last={{ marginInlineEnd: 0 }}
+            marginX={1.5}
+            display={'inline-block'}
+            className="chakra-pagination__item"
+            key={index}
+          >
             {renderPage(page)}
           </chakra.li>
         ))}
