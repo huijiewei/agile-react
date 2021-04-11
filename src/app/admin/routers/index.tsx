@@ -115,8 +115,8 @@ const routes = [
   },
 ];
 
-export const getBreadcrumbs = () => {
-  return createBreadcrumbsFromArray(routes);
+export const getBreadcrumbs = (): Breadcrumb[] => {
+  return [];
 };
 
 type Breadcrumb = {
@@ -125,23 +125,8 @@ type Breadcrumb = {
   children?: Breadcrumb[];
 };
 
-const createBreadcrumbsFromArray = (array: Dict[]) => {
-  return array.map((partialRoute) => {
-    let breadcrumb: Breadcrumb = {
-      path: partialRoute.path,
-      title: partialRoute.title,
-    };
-
-    if (partialRoute.children) {
-      breadcrumb.children = createBreadcrumbsFromArray(partialRoute.children);
-    }
-
-    return breadcrumb;
-  });
-};
-
 export const getRouters = () => {
-  return createRoutesFromArray(routes);
+  return [];
 };
 
 const AppRoutes = () => {

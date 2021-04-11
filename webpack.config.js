@@ -6,7 +6,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -117,7 +116,6 @@ module.exports = (env, argv) => {
         },
         inject: true,
         filename: 'index.html',
-        chunks: appConfig.htmlChunks,
       }),
       isProduction &&
         new CopyPlugin({
@@ -134,7 +132,7 @@ module.exports = (env, argv) => {
         }),
       !isProduction && new ReactRefreshWebpackPlugin(),
       isProduction && new CleanWebpackPlugin(),
-      isProduction && new BundleAnalyzerPlugin(),
+      //isProduction && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
   };
 
@@ -147,6 +145,7 @@ module.exports = (env, argv) => {
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
             chunks: 'initial',
             priority: 30,
+            reuseExistingChunk: true,
             enforce: true,
           },
           chakra: {
