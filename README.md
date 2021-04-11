@@ -1,3 +1,21 @@
+![GitHub](https://img.shields.io/github/license/huijiewei/agile-react)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/huijiewei/agile-react)
+![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/huijiewei/agile-react)
+
+
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/huijiewei/agile-react)
+![GitHub top language](https://img.shields.io/github/languages/top/huijiewei/agile-react)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/huijiewei/agile-react)
+![GitHub last commit](https://img.shields.io/github/last-commit/huijiewei/agile-react)
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/huijiewei/agile-react/react)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/huijiewei/agile-react/@chakra-ui/react)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/huijiewei/agile-react/react-hook-form)
+
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fagile.huijiewei.com%2Fadmin)
+![Security Headers](https://img.shields.io/security-headers?url=https%3A%2F%2Fagile.huijiewei.com%2Fadmin)
+
 React + TypeScript + Chakra UI + Webpack 5 演示项目
 
 项目目前正在开发，变动可能会很大，暂时只供研究学习参考
