@@ -37,7 +37,7 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
 
   if (currentUser) {
     return (
-      <Menu autoSelect={false}>
+      <Menu isLazy autoSelect={false}>
         <MenuButton
           sx={{ '&:hover, &[data-hover], &:active, &[data-active]': { backgroundColor: 'gray.100' } }}
           paddingStart="3"
@@ -50,7 +50,7 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
           <Icon marginStart="6px" verticalAlign="-3px" as={Down} />
         </MenuButton>
         <MenuList>
-          <MenuItem as={Center} isDisabled>
+          <MenuItem isDisabled as={Center}>
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />

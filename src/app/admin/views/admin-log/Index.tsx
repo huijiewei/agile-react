@@ -66,7 +66,7 @@ const AdminLogTable = () => {
         <Pagination
           sx={{ marginTop: 5 }}
           total={data.pages.totalCount}
-          page={data.pages.currentPage}
+          currentPage={data.pages.currentPage}
           renderPage={(page) => (
             <PaginationItem as={Link} to={`../admin-log${page.page === 1 ? '' : `?page=${page.page}`}`} {...page} />
           )}

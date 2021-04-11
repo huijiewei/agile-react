@@ -252,6 +252,9 @@ const agileTheme = extendTheme({
           my: 0,
         },
       },
+      defaultProps: {
+        gutter: 6,
+      },
     },
     FormError: {
       baseStyle: {
@@ -263,6 +266,9 @@ const agileTheme = extendTheme({
     NumberInput: {
       sizes: {
         lg: {
+          field: {
+            px: 3,
+          },
           stepper: {
             fontSize: '0.6em',
             _first: {
@@ -271,6 +277,9 @@ const agileTheme = extendTheme({
           },
         },
         md: {
+          field: {
+            px: 3,
+          },
           stepper: {
             fontSize: '0.55em',
             _first: {
@@ -376,6 +385,11 @@ const agileTheme = extendTheme({
     },
     Input: {
       sizes: {
+        bg: {
+          field: {
+            px: 3,
+          },
+        },
         md: {
           field: {
             px: 3,
@@ -388,6 +402,18 @@ const agileTheme = extendTheme({
         field: {
           paddingBottom: 0,
           lineHeight: 'base',
+        },
+      },
+      sizes: {
+        bg: {
+          field: {
+            px: 3,
+          },
+        },
+        md: {
+          field: {
+            px: 3,
+          },
         },
       },
     },

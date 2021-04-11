@@ -9,10 +9,9 @@ import { Avatar, Button, ButtonGroup, Center, Flex, Table, Tbody, Td, Text, Th, 
 import { Pagination } from '@shared/components/pagination/Pagination';
 import { PaginationItem } from '@shared/components/pagination/PaginationItem';
 import { useAuthPermission } from '@admin/hooks/useAuthPermission';
-import { UserDeleteButton } from '@admin/views/user/_Delete';
 
 const UserTable = () => {
-  const { data, mutate } = useUserAll();
+  const { data } = useUserAll();
 
   return (
     <>
@@ -57,15 +56,7 @@ const UserTable = () => {
                   <Text as="pre">{user.createdAt}</Text>
                 </Td>
                 <Td sx={{ textAlign: 'right' }}>
-                  <ButtonGroup>
-                    <UserEditButton user={user} />
-                    <UserDeleteButton
-                      user={user}
-                      onSuccess={async () => {
-                        await mutate();
-                      }}
-                    />
-                  </ButtonGroup>
+                  <UserEditButton user={user} />
                 </Td>
               </Tr>
             ))}
@@ -75,7 +66,7 @@ const UserTable = () => {
         <Pagination
           sx={{ marginTop: 5 }}
           total={data.pages.totalCount}
-          page={data.pages.currentPage}
+          currentPage={data.pages.currentPage}
           renderPage={(page) => (
             <PaginationItem as={Link} to={`../user${page.page === 1 ? '' : `?page=${page.page}`}`} {...page} />
           )}

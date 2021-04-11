@@ -31,6 +31,9 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   const { loading, submitAdmin } = useAdminSubmit();
   const { currentUser } = useAuth();
 
+  const isEditMode = admin.id > 0;
+  const isOwnerMode = currentUser?.id == admin.id;
+
   const loadAdminGroups = async (callback: (adminGroups: AdminGroup[]) => void) => {
     const { data } = await fetch();
 
@@ -67,14 +70,20 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
         <Input type={'text'} {...register('email', { required: '请输入邮箱' })} defaultValue={admin.email} />
         <FormErrorMessage>{errors.email?.message || ' '}</FormErrorMessage>
       </FormItem>
-      <FormItem id="password" isRequired label={'密码：'} isInvalid={errors.password} fieldWidth={6}>
-        <Input type={'password'} {...register('password', { required: admin.id > 0 ? false : '请输入密码' })} />
+      <FormItem id="password" isRequired={!isEditMode} label={'密码：'} isInvalid={errors.password} fieldWidth={6}>
+        <Input type={'password'} {...register('password', { required: isEditMode ? false : '请输入密码' })} />
         <FormErrorMessage>{errors.password?.message || ' '}</FormErrorMessage>
       </FormItem>
-      <FormItem id="passwordConfirm" isRequired label={'确认密码：'} isInvalid={errors.passwordConfirm} fieldWidth={6}>
+      <FormItem
+        id="passwordConfirm"
+        isRequired={!isEditMode}
+        label={'确认密码：'}
+        isInvalid={errors.passwordConfirm}
+        fieldWidth={6}
+      >
         <Input
           type={'password'}
-          {...register('passwordConfirm', { required: admin.id > 0 ? false : '请输入确认密码' })}
+          {...register('passwordConfirm', { required: isEditMode ? false : '请输入确认密码' })}
         />
         <FormErrorMessage>{errors.passwordConfirm?.message || ' '}</FormErrorMessage>
       </FormItem>
@@ -88,7 +97,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
       </FormItem>
       <FormItem id="adminGroupId" isRequired label={'管理组：'} isInvalid={errors.adminGroupId} fieldWidth={5}>
         <RemoteSelect
-          isDisabled={currentUser?.id == admin.id}
+          isDisabled={isOwnerMode}
           placeholder={'所属管理组'}
           optionValue={'id'}
           optionLabel={'name'}

@@ -123,22 +123,11 @@ const Home = () => {
     });
   };
 
-  console.log('Home Render');
-
   return (
     <ContentLayout>
       <Stack>
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
-        <Box>
-          <NumberInput size={'lg'} width={300}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </Box>
         <Box>
           <NumberInput width={300}>
             <NumberInputField />

@@ -1,18 +1,17 @@
-import { chakra, forwardRef, omitThemingProps } from '@chakra-ui/system';
-import { PaginationRenderItemParams } from './Pagination';
+import { chakra, forwardRef } from '@chakra-ui/system';
+import { PaginationItemProps } from '@shared/components/pagination/usePagination';
 
-const PaginationItem = forwardRef<PaginationRenderItemParams, 'div'>((props, ref) => {
-  const ownProps = omitThemingProps(props);
-
-  const { page, isSelected, type, ...restProps } = ownProps;
+const PaginationItem = forwardRef<PaginationItemProps, 'button'>((props, ref) => {
+  const { page, type, isSelected, isDisabled, ...restProps } = props;
 
   return (
-    <chakra.span
+    <chakra.button
       fontWeight={'medium'}
       display={'block'}
       cursor={isSelected ? 'default' : 'pointer'}
       color={isSelected ? 'white' : 'gray.900'}
       backgroundColor={isSelected ? 'blue.500' : 'gray.100'}
+      disabled={isDisabled}
       marginX={1.5}
       lineHeight={6}
       height={7}
@@ -20,11 +19,20 @@ const PaginationItem = forwardRef<PaginationRenderItemParams, 'div'>((props, ref
       paddingX={3}
       borderRadius={'sm'}
       textAlign={'center'}
+      _disabled={{
+        color: 'gray.300',
+      }}
       ref={ref}
       {...restProps}
     >
-      {type == 'previous' ? '<' : type == 'next' ? '>' : page}
-    </chakra.span>
+      {type == 'previous'
+        ? '<'
+        : type == 'next'
+        ? '>'
+        : type == 'end-ellipsis' || type == 'start-ellipsis'
+        ? '...'
+        : page}
+    </chakra.button>
   );
 });
 

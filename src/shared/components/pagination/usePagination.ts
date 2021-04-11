@@ -1,48 +1,57 @@
 import { useControllableState } from '@chakra-ui/react';
-import { UseClickableProps } from '@chakra-ui/clickable';
-import { ChangeEvent, ReactEventHandler } from 'react';
+import { ChangeEvent, ReactEventHandler, ReactNode, SyntheticEvent } from 'react';
+import { HTMLChakraProps } from '@chakra-ui/system';
 
-export type UsePaginationItem = {
+type PageType = 'page' | 'next' | 'previous' | 'start-ellipsis' | 'end-ellipsis';
+
+export type PaginationItemProps = {
   onClick: ReactEventHandler;
-  type: 'page' | 'next' | 'previous' | 'start-ellipsis' | 'end-ellipsis';
+  type: PageType;
   page: number;
   isSelected: boolean;
   isDisabled: boolean;
 };
 
-type UsePaginationOptions = {
+export type UsePaginationProps = {
   total?: number;
-  page?: number;
+  currentPage?: number;
+  boundarySize?: number;
+  siblingSize?: number;
   pageSize?: number;
-  boundaryCount?: number;
-  siblingCount?: number;
   isDisabled?: boolean;
   onChange?: (event: ChangeEvent<unknown>, page: number) => void;
 };
 
-export type UsePaginationProps = Omit<UseClickableProps, 'color'> & UsePaginationOptions;
+export type PaginationProps = HTMLChakraProps<'nav'> &
+  UsePaginationProps & {
+    renderPage?: (page: PaginationItemProps) => ReactNode;
+  };
 
-const usePagination = (props: UsePaginationProps) => {
+type UsePagination = Omit<PaginationProps, keyof UsePaginationProps> & {
+  pages: PaginationItemProps[];
+};
+
+const usePagination = (props: PaginationProps): UsePagination => {
   const {
     total = 1,
-    page,
+    currentPage,
+    boundarySize = 2,
+    siblingSize = 2,
     pageSize = 20,
-    boundaryCount = 2,
-    siblingCount = 2,
     isDisabled = false,
     onChange,
-    ...htmlProps
+    ...restProps
   } = props;
 
   const totalPage = Math.max(1, Math.ceil(total / pageSize));
 
-  const [pageState, setPageState] = useControllableState({
-    value: page,
+  const [pageState, setPageState] = useControllableState<number>({
+    value: currentPage,
     defaultValue: 1,
   });
 
-  const onClick = (event, value) => {
-    if (!page) {
+  const onClick = (event: SyntheticEvent, value: number) => {
+    if (!currentPage) {
       setPageState(value);
     }
 
@@ -56,40 +65,41 @@ const usePagination = (props: UsePaginationProps) => {
     return Array.from({ length }, (_, i) => start + i);
   };
 
-  const startPages = range(1, Math.min(boundaryCount, totalPage));
-  const endPages = range(Math.max(totalPage - boundaryCount + 1, boundaryCount + 1), totalPage);
+  const startPages = range(1, Math.min(boundarySize, totalPage));
+  const endPages = range(Math.max(totalPage - boundarySize + 1, boundarySize + 1), totalPage);
 
   const siblingsStart = Math.max(
-    Math.min(pageState - siblingCount, totalPage - boundaryCount - siblingCount * 2 - 1),
-    boundaryCount + 2
+    Math.min(pageState - siblingSize, totalPage - boundarySize - siblingSize * 2 - 1),
+    boundarySize + 2
   );
 
   const siblingsEnd = Math.min(
-    Math.max(pageState + siblingCount, boundaryCount + siblingCount * 2 + 2),
+    Math.max(pageState + siblingSize, boundarySize + siblingSize * 2 + 2),
     endPages.length > 0 ? endPages[0] - 2 : totalPage - 1
   );
 
   // Basic list of items to render
   // e.g. itemList = ['previous', 1, 'ellipsis', 4, 5, 6, 'ellipsis', 10, 'next']
-  const itemList = [
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const itemList: any[] = [
     ...['previous'],
     ...startPages,
 
     // Start ellipsis
-    ...(siblingsStart > boundaryCount + 2
+    ...(siblingsStart > boundarySize + 2
       ? ['start-ellipsis']
-      : boundaryCount + 1 < totalPage - boundaryCount
-      ? [boundaryCount + 1]
+      : boundarySize + 1 < totalPage - boundarySize
+      ? [boundarySize + 1]
       : []),
 
     // Sibling pages
     ...range(siblingsStart, siblingsEnd),
 
     // End ellipsis
-    ...(siblingsEnd < totalPage - boundaryCount - 1
+    ...(siblingsEnd < totalPage - boundarySize - 1
       ? ['end-ellipsis']
-      : totalPage - boundaryCount > boundaryCount
-      ? [totalPage - boundaryCount]
+      : totalPage - boundarySize > boundarySize
+      ? [totalPage - boundarySize]
       : []),
 
     ...endPages,
@@ -103,26 +113,28 @@ const usePagination = (props: UsePaginationProps) => {
         return pageState - 1;
       case 'next':
         return pageState + 1;
+      case 'start-ellipsis':
+        return Math.max(1, pageState - 5);
+      case 'end-ellipsis':
+        return Math.min(totalPage, pageState + 5);
       default:
-        return null;
+        return 0;
     }
   };
 
-  // Convert the basic item list to PaginationItem props objects
   const pages = itemList.map((page) => {
     return typeof page === 'number'
       ? {
-          onClick: (event) => {
+          onClick: (event: SyntheticEvent) => {
             onClick(event, page);
           },
           type: 'page',
           page: page,
           isSelected: page === pageState,
           isDisabled,
-          'aria-current': page === pageState ? 'true' : undefined,
         }
       : {
-          onClick: (event) => {
+          onClick: (event: SyntheticEvent) => {
             onClick(event, buttonPage(page));
           },
           type: page,
@@ -136,7 +148,7 @@ const usePagination = (props: UsePaginationProps) => {
 
   return {
     pages,
-    ...htmlProps,
+    ...restProps,
   };
 };
 
