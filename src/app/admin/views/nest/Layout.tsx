@@ -1,8 +1,9 @@
 import { Link, Outlet } from 'react-router-dom';
+import ContentLayout from '@admin/layouts/ContentLayout';
 
 const NestLayout = () => {
   return (
-    <div>
+    <ContentLayout>
       <div>
         <Link to={'../nest'}>Nest</Link>
         &nbsp;&nbsp;
@@ -11,7 +12,7 @@ const NestLayout = () => {
         <Link to={'2'}>Nest-2</Link>
       </div>
       <Outlet />
-    </div>
+    </ContentLayout>
   );
 };
 

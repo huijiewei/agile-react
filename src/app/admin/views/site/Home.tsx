@@ -36,31 +36,9 @@ const DeleteAdminButton = () => {
   return <Button isDisabled={!canDeleteAdmin}>是否有删除管理员权限</Button>;
 };
 
-const RefreshUserButton = () => {
-  const [loading, setLoading] = useState(false);
-  const isMounted = useIsMounted();
-
-  const handleRefreshUser = async () => {
-    setLoading(true);
-
-    await refreshAuth();
-
-    if (isMounted) {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <Button isLoading={loading} onClick={handleRefreshUser}>
-      重新获取用户
-    </Button>
-  );
-};
-
 const Home = () => {
   const { setError } = useErrorDispatch();
   const { apiGet, apiPost } = useHttp();
-  const toast = useToast();
 
   const handleClick = () => {
     setError('出现错误');
@@ -90,79 +68,11 @@ const Home = () => {
     }
   };
 
-  const handleToastShow = () => {
-    toast({
-      position: 'top-right',
-      title: '标题',
-      description: '内容，内容',
-      status: 'success',
-      duration: null,
-      variant: 'subtle',
-      isClosable: true,
-    });
-  };
-
-  const handleToastShow2 = () => {
-    toast({
-      position: 'top',
-      description: '内容，内容',
-      status: 'success',
-      variant: 'subtle',
-    });
-  };
-
-  const handleToastShow3 = () => {
-    toast({
-      position: 'top',
-      title: '标题',
-      description: '内容，内容',
-      status: 'success',
-      duration: null,
-      variant: 'subtle',
-      isClosable: true,
-    });
-  };
-
   return (
     <ContentLayout>
       <Stack>
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
-        <Box>
-          <NumberInput width={300}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </Box>
-        <Box>
-          <NumberInput size={'sm'} width={300}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </Box>
-        <Box>
-          <NumberInput size={'xs'} width={300}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </Box>
-        <HStack>
-          <Button onClick={handleToastShow}>显示一个 Toast</Button>
-          <Button onClick={handleToastShow2}>显示一个 Toast</Button>
-          <Button onClick={handleToastShow3}>显示一个 Toast</Button>
-          <Button as={Link} isDisabled to={'about'}>
-            显示一个 Toast
-          </Button>
-        </HStack>
         <HStack>
           <DeleteUserButton />
           <DeleteAdminButton />
@@ -171,18 +81,10 @@ const Home = () => {
           <Button onClick={handleSendGet}>随便发送一个 GET 请求</Button>
           <Button onClick={handleSendPost}>随便发送一个 POST 请求</Button>
         </HStack>
-        <Box>
-          <RefreshUserButton />
-        </Box>
         <HStack>
           <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>
           <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
         </HStack>
-        <Box>
-          <Button isFullWidth onClick={handleClick}>
-            显示个错误提示
-          </Button>
-        </Box>
         <HStack>
           <Button onClick={handleClick}>显示个错误提示</Button>
           <Button variant={'outline'} onClick={handleClick}>
@@ -193,26 +95,6 @@ const Home = () => {
           </Button>
           <Button variant={'link'} onClick={handleClick}>
             显示个错误提示
-          </Button>
-        </HStack>
-        <HStack>
-          <Button isLoading onClick={handleClick}>
-            加载中
-          </Button>
-          <Button isLoading size="sm" onClick={handleClick}>
-            加载中
-          </Button>
-          <Button isLoading size="xs" onClick={handleClick}>
-            加载中
-          </Button>
-          <Button isLoading variant="outline" onClick={handleClick}>
-            加载中
-          </Button>
-          <Button isLoading size="sm" variant="outline" onClick={handleClick}>
-            加载中
-          </Button>
-          <Button isLoading size="xs" variant="outline" onClick={handleClick}>
-            加载中
           </Button>
         </HStack>
         <HStack>
@@ -262,35 +144,10 @@ const Home = () => {
           <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick} />
         </HStack>
         <div>
-          <Link to={'../nest'}>Nest</Link>
+          <Button variant={'outline'} as={Link} to={'../nest'}>
+            嵌套路由页面
+          </Button>
         </div>
-        <div>TEST</div>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
       </Stack>
     </ContentLayout>
   );

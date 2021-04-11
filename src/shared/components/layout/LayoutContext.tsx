@@ -19,7 +19,6 @@ type LayoutBase = {
 };
 
 export type LayoutState = LayoutBase & {
-  asideDisplay: 'block' | 'none';
   asideCollapsedWidth: string;
 };
 

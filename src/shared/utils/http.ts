@@ -1,5 +1,5 @@
 import Axios, { AxiosRequestConfig } from 'axios';
-import { flatry, saveFile } from '@shared/utils/util';
+import { flatry } from '@shared/utils/util';
 import { Dict } from '@shared/utils/types';
 
 export const UnauthorizedHttpCode = 401;
@@ -93,6 +93,35 @@ export const bindUnprocessableEntityErrors = (
   });
 
   return result;
+};
+
+const saveFile = (response: HttpResponse | undefined): boolean => {
+  if (!response) {
+    return false;
+  }
+
+  let filename = response.headers['x-suggested-filename'];
+
+  if (!filename) {
+    filename = response.headers['content-disposition'].match(/filename="(.+)"/)[1];
+  }
+
+  if (filename) {
+    const url = URL.createObjectURL(
+      new Blob([response.data], {
+        type: response.headers['content-type'],
+      })
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', decodeURIComponent(filename));
+    link.click();
+    URL.revokeObjectURL(url);
+
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const createAxios = (

@@ -38,7 +38,8 @@ const metismenu = css`
   }
 `;
 
-const MetismenuElem = ({ menu }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const MetismenuElem = ({ menu }: { menu: any }) => {
   return menu.url ? (
     <chakra.a as={NavLink} className="mm-item" to={formatUrl(menu.url)}>
       {menu.label}
@@ -48,14 +49,19 @@ const MetismenuElem = ({ menu }) => {
   );
 };
 
-const MetismenuItem = ({ menu, keyPrefix }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const MetismenuItem = ({ menu, keyPrefix }: { menu: any; keyPrefix: string }) => {
   return (
     <li>
       <MetismenuElem menu={menu} />
 
       {menu.children && (
         <chakra.ul>
-          {menu.children.map((subMenu, subIdx) => (
+          {menu.children.map((
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            subMenu: any,
+            subIdx: string
+          ) => (
             <MetismenuItem key={keyPrefix + '-' + subIdx} keyPrefix={keyPrefix + '-' + subIdx} menu={subMenu} />
           ))}
         </chakra.ul>
@@ -76,6 +82,7 @@ const Metismenu = (props: MetismenuProps) => {
     return () => {
       mm && mm.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toggle, elemRef.current]);
 
   return (

@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 const ContentLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <Box backgroundColor="white" padding="5">
+    <Box minHeight={'full'} backgroundColor="white" padding="5">
       {children}
     </Box>
   );
