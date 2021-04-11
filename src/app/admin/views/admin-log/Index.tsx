@@ -64,7 +64,7 @@ const AdminLogTable = () => {
       </Table>
       {data && (
         <Pagination
-          sx={{ marginTop: 5 }}
+          marginTop={5}
           total={data.pages.totalCount}
           currentPage={data.pages.currentPage}
           renderPage={(page) => (
