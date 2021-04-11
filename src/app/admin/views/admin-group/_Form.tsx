@@ -1,5 +1,5 @@
 import { AdminGroup, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
-import { Box, Button, Checkbox, CheckboxGroup, FormErrorMessage, Input, Stack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Checkbox, CheckboxGroup, FormErrorMessage, Input, Stack } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -45,6 +45,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   const { sameWidthRefs } = useSameWidth();
 
   const { adminGroupPermissions } = useAdminGroupPermissions();
+
+  const isEditMode = adminGroup.id > 0;
 
   const onGroupChange = (group: AdminGroupPermissionCheckGroup) => {
     const children: string[] = [];
@@ -279,18 +281,20 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
         />
       </FormItem>
       <FormAction>
-        <Button isLoading={loading} type={'submit'}>
-          提交
-        </Button>
-        {adminGroup.id > 0 && (
-          <AdminGroupDeleteButton
-            size={'sm'}
-            adminGroup={adminGroup}
-            onSuccess={() => {
-              navigate('../../../admin-group');
-            }}
-          />
-        )}
+        <ButtonGroup spacing={3} alignItems={'flex-end'}>
+          <Button isLoading={loading} type={'submit'}>
+            提交
+          </Button>
+          {isEditMode && (
+            <AdminGroupDeleteButton
+              size={'sm'}
+              adminGroup={adminGroup}
+              onSuccess={() => {
+                navigate('../../../admin-group');
+              }}
+            />
+          )}
+        </ButtonGroup>
       </FormAction>
     </Form>
   );

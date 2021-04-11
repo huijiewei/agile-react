@@ -8,7 +8,7 @@ const FormAction = (props: PropsWithChildren<FormActionProps>) => {
 
   return (
     <Grid className={'chakra-form-action'} templateColumns="repeat(24, 1fr)" gap={gap} {...restProps}>
-      <GridItem spacing={5} as={HStack} colStart={labelWidth} colEnd={25}>
+      <GridItem colStart={labelWidth} colEnd={25}>
         {children}
       </GridItem>
     </Grid>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '@shared/components/form/Form';
 import { FormItem } from '@shared/components/form/FormItem';
-import { Button, FormErrorMessage, Input } from '@chakra-ui/react';
+import { Button, ButtonGroup, FormErrorMessage, Input } from '@chakra-ui/react';
 import { FormAction } from '@shared/components/form/FormAction';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { UserDeleteButton } from '@admin/views/user/_Delete';
@@ -80,16 +80,20 @@ const UserForm = ({ user, onSuccess }: UserFromProps) => {
         <FormErrorMessage>{errors.avatar?.message || ' '}</FormErrorMessage>
       </FormItem>
       <FormAction>
-        <Button isLoading={loading} type={'submit'}>
-          提交
-        </Button>
-        <UserDeleteButton
-          size={'sm'}
-          user={user}
-          onSuccess={() => {
-            navigate('../../../user');
-          }}
-        />
+        <ButtonGroup spacing={3} alignItems={'flex-end'}>
+          <Button isLoading={loading} type={'submit'}>
+            提交
+          </Button>
+          {isEditMode && (
+            <UserDeleteButton
+              size={'sm'}
+              user={user}
+              onSuccess={() => {
+                navigate('../../../user');
+              }}
+            />
+          )}
+        </ButtonGroup>
       </FormAction>
     </Form>
   );

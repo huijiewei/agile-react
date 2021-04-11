@@ -1,7 +1,7 @@
 import { Admin, useAdminSubmit } from '@admin/services/useAdmin';
 import { useForm } from 'react-hook-form';
 import { Form } from '@shared/components/form/Form';
-import { Button, FormErrorMessage, Input } from '@chakra-ui/react';
+import { Button, ButtonGroup, FormErrorMessage, Input } from '@chakra-ui/react';
 import { FormItem } from '@shared/components/form/FormItem';
 import { RemoteSelect } from '@admin/components/RemoteSelect';
 import { useAdminGroups } from '@admin/services/useMisc';
@@ -108,18 +108,20 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
         <FormErrorMessage>{errors.adminGroupId?.message || ' '}</FormErrorMessage>
       </FormItem>
       <FormAction>
-        <Button isLoading={loading} type={'submit'}>
-          提交
-        </Button>
-        {admin.id > 0 && (
-          <AdminDeleteButton
-            size={'sm'}
-            admin={admin}
-            onSuccess={() => {
-              navigate('../../../admin');
-            }}
-          />
-        )}
+        <ButtonGroup spacing={3} alignItems={'flex-end'}>
+          <Button isLoading={loading} type={'submit'}>
+            提交
+          </Button>
+          {isEditMode && !isOwnerMode && (
+            <AdminDeleteButton
+              size={'sm'}
+              admin={admin}
+              onSuccess={() => {
+                navigate('../../../admin');
+              }}
+            />
+          )}
+        </ButtonGroup>
       </FormAction>
     </Form>
   );

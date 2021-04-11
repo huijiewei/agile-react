@@ -127,7 +127,7 @@ const UserIndex = () => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
-        <ButtonGroup alignItems={'center'} spacing={3}>
+        <ButtonGroup alignItems={'flex-end'} spacing={3}>
           <UserCreateButton />
           <UserExportButton />
         </ButtonGroup>
