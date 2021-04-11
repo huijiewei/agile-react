@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
+import { Button } from '@chakra-ui/react';
 
 const Home = () => {
   const { data } = useSWR('https://agile.huijiewei.com/admin-api/open/captcha');
@@ -17,7 +18,7 @@ const Home = () => {
       <p>Hello Agile</p>
       <p>Mobile Index</p>
       <p>
-        <button onClick={handleClick}>显示个错误提示</button>
+        <Button onClick={handleClick}>显示个错误提示</Button>
       </p>
       <p>{data && <img alt="验证码" src={data.image} />}</p>
     </div>

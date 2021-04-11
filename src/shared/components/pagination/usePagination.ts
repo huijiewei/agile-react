@@ -1,6 +1,5 @@
-import { useControllableState } from '@chakra-ui/react';
+import { useControllableState, HTMLChakraProps } from '@chakra-ui/react';
 import { ChangeEvent, ReactEventHandler, ReactNode, SyntheticEvent } from 'react';
-import { HTMLChakraProps } from '@chakra-ui/system';
 
 type PageType = 'page' | 'next' | 'previous' | 'start-ellipsis' | 'end-ellipsis';
 

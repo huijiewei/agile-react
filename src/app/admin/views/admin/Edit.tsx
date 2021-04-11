@@ -15,6 +15,7 @@ const AdminEdit = () => {
 
     await mutate(admin, false);
   };
+
   return <ContentLayout>{data && <AdminFrom admin={data} onSuccess={onSuccess} />}</ContentLayout>;
 };
 

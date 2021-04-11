@@ -6,6 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -24,12 +25,8 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: ['.jsx', '.js', '.tsx', '.ts'],
       alias: {
-        ...{
-          '@shared': path.resolve('src/shared'),
-        },
-        ...{
-          [`@${appName}`]: path.resolve(`src/app/${appName}`),
-        },
+        '@shared': path.resolve('src/shared'),
+        [`@${appName}`]: path.resolve(`src/app/${appName}`),
       },
     },
     output: {
@@ -132,7 +129,12 @@ module.exports = (env, argv) => {
         }),
       !isProduction && new ReactRefreshWebpackPlugin(),
       isProduction && new CleanWebpackPlugin(),
-      //isProduction && new BundleAnalyzerPlugin(),
+      isProduction &&
+        new BundleAnalyzerPlugin({
+          openAnalyzer: false,
+          analyzerMode: 'static',
+          generateStatsFile: true,
+        }),
     ].filter(Boolean),
   };
 
@@ -143,29 +145,28 @@ module.exports = (env, argv) => {
           react: {
             name: 'react',
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            chunks: 'initial',
-            priority: 30,
-            reuseExistingChunk: true,
+            chunks: 'all',
+            priority: 20,
             enforce: true,
           },
           chakra: {
             name: 'chakra',
             test: /[\\/]node_modules[\\/](@chakra-ui|framer-motion)[\\/]/,
-            chunks: 'initial',
-            priority: 25,
+            chunks: 'all',
+            priority: 20,
             enforce: true,
           },
           vendor: {
             name: 'vendor',
             test: /[\\/]node_modules[\\/]/,
-            chunks: 'initial',
-            priority: 20,
+            chunks: 'all',
+            priority: 10,
             enforce: true,
           },
           shared: {
             name: 'shared',
             test: /[\\/]src\/shared[\\/]/,
-            chunks: 'initial',
+            chunks: 'all',
             priority: 10,
             enforce: true,
           },

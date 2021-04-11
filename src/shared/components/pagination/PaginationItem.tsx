@@ -1,4 +1,4 @@
-import { chakra, forwardRef } from '@chakra-ui/system';
+import { chakra, forwardRef } from '@chakra-ui/react';
 import { PaginationItemProps } from '@shared/components/pagination/usePagination';
 
 const PaginationItem = forwardRef<PaginationItemProps, 'button'>((props, ref) => {

@@ -1,5 +1,4 @@
 import { __DEV__, cx } from '@chakra-ui/utils';
-import { forwardRef, omitThemingProps } from '@chakra-ui/system';
 import {
   chakra,
   FormLabelProps,
@@ -7,6 +6,8 @@ import {
   SystemProps,
   useFormControlContext,
   useStyleConfig,
+  forwardRef,
+  omitThemingProps,
 } from '@chakra-ui/react';
 
 const FormLabel = forwardRef<

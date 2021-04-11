@@ -3,8 +3,7 @@ import { To } from 'history';
 import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { LoginForm } from '@admin/components/LoginForm';
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal';
-import { Center } from '@chakra-ui/layout';
+import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Center } from '@chakra-ui/react';
 
 const LoginDirect = () => {
   const location = useLocation();

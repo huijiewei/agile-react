@@ -1,5 +1,4 @@
-import { forwardRef, HTMLChakraProps } from '@chakra-ui/system';
-import { Stack, StackProps } from '@chakra-ui/react';
+import { Stack, StackProps, forwardRef, HTMLChakraProps } from '@chakra-ui/react';
 
 type FormProps = HTMLChakraProps<'form'> & StackProps;
 

@@ -1,4 +1,4 @@
-import { chakra, forwardRef } from '@chakra-ui/system';
+import { chakra, forwardRef } from '@chakra-ui/react';
 import { __DEV__, cx } from '@chakra-ui/utils';
 import { PaginationItemProps, PaginationProps, usePagination } from './usePagination';
 import { PaginationItem } from './PaginationItem';

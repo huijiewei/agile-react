@@ -51,7 +51,7 @@ const UserTable = () => {
                 <Td>
                   <Text as="pre">{user.createdIp}</Text>
                 </Td>
-                <Td textAlign={'center'}>{user.createdFrom.description}</Td>
+                <Td textAlign={'center'}>{user.createdFrom?.description}</Td>
                 <Td>
                   <Text as="pre">{user.createdAt}</Text>
                 </Td>

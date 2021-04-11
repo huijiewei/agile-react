@@ -11,11 +11,11 @@ export type User = {
   phone: string;
   email: string;
   avatar: string;
-  createdIp: string;
-  createdFrom: {
+  createdIp?: string;
+  createdFrom?: {
     description: string;
   };
-  createdAt: string;
+  createdAt?: string;
 };
 
 const USER_API = 'users';
@@ -50,6 +50,36 @@ const useUserView = (id: string): UseView<User> => {
   };
 };
 
+type UseUserSubmit = {
+  loading: boolean;
+  submitUser: (id: number, user: User) => Promise<{ data: User | undefined; error: HttpError | undefined }>;
+};
+
+const useUserSubmit = (): UseUserSubmit => {
+  const { apiPost, apiPut } = useHttp();
+  const [loading, setLoading] = useState(false);
+
+  const submitUser = async (id: number, user: User) => {
+    setLoading(true);
+
+    const { data, error } = await requestFlatry<User>(
+      id > 0 ? apiPut(`${USER_API}/${id}`, user) : apiPost(USER_API, user)
+    );
+
+    setLoading(false);
+
+    return {
+      data,
+      error,
+    };
+  };
+
+  return {
+    loading,
+    submitUser,
+  };
+};
+
 type UseUserDelete = {
   loading: boolean;
   deleteUser: (id: number) => Promise<{ data: HttpMessage | undefined; error: HttpError | undefined }>;
@@ -79,4 +109,4 @@ const useUserDelete = (): UseUserDelete => {
   };
 };
 
-export { useUserAll, useUserView, useUserDelete };
+export { useUserAll, useUserView, useUserSubmit, useUserDelete };

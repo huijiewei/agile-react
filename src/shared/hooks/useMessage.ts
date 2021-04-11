@@ -1,6 +1,5 @@
-import { useToast, UseToastOptions } from '@chakra-ui/react';
+import { useToast, UseToastOptions, AlertStatus } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { AlertStatus } from '@chakra-ui/alert';
 
 type UseMessage = {
   info: (message: ReactNode, options?: UseToastOptions) => void;

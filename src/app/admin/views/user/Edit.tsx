@@ -1,15 +1,22 @@
 import { useParams } from 'react-router-dom';
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { useUserView } from '@admin/services/useUser';
+import { User, useUserView } from '@admin/services/useUser';
+import { UserForm } from '@admin/views/user/_Form';
+import { useMessage } from '@shared/hooks/useMessage';
 
 const UserEdit = () => {
+  const { success } = useMessage();
   const { id } = useParams();
 
-  const { data } = useUserView(id);
+  const { data, mutate } = useUserView(id);
 
-  console.log('UserEdit Render');
+  const onSuccess = async (user: User) => {
+    success(`用户 ${user.phone} 编辑成功`);
 
-  return <ContentLayout>{data && <div className={'ag-box'}>UserEdit: {data.name}</div>}</ContentLayout>;
+    await mutate(user, false);
+  };
+
+  return <ContentLayout>{data && <UserForm user={data} onSuccess={onSuccess} />}</ContentLayout>;
 };
 
 export default UserEdit;
