@@ -7,9 +7,9 @@ import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';
 import { FormItem } from '@shared/components/form/FormItem';
 import { FormAction } from '@shared/components/form/FormAction';
-import { useSameWidth } from '@shared/hooks/useSameWidth';
 import { AdminGroupDeleteButton } from '@admin/views/admin-group/_Delete';
 import { useNavigate } from 'react-router-dom';
+import { SameWidthChildrenBox } from '@shared/components/box/SameWidthChildrenBox';
 
 type AdminGroupPermissionCheckGroup = {
   name: string;
@@ -41,8 +41,6 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   const [disablePermissions, setDisablePermissions] = useState<string[]>([]);
   const { loading, submitAdminGroup } = useAdminGroupSubmit();
   const navigate = useNavigate();
-
-  const { sameWidthRefs } = useSameWidth();
 
   const { adminGroupPermissions } = useAdminGroupPermissions();
 
@@ -221,15 +219,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
               <Stack spacing={3}>
                 {groupPermissions.map((group, groupIdx) => (
                   <Box key={'gp-' + groupIdx}>
-                    <Box
-                      sx={{
-                        backgroundColor: 'gray.50',
-                        color: 'gray.500',
-                        fontWeight: 'medium',
-                        paddingX: 3,
-                        paddingY: 2,
-                      }}
-                    >
+                    <Box backgroundColor={'gray.50'} color={'gray.500'} fontWeight={'medium'} paddingX={3} paddingY={2}>
                       <Checkbox
                         onChange={() => onGroupChange(group)}
                         isIndeterminate={group.isIndeterminate}
@@ -238,10 +228,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
                         {group.name}
                       </Checkbox>
                     </Box>
-                    <Box
-                      ref={(element) => sameWidthRefs.current.push({ element, childrenClassName: 'sw-checkbox' })}
-                      sx={{ paddingX: 3, paddingY: 2 }}
-                    >
+                    <SameWidthChildrenBox childrenClassName={'sw-checkbox'} paddingX={3} paddingY={2}>
                       {group.children &&
                         group.children.map((item, itemIdx) =>
                           item.children ? (
@@ -249,7 +236,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
                               {item.children.map((checkbox, checkboxIdx) => (
                                 <Checkbox
                                   className={'sw-checkbox'}
-                                  sx={{ marginEnd: 12, paddingY: 1 }}
+                                  marginEnd={12}
+                                  paddingY={1}
                                   key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
                                   value={checkbox.actionId}
                                   onChange={(e) => onItemChange(checkbox, group, e)}
@@ -262,7 +250,8 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
                           ) : (
                             <Checkbox
                               className={'sw-checkbox'}
-                              sx={{ marginEnd: 12, paddingY: 1 }}
+                              marginEnd={12}
+                              paddingY={1}
                               key={'gp-' + groupIdx + '-' + itemIdx}
                               value={item.actionId}
                               onChange={(e) => onItemChange(item, group, e)}
@@ -272,7 +261,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
                             </Checkbox>
                           )
                         )}
-                    </Box>
+                    </SameWidthChildrenBox>
                   </Box>
                 ))}
               </Stack>

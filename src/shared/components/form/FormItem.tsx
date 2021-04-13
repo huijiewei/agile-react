@@ -1,11 +1,11 @@
 import {
   FormControl,
   FormControlProps,
-  Grid,
+  forwardRef,
   GridItem,
   GridProps,
   ResponsiveValue,
-  forwardRef,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { FormLabel } from './FormLabel';
@@ -34,8 +34,8 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
   } = props;
 
   return (
-    <Grid
-      templateColumns="repeat(24, 1fr)"
+    <SimpleGrid
+      columns={24}
       id={id}
       gap={gap}
       as={FormControl}
@@ -48,7 +48,7 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
         align={labelAlign}
         colSpan={labelWidth}
         as={FormLabel}
-        paddingTop={'0.055em'}
+        paddingTop={'0.05em'}
         lineHeight={9}
         height={10}
         marginBottom={0}
@@ -56,7 +56,7 @@ const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
         {label}
       </GridItem>
       <GridItem colSpan={fieldWidth}>{children}</GridItem>
-    </Grid>
+    </SimpleGrid>
   );
 });
 

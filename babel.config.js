@@ -6,7 +6,6 @@ module.exports = (api) => {
       [
         '@babel/preset-env',
         {
-          modules: false,
           bugfixes: true,
         },
       ],
@@ -18,7 +17,7 @@ module.exports = (api) => {
           importSource: '@welldone-software/why-did-you-render',
         },
       ],
-      '@babel/preset-typescript',
+      ['@babel/preset-typescript', { allowDeclareFields: true }],
     ],
     plugins: ['@babel/plugin-transform-runtime', !api.env('production') && 'react-refresh/babel'].filter(Boolean),
   };

@@ -4,9 +4,11 @@ const { EnvironmentPlugin } = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -17,6 +19,7 @@ module.exports = (env, argv) => {
   const appName = appConfig.name;
 
   const fileName = `assets/js/${isProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
+  const cssFileName = `assets/css/${isProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
 
   const config = {
     entry: {
@@ -45,6 +48,18 @@ module.exports = (env, argv) => {
           use: [{ loader: 'babel-loader' }].filter(Boolean),
         },
         {
+          test: /\.css$/,
+          use: [
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: false,
+              },
+            },
+          ],
+        },
+        {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
           type: 'asset',
           generator: {
@@ -52,7 +67,7 @@ module.exports = (env, argv) => {
           },
           parser: {
             dataUrlCondition: {
-              maxSize: 4 * 1024, // 4kb
+              maxSize: 256,
             },
           },
         },
@@ -71,7 +86,7 @@ module.exports = (env, argv) => {
           },
           parser: {
             dataUrlCondition: {
-              maxSize: 2 * 1024, // 4kb
+              maxSize: 256,
             },
           },
         },
@@ -104,6 +119,10 @@ module.exports = (env, argv) => {
         QS_ARRAY_FORMAT: appConfig.qsArrayFormat,
       }),
       new ESLintPlugin(),
+      new MiniCssExtractPlugin({
+        filename: cssFileName,
+        chunkFilename: cssFileName,
+      }),
       new HtmlWebPackPlugin({
         title: appConfig.title,
         template: `./public/app/${appName}/index.html`,
@@ -130,16 +149,16 @@ module.exports = (env, argv) => {
       !isProduction && new ReactRefreshWebpackPlugin(),
       isProduction && new CleanWebpackPlugin(),
       isProduction &&
+        env['BUNDLE_ANALYZE'] === '1' &&
         new BundleAnalyzerPlugin({
-          openAnalyzer: false,
           analyzerMode: 'static',
-          generateStatsFile: true,
         }),
     ].filter(Boolean),
   };
 
   if (isProduction) {
     config.optimization = {
+      minimizer: ['...', new CssMinimizerPlugin()],
       splitChunks: {
         cacheGroups: {
           react: {

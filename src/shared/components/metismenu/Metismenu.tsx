@@ -77,16 +77,17 @@ const Metismenu = (props: MetismenuProps) => {
 
   useEffect(() => {
     const mm =
-      elemRef.current && new metismenujs(elemRef.current, { toggle: toggle, subMenu: 'ul', triggerElement: 'span' });
+      elemRef.current && menus.length > 0
+        ? new metismenujs(elemRef.current, { toggle: toggle, subMenu: 'ul', triggerElement: 'span' })
+        : null;
 
     return () => {
       mm && mm.dispose();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toggle, elemRef.current]);
+  }, [toggle, menus]);
 
   return (
-    <chakra.ul css={metismenu} ref={elemRef}>
+    <chakra.ul className={'metismenu'} css={metismenu} ref={elemRef}>
       {menus.map((menu, idx) => (
         <MetismenuItem key={'mm-' + idx} keyPrefix={'mm-' + idx} menu={menu} />
       ))}
