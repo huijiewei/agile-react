@@ -1,8 +1,8 @@
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { Avatar, Box, Button, Center, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Avatar, Box, Center, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { Admin, useAdminAll } from '@admin/services/useAdmin';
-import { useAuthPermission } from '@admin/hooks/useAuthPermission';
+import { useAdminAll } from '@admin/services/useAdmin';
+import { PermissionButton } from '@admin/components/PermissionButton';
 
 const AdminTable = () => {
   const { data } = useAdminAll();
@@ -41,7 +41,15 @@ const AdminTable = () => {
               <Td textAlign={'center'}>{admin.adminGroup?.name}</Td>
               <Td>{admin.createdAt}</Td>
               <Td sx={{ textAlign: 'right' }}>
-                <AdminEditButton admin={admin} />
+                <PermissionButton
+                  permission={'admin/edit'}
+                  as={Link}
+                  variant="outline"
+                  size="xs"
+                  to={'edit/' + admin.id}
+                >
+                  编辑
+                </PermissionButton>
               </Td>
             </Tr>
           ))}
@@ -50,32 +58,14 @@ const AdminTable = () => {
   );
 };
 
-const AdminEditButton = ({ admin }: { admin: Admin }) => {
-  const canEditAdmin = useAuthPermission('admin/edit');
-
-  return (
-    <Button isDisabled={!canEditAdmin} variant="outline" size="xs" as={Link} to={'edit/' + admin.id}>
-      编辑
-    </Button>
-  );
-};
-
-const AdminCreateButton = () => {
-  const canCreateAdmin = useAuthPermission('admin/create');
-
-  return (
-    <Button isDisabled={!canCreateAdmin} as={Link} to={'create'}>
-      新建管理员
-    </Button>
-  );
-};
-
 const AdminIndex = () => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
         <Box>
-          <AdminCreateButton />
+          <PermissionButton permission={'admin/create'} as={Link} to={'create'}>
+            新建管理员
+          </PermissionButton>
         </Box>
       </Flex>
       <AdminTable />

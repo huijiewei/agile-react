@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { User, useUserAll } from '@admin/services/useUser';
+import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { Avatar, Button, ButtonGroup, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
+import { Avatar, ButtonGroup, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { Pagination } from '@shared/components/pagination/Pagination';
 import { PaginationItem } from '@shared/components/pagination/PaginationItem';
-import { useAuthPermission } from '@admin/hooks/useAuthPermission';
+import { PermissionButton } from '@admin/components/PermissionButton';
 
 const UserTable = () => {
   const { data } = useUserAll();
@@ -56,7 +56,15 @@ const UserTable = () => {
                   <Text as="pre">{user.createdAt}</Text>
                 </Td>
                 <Td sx={{ textAlign: 'right' }}>
-                  <UserEditButton user={user} />
+                  <PermissionButton
+                    permission={'user/edit'}
+                    variant="outline"
+                    size="xs"
+                    as={Link}
+                    to={'edit/' + user.id}
+                  >
+                    编辑
+                  </PermissionButton>
                 </Td>
               </Tr>
             ))}
@@ -82,8 +90,6 @@ const UserExportButton = () => {
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
 
-  const canExportUser = useAuthPermission('user/export');
-
   const handleDownload = async () => {
     setLoading(true);
 
@@ -97,29 +103,15 @@ const UserExportButton = () => {
   };
 
   return (
-    <Button isDisabled={!canExportUser} size="sm" variant="outline" isLoading={loading} onClick={handleDownload}>
+    <PermissionButton
+      permission={'user/export'}
+      size="sm"
+      variant="outline"
+      isLoading={loading}
+      onClick={handleDownload}
+    >
       用户导出
-    </Button>
-  );
-};
-
-const UserCreateButton = () => {
-  const canCreateUser = useAuthPermission('user/create');
-
-  return (
-    <Button isDisabled={!canCreateUser} as={Link} to={'create'}>
-      新建用户
-    </Button>
-  );
-};
-
-const UserEditButton = ({ user }: { user: User }) => {
-  const canEditUser = useAuthPermission('user/edit');
-
-  return (
-    <Button isDisabled={!canEditUser} variant="outline" size="xs" as={Link} to={'edit/' + user.id}>
-      编辑
-    </Button>
+    </PermissionButton>
   );
 };
 
@@ -128,7 +120,9 @@ const UserIndex = () => {
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
         <ButtonGroup alignItems={'flex-end'} spacing={3}>
-          <UserCreateButton />
+          <PermissionButton permission={'user/create'} as={Link} to={'create'}>
+            新建用户
+          </PermissionButton>
           <UserExportButton />
         </ButtonGroup>
       </Flex>

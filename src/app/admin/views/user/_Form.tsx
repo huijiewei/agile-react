@@ -82,7 +82,7 @@ const UserForm = ({ user, onSuccess }: UserFromProps) => {
       <FormAction>
         <ButtonGroup spacing={3} alignItems={'flex-end'}>
           <Button isLoading={loading} type={'submit'}>
-            提交
+            {isEditMode ? '编辑' : '新建'}
           </Button>
           {isEditMode && (
             <UserDeleteButton
