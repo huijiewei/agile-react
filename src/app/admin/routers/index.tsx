@@ -1,4 +1,5 @@
-import { createRoutesFromArray, Navigate, useRoutes } from 'react-router-dom';
+import { matchRoutes, Navigate, useLocation, useRoutes } from 'react-router-dom';
+import { To } from 'history';
 
 import { adminRoutes } from './admin/admin';
 import { adminGroupRoutes } from './admin/admin-group';
@@ -21,7 +22,7 @@ import Nest111 from '@admin/views/nest/1-1-1';
 import Nest112 from '@admin/views/nest/1-1-2';
 import Nest1111 from '@admin/views/nest/1-1-1-1';
 import Nest1112 from '@admin/views/nest/1-1-1-2';
-import { Dict } from '@shared/utils/types';
+import { useEffect, useState } from 'react';
 
 export const BASE_NAME = process.env.PUBLIC_URL;
 
@@ -115,22 +116,52 @@ const routes = [
   },
 ];
 
-export const getBreadcrumbs = (): Breadcrumb[] => {
-  return [];
-};
-
 type Breadcrumb = {
-  path: string;
   title: string;
-  children?: Breadcrumb[];
+  current: boolean;
+  to?: To;
 };
 
-export const getRouters = () => {
-  return [];
+const useBreadcrumb = () => {
+  const location = useLocation();
+
+  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const match = matchRoutes(routes, location, BASE_NAME);
+
+    if (match) {
+      const breadcrumbs: Breadcrumb[] = [];
+
+      const matchLength = match.length - 1;
+
+      match?.forEach((item, index) => {
+        if (index > 0) {
+          const current = index == matchLength;
+
+          breadcrumbs.push({
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            title: item.route.title,
+            current: current,
+            to: current ? undefined : BASE_NAME + item.pathname,
+          });
+        }
+      });
+
+      setBreadcrumbs(breadcrumbs);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  return breadcrumbs;
 };
 
 const AppRoutes = () => {
   return useRoutes(routes, BASE_NAME);
 };
 
-export { AppRoutes };
+export { AppRoutes, useBreadcrumb };

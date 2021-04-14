@@ -79,7 +79,7 @@ const AdminLogTable = () => {
 const AdminLogIndex = () => {
   return (
     <ContentLayout>
-      <Flex marginBottom="6" justifyContent="space-between"></Flex>
+      <Flex marginBottom="6" justifyContent="space-between" />
       <AdminLogTable />
     </ContentLayout>
   );
