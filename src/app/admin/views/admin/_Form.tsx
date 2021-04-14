@@ -1,7 +1,7 @@
 import { Admin, useAdminSubmit } from '@admin/services/useAdmin';
 import { useForm } from 'react-hook-form';
 import { Form } from '@shared/components/form/Form';
-import { Button, ButtonGroup, FormErrorMessage, Input } from '@chakra-ui/react';
+import { Button, ButtonGroup, FormErrorMessage, FormHelperText, Input } from '@chakra-ui/react';
 import { FormItem } from '@shared/components/form/FormItem';
 import { RemoteSelect } from '@admin/components/RemoteSelect';
 import { useAdminGroups } from '@admin/services/useMisc';
@@ -21,6 +21,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   const {
     register,
     handleSubmit,
+    getValues,
     setError,
     clearErrors,
     formState: { errors },
@@ -63,16 +64,17 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormItem id="phone" isRequired label={'手机号码：'} isInvalid={errors.phone} fieldWidth={9}>
-        <Input type={'text'} {...register('phone', { required: '请输入手机号码' })} defaultValue={admin.phone} />
+        <Input type={'tel'} {...register('phone', { required: '请输入手机号码' })} defaultValue={admin.phone} />
         <FormErrorMessage>{errors.phone?.message || ' '}</FormErrorMessage>
       </FormItem>
       <FormItem id="email" isRequired label={'邮箱：'} isInvalid={errors.email} fieldWidth={9}>
-        <Input type={'text'} {...register('email', { required: '请输入邮箱' })} defaultValue={admin.email} />
+        <Input type={'email'} {...register('email', { required: '请输入邮箱' })} defaultValue={admin.email} />
         <FormErrorMessage>{errors.email?.message || ' '}</FormErrorMessage>
       </FormItem>
       <FormItem id="password" isRequired={!isEditMode} label={'密码：'} isInvalid={errors.password} fieldWidth={6}>
         <Input type={'password'} {...register('password', { required: isEditMode ? false : '请输入密码' })} />
         <FormErrorMessage>{errors.password?.message || ' '}</FormErrorMessage>
+        {isEditMode && <FormHelperText>密码留空表示不修改密码</FormHelperText>}
       </FormItem>
       <FormItem
         id="passwordConfirm"
@@ -83,7 +85,10 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
       >
         <Input
           type={'password'}
-          {...register('passwordConfirm', { required: isEditMode ? false : '请输入确认密码' })}
+          {...register('passwordConfirm', {
+            required: isEditMode ? false : '请输入确认密码',
+            validate: (value) => value == getValues().password || '确认密码与密码不一致',
+          })}
         />
         <FormErrorMessage>{errors.passwordConfirm?.message || ' '}</FormErrorMessage>
       </FormItem>
