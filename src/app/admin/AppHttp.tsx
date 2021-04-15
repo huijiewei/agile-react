@@ -73,6 +73,7 @@ const AppHttpProvider = ({ children }: { children: ReactNode }) => {
     if (params) {
       return queryString.stringify(params, {
         arrayFormat: (process.env.QS_ARRAY_FORMAT as 'bracket' | 'index' | 'comma' | 'separator' | 'none') || 'bracket',
+        skipNull: true,
       });
     }
 
