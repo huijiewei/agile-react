@@ -1,17 +1,17 @@
-import { HeaderUserMenu } from '@admin/components/HeaderUserMenu';
-import { HeaderBreadcrumb } from '@admin/components/HeaderBreadcrumb';
-import { Box, Flex, IconButton, Image } from '@chakra-ui/react';
 import { useLayoutState } from '@shared/components/layout/LayoutContext';
+import { Box, Flex, IconButton, Image } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { MenuUnfoldOne } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
+import { MenuUnfoldOne } from '@icon-park/react';
+import { NavBreadcrumb } from '@admin/components/NavBreadcrumb';
+import { NavUserMenu } from '@admin/components/NavUserMenu';
 
-const AgileHeader = () => {
+const NavHeader = () => {
   const { headerHeight, asideWidth, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Flex>
+      <Flex alignItems={'center'}>
         <Box
           overflow="hidden"
           width={[asideCollapsedWidth, asideCollapsedWidth, asideCollapsedWidth, asideCollapsedWidth, asideWidth]}
@@ -36,15 +36,15 @@ const AgileHeader = () => {
           height={headerHeight}
           width={headerHeight}
           aria-label="展开收缩菜单"
-          icon={<Icon as={MenuUnfoldOne}></Icon>}
+          icon={<Icon as={MenuUnfoldOne} />}
         />
-        <HeaderBreadcrumb height={headerHeight} />
+        <NavBreadcrumb />
       </Flex>
       <Box>
-        <HeaderUserMenu height={headerHeight} />
+        <NavUserMenu height={headerHeight} />
       </Box>
     </Flex>
   );
 };
 
-export default AgileHeader;
+export { NavHeader };

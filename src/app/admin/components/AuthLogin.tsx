@@ -1,22 +1,14 @@
 import { AuthLoginAction, useAuthLoginDispatch, useAuthLoginState } from '@shared/contexts/AuthLoginContext';
-import { To } from 'history';
 import { ReactNode, useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { LoginForm } from '@admin/components/LoginForm';
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Center } from '@chakra-ui/react';
+import { Center, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { useLoginDirect } from '@admin/hooks/useLoginDirect';
 
 const LoginDirect = () => {
-  const location = useLocation();
+  const direct = useLoginDirect();
 
-  const to: To = {
-    pathname: 'login',
-  };
-
-  if (location.pathname !== 'login') {
-    to.search = '?direct=' + location.pathname;
-  }
-
-  return <Navigate to={to} replace={true} />;
+  return <Navigate to={direct} replace={true} />;
 };
 
 const LoginModal = ({ isOpened }: { isOpened: boolean }) => {
@@ -27,23 +19,23 @@ const LoginModal = ({ isOpened }: { isOpened: boolean }) => {
     setIsOpen(isOpened);
   }, [isOpened, setIsOpen]);
 
-  const handleClose = () => {
+  const onClose = () => {
     resetLoginAction();
   };
 
-  const handleSuccess = () => {
+  const onSuccess = () => {
     setIsOpen(false);
   };
 
   return (
-    <Modal isCentered size="sm" closeOnEsc={false} closeOnOverlayClick={false} isOpen={isOpen} onClose={handleClose}>
+    <Modal isCentered size="sm" closeOnEsc={false} closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent padding={6}>
         <ModalHeader>
           <Center>管理员登录</Center>
         </ModalHeader>
         <ModalBody>
-          <LoginForm onSuccess={handleSuccess} />
+          <LoginForm onSuccess={onSuccess} />
         </ModalBody>
       </ModalContent>
     </Modal>

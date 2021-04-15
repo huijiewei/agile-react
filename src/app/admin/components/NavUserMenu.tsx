@@ -1,24 +1,27 @@
-import { setAuthAccessToken } from '@admin/AppAuth';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@admin/services/useAuth';
 import { useHttp } from '@shared/contexts/HttpContext';
-import { requestFlatry } from '@shared/utils/http';
-import { Avatar, Center, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react';
-import { Down, Logout, Refresh, User } from '@icon-park/react';
-import { Icon } from '@shared/components/icon/Icon';
 import { useMessage } from '@shared/hooks/useMessage';
+import { useAuth } from '@admin/services/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { useLoginDirect } from '@admin/hooks/useLoginDirect';
+import { requestFlatry } from '@shared/utils/http';
+import { setAuthAccessToken } from '@admin/AppAuth';
+import { Avatar, Center, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react';
+import { Icon } from '@shared/components/icon/Icon';
+import { Down, Logout, Refresh, User } from '@icon-park/react';
 
-const HeaderUserMenu = ({ height }: { height: string }) => {
+const NavUserMenu = ({ height }: { height: string }) => {
   const { apiPost } = useHttp();
-  const navigate = useNavigate();
   const { success } = useMessage();
   const { currentUser, mutate } = useAuth();
 
-  const handleRefresh = async () => {
+  const navigate = useNavigate();
+  const direct = useLoginDirect();
+
+  const onRefresh = async () => {
     await mutate();
   };
 
-  const handleLogout = async () => {
+  const onLogout = async () => {
     const { data } = await requestFlatry<{ message: string }>(apiPost('auth/logout', null));
 
     if (data) {
@@ -29,7 +32,7 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
       success(data.message, {
         duration: 1000,
         onCloseComplete: () => {
-          navigate('login', { replace: true });
+          navigate(direct, { replace: true });
         },
       });
     }
@@ -57,11 +60,11 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
           <MenuItem iconSpacing="10px" icon={<Icon as={User} />}>
             个人资料
           </MenuItem>
-          <MenuItem iconSpacing="10px" icon={<Icon as={Refresh} />} onClick={handleRefresh}>
+          <MenuItem iconSpacing="10px" icon={<Icon as={Refresh} />} onClick={onRefresh}>
             刷新资料
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon as={Logout} />} onClick={handleLogout}>
+          <MenuItem iconSpacing="10px" icon={<Icon as={Logout} />} onClick={onLogout}>
             退出登录
           </MenuItem>
         </MenuList>
@@ -72,4 +75,4 @@ const HeaderUserMenu = ({ height }: { height: string }) => {
   return null;
 };
 
-export { HeaderUserMenu };
+export { NavUserMenu };

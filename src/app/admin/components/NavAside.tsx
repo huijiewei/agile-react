@@ -2,7 +2,7 @@ import { Metismenu } from '@shared/components/metismenu/Metismenu';
 import { useAuth } from '@admin/services/useAuth';
 import { Box } from '@chakra-ui/react';
 
-const AgileAside = () => {
+const NavAside = () => {
   const { groupMenus } = useAuth();
 
   return (
@@ -26,9 +26,9 @@ const AgileAside = () => {
         },
       }}
     >
-      <Metismenu menus={groupMenus} toggle={false}></Metismenu>
+      <Metismenu menus={groupMenus} toggle={false} />
     </Box>
   );
 };
 
-export default AgileAside;
+export { NavAside };

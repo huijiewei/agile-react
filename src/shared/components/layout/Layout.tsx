@@ -59,7 +59,7 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const LayoutResponsive = ({ children }: { children: ReactNode }) => {
+const LayoutRoot = ({ children }: { children: ReactNode }) => {
   const { backgroundColor } = useLayoutState();
   return (
     <Box backgroundColor={backgroundColor} display="block">
@@ -81,7 +81,7 @@ const Layout = ({ children, ...layoutProps }: PropsWithChildren<LayoutProp>) => 
       asideCollapsedWidth={layoutProps.asideCollapsedWidth}
       asideBackgroundColor={layoutProps.asideBackgroundColor}
     >
-      <LayoutResponsive>{children}</LayoutResponsive>
+      <LayoutRoot>{children}</LayoutRoot>
     </LayoutProvider>
   );
 };
