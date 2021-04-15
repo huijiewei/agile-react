@@ -2,7 +2,8 @@ import { Description, PageResponse, UseAll } from '@admin/services/types';
 import { Admin } from '@admin/services/useAdmin';
 import { useHttp } from '@shared/contexts/HttpContext';
 import useSWR from 'swr';
-import { useSearchParams } from 'react-router-dom';
+import queryString from 'query-string';
+import { useLocation } from 'react-router-dom';
 
 type AdminLog = {
   id: number;
@@ -22,12 +23,16 @@ const ADMIN_LOG_API = 'admin-logs';
 
 const useAdminLogAll = (withSearchFields = false): UseAll<PageResponse<AdminLog>> => {
   const { apiGet } = useHttp();
-  const [searchParams] = useSearchParams();
+  const { search } = useLocation();
 
-  const { data, error, mutate } = useSWR<PageResponse<AdminLog>>(
-    ADMIN_LOG_API + '?' + (withSearchFields ? 'withSearchFields=true' : '') + searchParams.toString(),
-    (url) => apiGet(url)
-  );
+  const { data, error, mutate } = useSWR<PageResponse<AdminLog>>([ADMIN_LOG_API, search], (url, search) => {
+    const params = {
+      ...queryString.parse(search),
+      withSearchFields: withSearchFields ? 'true' : undefined,
+    };
+
+    return apiGet(url, params);
+  });
 
   const loading = !data && !error;
 

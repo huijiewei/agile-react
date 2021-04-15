@@ -1,13 +1,25 @@
-import { Link } from 'react-router-dom';
-
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { Button, Flex, Table, Tag, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
-import { Pagination } from '@shared/components/pagination/Pagination';
-import { PaginationItem } from '@shared/components/pagination/PaginationItem';
+import { Box, Button, Flex, Table, Tag, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { useAdminLogAll } from '@admin/services/useAdminLog';
+import { SearchForm, useSearchForm } from '@admin/components/SearchForm';
+import { DataPagination } from '@admin/components/DataPagination';
+import { useCallback, useEffect } from 'react';
+import { SearchField } from '@admin/services/types';
 
-const AdminLogTable = () => {
-  const { data } = useAdminLogAll();
+const AdminLogTable = ({
+  onApiFetch,
+  withSearchFields,
+}: {
+  onApiFetch?: (searchFields: SearchField[] | undefined) => void;
+  withSearchFields: boolean;
+}) => {
+  const { data } = useAdminLogAll(withSearchFields);
+
+  console.log('AdminLogTable');
+
+  useEffect(() => {
+    onApiFetch && onApiFetch(data?.searchFields);
+  }, [data?.searchFields, onApiFetch]);
 
   return (
     <>
@@ -46,7 +58,7 @@ const AdminLogTable = () => {
                 <Td textAlign={'center'}>{adminLog.type.description}</Td>
                 <Td textAlign={'center'}>{adminLog.method}</Td>
                 <Td>{adminLog.action}</Td>
-                <Td>{adminLog.params}</Td>
+                <Td wordBreak={'break-all'}>{adminLog.params}</Td>
                 <Td>
                   <Text as="pre">{adminLog.remoteAddr}</Text>
                 </Td>
@@ -62,25 +74,28 @@ const AdminLogTable = () => {
             ))}
         </Tbody>
       </Table>
-      {data && (
-        <Pagination
-          marginTop={5}
-          total={data.pages.totalCount}
-          currentPage={data.pages.currentPage}
-          renderPage={(page) => (
-            <PaginationItem as={Link} to={`../admin-log${page.page === 1 ? '' : `?page=${page.page}`}`} {...page} />
-          )}
-        />
-      )}
+      <DataPagination pages={data?.pages} />
     </>
   );
 };
 
 const AdminLogIndex = () => {
+  const { searchFields, setSearchFields } = useSearchForm();
+
+  const onApiFetch = useCallback(
+    (searchFields: SearchField[] | undefined) => {
+      setSearchFields(searchFields);
+    },
+    [setSearchFields]
+  );
+
   return (
     <ContentLayout>
-      <Flex marginBottom="6" justifyContent="space-between" />
-      <AdminLogTable />
+      <Flex marginBottom="6" justifyContent="space-between">
+        <Box />
+        <SearchForm searchFields={searchFields} />
+      </Flex>
+      <AdminLogTable onApiFetch={onApiFetch} withSearchFields={!searchFields} />
     </ContentLayout>
   );
 };
