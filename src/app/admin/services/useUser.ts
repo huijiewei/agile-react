@@ -1,9 +1,10 @@
-import { useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useSWR from 'swr';
 import { PageResponse, UseAll, UseView } from './types';
 import { HttpMessage, useHttp } from '@shared/contexts/HttpContext';
 import { HttpError, requestFlatry } from '@shared/utils/http';
 import { useState } from 'react';
+import queryString from 'query-string';
 
 export type User = {
   id: number;
@@ -22,11 +23,16 @@ const USER_API = 'users';
 
 const useUserAll = (withSearchFields = false): UseAll<PageResponse<User>> => {
   const { apiGet } = useHttp();
-  const [searchParams] = useSearchParams();
-  const { data, error, mutate } = useSWR<PageResponse<User>>(
-    USER_API + '?' + (withSearchFields ? 'withSearchFields=true' : '') + searchParams.toString(),
-    (url) => apiGet(url)
-  );
+  const { search } = useLocation();
+
+  const { data, error, mutate } = useSWR<PageResponse<User>>([USER_API, search], (url, search) => {
+    const params = {
+      ...queryString.parse(search),
+      withSearchFields: withSearchFields ? 'true' : undefined,
+    };
+
+    return apiGet(url, params);
+  });
 
   const loading = !data && !error;
 

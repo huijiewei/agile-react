@@ -6,12 +6,11 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { useUserAll } from '@admin/services/useUser';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { Avatar, ButtonGroup, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
-import { Pagination } from '@shared/components/pagination/Pagination';
-import { PaginationItem } from '@shared/components/pagination/PaginationItem';
 import { PermissionButton } from '@admin/components/PermissionButton';
+import { DataPagination } from '@admin/components/DataPagination';
 
 const UserTable = () => {
-  const { data } = useUserAll();
+  const { data } = useUserAll(false);
 
   return (
     <>
@@ -70,17 +69,7 @@ const UserTable = () => {
             ))}
         </Tbody>
       </Table>
-      {data && (
-        <Pagination
-          marginTop={5}
-          showTotal
-          total={data.pages.totalCount}
-          currentPage={data.pages.currentPage}
-          renderPage={(page) => (
-            <PaginationItem as={Link} to={`../user${page.page === 1 ? '' : `?page=${page.page}`}`} {...page} />
-          )}
-        />
-      )}
+      <DataPagination pages={data?.pages} />
     </>
   );
 };

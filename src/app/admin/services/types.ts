@@ -17,13 +17,15 @@ export type ListResponse<T> = {
   searchFields?: SearchField[];
 };
 
+export type Pages = {
+  currentPage: number;
+  pageCount: number;
+  perPage: number;
+  totalCount: number;
+};
+
 export type PageResponse<T> = ListResponse<T> & {
-  pages: {
-    currentPage: number;
-    pageCount: number;
-    perPage: number;
-    totalCount: number;
-  };
+  pages: Pages;
 };
 
 export type UseAll<T> = {
