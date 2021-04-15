@@ -163,7 +163,7 @@ module.exports = (env, argv) => {
         cacheGroups: {
           react: {
             name: 'react',
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|history)[\\/]/,
             chunks: 'all',
             priority: 20,
             enforce: true,
