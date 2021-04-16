@@ -403,6 +403,9 @@ const agileTheme = extendTheme({
           paddingBottom: 0,
           lineHeight: 'base',
         },
+        icon: {
+          color: 'gray.400',
+        },
       },
       sizes: {
         bg: {
