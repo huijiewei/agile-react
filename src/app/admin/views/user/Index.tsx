@@ -10,6 +10,7 @@ import { PermissionButton } from '@admin/components/PermissionButton';
 import { DataPagination } from '@admin/components/DataPagination';
 import { SearchForm, useSearchForm } from '@admin/components/SearchForm';
 import { SearchField } from '@admin/services/types';
+import { UserExportButton } from '@admin/views/user/_Export';
 
 const UserTable = ({
   onApiFetch,
@@ -83,36 +84,6 @@ const UserTable = ({
       </Table>
       <DataPagination pages={data?.pages} />
     </>
-  );
-};
-
-const UserExportButton = () => {
-  const { apiDownload } = useHttp();
-  const { setError } = useErrorDispatch();
-  const [loading, setLoading] = useState(false);
-
-  const handleDownload = async () => {
-    setLoading(true);
-
-    const result = await apiDownload('GET', 'users/export');
-
-    setLoading(false);
-
-    if (!result) {
-      setError('下载失败', false);
-    }
-  };
-
-  return (
-    <PermissionButton
-      permission={'user/export'}
-      size="sm"
-      variant="outline"
-      isLoading={loading}
-      onClick={handleDownload}
-    >
-      用户导出
-    </PermissionButton>
   );
 };
 
