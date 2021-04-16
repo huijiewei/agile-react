@@ -17,7 +17,7 @@ const AdminLogTable = ({
 
   useEffect(() => {
     setSearchFields && setSearchFields(data?.searchFields);
-  }, [data?.searchFields, onApiFetch]);
+  }, [data?.searchFields, setSearchFields]);
 
   return (
     <>
