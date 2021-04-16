@@ -82,20 +82,13 @@ const AdminLogTable = ({
 const AdminLogIndex = () => {
   const { searchFields, setSearchFields } = useSearchForm();
 
-  const onApiFetch = useCallback(
-    (searchFields: SearchField[] | undefined) => {
-      setSearchFields(searchFields);
-    },
-    [setSearchFields]
-  );
-
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
         <Box />
         <SearchForm searchFields={searchFields} />
       </Flex>
-      <AdminLogTable onApiFetch={onApiFetch} withSearchFields={!searchFields} />
+      <AdminLogTable onApiFetch={setSearchFields} withSearchFields={!searchFields} />
     </ContentLayout>
   );
 };

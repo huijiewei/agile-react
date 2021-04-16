@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
@@ -8,9 +8,21 @@ import { useHttp } from '@shared/contexts/HttpContext';
 import { Avatar, ButtonGroup, Center, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { PermissionButton } from '@admin/components/PermissionButton';
 import { DataPagination } from '@admin/components/DataPagination';
+import { SearchForm, useSearchForm } from '@admin/components/SearchForm';
+import { SearchField } from '@admin/services/types';
 
-const UserTable = () => {
-  const { data } = useUserAll(false);
+const UserTable = ({
+  onApiFetch,
+  withSearchFields,
+}: {
+  onApiFetch?: (searchFields: SearchField[] | undefined) => void;
+  withSearchFields: boolean;
+}) => {
+  const { data } = useUserAll(withSearchFields);
+
+  useEffect(() => {
+    onApiFetch && onApiFetch(data?.searchFields);
+  }, [data?.searchFields, onApiFetch]);
 
   return (
     <>
@@ -105,6 +117,8 @@ const UserExportButton = () => {
 };
 
 const UserIndex = () => {
+  const { searchFields, setSearchFields } = useSearchForm();
+
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">
@@ -114,8 +128,9 @@ const UserIndex = () => {
           </PermissionButton>
           <UserExportButton />
         </ButtonGroup>
+        <SearchForm searchFields={searchFields} />
       </Flex>
-      <UserTable />
+      <UserTable onApiFetch={setSearchFields} withSearchFields={!searchFields} />
     </ContentLayout>
   );
 };
