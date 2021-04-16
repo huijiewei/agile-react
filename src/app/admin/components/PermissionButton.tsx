@@ -11,7 +11,7 @@ const PermissionButton = forwardRef<PermissionButtonProps, 'button'>((props, ref
   const hasPermission = useAuthPermission(permission);
 
   return (
-    <Button isDisabled={isDisabled || !hasPermission} {...restProps}>
+    <Button ref={ref} isDisabled={isDisabled || !hasPermission} {...restProps}>
       {children}
     </Button>
   );
