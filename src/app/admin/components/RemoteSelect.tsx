@@ -2,6 +2,7 @@ import { IconButton, Select, SelectProps, Skeleton, Stack, forwardRef } from '@c
 import { useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
 import { Dict } from '@shared/utils/types';
+import { DynamicSelect } from '@shared/components/select/DynamicSelect';
 
 type RemoteSelectOptionType = Dict[];
 
@@ -25,7 +26,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
   } = props;
 
   const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<RemoteSelectOptionType | null>(null);
+  const [options, setOptions] = useState<RemoteSelectOptionType>();
 
   const loadOptions = useCallback(() => {
     setLoading(true);
@@ -44,17 +45,20 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
-      {options ? (
-        <Select defaultValue={defaultValue} name={name} isDisabled={isDisabled} ref={ref} {...restProps}>
-          {options.map((option, idx) => (
-            <option key={name + '-' + idx} value={option[optionValue]}>
-              {option[optionLabel]}
-            </option>
-          ))}
-        </Select>
-      ) : (
-        <Skeleton width={'100%'} height={10} />
-      )}
+      <DynamicSelect
+        defaultValue={defaultValue}
+        name={name}
+        isDisabled={isDisabled}
+        ref={ref}
+        {...restProps}
+        options={options}
+        skeletonProps={{ height: 10 }}
+        optionRender={(option, index) => (
+          <option key={name + '-' + index} value={option[optionValue]}>
+            {option[optionLabel]}
+          </option>
+        )}
+      />
       <IconButton
         onClick={loadOptions}
         size={'sm'}
