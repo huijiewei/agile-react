@@ -11,10 +11,9 @@ type UploadProps = InputProps & {
 const Upload = (props: UploadProps) => {
   console.log('Are you ok!');
 
-  const { buttonProps, ...restProps } = props;
+  const { buttonProps } = props;
 
-  return;
-  <Button {...buttonProps}></Button>;
+  return <Button {...buttonProps}>上传</Button>;
 };
 
 export { Upload };

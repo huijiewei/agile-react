@@ -1,4 +1,4 @@
-import { IconButton, Select, SelectProps, Skeleton, Stack, forwardRef } from '@chakra-ui/react';
+import { forwardRef, IconButton, SelectProps, Stack } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
 import { Dict } from '@shared/utils/types';
