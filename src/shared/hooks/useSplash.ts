@@ -4,7 +4,7 @@ const useSplash = (): void => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       document.getElementById('splash')?.remove();
-    }, 500);
+    }, 200);
 
     return () => clearTimeout(timeoutId);
   }, []);
