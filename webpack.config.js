@@ -9,6 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -119,6 +120,11 @@ module.exports = (env, argv) => {
         QS_ARRAY_FORMAT: appConfig.qsArrayFormat,
       }),
       new ESLintPlugin(),
+      new ForkTsCheckerWebpackPlugin({
+        eslint: {
+          files: './src/**/*.{ts,tsx,js,jsx}',
+        },
+      }),
       new MiniCssExtractPlugin({
         filename: cssFileName,
         chunkFilename: cssFileName,
