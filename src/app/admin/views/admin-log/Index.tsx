@@ -3,22 +3,20 @@ import { Box, Button, Flex, Table, Tag, Tbody, Td, Text, Th, Thead, Tr } from '@
 import { useAdminLogAll } from '@admin/services/useAdminLog';
 import { SearchForm, useSearchForm } from '@admin/components/SearchForm';
 import { DataPagination } from '@admin/components/DataPagination';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { SearchField } from '@admin/services/types';
 
 const AdminLogTable = ({
-  onApiFetch,
+  setSearchFields,
   withSearchFields,
 }: {
-  onApiFetch?: (searchFields: SearchField[] | undefined) => void;
+  setSearchFields?: (searchFields: SearchField[] | undefined) => void;
   withSearchFields: boolean;
 }) => {
   const { data } = useAdminLogAll(withSearchFields);
 
-  console.log('AdminLogTable');
-
   useEffect(() => {
-    onApiFetch && onApiFetch(data?.searchFields);
+    setSearchFields && setSearchFields(data?.searchFields);
   }, [data?.searchFields, onApiFetch]);
 
   return (
@@ -88,7 +86,7 @@ const AdminLogIndex = () => {
         <Box />
         <SearchForm searchFields={searchFields} />
       </Flex>
-      <AdminLogTable onApiFetch={setSearchFields} withSearchFields={!searchFields} />
+      <AdminLogTable setSearchFields={setSearchFields} withSearchFields={!searchFields} />
     </ContentLayout>
   );
 };
