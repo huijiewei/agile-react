@@ -35,6 +35,7 @@ const DataPagination = (props: DataPaginationProps) => {
     <>
       {pages && (
         <Pagination
+          showTotal
           marginTop={5}
           {...restProps}
           total={pages.totalCount}
