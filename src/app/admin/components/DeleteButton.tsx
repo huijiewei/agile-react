@@ -137,7 +137,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
                 isDisabled={prompt ? !isValid : false}
                 isLoading={isLoading}
                 onClick={onDeleteClick}
-                colorScheme="red"
+                colorScheme={colorScheme}
               >
                 删除
               </Button>
