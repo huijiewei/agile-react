@@ -116,6 +116,9 @@ const SearchForm = (props: SearchFormProps) => {
         if (
           !keywordFields?.some((field) => {
             return field.field === key;
+          }) &&
+          !otherFields?.some((field) => {
+            return field.field === key;
           })
         ) {
           data[key] = value;
