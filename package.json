@@ -8,7 +8,7 @@
     "typescript",
     "webpack 5",
     "chakra-ui",
-    'react-router',
+    "react-router",
     "react components",
     "admin boilerplate"
   ],
@@ -57,7 +57,7 @@
     "@welldone-software/why-did-you-render": "^6.1.1",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^8.1.1",
-    "css-loader": "^5.2.1",
+    "css-loader": "^5.2.2",
     "css-minimizer-webpack-plugin": "^2.0.0",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.2.0",
