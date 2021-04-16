@@ -48,7 +48,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
       <DynamicSelect
         defaultValue={defaultValue}
         name={name}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || loading}
         ref={ref}
         {...restProps}
         options={options}
