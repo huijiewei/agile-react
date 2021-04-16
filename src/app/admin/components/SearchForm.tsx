@@ -1,50 +1,45 @@
-import {
-  Box,
-  BoxProps,
-  Button,
-  ButtonGroup,
-  Divider,
-  Input,
-  InputAddon,
-  InputGroup,
-  Select,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Button, ButtonGroup, Divider, Input, InputAddon, InputGroup } from '@chakra-ui/react';
 import { Dict } from '@shared/utils/types';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { SearchField } from '@admin/services/types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString, { ParsedQuery } from 'query-string';
 import { To } from 'history';
+import { DynamicSelect } from '@shared/components/select/DynamicSelect';
 
 type SearchFormProps = BoxProps & {
   searchFields?: SearchField[];
 };
 
-const isPageField = (param: string) => {
-  return param == 'page' || param == 'size';
+type SearchData = {
+  keywordField: string;
+  keywordValue: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 };
 
 const SearchForm = (props: SearchFormProps) => {
-  console.log('SearchForm');
-
   const { searchFields, ...restProps } = props;
 
-  const { handleSubmit, control, register, reset } = useForm();
   const location = useLocation();
   const navigate = useNavigate();
+
   const [initData, setInitData] = useState<Dict>();
   const [routeQuery, setRouteQuery] = useState<ParsedQuery>();
-  const [searchData, setSearchData] = useState<Dict>();
+  const [searchData, setSearchData] = useState<SearchData>({
+    keywordField: '',
+    keywordValue: '',
+  });
+
+  const { handleSubmit, register, reset } = useForm();
 
   const keywordFields = useMemo(() => {
     return searchFields?.filter((field) => field.type == 'keyword');
   }, [searchFields]);
 
   const otherFields = useMemo(() => {
-    return searchFields?.filter((field) => field.type != 'keyword' && field.type != 'br');
+    return searchFields?.filter((field) => field.type != 'keyword');
   }, [searchFields]);
 
   useEffect(() => {
@@ -52,9 +47,9 @@ const SearchForm = (props: SearchFormProps) => {
   }, [location.search]);
 
   useEffect(() => {
-    const initKeywordField = keywordFields?.[0].field;
+    const initKeywordField = keywordFields?.[0].field || '';
 
-    const searchData: Dict = { keywordField: '', keywordValue: '' };
+    const searchData: SearchData = { keywordField: '', keywordValue: '' };
     const initData: Dict = { keywordField: initKeywordField, keywordValue: '' };
 
     keywordFields?.forEach((field) => {
@@ -62,7 +57,10 @@ const SearchForm = (props: SearchFormProps) => {
 
       if (routeQuery && routeQuery[field.field]) {
         searchData.keywordField = field.field;
-        searchData.keywordValue = routeQuery[field.field];
+        searchData.keywordValue = routeQuery[field.field] as string;
+      } else {
+        searchData.keywordField = '';
+        searchData.keywordValue = '';
       }
     });
 
@@ -71,32 +69,22 @@ const SearchForm = (props: SearchFormProps) => {
     }
 
     otherFields?.forEach((field) => {
-      initData[field.field] = undefined;
+      if (field.type != 'br') {
+        initData[field.field] = undefined;
 
-      if (routeQuery && routeQuery[field.field]) {
-        searchData[field.field] = routeQuery[field.field];
+        if (routeQuery && routeQuery[field.field]) {
+          searchData[field.field] = routeQuery[field.field];
+        } else {
+          searchData[field.field] = '';
+        }
       }
     });
 
     setInitData(initData);
     setSearchData(searchData);
-  }, [routeQuery, keywordFields, otherFields]);
+  }, [routeQuery, keywordFields, otherFields, reset]);
 
-  const onSubmit = (formData: Dict) => {
-    const data: Dict = {};
-
-    for (const [key, value] of Object.entries(formData)) {
-      if (key !== 'keywordField' && key != 'keywordValue' && value && value.length > 0) {
-        data[key] = value;
-      }
-    }
-
-    if (formData['keywordField'] != '' && formData['keywordValue'] != '') {
-      data[formData['keywordField']] = formData['keywordValue'];
-    }
-
-    const search = queryString.stringify({ ...routeQuery, ...data, page: undefined });
-
+  const navigateTo = (search: string) => {
     const to: To = {
       pathname: location.pathname,
       search: search == '' ? '' : '?' + search,
@@ -106,8 +94,47 @@ const SearchForm = (props: SearchFormProps) => {
     navigate(to);
   };
 
+  const onSubmit = (formData: Dict) => {
+    const data: Dict = {};
+
+    for (const [key, value] of Object.entries(formData)) {
+      if (
+        key !== 'keywordField' &&
+        key != 'keywordValue' &&
+        !keywordFields?.some((field) => {
+          return field.field === key;
+        }) &&
+        value &&
+        value.length > 0
+      ) {
+        data[key] = value;
+      }
+    }
+
+    if (routeQuery) {
+      for (const [key, value] of Object.entries(routeQuery)) {
+        if (
+          !keywordFields?.some((field) => {
+            return field.field === key;
+          })
+        ) {
+          data[key] = value;
+        }
+      }
+    }
+
+    if (formData['keywordField'] != '' && formData['keywordValue'] != '') {
+      data[formData['keywordField']] = formData['keywordValue'];
+    }
+
+    const search = queryString.stringify({ ...data, page: undefined });
+
+    navigateTo(search);
+  };
+
   const onReset = () => {
     reset(initData);
+
     const search = queryString.stringify({
       ...routeQuery,
       ...initData,
@@ -116,68 +143,75 @@ const SearchForm = (props: SearchFormProps) => {
       page: undefined,
     });
 
-    const to: To = {
-      pathname: location.pathname,
-      search: search == '' ? '' : '?' + search,
-      hash: location.hash,
-    };
-
-    navigate(to);
+    navigateTo(search);
   };
 
   return (
     <Box {...restProps}>
-      <Wrap justify={'right'} align={'center'} as={'form'} onReset={onReset} onSubmit={handleSubmit(onSubmit)}>
-        {otherFields &&
-          otherFields.map((field, index) => (
-            <WrapItem key={'ko-' + index}>
-              {field.type == 'br' && <Divider width={'full'} />}
-              {field.type == 'select' && field.options && (
-                <Select
-                  defaultValue={searchData?.[field.field]}
-                  size={'sm'}
-                  {...register(field.field)}
-                  placeholder={field.label}
-                >
-                  {field.options.map((option: { value: string | number; description: string }) => (
-                    <option key={field.field + '-' + option.value} value={option.value.toString()}>
-                      {option.description}
-                    </option>
-                  ))}
-                </Select>
-              )}
-            </WrapItem>
-          ))}
-        <WrapItem>
+      <Box
+        display={'block'}
+        verticalAlign={'middle'}
+        textAlign={'right'}
+        as={'form'}
+        onReset={onReset}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {otherFields?.map((field, index) => (
+          <Box marginStart={2} display={field.type == 'br' ? 'block' : 'inline-block'} key={'ko-' + index}>
+            {field.type == 'br' && <Divider height={2} display={'block'} />}
+            {field.type == 'select' && (
+              <DynamicSelect
+                defaultValue={searchData[field.field]}
+                size={'sm'}
+                {...register(field.field)}
+                placeholder={field.label}
+                options={field.options}
+                optionRender={(option) => (
+                  <option key={field.field + '-' + option.value} value={option.value.toString()}>
+                    {option.description}
+                  </option>
+                )}
+              />
+            )}
+            {field.type == 'dateTimeRange' && (
+              <Input
+                type={'date'}
+                defaultValue={searchData[field.field]}
+                size={'sm'}
+                {...register(field.field)}
+                placeholder={field.label}
+              />
+            )}
+          </Box>
+        ))}
+        <Box marginStart={2} display={'inline-block'}>
           <InputGroup size={'sm'} marginEnd={3}>
             <InputAddon paddingX={0}>
-              {keywordFields && (
-                <Select
-                  defaultValue={searchData?.keywordField}
-                  {...register('keywordField')}
-                  borderWidth={0}
-                  size={'sm'}
-                >
-                  {keywordFields.map((field) => (
-                    <option key={'kof-' + field.field} value={field.field}>
-                      {field.label}
-                    </option>
-                  ))}
-                </Select>
-              )}
+              <DynamicSelect
+                defaultValue={searchData.keywordField}
+                {...register('keywordField')}
+                borderWidth={0}
+                size={'sm'}
+                options={keywordFields}
+                optionRender={(option) => (
+                  <option key={'kof-' + option.field} value={option.field}>
+                    {option.label}
+                  </option>
+                )}
+              />
             </InputAddon>
-            <Input {...register('keywordValue')} defaultValue={searchData?.keywordValue} type={'text'} />
+            <Input {...register('keywordValue')} defaultValue={searchData.keywordValue} type={'text'} />
           </InputGroup>
-        </WrapItem>{' '}
-        <WrapItem>
-          <ButtonGroup spacing={3} size={'sm'} variant={'outline'}>
+        </Box>
+        <Box marginStart={2} display={'inline-block'}>
+          <ButtonGroup spacing={2} size={'sm'} variant={'outline'}>
             <Button type={'submit'}>搜索</Button>
             <Button colorScheme={'gray'} type={'reset'}>
               重置
             </Button>
           </ButtonGroup>
-        </WrapItem>
-      </Wrap>
+        </Box>
+      </Box>
     </Box>
   );
 };
