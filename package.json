@@ -8,6 +8,7 @@
     "typescript",
     "webpack 5",
     "chakra-ui",
+    'react-router',
     "react components",
     "admin boilerplate"
   ],
