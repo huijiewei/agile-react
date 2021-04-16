@@ -136,7 +136,18 @@ module.exports = (env, argv) => {
           PUBLIC_URL: appConfig.publicPath + '/',
           API_HOST: appConfig.apiHost,
         },
-        inject: true,
+        minify: isProduction
+          ? {
+              collapseWhitespace: true,
+              keepClosingSlash: true,
+              removeComments: true,
+              removeRedundantAttributes: true,
+              removeScriptTypeAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              useShortDoctype: true,
+              minifyCSS: true,
+            }
+          : false,
         filename: 'index.html',
       }),
       isProduction &&
