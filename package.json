@@ -55,7 +55,6 @@
     "@typescript-eslint/parser": "^4.22.0",
     "@welldone-software/why-did-you-render": "^6.1.1",
     "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^4.0.0-alpha.0",
     "copy-webpack-plugin": "^8.1.1",
     "css-loader": "^5.2.1",
     "css-minimizer-webpack-plugin": "^2.0.0",

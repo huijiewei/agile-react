@@ -151,7 +151,6 @@ const Home = () => {
         <div>Go</div>
         <div>Go</div>
         <div>Go</div>
-        <div>Go</div>
       </Stack>
     </ContentLayout>
   );

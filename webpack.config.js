@@ -6,7 +6,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -40,6 +39,7 @@ module.exports = (env, argv) => {
       chunkFilename: fileName,
       pathinfo: false,
       assetModuleFilename: 'assets/resource/[name].[hash:8][ext]',
+      clean: isProduction,
     },
     module: {
       rules: [
@@ -153,7 +153,6 @@ module.exports = (env, argv) => {
           ],
         }),
       !isProduction && new ReactRefreshWebpackPlugin(),
-      isProduction && new CleanWebpackPlugin(),
       isProduction &&
         env['BUNDLE_ANALYZE'] === '1' &&
         new BundleAnalyzerPlugin({
