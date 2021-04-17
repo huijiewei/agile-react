@@ -23,7 +23,16 @@ module.exports = (env, argv) => {
 
   const config = {
     entry: {
-      [appName]: `./src/app/${appName}/index.tsx`,
+      [appName]: `./src/app/${appName}`,
+    },
+    watchOptions: {
+      ignored: /node_modules/,
+    },
+    cache: {
+      type: 'filesystem',
+      buildDependencies: {
+        config: [__filename],
+      },
     },
     resolve: {
       extensions: ['.jsx', '.js', '.tsx', '.ts'],
@@ -119,16 +128,18 @@ module.exports = (env, argv) => {
         PUBLIC_URL: appConfig.publicPath,
         QS_ARRAY_FORMAT: appConfig.qsArrayFormat,
       }),
-      new ESLintPlugin(),
-      new ForkTsCheckerWebpackPlugin({
-        eslint: {
-          files: './src/**/*.{ts,tsx,js,jsx}',
-        },
-      }),
-      new MiniCssExtractPlugin({
-        filename: cssFileName,
-        chunkFilename: cssFileName,
-      }),
+      isProduction && new ESLintPlugin(),
+      isProduction &&
+        new ForkTsCheckerWebpackPlugin({
+          eslint: {
+            files: './src/**/*.{ts,tsx,js,jsx}',
+          },
+        }),
+      isProduction &&
+        new MiniCssExtractPlugin({
+          filename: cssFileName,
+          chunkFilename: cssFileName,
+        }),
       new HtmlWebPackPlugin({
         title: appConfig.title,
         template: `./public/app/${appName}/index.html`,
@@ -216,7 +227,7 @@ module.exports = (env, argv) => {
     };
   } else {
     config.optimization = {
-      runtimeChunk: true,
+      runtimeChunk: 'single',
     };
 
     config.devtool = 'eval-cheap-source-map';
