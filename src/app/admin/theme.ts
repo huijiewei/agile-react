@@ -80,7 +80,7 @@ const agileTheme = extendTheme({
   },
   fontSizes: {
     xs: '0.75rem',
-    sm: '0.75rem',
+    sm: '0.8125rem',
     md: '0.875rem',
     lg: '1rem',
     xl: '1.125rem',
@@ -225,8 +225,6 @@ const agileTheme = extendTheme({
         xs: {
           h: 7,
           minW: 7,
-          fontSize: 'xs',
-          px: 3,
         },
       },
     },
