@@ -40,8 +40,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
   useEffect(() => {
     loadOptions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loadOptions]);
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
