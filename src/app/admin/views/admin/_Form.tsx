@@ -11,6 +11,7 @@ import { AdminDeleteButton } from '@admin/views/admin/_Delete';
 import { useNavigate } from 'react-router-dom';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { useAuth } from '@admin/services/useAuth';
+import { AvatarUpload } from '@admin/components/upload/AvatarUpload';
 
 type AdminFromProps = {
   admin: Admin;
@@ -96,8 +97,8 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
         <Input type={'text'} {...register('name', { required: false })} defaultValue={admin.name} />
         <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
       </FormItem>
-      <FormItem id="avatar" label={'头像：'} isInvalid={errors.avatar} fieldWidth={5}>
-        <Input type={'text'} {...register('avatar', { required: false })} defaultValue={admin.avatar} />
+      <FormItem id="avatar" label={'头像：'} isInvalid={errors.avatar} fieldWidth={22}>
+        <AvatarUpload {...register('avatar', { required: false })} defaultValue={admin.avatar} />
         <FormErrorMessage>{errors.avatar?.message || ' '}</FormErrorMessage>
       </FormItem>
       <FormItem id="adminGroupId" isRequired label={'管理组：'} isInvalid={errors.adminGroupId} fieldWidth={5}>
