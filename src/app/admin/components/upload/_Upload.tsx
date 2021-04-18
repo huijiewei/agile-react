@@ -23,9 +23,13 @@ type UploadProps = InputProps & {
 
 type UploadOption = {
   url: string;
-  paramName: string;
-  params?: Dict;
+  cropUrl: string;
   timeout?: number;
+  paramName: string;
+  dataType: string;
+  params?: Dict;
+  headers?: Dict;
+  responseParse: string;
   sizeLimit: number;
   typesLimit: string[];
 };
@@ -77,7 +81,7 @@ const Upload = forwardRef<UploadProps, 'input'>((props, ref) => {
       action={uploadOption.url}
       paramName={uploadOption.paramName}
       params={uploadOption.params}
-      onError={(error: any) => console.log(error)}
+      onUploadError={(error: string) => console.log(error)}
       {...input}
     >
       <Button variant={'outline'} size={'xs'} type={'button'} leftIcon={<Icon as={UploadOne} />}>
