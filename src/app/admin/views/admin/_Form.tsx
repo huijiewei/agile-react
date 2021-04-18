@@ -108,7 +108,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
           optionValue={'id'}
           optionLabel={'name'}
           remoteMethod={loadAdminGroups}
-          {...register('adminGroupId', { required: '请选择管理组' })}
+          {...register('adminGroupId', { required: isOwnerMode ? false : '请选择管理组' })}
           defaultValue={admin.adminGroupId}
         />
         <FormErrorMessage>{errors.adminGroupId?.message || ' '}</FormErrorMessage>
