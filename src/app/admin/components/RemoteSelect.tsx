@@ -1,8 +1,7 @@
-import { forwardRef, IconButton, SelectProps, Stack } from '@chakra-ui/react';
+import { forwardRef, IconButton, Select, SelectProps, Skeleton, Stack } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
 import { Dict } from '@shared/utils/types';
-import { DynamicSelect } from '@shared/components/select/DynamicSelect';
 
 type RemoteSelectOptionType = Dict[];
 
@@ -21,7 +20,6 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
     optionValue,
     buttonTitle = '刷新选项数据',
     isDisabled,
-    defaultValue,
     ...restProps
   } = props;
 
@@ -44,20 +42,17 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
-      <DynamicSelect
-        defaultValue={defaultValue}
-        name={name}
-        isDisabled={isDisabled || loading}
-        ref={ref}
-        {...restProps}
-        options={options}
-        skeletonProps={{ height: 10 }}
-        optionRender={(option, index) => (
-          <option key={name + '-' + index} value={option[optionValue]}>
-            {option[optionLabel]}
-          </option>
-        )}
-      />
+      {options ? (
+        <Select isDisabled={isDisabled || loading} name={name} ref={ref} {...restProps}>
+          {options.map((option, index) => (
+            <option key={name + '-' + index} value={option[optionValue]}>
+              {option[optionLabel]}
+            </option>
+          ))}
+        </Select>
+      ) : (
+        <Skeleton width={'full'} height={10} />
+      )}
       <IconButton
         onClick={loadOptions}
         size={'sm'}
