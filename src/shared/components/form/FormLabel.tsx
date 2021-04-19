@@ -13,11 +13,11 @@ import {
 const FormLabel = forwardRef<
   FormLabelProps & { align: 'start' | 'end'; requiredIndicatorSpacing: SystemProps['marginStart'] },
   'label'
->((passedProps, ref) => {
-  const styles = useStyleConfig('FormLabel', passedProps);
-  const props = omitThemingProps(passedProps);
+>((props, ref) => {
+  const styles = useStyleConfig('FormLabel', props);
+  const ownProps = omitThemingProps(props);
 
-  const { className, align, children, requiredIndicator, requiredIndicatorSpacing = 2, ...rest } = props;
+  const { className, align, children, requiredIndicator, requiredIndicatorSpacing = 2, ...restProps } = ownProps;
 
   const labelRequiredIndicator =
     requiredIndicator ||
@@ -31,7 +31,7 @@ const FormLabel = forwardRef<
 
   return (
     <chakra.label
-      {...field?.getLabelProps(rest, ref)}
+      {...field?.getLabelProps(restProps, ref)}
       className={cx('chakra-form__label', className)}
       __css={{
         display: 'block',

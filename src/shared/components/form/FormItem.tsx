@@ -20,30 +20,10 @@ type FormItemOptions = {
 type FormItemProps = GridProps & FormControlProps & FormItemOptions;
 
 const FormItem = forwardRef<FormItemProps, 'div'>((props, ref) => {
-  const {
-    id,
-    children,
-    isInvalid = false,
-    isRequired = false,
-    gap = 2.5,
-    label,
-    labelWidth = 2,
-    labelAlign = 'end',
-    fieldWidth = 22,
-    ...restProps
-  } = props;
+  const { children, gap = 2.5, label, labelWidth = 2, labelAlign = 'end', fieldWidth = 22, ...restProps } = props;
 
   return (
-    <SimpleGrid
-      columns={24}
-      id={id}
-      gap={gap}
-      as={FormControl}
-      isInvalid={isInvalid}
-      isRequired={isRequired}
-      ref={ref}
-      {...restProps}
-    >
+    <SimpleGrid columns={24} gap={gap} as={FormControl} ref={ref} {...restProps}>
       <GridItem
         align={labelAlign}
         colSpan={labelWidth}

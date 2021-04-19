@@ -1,52 +1,46 @@
 import { forwardRef, IconButton, Select, SelectProps, Skeleton, Stack } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
-import { Dict } from '@shared/utils/types';
 
-type RemoteSelectOptionType = Dict[];
+type Option = {
+  value: string | number | readonly string[] | undefined;
+  label: ReactNode;
+};
 
 type RemoteSelectProps = SelectProps & {
-  optionLabel: string;
-  optionValue: string;
   buttonTitle?: string;
-  remoteMethod: (callback: (optionData: RemoteSelectOptionType) => void) => void;
+  loadOptions: () => Promise<Option[] | undefined>;
 };
 
 const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
-  const {
-    name,
-    remoteMethod,
-    optionLabel,
-    optionValue,
-    buttonTitle = '刷新选项数据',
-    isDisabled,
-    ...restProps
-  } = props;
+  const { name, loadOptions, buttonTitle = '刷新选项数据', isDisabled, ...restProps } = props;
 
   const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<RemoteSelectOptionType>();
+  const [options, setOptions] = useState<Option[] | void>();
 
-  const loadOptions = useCallback(() => {
+  const reload = useCallback<() => void>(async () => {
     setLoading(true);
 
-    remoteMethod((optionData) => {
-      setOptions(optionData);
+    const options = await loadOptions();
 
-      setLoading(false);
-    });
-  }, [remoteMethod]);
+    setLoading(false);
+
+    setOptions(options);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    loadOptions();
-  }, [loadOptions]);
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
       {options ? (
         <Select isDisabled={isDisabled || loading} name={name} ref={ref} {...restProps}>
           {options.map((option, index) => (
-            <option key={name + '-' + index} value={option[optionValue]}>
-              {option[optionLabel]}
+            <option key={name + '-' + index} value={option.value}>
+              {option.label}
             </option>
           ))}
         </Select>
@@ -54,7 +48,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
         <Skeleton width={'full'} height={10} />
       )}
       <IconButton
-        onClick={loadOptions}
+        onClick={reload}
         size={'sm'}
         variant={'outline'}
         colorScheme={'gray'}

@@ -1,11 +1,10 @@
 import { Admin, useAdminSubmit } from '@admin/services/useAdmin';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Form } from '@shared/components/form/Form';
 import { Button, ButtonGroup, FormErrorMessage, FormHelperText, Input } from '@chakra-ui/react';
 import { FormItem } from '@shared/components/form/FormItem';
 import { RemoteSelect } from '@admin/components/RemoteSelect';
 import { useAdminGroups } from '@admin/services/useMisc';
-import { AdminGroup } from '@admin/services/useAdminGroup';
 import { FormAction } from '@shared/components/form/FormAction';
 import { AdminDeleteButton } from '@admin/views/admin/_Delete';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +19,7 @@ type AdminFromProps = {
 
 const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   const {
+    control,
     register,
     handleSubmit,
     getValues,
@@ -36,15 +36,19 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   const isEditMode = admin.id > 0;
   const isOwnerMode = currentUser?.id == admin.id;
 
-  const loadAdminGroups = async (callback: (adminGroups: AdminGroup[]) => void) => {
+  const loadAdminGroups = async () => {
     const { data } = await fetch();
 
-    if (data) {
-      callback(data);
-    }
+    return data?.map((adminGroup) => {
+      return {
+        value: adminGroup.id,
+        label: adminGroup.name,
+      };
+    });
   };
 
   const onSubmit = async (formData: Admin & { password: string; passwordConfirm: string }) => {
+    console.log(formData);
     const { data, error } = await submitAdmin(admin.id, formData);
 
     if (data) {
@@ -88,7 +92,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
           type={'password'}
           {...register('passwordConfirm', {
             required: isEditMode ? false : '请输入确认密码',
-            validate: (value) => value == getValues().password || '确认密码与密码不一致',
+            validate: (value) => value == getValues('password') || '确认密码与密码不一致',
           })}
         />
         <FormErrorMessage>{errors.passwordConfirm?.message || ' '}</FormErrorMessage>
@@ -98,16 +102,25 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
         <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
       </FormItem>
       <FormItem id="avatar" label={'头像：'} isInvalid={errors.avatar} fieldWidth={22}>
-        <AvatarUpload {...register('avatar', { required: false })} defaultValue={admin.avatar} />
+        <Controller
+          control={control}
+          defaultValue={admin.avatar}
+          name={'avatar'}
+          render={({ field: { value, onChange } }) => <AvatarUpload value={value} onChange={onChange} />}
+        />
         <FormErrorMessage>{errors.avatar?.message || ' '}</FormErrorMessage>
       </FormItem>
-      <FormItem id="adminGroupId" isRequired label={'管理组：'} isInvalid={errors.adminGroupId} fieldWidth={5}>
+      <FormItem
+        id="adminGroupId"
+        isRequired={!isOwnerMode}
+        label={'管理组：'}
+        isInvalid={errors.adminGroupId}
+        fieldWidth={5}
+      >
         <RemoteSelect
           isDisabled={isOwnerMode}
           placeholder={'所属管理组'}
-          optionValue={'id'}
-          optionLabel={'name'}
-          remoteMethod={loadAdminGroups}
+          loadOptions={loadAdminGroups}
           {...register('adminGroupId', { required: isOwnerMode ? false : '请选择管理组' })}
           defaultValue={admin.adminGroupId}
         />
