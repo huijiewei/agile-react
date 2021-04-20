@@ -71,7 +71,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
 
   useEffect(() => {
     if (prompt) {
-      trigger('phone');
+      trigger('deletePrompt');
     }
   }, [prompt, trigger]);
 
@@ -94,7 +94,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
   return (
     <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
       <PopoverTrigger>
-        <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
+        <Button as={'a'} colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
           {children}
         </Button>
       </PopoverTrigger>
@@ -105,10 +105,10 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
           <PopoverBody>
             {prompt ? (
               <>
-                <FormControl id="phone" isInvalid={isValid}>
+                <FormControl id="deletePrompt" isInvalid={isValid}>
                   <FormLabel color={'gray.500'}>{prompt.label}</FormLabel>
                   <Input
-                    {...register('phone', {
+                    {...register('deletePrompt', {
                       required: true,
                       validate: (v) => {
                         return v == prompt.value;
