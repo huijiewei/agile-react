@@ -1,7 +1,7 @@
 import { AdminGroup, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
 import { Box, Button, ButtonGroup, Checkbox, CheckboxGroup, FormErrorMessage, Input, Stack } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';
@@ -10,6 +10,7 @@ import { FormAction } from '@shared/components/form/FormAction';
 import { AdminGroupDeleteButton } from '@admin/views/admin-group/_Delete';
 import { useNavigate } from 'react-router-dom';
 import { SameWidthChildrenBox } from '@shared/components/box/SameWidthChildrenBox';
+import { useAuth } from '@admin/services/useAuth';
 
 type AdminGroupPermissionCheckGroup = {
   name: string;
@@ -40,11 +41,14 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
   const [groupPermissions, setGroupPermissions] = useState<AdminGroupPermissionCheckGroup[]>([]);
   const [disablePermissions, setDisablePermissions] = useState<string[]>([]);
   const { loading, submitAdminGroup } = useAdminGroupSubmit();
+  const { currentUser, mutate } = useAuth();
+
   const navigate = useNavigate();
 
   const { adminGroupPermissions } = useAdminGroupPermissions();
 
   const isEditMode = adminGroup.id > 0;
+  const isOwnerMode = currentUser?.adminGroup.id == adminGroup.id;
 
   const onGroupChange = (group: AdminGroupPermissionCheckGroup) => {
     const children: string[] = [];
@@ -146,6 +150,10 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
 
     if (data) {
       onSuccess && onSuccess(data);
+
+      if (isOwnerMode) {
+        await mutate(undefined, true);
+      }
     }
 
     if (error) {
@@ -274,7 +282,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
           <Button isLoading={loading} type={'submit'}>
             {isEditMode ? '编辑' : '新建'}
           </Button>
-          {isEditMode && (
+          {isEditMode && !isOwnerMode && (
             <AdminGroupDeleteButton
               size={'sm'}
               adminGroup={adminGroup}

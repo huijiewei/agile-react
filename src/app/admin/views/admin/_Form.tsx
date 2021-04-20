@@ -31,7 +31,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   const navigate = useNavigate();
   const { fetch } = useAdminGroups();
   const { loading, submitAdmin } = useAdminSubmit();
-  const { currentUser } = useAuth();
+  const { currentUser, mutate } = useAuth();
 
   const isEditMode = admin.id > 0;
   const isOwnerMode = currentUser?.id == admin.id;
@@ -48,11 +48,14 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
   };
 
   const onSubmit = async (formData: Admin & { password: string; passwordConfirm: string }) => {
-    console.log(formData);
     const { data, error } = await submitAdmin(admin.id, formData);
 
     if (data) {
       onSuccess && onSuccess(data);
+
+      if (isOwnerMode) {
+        await mutate(undefined, true);
+      }
     }
 
     if (error) {
