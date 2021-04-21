@@ -55,19 +55,11 @@ module.exports = (env, argv) => {
         {
           test: /\.(js|jsx|ts|tsx)$/,
           include: path.resolve('./src'),
-          use: [{ loader: 'babel-loader' }].filter(Boolean),
+          use: ['babel-loader'],
         },
         {
-          test: /\.css$/,
-          use: [
-            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                modules: false,
-              },
-            },
-          ],
+          test: /\.css$/i,
+          use: [isProduction ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -140,6 +132,7 @@ module.exports = (env, argv) => {
           filename: cssFileName,
           chunkFilename: cssFileName,
         }),
+      !isProduction && new ReactRefreshWebpackPlugin(),
       new HtmlWebPackPlugin({
         title: appConfig.title,
         template: `./public/app/${appName}/index.html`,
@@ -174,7 +167,6 @@ module.exports = (env, argv) => {
             },
           ],
         }),
-      !isProduction && new ReactRefreshWebpackPlugin(),
       isProduction &&
         env['BUNDLE_ANALYZE'] === '1' &&
         new BundleAnalyzerPlugin({
