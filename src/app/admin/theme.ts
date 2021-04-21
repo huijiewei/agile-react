@@ -421,4 +421,4 @@ const agileTheme = extendTheme({
   },
 });
 
-export default agileTheme;
+export { agileTheme };
