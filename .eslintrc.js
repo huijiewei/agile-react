@@ -29,14 +29,5 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
-  overrides: [
-    {
-      files: ['*.ts'],
-      rules: {
-        '@typescript-eslint/explicit-module-boundary-types': 'warn',
-      },
-    },
-  ],
 };
