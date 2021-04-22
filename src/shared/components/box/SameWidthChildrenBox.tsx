@@ -38,12 +38,14 @@ const sameWidth = (element: HTMLElement, childrenClassName: string) => {
 const SameWidthChildrenBox = (props: SameWidthChildrenBoxProps): JSX.Element => {
   const { children, childrenClassName, ...restProps } = props;
 
-  const sameWidthCallback = (e: HTMLDivElement) => {
-    sameWidth(e, childrenClassName);
-  };
+  const sameWidthRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    sameWidthRef.current && sameWidth(sameWidthRef.current, childrenClassName);
+  }, [childrenClassName]);
 
   return (
-    <Box ref={sameWidthCallback} {...restProps}>
+    <Box ref={sameWidthRef} {...restProps}>
       {children}
     </Box>
   );
