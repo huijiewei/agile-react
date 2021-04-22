@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { matchRoutes, Navigate, useLocation, useRoutes } from 'react-router-dom';
 import { To } from 'history';
 
@@ -22,7 +23,6 @@ import Nest111 from '@admin/views/nest/1-1-1';
 import Nest112 from '@admin/views/nest/1-1-2';
 import Nest1111 from '@admin/views/nest/1-1-1-1';
 import Nest1112 from '@admin/views/nest/1-1-1-2';
-import { useEffect, useState } from 'react';
 
 export const BASE_NAME = process.env.PUBLIC_URL;
 
@@ -122,7 +122,7 @@ type Breadcrumb = {
   to?: To;
 };
 
-const useBreadcrumb = () => {
+const useBreadcrumb = (): Breadcrumb[] => {
   const location = useLocation();
 
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
@@ -144,7 +144,7 @@ const useBreadcrumb = () => {
           breadcrumbs.push({
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            title: item.route.title,
+            title: item.route?.title,
             current: current,
             to: current ? undefined : BASE_NAME + item.pathname,
           });
@@ -160,7 +160,7 @@ const useBreadcrumb = () => {
   return breadcrumbs;
 };
 
-const AppRoutes = () => {
+const AppRoutes = (): ReturnType<typeof useRoutes> => {
   return useRoutes(routes, BASE_NAME);
 };
 

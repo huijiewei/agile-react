@@ -11,7 +11,7 @@ type SearchFormProps = BoxProps & {
   searchFields?: SearchField[];
 };
 
-const SearchForm = (props: SearchFormProps) => {
+const SearchForm = (props: SearchFormProps): JSX.Element => {
   const { searchFields, ...restProps } = props;
 
   const location = useLocation();
@@ -185,7 +185,12 @@ const SearchForm = (props: SearchFormProps) => {
   );
 };
 
-const useSearchForm = () => {
+type UseSearchForm = {
+  searchFields: SearchField[] | undefined;
+  setSearchFields: (searchFields: SearchField[] | undefined) => void;
+};
+
+const useSearchForm = (): UseSearchForm => {
   const [searchFields, setSearchFieldsState] = useState<SearchField[]>();
 
   const setSearchFields = (searchFields: SearchField[] | undefined) => {

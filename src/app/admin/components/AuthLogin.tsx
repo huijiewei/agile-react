@@ -42,7 +42,7 @@ const LoginModal = ({ isOpened }: { isOpened: boolean }) => {
   );
 };
 
-const AuthLogin = ({ children }: { children: ReactNode }) => {
+const AuthLogin = ({ children }: { children: ReactNode }): JSX.Element => {
   const authLoginAction = useAuthLoginState();
 
   if (authLoginAction == AuthLoginAction.DIRECT) {

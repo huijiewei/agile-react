@@ -5,7 +5,7 @@ import { Layout, LayoutAside, LayoutContent, LayoutHeader } from '@shared/compon
 import { NavHeader } from '@admin/components/NavHeader';
 import { NavAside } from '@admin/components/NavAside';
 
-const DefaultLayout = () => {
+const DefaultLayout = (): JSX.Element => {
   return (
     <AuthLogin>
       <Layout

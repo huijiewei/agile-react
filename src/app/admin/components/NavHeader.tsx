@@ -6,7 +6,7 @@ import { MenuUnfoldOne } from '@icon-park/react';
 import { NavBreadcrumb } from '@admin/components/NavBreadcrumb';
 import { NavUserMenu } from '@admin/components/NavUserMenu';
 
-const NavHeader = () => {
+const NavHeader = (): JSX.Element => {
   const { headerHeight, asideWidth, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
 
   return (

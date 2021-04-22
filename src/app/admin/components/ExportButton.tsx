@@ -21,7 +21,7 @@ type ExportButtonProps = ButtonProps & {
   confirmMessage?: string;
 };
 
-const ExportButton = (props: PropsWithChildren<ExportButtonProps>) => {
+const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element => {
   const {
     apiEndpoint,
     confirmMessage,

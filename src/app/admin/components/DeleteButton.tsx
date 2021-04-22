@@ -32,7 +32,7 @@ type DeleteButtonProps = ButtonProps & {
   onSuccess?: (message: string) => void;
 };
 
-const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>) => {
+const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element => {
   const {
     children,
     variant = 'outline',

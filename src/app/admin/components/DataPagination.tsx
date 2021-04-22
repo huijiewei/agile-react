@@ -26,7 +26,7 @@ const DataPaginationItem = (props: DataPaginationItemProps) => {
   return <PaginationItem as={Link} to={to} page={page} {...restProps} />;
 };
 
-const DataPagination = (props: DataPaginationProps) => {
+const DataPagination = (props: DataPaginationProps): JSX.Element => {
   const { pages, ...restProps } = props;
 
   const location = useLocation();

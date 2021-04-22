@@ -15,7 +15,7 @@ import {
 import { useEffect, useRef } from 'react';
 import { Info } from '@icon-park/react';
 
-const ErrorDialog = () => {
+const ErrorDialog = (): JSX.Element => {
   const error = useErrorState();
   const cancelRef = useRef(null);
 

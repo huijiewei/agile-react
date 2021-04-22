@@ -2,7 +2,7 @@ import { Metismenu } from '@shared/components/metismenu/Metismenu';
 import { useAuth } from '@admin/services/useAuth';
 import { Box } from '@chakra-ui/react';
 
-const NavAside = () => {
+const NavAside = (): JSX.Element => {
   const { groupMenus } = useAuth();
 
   return (

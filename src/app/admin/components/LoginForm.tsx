@@ -25,7 +25,7 @@ type LoginFormProps = {
 
 type LoginForm = Record<string, unknown>;
 
-const LoginForm = ({ onSuccess }: LoginFormProps) => {
+const LoginForm = ({ onSuccess }: LoginFormProps): JSX.Element => {
   const {
     register,
     handleSubmit,

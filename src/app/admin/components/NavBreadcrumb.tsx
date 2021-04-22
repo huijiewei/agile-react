@@ -4,7 +4,7 @@ import { Icon } from '@shared/components/icon/Icon';
 import { Home, Right } from '@icon-park/react';
 import { Link } from 'react-router-dom';
 
-const NavBreadcrumb = () => {
+const NavBreadcrumb = (): JSX.Element => {
   const breadcrumbs = useBreadcrumb();
 
   return (
