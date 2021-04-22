@@ -9,7 +9,7 @@ import { Avatar, Center, Menu, MenuButton, MenuDivider, MenuItem, MenuList } fro
 import { Icon } from '@shared/components/icon/Icon';
 import { Down, Logout, Refresh, User } from '@icon-park/react';
 
-const NavUserMenu = ({ height }: { height: string }): JSX.Element => {
+const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
   const { apiPost } = useHttp();
   const { success } = useMessage();
   const { currentUser, mutate } = useAuth();

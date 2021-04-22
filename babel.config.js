@@ -19,6 +19,10 @@ module.exports = (api) => {
       ],
       ['@babel/preset-typescript', { allowDeclareFields: true }],
     ],
-    plugins: ['@babel/plugin-transform-runtime', !api.env('production') && 'react-refresh/babel'].filter(Boolean),
+    plugins: [
+      '@babel/plugin-transform-runtime',
+      !api.env('production') && 'react-refresh/babel',
+      '@vanilla-extract/babel-plugin',
+    ].filter(Boolean),
   };
 };

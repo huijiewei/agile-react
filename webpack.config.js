@@ -9,6 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -37,6 +38,7 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: ['.jsx', '.js', '.tsx', '.ts'],
       alias: {
+        '@uikit': path.resolve('src/uikit'),
         '@shared': path.resolve('src/shared'),
         [`@${appName}`]: path.resolve(`src/app/${appName}`),
       },
@@ -54,12 +56,27 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.(js|jsx|ts|tsx)$/,
-          include: path.resolve('./src'),
-          use: ['babel-loader'],
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'babel-loader',
+            },
+          ],
         },
         {
           test: /\.css$/i,
-          use: [isProduction ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
+          use: [
+            {
+              loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+              options: { importLoaders: 1 },
+            },
+            {
+              loader: 'postcss-loader',
+            },
+          ],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -127,6 +144,7 @@ module.exports = (env, argv) => {
             files: './src/**/*.{ts,tsx,js,jsx}',
           },
         }),
+      new VanillaExtractPlugin(),
       isProduction &&
         new MiniCssExtractPlugin({
           filename: cssFileName,
@@ -198,6 +216,13 @@ module.exports = (env, argv) => {
             name: 'vendor',
             test: /[\\/]node_modules[\\/]/,
             chunks: 'all',
+            priority: 10,
+            enforce: true,
+          },
+          uikit: {
+            name: 'uikit',
+            test: /[\\/]src\/uikit[\\/]/,
+            chunks: 'all',
             priority: 20,
             enforce: true,
           },
@@ -205,7 +230,7 @@ module.exports = (env, argv) => {
             name: 'shared',
             test: /[\\/]src\/shared[\\/]/,
             chunks: 'all',
-            priority: 15,
+            priority: 20,
             enforce: true,
           },
           default: {

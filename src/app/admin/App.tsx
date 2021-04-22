@@ -10,7 +10,7 @@ import { AppHttpProvider } from '@admin/AppHttp';
 
 import { AppRoutes } from '@admin/routers';
 
-const App = () => {
+const App = (): JSX.Element => {
   useSplash();
 
   return (

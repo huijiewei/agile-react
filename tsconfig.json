@@ -1,21 +1,20 @@
 {
-  "include": ["src"],
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "target": "es5",
     "jsx": "react-jsx",
-
     "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
-
     "baseUrl": "./src",
     "paths": {
+      "@uikit/*": ["uikit/*"],
       "@shared/*": ["shared/*"],
       "@admin/*": ["app/admin/*"],
       "@mobile/*": ["app/mobile/*"]

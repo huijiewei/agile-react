@@ -1,5 +1,4 @@
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
-import { setAuthAccessToken } from '@admin/AppAuth';
 import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 import ContentLayout from '@admin/layouts/ContentLayout';
 import { requestFlatry } from '@shared/utils/http';
@@ -8,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Box, Button, HStack, IconButton, Stack } from '@chakra-ui/react';
 import { Config, Delete, Minus } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
+import { Button as AgileButton } from '@uikit/components/button/Button';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -21,7 +21,7 @@ const DeleteAdminButton = () => {
   return <Button isDisabled={!canDeleteAdmin}>是否有删除管理员权限</Button>;
 };
 
-const Home = () => {
+const Home = (): JSX.Element => {
   const { setError } = useErrorDispatch();
   const { apiGet, apiPost } = useHttp();
 
@@ -29,15 +29,7 @@ const Home = () => {
     setError('出现错误');
   };
 
-  const handleSetIncorrectAccessToken = () => {
-    setAuthAccessToken('1T0VCubVALBwvgHm51Hh6o2');
-  };
-
-  const handleSetCorrectAccessToken = () => {
-    setAuthAccessToken('1T0VCubVALBwvgHm51Hh6o');
-  };
-
-  const handleSendGet = async () => {
+  const onSendGet = async () => {
     const { data } = await requestFlatry(apiGet('user/create', {}));
 
     if (data) {
@@ -45,7 +37,7 @@ const Home = () => {
     }
   };
 
-  const handleSendPost = async () => {
+  const onSendPost = async () => {
     const { data } = await requestFlatry(apiPost('user/create', {}));
 
     if (data) {
@@ -59,16 +51,20 @@ const Home = () => {
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
         <HStack>
+          <AgileButton onClick={handleClick} size={'lg'}>
+            大型按钮
+          </AgileButton>
+          <AgileButton>普通按钮</AgileButton>
+          <AgileButton size={'sm'}>小型按钮</AgileButton>
+          <AgileButton size={'xs'}>迷你按钮</AgileButton>
+        </HStack>
+        <HStack>
           <DeleteUserButton />
           <DeleteAdminButton />
         </HStack>
         <HStack>
-          <Button onClick={handleSendGet}>随便发送一个 GET 请求</Button>
-          <Button onClick={handleSendPost}>随便发送一个 POST 请求</Button>
-        </HStack>
-        <HStack>
-          <Button onClick={handleSetIncorrectAccessToken}>设置错误的 AccessToken</Button>
-          <Button onClick={handleSetCorrectAccessToken}>设置正确的 AccessToken</Button>
+          <Button onClick={onSendGet}>随便发送一个 GET 请求</Button>
+          <Button onClick={onSendPost}>随便发送一个 POST 请求</Button>
         </HStack>
         <HStack>
           <Button onClick={handleClick}>显示个错误提示</Button>
