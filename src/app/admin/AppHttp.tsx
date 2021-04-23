@@ -15,7 +15,7 @@ import {
   UnprocessableEntityHttpCode,
 } from '@shared/utils/http';
 
-const AppHttpProvider = ({ children }: { children: ReactNode }) => {
+const AppHttpProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const { setError } = useErrorDispatch();
   const { setLoginAction } = useAuthLoginDispatch();
 

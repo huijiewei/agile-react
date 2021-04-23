@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Admin, useAdminView } from '@admin/services/useAdmin';
 import { AdminFrom } from '@admin/views/admin/_Form';
 
-const AdminEdit = () => {
+const AdminEdit = (): JSX.Element => {
   const { success } = useMessage();
   const { id } = useParams();
 

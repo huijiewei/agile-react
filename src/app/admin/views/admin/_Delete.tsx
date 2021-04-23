@@ -6,7 +6,7 @@ import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
 type AdminDeleteButtonProps = { size?: 'sm' | 'xs'; admin: Admin; onSuccess: () => void };
 
-const AdminDeleteButton = (props: PropsWithChildren<AdminDeleteButtonProps>) => {
+const AdminDeleteButton = (props: PropsWithChildren<AdminDeleteButtonProps>): JSX.Element => {
   const { loading, deleteAdmin } = useAdminDelete();
   const { success } = useMessage();
 

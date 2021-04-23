@@ -70,7 +70,7 @@ const MetismenuItem = ({ menu, keyPrefix }: { menu: any; keyPrefix: string }) =>
   );
 };
 
-const Metismenu = (props: MetismenuProps) => {
+const Metismenu = (props: MetismenuProps): JSX.Element => {
   const { toggle, menus } = props;
 
   const elemRef = useRef<HTMLUListElement>(null);

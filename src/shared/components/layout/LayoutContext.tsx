@@ -46,7 +46,7 @@ const LayoutAsideProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const LayoutProvider = ({ children, ...layoutState }: PropsWithChildren<LayoutProviderProps>) => {
+export const LayoutProvider = ({ children, ...layoutState }: PropsWithChildren<LayoutProviderProps>): JSX.Element => {
   return (
     <LayoutStateContext.Provider value={layoutState}>
       <LayoutAsideProvider>{children}</LayoutAsideProvider>

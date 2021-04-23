@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 import ContentLayout from '@admin/layouts/ContentLayout';
 
-const NestLayout = () => {
+const NestLayout = (): JSX.Element => {
   return (
     <ContentLayout>
       <div>

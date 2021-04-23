@@ -4,7 +4,7 @@ import { AdminGroup } from '@admin/services/useAdminGroup';
 import { useNavigate } from 'react-router-dom';
 import { useMessage } from '@shared/hooks/useMessage';
 
-const AdminGroupCreate = () => {
+const AdminGroupCreate = (): JSX.Element => {
   const { success } = useMessage();
   const navigate = useNavigate();
 

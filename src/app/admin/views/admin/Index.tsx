@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAdminAll } from '@admin/services/useAdmin';
 import { PermissionButton } from '@admin/components/PermissionButton';
 
-const AdminTable = () => {
+const AdminTable = (): JSX.Element => {
   const { data } = useAdminAll();
 
   return (

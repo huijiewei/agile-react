@@ -59,6 +59,26 @@ const Home = (): JSX.Element => {
           <AgileButton size={'xs'}>迷你按钮</AgileButton>
         </HStack>
         <HStack>
+          <AgileButton onClick={handleClick}>按钮</AgileButton>
+          <AgileButton variant={'outline'}>按钮</AgileButton>
+          <AgileButton variant={'ghost'}>按钮</AgileButton>
+          <AgileButton variant={'link'}>按钮</AgileButton>
+        </HStack>
+        <HStack>
+          <AgileButton as={'a'} isDisabled onClick={handleClick} size={'lg'}>
+            大型按钮
+          </AgileButton>
+          <AgileButton as={'span'} isDisabled onClick={handleClick}>
+            普通按钮
+          </AgileButton>
+          <AgileButton isDisabled size={'sm'} onClick={handleClick}>
+            小型按钮
+          </AgileButton>
+          <AgileButton isDisabled size={'xs'} onClick={handleClick}>
+            迷你按钮
+          </AgileButton>
+        </HStack>
+        <HStack>
           <DeleteUserButton />
           <DeleteAdminButton />
         </HStack>

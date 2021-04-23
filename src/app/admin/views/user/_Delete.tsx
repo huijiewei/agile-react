@@ -6,7 +6,7 @@ import { User, useUserDelete } from '@admin/services/useUser';
 
 type UserDeleteButtonProps = { size?: 'sm' | 'xs'; user: User; onSuccess: () => void };
 
-const UserDeleteButton = (props: PropsWithChildren<UserDeleteButtonProps>) => {
+const UserDeleteButton = (props: PropsWithChildren<UserDeleteButtonProps>): JSX.Element => {
   const { loading, deleteUser } = useUserDelete();
   const { success } = useMessage();
 

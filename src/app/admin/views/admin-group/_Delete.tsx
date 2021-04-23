@@ -6,7 +6,7 @@ import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
 type AdminGroupDeleteButtonProps = { size?: 'sm' | 'xs'; adminGroup: AdminGroup; onSuccess: () => void };
 
-const AdminGroupDeleteButton = (props: PropsWithChildren<AdminGroupDeleteButtonProps>) => {
+const AdminGroupDeleteButton = (props: PropsWithChildren<AdminGroupDeleteButtonProps>): JSX.Element => {
   const { loading, deleteAdminGroup } = useAdminGroupDelete();
   const { success } = useMessage();
 

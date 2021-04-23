@@ -4,7 +4,7 @@ import { AuthLoginProvider } from '@shared/contexts/AuthLoginContext';
 const ClientIdKey = 'ag:admin-client-id';
 const AccessTokenKey = 'ag:admin-access-token';
 
-const AppAuthProvider = ({ children }: { children: ReactNode }) => {
+const AppAuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   return <AuthLoginProvider>{children}</AuthLoginProvider>;
 };
 
@@ -29,7 +29,7 @@ const getAuthToken = (): AuthToken => {
   };
 };
 
-const setAuthAccessToken = (accessToken: string) => {
+const setAuthAccessToken = (accessToken: string): void => {
   window.localStorage.setItem(AccessTokenKey, accessToken);
 };
 

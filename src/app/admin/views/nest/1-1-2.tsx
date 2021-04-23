@@ -1,4 +1,4 @@
-const Nest112 = () => {
+const Nest112 = (): JSX.Element => {
   return <div>Nest 1-1-2</div>;
 };
 

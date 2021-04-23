@@ -1,7 +1,7 @@
 import { ExportButton } from '@admin/components/ExportButton';
 import { useAuthPermission } from '@admin/hooks/useAuthPermission';
 
-const UserExportButton = () => {
+const UserExportButton = (): JSX.Element => {
   const hasPermission = useAuthPermission('user/export');
 
   return (

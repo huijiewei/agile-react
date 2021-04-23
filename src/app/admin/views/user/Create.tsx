@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '@admin/services/useUser';
 import { UserForm } from '@admin/views/user/_Form';
 
-const UserCreate = () => {
+const UserCreate = (): JSX.Element => {
   const { success } = useMessage();
   const navigate = useNavigate();
 

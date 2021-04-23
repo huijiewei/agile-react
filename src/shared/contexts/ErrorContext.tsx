@@ -16,7 +16,7 @@ const ErrorStateContext = createContext<ErrorState | null | undefined>(undefined
 
 const ErrorDispatchContext = createContext<ErrorDispatchContextType | undefined>(undefined);
 
-export const ErrorProvider = ({ children }: { children: ReactNode }) => {
+export const ErrorProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [errorState, setErrorState] = useState<ErrorState | null>(null);
 
   return (

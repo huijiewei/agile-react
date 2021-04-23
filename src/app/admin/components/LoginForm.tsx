@@ -110,7 +110,9 @@ const LoginForm = ({ onSuccess }: LoginFormProps): JSX.Element => {
               placeholder="验证码"
             />
             <InputRightAddon>
-              <img alt={'验证码'} onClick={updateCaptcha} src={captcha.image} />
+              <div role="button" tabIndex={0} onKeyDown={updateCaptcha} onMouseDown={updateCaptcha}>
+                <img alt={'验证码'} src={captcha.image} />
+              </div>
             </InputRightAddon>
           </InputGroup>
           <FormErrorMessage>{errors.captcha?.message || ' '}</FormErrorMessage>

@@ -3,7 +3,7 @@ import { PropsWithChildren, ReactNode } from 'react';
 import { LayoutProvider, LayoutState, useLayoutState } from './LayoutContext';
 import { noScrollbarsClassName } from 'react-remove-scroll-bar';
 
-const LayoutHeader = ({ children }: { children: ReactNode }) => {
+const LayoutHeader = ({ children }: { children: ReactNode }): JSX.Element => {
   const { headerHeight, headerBackgroundColor } = useLayoutState();
   return (
     <Box
@@ -23,7 +23,7 @@ const LayoutHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const LayoutAside = ({ children }: { children: ReactNode }) => {
+const LayoutAside = ({ children }: { children: ReactNode }): JSX.Element => {
   const { headerHeight, asideWidth, asideColor, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
 
   return (
@@ -44,7 +44,7 @@ const LayoutAside = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const LayoutContent = ({ children }: { children: ReactNode }) => {
+const LayoutContent = ({ children }: { children: ReactNode }): JSX.Element => {
   const { asideWidth, asideCollapsedWidth, headerHeight } = useLayoutState();
 
   return (
@@ -70,7 +70,7 @@ const LayoutRoot = ({ children }: { children: ReactNode }) => {
 
 type LayoutProp = LayoutState;
 
-const Layout = ({ children, ...layoutProps }: PropsWithChildren<LayoutProp>) => {
+const Layout = ({ children, ...layoutProps }: PropsWithChildren<LayoutProp>): JSX.Element => {
   return (
     <LayoutProvider
       backgroundColor={layoutProps.backgroundColor}

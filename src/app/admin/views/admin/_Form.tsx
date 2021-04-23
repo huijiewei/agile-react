@@ -17,7 +17,7 @@ type AdminFromProps = {
   onSuccess: (admin: Admin) => void;
 };
 
-const AdminFrom = ({ admin, onSuccess }: AdminFromProps) => {
+const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
   const {
     control,
     register,

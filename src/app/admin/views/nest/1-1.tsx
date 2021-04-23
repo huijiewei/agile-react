@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 
-const Nest11 = () => {
+const Nest11 = (): JSX.Element => {
   return (
     <>
       <div>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAdminGroupAll } from '@admin/services/useAdminGroup';
 import { PermissionButton } from '@admin/components/PermissionButton';
 
-const AdminGroupTable = () => {
+const AdminGroupTable = (): JSX.Element => {
   const { data } = useAdminGroupAll();
 
   return (

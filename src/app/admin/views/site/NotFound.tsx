@@ -1,7 +1,7 @@
 import { Button, Center, Flex, Image, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-const NotFound = () => {
+const NotFound = (): JSX.Element => {
   const navigate = useNavigate();
 
   const handleBack = () => {

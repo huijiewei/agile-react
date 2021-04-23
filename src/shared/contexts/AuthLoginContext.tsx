@@ -17,7 +17,7 @@ const AuthLoginStateContext = createContext<AuthLoginAction | undefined>(undefin
 
 const AuthLoginDispatchContext = createContext<AuthLoginDispatchContextType | undefined>(undefined);
 
-const AuthLoginProvider = ({ children }: { children: ReactNode }) => {
+const AuthLoginProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [authLoginState, setAuthLoginState] = useState<AuthLoginAction>(AuthLoginAction.NONE);
 
   return (

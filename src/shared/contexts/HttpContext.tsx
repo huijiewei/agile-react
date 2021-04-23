@@ -26,7 +26,7 @@ const HttpProvider = ({
   onSuccess,
   onError,
   paramsSerializer,
-}: PropsWithChildren<HttpProviderProps>) => {
+}: PropsWithChildren<HttpProviderProps>): JSX.Element => {
   const http = createHttp(baseUrl, onRequest, onSuccess, onError, paramsSerializer);
 
   return <HttpContext.Provider value={http}>{children}</HttpContext.Provider>;

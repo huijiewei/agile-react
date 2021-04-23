@@ -13,7 +13,7 @@ type UserFromProps = {
   onSuccess: (user: User) => void;
 };
 
-const UserForm = ({ user, onSuccess }: UserFromProps) => {
+const UserForm = ({ user, onSuccess }: UserFromProps): JSX.Element => {
   const {
     register,
     handleSubmit,

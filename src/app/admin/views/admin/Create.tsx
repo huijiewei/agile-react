@@ -4,7 +4,7 @@ import { Admin } from '@admin/services/useAdmin';
 import { useMessage } from '@shared/hooks/useMessage';
 import { useNavigate } from 'react-router-dom';
 
-const AdminCreate = () => {
+const AdminCreate = (): JSX.Element => {
   const { success } = useMessage();
   const navigate = useNavigate();
 

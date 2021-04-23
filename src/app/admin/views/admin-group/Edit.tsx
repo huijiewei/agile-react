@@ -4,7 +4,7 @@ import { AdminGroup, useAdminGroupView } from '@admin/services/useAdminGroup';
 import { AdminGroupFrom } from '@admin/views/admin-group/_Form';
 import { useMessage } from '@shared/hooks/useMessage';
 
-const AdminGroupEdit = () => {
+const AdminGroupEdit = (): JSX.Element => {
   const { success } = useMessage();
   const { id } = useParams();
 

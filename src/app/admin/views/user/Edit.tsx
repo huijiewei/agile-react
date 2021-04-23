@@ -4,7 +4,7 @@ import { User, useUserView } from '@admin/services/useUser';
 import { UserForm } from '@admin/views/user/_Form';
 import { useMessage } from '@shared/hooks/useMessage';
 
-const UserEdit = () => {
+const UserEdit = (): JSX.Element => {
   const { success } = useMessage();
   const { id } = useParams();
 

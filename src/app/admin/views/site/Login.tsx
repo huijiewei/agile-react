@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Center, Image, Stack, Text } from '@chakra-ui/react';
 import { useAuthLoginDispatch } from '@shared/contexts/AuthLoginContext';
 
-const Login = () => {
+const Login = (): JSX.Element => {
   const { resetLoginAction } = useAuthLoginDispatch();
   const navigator = useNavigate();
   const [searchParams] = useSearchParams();

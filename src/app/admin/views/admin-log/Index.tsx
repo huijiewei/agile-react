@@ -77,7 +77,7 @@ const AdminLogTable = ({
   );
 };
 
-const AdminLogIndex = () => {
+const AdminLogIndex = (): JSX.Element => {
   const { searchFields, setSearchFields } = useSearchForm();
 
   return (

@@ -27,7 +27,7 @@ type AdminGroupFormProps = {
   onSuccess: (adminGroup: AdminGroup) => void;
 };
 
-const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps) => {
+const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Element => {
   const {
     register,
     handleSubmit,

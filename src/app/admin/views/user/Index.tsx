@@ -85,7 +85,7 @@ const UserTable = ({
   );
 };
 
-const UserIndex = () => {
+const UserIndex = (): JSX.Element => {
   const { searchFields, setSearchFields } = useSearchForm();
 
   return (
