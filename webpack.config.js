@@ -141,11 +141,7 @@ module.exports = (env, argv) => {
       isProduction &&
         new ForkTsCheckerWebpackPlugin({
           eslint: {
-            files: [
-              './src/uikit/**/*.{ts,tsx,js,jsx}',
-              './src/shared/**/*.{ts,tsx,js,jsx}',
-              `./src/app/${appName}/**/*.{ts,tsx,js,jsx}`,
-            ],
+            files: [`./src/app/${appName}/**/*.{ts,tsx,js,jsx}`],
           },
         }),
       new VanillaExtractPlugin(),
