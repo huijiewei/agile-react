@@ -1,7 +1,7 @@
 import { AdminGroup, useAdminGroupSubmit } from '@admin/services/useAdminGroup';
 import { Box, Button, ButtonGroup, Checkbox, CheckboxGroup, FormErrorMessage, Input, Stack } from '@chakra-ui/react';
 import { AdminGroupPermission, useAdminGroupPermissions } from '@admin/services/useMisc';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { Form } from '@shared/components/form/Form';

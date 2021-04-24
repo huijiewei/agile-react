@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react';
 
 type FormActionProps = GridProps & { labelWidth?: ResponsiveValue<number | 'auto'> | undefined };
 
-const FormAction = (props: PropsWithChildren<FormActionProps>) => {
+const FormAction = (props: PropsWithChildren<FormActionProps>): JSX.Element => {
   const { children, gap = 2.5, labelWidth = 3, ...restProps } = props;
 
   return (

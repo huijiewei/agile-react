@@ -40,7 +40,7 @@ const AdminGroupTable = (): JSX.Element => {
   );
 };
 
-const AdminGroupIndex = () => {
+const AdminGroupIndex = (): JSX.Element => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">

@@ -58,7 +58,7 @@ const AdminTable = (): JSX.Element => {
   );
 };
 
-const AdminIndex = () => {
+const AdminIndex = (): JSX.Element => {
   return (
     <ContentLayout>
       <Flex marginBottom="6" justifyContent="space-between">

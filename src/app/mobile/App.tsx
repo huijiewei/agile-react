@@ -8,7 +8,7 @@ const AppRoutes = () => {
   return useRoutes(routes, process.env.PUBLIC_URL);
 };
 
-const App = () => {
+const App = (): JSX.Element => {
   useSplash();
 
   return (
