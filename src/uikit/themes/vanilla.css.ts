@@ -1,133 +1,172 @@
 import { createGlobalTheme, globalStyle } from '@vanilla-extract/css';
+import './reset.css';
+
+const colorGray = {
+  gray05: '#fafbfc',
+  gray10: '#f6f8fa',
+  gray20: '#e1e4e8',
+  gray30: '#d1d5da',
+  gray40: '#959da5',
+  gray50: '#6a737d',
+  gray60: '#586069',
+  gray70: '#444d56',
+  gray80: '#2f363d',
+  gray90: '#24292e',
+};
+
+const colorBlue = {
+  blue05: '#EBF8FF',
+  blue10: '#BEE3F8',
+  blue20: '#90CDF4',
+  blue30: '#63B3ED',
+  blue40: '#4299E1',
+  blue50: '#3182CE',
+  blue60: '#2B6CB0',
+  blue70: '#2C5282',
+  blue80: '#2A4365',
+  blue90: '#1A365D',
+};
+
+const colorGreen = {
+  green05: '#f0fff4',
+  green10: '#dcffe4',
+  green20: '#bef5cb',
+  green30: '#85e89d',
+  green40: '#34d058',
+  green50: '#28a745',
+  green60: '#22863a',
+  green70: '#176f2c',
+  green80: '#165c26',
+  green90: '#144620',
+};
+
+const colorYellow = {
+  yellow05: '#fffdef',
+  yellow10: '#fffbdd',
+  yellow20: '#fff5b1',
+  yellow30: '#ffea7f',
+  yellow40: '#ffdf5d',
+  yellow50: '#ffd33d',
+  yellow60: '#f9c513',
+  yellow70: '#dbab09',
+  yellow80: '#b08800',
+  yellow90: '#735c0f',
+};
+
+const colorOrange = {
+  orange05: '#fff8f2',
+  orange10: '#ffebda',
+  orange20: '#ffd1ac',
+  orange30: '#ffab70',
+  orange40: '#fb8532',
+  orange50: '#f66a0a',
+  orange60: '#e36209',
+  orange70: '#d15704',
+  orange80: '#c24e00',
+  orange90: '#a04100',
+};
+
+const colorRed = {
+  red05: '#ffeef0',
+  red10: '#ffdce0',
+  red20: '#fdaeb7',
+  red30: '#f97583',
+  red40: '#ea4a5a',
+  red50: '#d73a49',
+  red60: '#cb2431',
+  red70: '#b31d28',
+  red80: '#9e1c23',
+  red90: '#86181d',
+};
+
+const colorPurple = {
+  purple05: '#f5f0ff',
+  purple10: '#e6dcfd',
+  purple20: '#d1bcf9',
+  purple30: '#b392f0',
+  purple40: '#8a63d2',
+  purple50: '#6f42c1',
+  purple60: '#5a32a3',
+  purple70: '#4c2889',
+  purple80: '#3a1d6e',
+  purple90: '#29134e',
+};
+
+const colorPink = {
+  pink05: '#ffeef8',
+  pink10: '#fedbf0',
+  pink20: '#f9b3dd',
+  pink30: '#f692ce',
+  pink40: '#ec6cb9',
+  pink50: '#ea4aaa',
+  pink60: '#d03592',
+  pink70: '#b93a86',
+  pink80: '#99306f',
+  pink90: '#6d224f',
+};
+
+const colors = {
+  white: '#fff',
+  black: '#000',
+
+  ...colorGray,
+  ...colorBlue,
+  ...colorGreen,
+  ...colorYellow,
+  ...colorOrange,
+  ...colorRed,
+  ...colorPurple,
+  ...colorPink,
+};
 
 const themeVars = createGlobalTheme(':root', {
-  colors: {
-    white: '#fff',
-    black: '#1b1f23',
-
-    gray0: '#fafbfc',
-    gray1: '#f6f8fa',
-    gray2: '#e1e4e8',
-    gray3: '#d1d5da',
-    gray4: '#959da5',
-    gray5: '#6a737d',
-    gray6: '#586069',
-    gray7: '#444d56',
-    gray8: '#2f363d',
-    gray9: '#24292e',
-
-    blue0: '#EBF8FF',
-    blue1: '#BEE3F8',
-    blue2: '#90CDF4',
-    blue3: '#63B3ED',
-    blue4: '#4299E1',
-    blue5: '#3182CE',
-    blue6: '#2B6CB0',
-    blue7: '#2C5282',
-    blue8: '#2A4365',
-    blue9: '#1A365D',
-
-    green0: '#f0fff4',
-    green1: '#dcffe4',
-    green2: '#bef5cb',
-    green3: '#85e89d',
-    green4: '#34d058',
-    green5: '#28a745',
-    green6: '#22863a',
-    green7: '#176f2c',
-    green8: '#165c26',
-    green9: '#144620',
-
-    yellow0: '#fffdef',
-    yellow1: '#fffbdd',
-    yellow2: '#fff5b1',
-    yellow3: '#ffea7f',
-    yellow4: '#ffdf5d',
-    yellow5: '#ffd33d',
-    yellow6: '#f9c513',
-    yellow7: '#dbab09',
-    yellow8: '#b08800',
-    yellow9: '#735c0f',
-
-    orange0: '#fff8f2',
-    orange1: '#ffebda',
-    orange2: '#ffd1ac',
-    orange3: '#ffab70',
-    orange4: '#fb8532',
-    orange5: '#f66a0a',
-    orange6: '#e36209',
-    orange7: '#d15704',
-    orange8: '#c24e00',
-    orange9: '#a04100',
-
-    red0: '#ffeef0',
-    red1: '#ffdce0',
-    red2: '#fdaeb7',
-    red3: '#f97583',
-    red4: '#ea4a5a',
-    red5: '#d73a49',
-    red6: '#cb2431',
-    red7: '#b31d28',
-    red8: '#9e1c23',
-    red9: '#86181d',
-
-    purple0: '#f5f0ff',
-    purple1: '#e6dcfd',
-    purple2: '#d1bcf9',
-    purple3: '#b392f0',
-    purple4: '#8a63d2',
-    purple5: '#6f42c1',
-    purple6: '#5a32a3',
-    purple7: '#4c2889',
-    purple8: '#3a1d6e',
-    purple9: '#29134e',
-
-    pink0: '#ffeef8',
-    pink1: '#fedbf0',
-    pink2: '#f9b3dd',
-    pink3: '#f692ce',
-    pink4: '#ec6cb9',
-    pink5: '#ea4aaa',
-    pink6: '#d03592',
-    pink7: '#b93a86',
-    pink8: '#99306f',
-    pink9: '#6d224f',
-  },
+  colors: colors,
   fonts: {
     body:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
     mono: 'SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace',
   },
   fontSizes: {
-    sm: '12px',
-    md: '14px',
-    lg: '16px',
-    xl: '20px',
+    micro: '0.75rem',
+    small: '0.75rem',
+    default: '0.875rem',
+    large: '1rem',
   },
   fontWeights: {
     light: '300',
-    normal: '400',
-    semibold: '500',
-    bold: '600',
+    regular: '400',
+    medium: '500',
+    strong: '600',
   },
   lineHeights: {
-    none: '1',
-    tight: '1.2',
-    normal: '1.5715',
+    micro: '.75',
+    small: '.75',
+    default: '.875',
+    large: '1.125',
   },
   radii: {
     none: '0',
-    sm: '1px',
-    md: '2px',
+    micro: '1px',
+    small: '1px',
+    default: '2px',
     lg: '3px',
     xl: '5px',
     full: '9999px',
   },
+  breakpoint: {
+    mobile: '0',
+    tablet: '768',
+    desktop: '1136',
+  },
 });
 
 globalStyle('body', {
-  fontSize: themeVars.fontSizes.md,
+  fontSize: themeVars.fontSizes.default,
   fontFamily: themeVars.fonts.body,
+});
+
+globalStyle('a[disabled]', {
+  pointerEvents: 'none',
 });
 
 export { themeVars };
