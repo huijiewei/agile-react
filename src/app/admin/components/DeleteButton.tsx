@@ -15,10 +15,11 @@ import {
   Portal,
   useDisclosure,
 } from '@chakra-ui/react';
-import { PropsWithChildren, ReactNode, useEffect, useRef } from 'react';
+import { PropsWithChildren, ReactNode, useRef } from 'react';
 import { HttpMessage } from '@shared/contexts/HttpContext';
 import { HttpError } from '@shared/utils/http';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import { mergeRefs } from '@chakra-ui/react-utils';
 
 type DeleteButtonProps = ButtonProps & {
   title?: ReactNode;
@@ -49,9 +50,8 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
   } = props;
   const initialFocusRef = useRef(null);
   const {
-    register,
-    trigger,
     reset,
+    control,
     formState: { isValid },
   } = useForm({
     mode: 'all',
@@ -69,13 +69,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
     }
   };
 
-  useEffect(() => {
-    if (prompt) {
-      trigger('deletePrompt');
-    }
-  }, [prompt, trigger]);
-
-  const onDeleteClick = async () => {
+  const onClickDelete = async () => {
     if (prompt) {
       if (isValid) {
         await deleteClick();
@@ -85,7 +79,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
     }
   };
 
-  const onCancelClick = async () => {
+  const onClickCancel = async () => {
     reset();
     onCancel && (await onCancel());
     onClose();
@@ -107,15 +101,26 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
               <>
                 <FormControl id="deletePrompt" isInvalid={isValid}>
                   <FormLabel color={'gray.500'}>{prompt.label}</FormLabel>
-                  <Input
-                    {...register('deletePrompt', {
+                  <Controller
+                    name={'deletePrompt'}
+                    control={control}
+                    rules={{
                       required: true,
                       validate: (v) => {
                         return v == prompt.value;
                       },
-                    })}
-                    autoComplete={'off'}
-                    type="text"
+                    }}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <Input
+                        name={'deletePrompt'}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        defaultValue={value}
+                        ref={mergeRefs(ref, initialFocusRef)}
+                        autoComplete={'off'}
+                        type="text"
+                      />
+                    )}
                   />
                 </FormControl>
               </>
@@ -127,7 +132,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
             <ButtonGroup spacing={5} size="sm">
               <Button
                 isLoading={isLoading}
-                onClick={onCancelClick}
+                onClick={onClickCancel}
                 variant="outline"
                 ref={prompt ? null : initialFocusRef}
               >
@@ -136,7 +141,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
               <Button
                 isDisabled={prompt ? !isValid : false}
                 isLoading={isLoading}
-                onClick={onDeleteClick}
+                onClick={onClickDelete}
                 colorScheme={colorScheme}
               >
                 删除

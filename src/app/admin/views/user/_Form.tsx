@@ -27,7 +27,7 @@ const UserForm = ({ user, onSuccess }: UserFromProps): JSX.Element => {
 
   const isEditMode = user.id > 0;
 
-  const onSubmit = async (formData: User & { password: string; passwordConfirm: string }) => {
+  const onSubmitForm = async (formData: User & { password: string; passwordConfirm: string }) => {
     const { data, error } = await submitUser(user.id, formData);
 
     if (data) {
@@ -46,7 +46,7 @@ const UserForm = ({ user, onSuccess }: UserFromProps): JSX.Element => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmitForm)}>
       <FormItem id="phone" isRequired label={'手机号码：'} isInvalid={errors.phone} fieldWidth={9}>
         <Input type={'tel'} {...register('phone', { required: '请输入手机号码' })} defaultValue={user.phone} />
         <FormErrorMessage>{errors.phone?.message || ' '}</FormErrorMessage>

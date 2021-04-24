@@ -47,7 +47,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
     });
   };
 
-  const onSubmit = async (formData: Admin & { password: string; passwordConfirm: string }) => {
+  const onSubmitForm = async (formData: Admin & { password: string; passwordConfirm: string }) => {
     const { data, error } = await submitAdmin(admin.id, formData);
 
     if (data) {
@@ -70,7 +70,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmitForm)}>
       <FormItem id="phone" isRequired label={'手机号码：'} isInvalid={errors.phone} fieldWidth={9}>
         <Input type={'tel'} {...register('phone', { required: '请输入手机号码' })} defaultValue={admin.phone} />
         <FormErrorMessage>{errors.phone?.message || ' '}</FormErrorMessage>

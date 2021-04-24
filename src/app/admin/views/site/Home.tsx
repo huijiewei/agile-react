@@ -4,7 +4,7 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { Link } from 'react-router-dom';
-import { Box, Button, HStack, IconButton, Stack } from '@chakra-ui/react';
+import { Box, Button, HStack, IconButton, Stack, Link as TextLink } from '@chakra-ui/react';
 import { Config, Delete, Minus } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
 
@@ -116,9 +116,9 @@ const Home = (): JSX.Element => {
           <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick} />
         </HStack>
         <div>
-          <Button variant={'outline'} as={Link} to={'../nest'}>
+          <TextLink as={Link} to={'../nest'}>
             嵌套路由页面
-          </Button>
+          </TextLink>
         </div>
         <div>Go</div>
         <div>Go</div>

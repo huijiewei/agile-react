@@ -41,11 +41,11 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
 
   const { onOpen, onClose, isOpen } = useDisclosure();
 
-  const onCancel = async () => {
+  const onClickCancel = async () => {
     onClose();
   };
 
-  const onDownload = async () => {
+  const onClickDownload = async () => {
     setLoading(true);
 
     const result = await apiDownload('GET', apiEndpoint, {
@@ -76,10 +76,10 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
             <PopoverBody>{confirmMessage}</PopoverBody>
             <PopoverFooter display={'flex'} justifyContent="flex-end">
               <ButtonGroup spacing={5} size="sm">
-                <Button isLoading={loading} onClick={onCancel} variant="outline" ref={initialFocusRef}>
+                <Button isLoading={loading} onClick={onClickCancel} variant="outline" ref={initialFocusRef}>
                   取消
                 </Button>
-                <Button isLoading={loading} onClick={onDownload} colorScheme={colorScheme}>
+                <Button isLoading={loading} onClick={onClickDownload} colorScheme={colorScheme}>
                   确定
                 </Button>
               </ButtonGroup>
@@ -91,7 +91,7 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
   }
 
   return (
-    <Button colorScheme={colorScheme} onClick={onDownload} size={size} variant={variant} {...restProps}>
+    <Button colorScheme={colorScheme} onClick={onClickDownload} size={size} variant={variant} {...restProps}>
       {children}
     </Button>
   );

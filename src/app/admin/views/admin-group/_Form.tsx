@@ -50,7 +50,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
   const isEditMode = adminGroup.id > 0;
   const isOwnerMode = currentUser?.adminGroup.id == adminGroup.id;
 
-  const onGroupChange = (group: AdminGroupPermissionCheckGroup) => {
+  const onChangeGroup = (group: AdminGroupPermissionCheckGroup) => {
     const children: string[] = [];
     const childrenCombines: string[] = [];
 
@@ -103,7 +103,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
     );
   };
 
-  const onItemChange = (
+  const onChangeItem = (
     item: AdminGroupPermission,
     group: AdminGroupPermissionCheckGroup,
     event: ChangeEvent<HTMLInputElement>
@@ -145,7 +145,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
     );
   };
 
-  const onSubmit = async (formData: AdminGroup) => {
+  const onSubmitForm = async (formData: AdminGroup) => {
     const { data, error } = await submitAdminGroup(adminGroup.id, formData);
 
     if (data) {
@@ -212,7 +212,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
   }, [adminGroupPermissions, adminGroup.permissions]);
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmitForm)}>
       <FormItem id="name" isRequired label={'名称：'} isInvalid={errors.name} fieldWidth={9}>
         <Input type={'text'} {...register('name', { required: '请输入管理组名称' })} defaultValue={adminGroup.name} />
         <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
@@ -229,7 +229,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
                   <Box key={'gp-' + groupIdx}>
                     <Box backgroundColor={'gray.50'} color={'gray.500'} fontWeight={'medium'} paddingX={3} paddingY={2}>
                       <Checkbox
-                        onChange={() => onGroupChange(group)}
+                        onChange={() => onChangeGroup(group)}
                         isIndeterminate={group.isIndeterminate}
                         isChecked={group.isChecked}
                       >
@@ -248,7 +248,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
                                   paddingY={1}
                                   key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
                                   value={checkbox.actionId}
-                                  onChange={(e) => onItemChange(checkbox, group, e)}
+                                  onChange={(e) => onChangeItem(checkbox, group, e)}
                                   isDisabled={disablePermissions.includes(checkbox.actionId)}
                                 >
                                   {checkbox.name}
@@ -262,7 +262,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
                               paddingY={1}
                               key={'gp-' + groupIdx + '-' + itemIdx}
                               value={item.actionId}
-                              onChange={(e) => onItemChange(item, group, e)}
+                              onChange={(e) => onChangeItem(item, group, e)}
                               isDisabled={disablePermissions.includes(item.actionId)}
                             >
                               {item.name}
