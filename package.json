@@ -30,7 +30,6 @@
     "@emotion/styled": "^11.3.0",
     "@icon-park/react": "^1.3.3",
     "axios": "^0.21.1",
-    "cropperjs": "^1.5.11",
     "framer-motion": "^4.1.9",
     "history": "^5.0.0",
     "metismenujs": "^1.2.1",
