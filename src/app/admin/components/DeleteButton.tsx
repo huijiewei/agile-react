@@ -94,7 +94,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
   return (
     <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
       <PopoverTrigger>
-        <Button as={'span'} colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
+        <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
           {children}
         </Button>
       </PopoverTrigger>

@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { Box, Button, HStack, IconButton, Stack } from '@chakra-ui/react';
 import { Config, Delete, Minus } from '@icon-park/react';
 import { Icon } from '@shared/components/icon/Icon';
-import { Button as AgileButton } from '@uikit/components/button/Button';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -50,34 +49,6 @@ const Home = (): JSX.Element => {
       <Stack>
         <Box>Hello Agile</Box>
         <Box>中文字体</Box>
-        <HStack>
-          <AgileButton onClick={handleClick} size={'lg'}>
-            大型按钮
-          </AgileButton>
-          <AgileButton>普通按钮</AgileButton>
-          <AgileButton size={'sm'}>小型按钮</AgileButton>
-          <AgileButton size={'xs'}>迷你按钮</AgileButton>
-        </HStack>
-        <HStack>
-          <AgileButton onClick={handleClick}>按钮</AgileButton>
-          <AgileButton variant={'outline'}>按钮</AgileButton>
-          <AgileButton variant={'ghost'}>按钮</AgileButton>
-          <AgileButton variant={'link'}>按钮</AgileButton>
-        </HStack>
-        <HStack>
-          <AgileButton as={'a'} isDisabled onClick={handleClick} size={'lg'}>
-            大型按钮
-          </AgileButton>
-          <AgileButton as={'span'} isDisabled onClick={handleClick}>
-            普通按钮
-          </AgileButton>
-          <AgileButton isDisabled size={'sm'} onClick={handleClick}>
-            小型按钮
-          </AgileButton>
-          <AgileButton isDisabled size={'xs'} onClick={handleClick}>
-            迷你按钮
-          </AgileButton>
-        </HStack>
         <HStack>
           <DeleteUserButton />
           <DeleteAdminButton />
