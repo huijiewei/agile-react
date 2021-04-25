@@ -54,6 +54,7 @@ const agileTheme = extendTheme({
     global: {
       body: {
         fontSize: 'md',
+        overflowX: 'scroll',
         '&::-webkit-scrollbar': {
           width: '7px',
         },
