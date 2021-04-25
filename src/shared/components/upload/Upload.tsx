@@ -1,35 +1,70 @@
-import { Box, forwardRef, Input, InputGroup, List } from '@chakra-ui/react';
+import {
+  Box,
+  forwardRef,
+  HTMLChakraProps,
+  Input,
+  InputGroup,
+  List,
+  ListItem,
+  useFormControl,
+  useFormControlProps,
+  Wrap,
+} from '@chakra-ui/react';
 import { useUpload, UseUploadProps } from '@shared/components/upload/useUpload';
+import { getValidChildren } from '@chakra-ui/react-utils';
+import { cloneElement } from 'react';
+import { UploadFile } from '@shared/components/upload/UploadFile';
 
-type UploadProps = UseUploadProps & {
-  accept?: string;
-  isMultiple?: boolean;
-  showFile?: boolean;
-};
+export type UploadProps = UseUploadProps &
+  Omit<HTMLChakraProps<'div'>, 'onChange'> & {
+    accept?: string;
+    showFile?: boolean;
+  };
 
-const Upload = forwardRef<UploadProps, 'input'>((props, ref) => {
-  const { accept, showFile = true, isDisabled = false, isMultiple = false, children, ...ownProps } = props;
+const Upload = forwardRef<UploadProps, 'div'>((props, ref) => {
+  const { name, accept = '', showFile = true, isDisabled = false, isMultiple = false, children, ...ownProps } = props;
 
-  const { inputProps, inputValue, fileInputId, fileInputRef, onFileInputClick, onFileInputChange } = useUpload(
-    ownProps
-  );
+  const {
+    loading,
+    inputValue,
+    inputProps,
+    fileInputRef,
+    fileInputProps,
+    onFileInputClick,
+    onFileInputChange,
+  } = useUpload(props);
+
+  const { isInvalid } = useFormControlProps(props);
+
+  const clones = getValidChildren(children).map((child) => {
+    return cloneElement(child, {
+      isDisabled: isDisabled,
+      isLoading: loading,
+      colorScheme: isInvalid ? 'red' : undefined,
+    });
+  });
 
   return (
     <Box>
-      {showFile && <List></List>}
+      {showFile && (
+        <Wrap marginBottom={3} spacing={3}>
+          {(typeof inputValue == 'string' ? [inputValue] : inputValue).map((file) => (
+            <UploadFile key={file} file={file} />
+          ))}
+        </Wrap>
+      )}
       <InputGroup width={'fit-content'} onClick={onFileInputClick}>
-        <Input value={inputValue} type={'hidden'} {...inputProps} ref={ref} />
+        <Input name={name} value={inputValue} type={'hidden'} {...inputProps} ref={ref} />
         <Input
-          id={fileInputId}
           onChange={onFileInputChange}
           multiple={isMultiple}
-          isDisabled={isDisabled}
           accept={accept}
           type={'file'}
           hidden
           ref={fileInputRef}
+          {...fileInputProps}
         />
-        {children}
+        {clones}
       </InputGroup>
     </Box>
   );

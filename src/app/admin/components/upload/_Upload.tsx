@@ -1,15 +1,26 @@
-import { Button, forwardRef, InputProps, useFormControl } from '@chakra-ui/react';
+import { Button, forwardRef } from '@chakra-ui/react';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Upload as Uploader } from '@shared/components/upload/Upload';
+import { Upload } from '@shared/components/upload/Upload';
 import { Icon } from '@shared/components/icon/Icon';
 import { UploadOne } from '@icon-park/react';
 import { Dict } from '@shared/utils/types';
+import { useMessage } from '@shared/hooks/useMessage';
 
-type UploadProps = InputProps & {
-  apiEndpoint: string;
+export type FileUploadProps = {
   label: string;
+  value?: string | string[];
+  defaultValue?: string | string[];
+  onChange?: (value: string | string[]) => void;
+
+  isDisabled?: boolean;
+  isMultiple?: boolean;
+  isReadOnly?: boolean;
+  maxFiles?: number;
+};
+
+export type ImageUploadProps = FileUploadProps & {
   preview?: [number, number];
   cropper?: {
     enable: boolean;
@@ -18,7 +29,10 @@ type UploadProps = InputProps & {
   };
   thumbs?: string[];
   defaultThumb?: string;
-  isMultiple?: boolean;
+};
+
+export type BaseUploadProps = ImageUploadProps & {
+  apiEndpoint: string;
 };
 
 type UploadOption = {
@@ -26,7 +40,7 @@ type UploadOption = {
   cropUrl: string;
   timeout?: number;
   paramName: string;
-  dataType: string;
+  dataType: 'json' | 'xml';
   params?: Dict;
   headers?: Dict;
   responseParse: string;
@@ -34,15 +48,29 @@ type UploadOption = {
   typesLimit: string[];
 };
 
-const Upload = forwardRef<UploadProps, 'input'>((props, ref) => {
-  const { apiEndpoint, label, preview = null, cropper = null, thumbs = null, defaultThumb = null, ...ownProps } = props;
+type UploadResult = {
+  original: string;
+  thumbs: { thumb: string; url: string };
+};
 
+const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
+  const {
+    label,
+    apiEndpoint,
+    preview = null,
+    cropper = null,
+    thumbs = null,
+    defaultThumb = null,
+    ...restProps
+  } = props;
+
+  const { warning } = useMessage();
   const [uploadOption, setUploadOption] = useState<UploadOption>();
   const timeoutRef = useRef<number>();
 
   const { apiGet } = useHttp();
 
-  const fetchUploadOption = useCallback(async () => {
+  const fetchUploadOption = useCallback<() => void>(async () => {
     if (timeoutRef.current) {
       window.clearTimeout(timeoutRef.current);
       timeoutRef.current = undefined;
@@ -60,7 +88,7 @@ const Upload = forwardRef<UploadProps, 'input'>((props, ref) => {
   }, [apiEndpoint, apiGet, thumbs, cropper]);
 
   useEffect(() => {
-    fetchUploadOption().then();
+    fetchUploadOption();
   }, [fetchUploadOption]);
 
   useEffect(() => {
@@ -72,23 +100,56 @@ const Upload = forwardRef<UploadProps, 'input'>((props, ref) => {
     };
   }, []);
 
-  const input = useFormControl<HTMLInputElement>(ownProps);
+  const onUploadRequest = (file: File, xhr: XMLHttpRequest, formData: FormData) => {
+    for (const [key, value] of formData) {
+      if (value.toString().indexOf('${filename}') !== -1) {
+        const randomFileName = Math.random().toString(36).substring(3, 15) + '.' + file.name.split('.').pop();
+
+        formData.set(key, value.toString().replace('${filename}', randomFileName));
+      }
+    }
+  };
+
+  const onUploadResponse = (xhr: XMLHttpRequest) => {
+    if (uploadOption) {
+      const result =
+        uploadOption.dataType == 'xml'
+          ? new DOMParser().parseFromString(xhr.responseText, 'application/xml')
+          : xhr.response;
+
+      // eslint-disable-next-line no-new-func
+      const responseParse = new Function('result', uploadOption.responseParse);
+
+      const data = responseParse(result);
+
+      return { url: data.original, ...data };
+    }
+  };
+
+  const onUploadError = (error: string) => {
+    warning(error, { title: '文件上传失败', isClosable: true });
+  };
 
   return uploadOption ? (
-    <Uploader
+    <Upload
       ref={ref}
       accept={uploadOption.typesLimit.map((type) => '.' + type).join(', ')}
-      action={uploadOption.url}
-      paramName={uploadOption.paramName}
-      params={uploadOption.params}
-      onUploadError={(error: string) => console.log(error)}
-      {...input}
+      requestUrl={uploadOption.url}
+      formDataName={uploadOption.paramName}
+      requestData={uploadOption.params}
+      requestHeaders={uploadOption.headers}
+      responseDataType={uploadOption.dataType}
+      maxFileSize={uploadOption.sizeLimit}
+      onUploadRequest={onUploadRequest}
+      onUploadResponse={onUploadResponse}
+      onUploadError={onUploadError}
+      {...restProps}
     >
-      <Button variant={'outline'} size={'xs'} type={'button'} leftIcon={<Icon as={UploadOne} />}>
+      <Button variant={'outline'} size={'xs'} leftIcon={<Icon as={UploadOne} />}>
         {label}
       </Button>
-    </Uploader>
+    </Upload>
   ) : null;
 });
 
-export { Upload };
+export { BaseUpload };

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { useAuth } from '@admin/services/useAuth';
 import { AvatarUpload } from '@admin/components/upload/AvatarUpload';
+import { ImageUpload } from '@admin/components/upload/ImageUpload';
 
 type AdminFromProps = {
   admin: Admin;
@@ -109,7 +110,10 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
           control={control}
           defaultValue={admin.avatar}
           name={'avatar'}
-          render={({ field: { value, onChange } }) => <AvatarUpload value={value} onChange={onChange} />}
+          rules={{
+            required: '请上传头像',
+          }}
+          render={({ field: { value, onChange } }) => <ImageUpload isMultiple value={value} onChange={onChange} />}
         />
         <FormErrorMessage>{errors.avatar?.message || ' '}</FormErrorMessage>
       </FormItem>

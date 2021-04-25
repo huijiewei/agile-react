@@ -3,6 +3,10 @@ import { forwardRef } from '@chakra-ui/react';
 
 type AvatarUploadProps = {
   label?: string;
+  value?: string | string[];
+  defaultValue?: string | string[];
+  isDisabled?: boolean;
+  onChange?: (value: string | string[]) => void;
 };
 
 const AvatarUpload = forwardRef<AvatarUploadProps, 'div'>((props, ref) => {
