@@ -1,14 +1,14 @@
 const inputTheme = {
   sizes: {
     bg: {
-      h: 10,
       field: {
+        h: 10,
         px: 3,
       },
     },
     md: {
-      h: 9,
       field: {
+        h: 9,
         px: 3,
       },
     },

@@ -5,7 +5,7 @@ import { breadcrumbTheme } from '@shared/theme/components/breadcrumb';
 import { tableTheme } from '@shared/theme/components/table';
 import { buttonTheme, closeButtonTheme } from '@shared/theme/components/button';
 import { modalTheme } from '@shared/theme/components/modal';
-import { formErrorTheme } from '@shared/theme/components/form';
+import { formErrorTheme, formHorizontalLabelTheme } from '@shared/theme/components/form';
 import { inputTheme, numberInputTheme } from '@shared/theme/components/input';
 import { breakpoints } from '@shared/theme/foundations/breakpoints';
 import { typography } from '@shared/theme/foundations/typography';
@@ -33,6 +33,7 @@ const agileTheme = extendTheme({
     Modal: modalTheme,
     Menu: menuTheme,
     FormError: formErrorTheme,
+    FormHorizontalLabel: formHorizontalLabelTheme,
     Input: inputTheme,
     NumberInput: numberInputTheme,
     Table: tableTheme,

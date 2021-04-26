@@ -29,8 +29,6 @@ const buttonTheme = {
     xs: {
       fontWeight: 'normal',
       fontSize: 'sm',
-      h: 7,
-      minW: 7,
     },
   },
 };

@@ -40,7 +40,7 @@ const typography = {
     base: 1.5715,
     tall: 1.625,
     taller: '2',
-    '3': '.75rem',
+    '3': '0.75rem',
     '4': '1rem',
     '5': '1.25rem',
     '6': '1.5rem',
