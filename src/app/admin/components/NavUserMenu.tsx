@@ -48,9 +48,9 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
           height={height}
           lineHeight={height}
         >
-          <Avatar marginEnd="6px" verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
+          <Avatar marginEnd="2" verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
           {currentUser.name}
-          <Icon marginStart="6px" verticalAlign="-3px" as={Down} />
+          <Icon marginStart="2" as={Down} />
         </MenuButton>
         <MenuList>
           <MenuItem isDisabled as={Center}>

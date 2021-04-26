@@ -143,7 +143,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
       >
         {otherFields?.map((field, index) => (
           <Box marginStart={2} display={field.type == 'br' ? 'block' : 'inline-block'} key={'ko-' + index}>
-            {field.type == 'br' && <Divider height={2} display={'block'} />}
+            {field.type == 'br' && <Divider borderWidth={0} height={2.5} display={'block'} />}
             {field.type == 'select' && (
               <Select size={'sm'} {...register(field.field)} placeholder={field.label}>
                 {field.options?.map((option) => (
