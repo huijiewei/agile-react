@@ -24,7 +24,7 @@ const Pagination = forwardRef<PaginationProps, 'nav'>((props, ref) => {
   return (
     <chakra.nav display={'flex'} ref={ref} aria-label="pagination navigation" className={_className} {...restProps}>
       {showTotal && (
-        <chakra.span marginEnd={3} lineHeight={7} height={8}>
+        <chakra.span marginEnd={3} lineHeight={7} height={7}>
           共 {props.total} 条
         </chakra.span>
       )}

@@ -18,8 +18,8 @@ const PaginationItem = forwardRef<PaginationItemProps, 'button'>((props, ref) =>
       backgroundColor={isSelected ? 'blue.500' : 'gray.100'}
       disabled={isDisabled}
       lineHeight={7}
-      height={8}
-      minWidth={8}
+      height={7}
+      minWidth={7}
       paddingX={2}
       borderRadius={'sm'}
       textAlign={'center'}
