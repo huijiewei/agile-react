@@ -9,7 +9,9 @@ import { NavUserMenu } from '@admin/components/NavUserMenu';
 const NavHeader = (): JSX.Element => {
   const { headerHeight, asideWidth, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
 
-  const onClickRefresh = () => {};
+  const onClickRefresh = () => {
+    console.log('Refresh');
+  };
 
   return (
     <Flex justifyContent="space-between" alignItems="center">

@@ -21,6 +21,7 @@ module.exports = (env, argv) => {
 
   const fileName = `assets/js/${isProduction ? '[name].[contenthash:8].js' : '[name].js'}`;
   const cssFileName = `assets/css/${isProduction ? '[name].[contenthash:8].css' : '[name].css'}`;
+  const assetsFileName = isProduction ? '[contenthash:8][ext]' : '[name][ext]';
 
   const config = {
     entry: {
@@ -49,7 +50,7 @@ module.exports = (env, argv) => {
       filename: fileName,
       chunkFilename: fileName,
       pathinfo: false,
-      assetModuleFilename: 'assets/resource/[name].[hash:8][ext]',
+      assetModuleFilename: `assets/resource/${assetsFileName}`,
       clean: isProduction,
     },
     module: {
@@ -82,7 +83,7 @@ module.exports = (env, argv) => {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
           type: 'asset',
           generator: {
-            filename: 'assets/images/[name].[hash:8][ext]',
+            filename: `assets/images/${assetsFileName}`,
           },
           parser: {
             dataUrlCondition: {
@@ -94,14 +95,14 @@ module.exports = (env, argv) => {
           test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
           type: 'asset/resource',
           generator: {
-            filename: 'assets/medias/[name].[hash:8][ext]',
+            filename: `assets/medias/${assetsFileName}`,
           },
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: 'asset',
           generator: {
-            filename: 'assets/fonts/[name].[hash:8][ext]',
+            filename: `assets/fonts/${assetsFileName}`,
           },
           parser: {
             dataUrlCondition: {

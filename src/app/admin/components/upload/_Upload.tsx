@@ -9,7 +9,7 @@ import { Dict } from '@shared/utils/types';
 import { useMessage } from '@shared/hooks/useMessage';
 
 export type FileUploadProps = {
-  label: string;
+  label?: string;
   value?: string | string[];
   defaultValue?: string | string[];
   onChange?: (value: string | string[]) => void;
