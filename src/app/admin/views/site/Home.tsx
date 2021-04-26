@@ -4,9 +4,8 @@ import ContentLayout from '@admin/layouts/ContentLayout';
 import { requestFlatry } from '@shared/utils/http';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { Link } from 'react-router-dom';
-import { Box, Button, HStack, IconButton, Stack, Link as TextLink } from '@chakra-ui/react';
+import { Box, Button, HStack, IconButton, Link as TextLink, Stack } from '@chakra-ui/react';
 import { Config, Delete, Minus } from '@icon-park/react';
-import { Icon } from '@shared/components/icon/Icon';
 
 const DeleteUserButton = () => {
   const canDeleteUser = useAuthPermission('user/delete');
@@ -94,23 +93,23 @@ const Home = (): JSX.Element => {
           <Button leftIcon={<Config />} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button iconSpacing="0.35em" leftIcon={<Config />} variant="outline" size={'sm'} onClick={handleClick}>
+          <Button iconSpacing="2" leftIcon={<Config />} variant="outline" size={'sm'} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button iconSpacing="0.35em" leftIcon={<Config />} size={'sm'} onClick={handleClick}>
+          <Button iconSpacing="2" leftIcon={<Config />} size={'sm'} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button iconSpacing="0.25em" leftIcon={<Delete />} variant="outline" size={'xs'} onClick={handleClick}>
+          <Button iconSpacing={1.5} leftIcon={<Delete />} variant="outline" size={'xs'} onClick={handleClick}>
             图标按钮
           </Button>
-          <Button iconSpacing="0.25em" leftIcon={<Minus />} size={'xs'} onClick={handleClick}>
-            图标按钮
+          <Button iconSpacing={1.5} leftIcon={<Minus />} size={'xs'} onClick={handleClick}>
+            图标按钮2
           </Button>
         </HStack>
         <HStack>
           <IconButton aria-label="" variant="outline" icon={<Config />} onClick={handleClick} />
-          <IconButton aria-label="" icon={<Icon as={Delete} />} onClick={handleClick} />
-          <IconButton aria-label="" variant="outline" icon={<Icon as={Delete} />} size={'sm'} onClick={handleClick} />
+          <IconButton aria-label="" icon={<Delete />} onClick={handleClick} />
+          <IconButton aria-label="" variant="outline" icon={<Delete />} size={'sm'} onClick={handleClick} />
           <IconButton aria-label="" icon={<Config />} size={'sm'} onClick={handleClick} />
           <IconButton aria-label="" variant="outline" icon={<Minus />} size={'xs'} onClick={handleClick} />
           <IconButton aria-label="" icon={<Config />} size={'xs'} onClick={handleClick} />
