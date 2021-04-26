@@ -15,8 +15,8 @@ type UploadRequestOption = {
 
   onUploadRequest?: (file: File, xhr: XMLHttpRequest, formData: FormData) => void;
   onUploadProgress?: (event: ProgressEvent) => void;
-  onUploadSuccess?: (data: any) => void;
-  onUploadResponse?: <T>(xhr: XMLHttpRequest) => T;
+  onUploadSuccess?: (data: { url: string }) => void;
+  onUploadResponse?: <E, T>(response: E) => T;
   onUploadError?: (error: string) => void;
   onUploadAbort?: () => void;
 };
@@ -24,6 +24,7 @@ type UploadRequestOption = {
 type UploadFile = {
   file: File;
   uploading: boolean;
+  url?: string;
 };
 
 const humanFileSize = (size: number): string => {
@@ -45,7 +46,7 @@ const uploadFile = (file: UploadFile, options: UploadRequestOption) => {
   }
 
   xhr.upload.onprogress = (e) => {
-    // console.log(e);
+    console.log(e);
   };
 
   xhr.onreadystatechange = () => {
@@ -53,7 +54,7 @@ const uploadFile = (file: UploadFile, options: UploadRequestOption) => {
       if (xhr.status == 0 || xhr.status >= 500 || xhr.status >= 400) {
         options.onUploadError && options.onUploadError('文件上传错误');
       } else {
-        const data = options.onUploadResponse ? options.onUploadResponse(xhr) : xhr.response;
+        const data = options.onUploadResponse ? options.onUploadResponse(xhr.response) : xhr.response;
 
         options.onUploadSuccess && options.onUploadSuccess(data);
       }
@@ -161,6 +162,7 @@ const useUpload = (props: UseUploadProps): UseUpload => {
   } = props;
 
   const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState<Dict<UploadFile>>({});
 
   const [inputValue, setValue] = useControllableState({
     value: isMultiple && typeof valueProp == 'string' ? [valueProp] : valueProp,

@@ -48,11 +48,6 @@ type UploadOption = {
   typesLimit: string[];
 };
 
-type UploadResult = {
-  original: string;
-  thumbs: { thumb: string; url: string };
-};
-
 const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
   const {
     label,
@@ -71,10 +66,7 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
   const { apiGet } = useHttp();
 
   const fetchUploadOption = useCallback<() => void>(async () => {
-    if (timeoutRef.current) {
-      window.clearTimeout(timeoutRef.current);
-      timeoutRef.current = undefined;
-    }
+    timeoutRef.current && window.clearTimeout(timeoutRef.current);
 
     const { data } = await requestFlatry<UploadOption>(
       apiGet(apiEndpoint, { thumbs: thumbs, cropper: cropper?.enable }, false)
@@ -93,14 +85,11 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
 
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        window.clearTimeout(timeoutRef.current);
-        timeoutRef.current = undefined;
-      }
+      timeoutRef.current && window.clearTimeout(timeoutRef.current);
     };
   }, []);
 
-  const onUploadRequest = (file: File, xhr: XMLHttpRequest, formData: FormData) => {
+  const onUploadRequest = useCallback((file: File, xhr: XMLHttpRequest, formData: FormData) => {
     for (const [key, value] of formData) {
       if (value.toString().indexOf('${filename}') !== -1) {
         const randomFileName = Math.random().toString(36).substring(3, 15) + '.' + file.name.split('.').pop();
@@ -108,26 +97,28 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
         formData.set(key, value.toString().replace('${filename}', randomFileName));
       }
     }
-  };
+  }, []);
 
-  const onUploadResponse = (xhr: XMLHttpRequest) => {
-    if (uploadOption) {
-      const result =
-        uploadOption.dataType == 'xml'
-          ? new DOMParser().parseFromString(xhr.responseText, 'application/xml')
-          : xhr.response;
+  const onUploadResponse = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (response: any) => {
+      if (uploadOption) {
+        const result =
+          uploadOption.dataType == 'xml' ? new DOMParser().parseFromString(response, 'application/xml') : response;
 
-      // eslint-disable-next-line no-new-func
-      const responseParse = new Function('result', uploadOption.responseParse);
+        // eslint-disable-next-line no-new-func
+        const responseParse = new Function('result', uploadOption.responseParse);
 
-      const data = responseParse(result);
+        const data = responseParse(result);
 
-      return { url: data.original, ...data };
-    }
-  };
+        return { url: data.original, ...data };
+      }
+    },
+    [uploadOption]
+  );
 
   const onUploadError = (error: string) => {
-    warning(error, { title: '文件上传失败', isClosable: true });
+    warning(error, { isClosable: true });
   };
 
   return uploadOption ? (
@@ -145,7 +136,7 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
       onUploadError={onUploadError}
       {...restProps}
     >
-      <Button variant={'outline'} size={'xs'} leftIcon={<Icon as={UploadOne} />}>
+      <Button iconSpacing={1.5} variant={'outline'} size={'xs'} leftIcon={<Icon as={UploadOne} />}>
         {label}
       </Button>
     </Upload>
