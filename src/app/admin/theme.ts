@@ -200,7 +200,7 @@ const agileTheme = extendTheme({
       },
       baseStyle: {
         fontWeight: 'medium',
-        lineHeight: 'base',
+        lineHeight: 'normal',
       },
       variants: {
         link: (props) => ({
@@ -224,6 +224,8 @@ const agileTheme = extendTheme({
           minW: 8,
         },
         xs: {
+          fontWeight: 'normal',
+          fontSize: 'sm',
           h: 7,
           minW: 7,
         },
@@ -416,6 +418,25 @@ const agileTheme = extendTheme({
           field: {
             px: 3,
           },
+        },
+      },
+    },
+    CloseButton: {
+      sizes: {
+        lg: {
+          w: '36px',
+          h: '36px',
+          fontSize: '13px',
+        },
+        md: {
+          w: '28px',
+          h: '28px',
+          fontSize: '11px',
+        },
+        sm: {
+          w: '22px',
+          h: '22px',
+          fontSize: '9px',
         },
       },
     },

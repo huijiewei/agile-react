@@ -57,14 +57,14 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon as={User} />}>
+          <MenuItem iconSpacing="3" icon={<Icon as={User} />}>
             个人资料
           </MenuItem>
-          <MenuItem iconSpacing="10px" icon={<Icon as={Refresh} />} onClick={onRefresh}>
+          <MenuItem iconSpacing="3" icon={<Icon as={Refresh} />} onClick={onRefresh}>
             刷新资料
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="10px" icon={<Icon as={Logout} />} onClick={onLogout}>
+          <MenuItem iconSpacing="3" icon={<Icon as={Logout} />} onClick={onLogout}>
             退出登录
           </MenuItem>
         </MenuList>
