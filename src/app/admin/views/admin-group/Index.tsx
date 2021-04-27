@@ -3,40 +3,43 @@ import { Box, Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useAdminGroupAll } from '@admin/services/useAdminGroup';
 import { PermissionButton } from '@admin/components/PermissionButton';
+import { DataTable } from '@shared/components/table/DataTable';
 
 const AdminGroupTable = (): JSX.Element => {
   const { data } = useAdminGroupAll();
 
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th width={90}>Id</Th>
-          <Th width={150}>名称</Th>
-          <Th />
-        </Tr>
-      </Thead>
-      <Tbody>
-        {data &&
-          data.items.map((adminGroup) => (
-            <Tr key={adminGroup.id}>
-              <Td>{adminGroup.id}</Td>
-              <Td>{adminGroup.name}</Td>
-              <Td sx={{ textAlign: 'right' }}>
-                <PermissionButton
-                  permission={'admin-group/edit'}
-                  variant="outline"
-                  size="xs"
-                  as={Link}
-                  to={'edit/' + adminGroup.id}
-                >
-                  编辑
-                </PermissionButton>
-              </Td>
-            </Tr>
-          ))}
-      </Tbody>
-    </Table>
+    <DataTable isLoading={!data}>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th width={90}>Id</Th>
+            <Th width={150}>名称</Th>
+            <Th />
+          </Tr>
+        </Thead>
+        <Tbody>
+          {data &&
+            data.items.map((adminGroup) => (
+              <Tr key={adminGroup.id}>
+                <Td>{adminGroup.id}</Td>
+                <Td>{adminGroup.name}</Td>
+                <Td sx={{ textAlign: 'right' }}>
+                  <PermissionButton
+                    permission={'admin-group/edit'}
+                    variant="outline"
+                    size="xs"
+                    as={Link}
+                    to={'edit/' + adminGroup.id}
+                  >
+                    编辑
+                  </PermissionButton>
+                </Td>
+              </Tr>
+            ))}
+        </Tbody>
+      </Table>
+    </DataTable>
   );
 };
 
