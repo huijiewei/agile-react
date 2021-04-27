@@ -6,10 +6,10 @@ import { PermissionButton } from '@admin/components/PermissionButton';
 import { DataTable } from '@shared/components/table/DataTable';
 
 const AdminTable = (): JSX.Element => {
-  const { data } = useAdminAll();
+  const { data, loading } = useAdminAll();
 
   return (
-    <DataTable isLoading={!data}>
+    <DataTable isLoading={loading}>
       <Table>
         <Thead>
           <Tr>

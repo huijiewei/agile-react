@@ -18,7 +18,7 @@ const UserTable = ({
   setSearchFields?: (searchFields: SearchField[] | undefined) => void;
   withSearchFields: boolean;
 }) => {
-  const { data } = useUserAll(withSearchFields);
+  const { data, loading } = useUserAll(withSearchFields);
 
   useEffect(() => {
     setSearchFields && setSearchFields(data?.searchFields);
@@ -26,7 +26,7 @@ const UserTable = ({
 
   return (
     <>
-      <DataTable isLoading={!data}>
+      <DataTable isLoading={loading}>
         <Table>
           <Thead>
             <Tr>
