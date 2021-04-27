@@ -1,6 +1,7 @@
 import { forwardRef, IconButton, Select, SelectProps, Skeleton, Stack } from '@chakra-ui/react';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
+import { useMountedState } from '@shared/hooks/useMountedState';
 
 type Option = {
   value: string | number | readonly string[] | undefined;
@@ -17,20 +18,23 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<Option[] | void>();
+  const isMounted = useMountedState();
 
-  const reload = useCallback<() => void>(async () => {
+  const fetch = useCallback<() => void>(async () => {
     setLoading(true);
 
     const options = await loadOptions();
 
-    setLoading(false);
+    if (isMounted()) {
+      setLoading(false);
 
-    setOptions(options);
+      setOptions(options);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    reload();
+    fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,7 +54,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
         )}
       </Skeleton>
       <IconButton
-        onClick={reload}
+        onClick={fetch}
         size={'sm'}
         variant={'outline'}
         colorScheme={'gray'}
