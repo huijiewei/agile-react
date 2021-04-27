@@ -8,12 +8,12 @@ type Option = {
 };
 
 type RemoteSelectProps = SelectProps & {
-  buttonTitle?: string;
+  buttonText?: string;
   loadOptions: () => Promise<Option[] | undefined>;
 };
 
 const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
-  const { name, loadOptions, buttonTitle = '刷新选项数据', isDisabled, ...restProps } = props;
+  const { name, loadOptions, buttonText = '刷新选项数据', isDisabled, ...restProps } = props;
 
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<Option[] | void>();
@@ -36,24 +36,26 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
-      {options ? (
-        <Select isDisabled={isDisabled || loading} name={name} ref={ref} {...restProps}>
-          {options.map((option, index) => (
-            <option key={name + '-' + index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>
-      ) : (
-        <Skeleton width={'full'} height={10} />
-      )}
+      <Skeleton width={'full'} isLoaded={!!options}>
+        {options ? (
+          <Select isDisabled={isDisabled || loading} name={name} ref={ref} {...restProps}>
+            {options.map((option, index) => (
+              <option key={name + '-' + index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        ) : (
+          <Select {...restProps} />
+        )}
+      </Skeleton>
       <IconButton
         onClick={reload}
         size={'sm'}
         variant={'outline'}
         colorScheme={'gray'}
-        title={buttonTitle}
-        aria-label={buttonTitle}
+        title={buttonText}
+        aria-label={buttonText}
         icon={<Refresh />}
         isLoading={loading}
         isDisabled={isDisabled}
