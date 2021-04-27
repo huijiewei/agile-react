@@ -14,6 +14,7 @@ import { radii } from '@shared/theme/foundations/radius';
 import { selectTheme } from '@shared/theme/components/select';
 import { styles } from '@shared/theme/styles';
 import { menuTheme } from '@shared/theme/components/menu';
+import { skeletonTheme } from '@shared/theme/components/skeleton';
 
 const agileTheme = extendTheme({
   config: {
@@ -39,6 +40,7 @@ const agileTheme = extendTheme({
     Table: tableTheme,
     Select: selectTheme,
     CloseButton: closeButtonTheme,
+    Skeleton: skeletonTheme,
   },
 });
 
