@@ -49,6 +49,7 @@ const LayoutContent = ({ children }: { children: ReactNode }): JSX.Element => {
 
   return (
     <Box
+      as={'main'}
       height={`calc(100vh - ${headerHeight} )`}
       marginTop={headerHeight}
       padding="5"

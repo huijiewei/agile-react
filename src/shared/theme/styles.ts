@@ -4,7 +4,7 @@ const styles: Styles = {
   global: {
     body: {
       fontSize: 'md',
-      overflowX: 'scroll',
+      overflowY: 'scroll',
       '&::-webkit-scrollbar': {
         width: '7px',
       },
