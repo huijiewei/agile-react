@@ -14,7 +14,7 @@ const AdminLogTable = ({
   setSearchFields?: (searchFields: SearchField[] | undefined) => void;
   withSearchFields: boolean;
 }) => {
-  const { data } = useAdminLogAll(withSearchFields);
+  const { data, loading } = useAdminLogAll(withSearchFields);
 
   useEffect(() => {
     setSearchFields && setSearchFields(data?.searchFields);
@@ -22,7 +22,7 @@ const AdminLogTable = ({
 
   return (
     <>
-      <DataTable isLoading={!data}>
+      <DataTable isLoading={loading}>
         <Table>
           <Thead>
             <Tr>
