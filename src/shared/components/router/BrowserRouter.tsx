@@ -1,8 +1,8 @@
 import { BrowserRouterProps, Router } from 'react-router-dom';
 import { BrowserHistory, createBrowserHistory } from 'history';
-import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-const HistoryContext = createContext<BrowserHistory | undefined>(undefined);
+const BrowserHistoryContext = createContext<BrowserHistory | undefined>(undefined);
 
 const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element => {
   const historyRef = useRef<BrowserHistory>();
@@ -18,23 +18,27 @@ const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element =>
     location: history.location,
   });
 
-  useLayoutEffect(() => history.listen(setState), [history]);
+  useEffect(() => {
+    const unListen = history.listen(setState);
+
+    return () => unListen();
+  }, [history]);
 
   return (
     <Router action={state.action} location={state.location} navigator={history}>
-      <HistoryContext.Provider value={history}>{children}</HistoryContext.Provider>
+      <BrowserHistoryContext.Provider value={history}>{children}</BrowserHistoryContext.Provider>
     </Router>
   );
 };
 
-const useHistory = (): BrowserHistory => {
-  const context = useContext(HistoryContext);
+const useBrowserHistory = (): BrowserHistory => {
+  const context = useContext(BrowserHistoryContext);
 
   if (context === undefined) {
-    throw new Error('useHistory must be used within a BrowserRouter');
+    throw new Error('useBrowserHistory must be used within a BrowserRouter');
   }
 
   return context;
 };
 
-export { BrowserRouter, useHistory };
+export { BrowserRouter, useBrowserHistory };

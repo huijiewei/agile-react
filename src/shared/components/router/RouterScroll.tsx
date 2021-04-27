@@ -1,13 +1,13 @@
 import { isBrowser } from '@chakra-ui/utils';
-import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useBrowserHistory } from '@shared/components/router/BrowserRouter';
 
 type ScrollToHashOptions = ScrollToOptions & {
   hash?: string;
 };
 
 const getScrollPosition = (hash: string, offset: ScrollToOptions) => {
-  if (hash.length >= 2) {
+  if (hash.length < 2) {
     return offset as ScrollToOptions;
   }
 
@@ -44,11 +44,17 @@ const RouterScroll = (): null => {
     history.scrollRestoration = 'manual';
   }
 
-  const { pathname, search, hash } = useLocation();
+  const browserHistory = useBrowserHistory();
 
   useEffect(() => {
-    scrollToPosition({ hash: hash, left: 0, top: 0, behavior: 'smooth' });
-  }, [pathname, search, hash]);
+    const unListen = browserHistory.listen(({ action, location }) => {
+      if (action == 'PUSH') {
+        scrollToPosition({ hash: location.hash, left: 0, top: 0, behavior: 'auto' });
+      }
+    });
+
+    return () => unListen();
+  }, [browserHistory]);
 
   return null;
 };
