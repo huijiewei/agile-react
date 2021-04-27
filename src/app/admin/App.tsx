@@ -9,12 +9,14 @@ import { AppAuthProvider } from '@admin/AppAuth';
 import { AppHttpProvider } from '@admin/AppHttp';
 
 import { AppRoutes } from '@admin/routers';
+import { RouterScroll } from '@shared/components/router/RouterScroll';
 
 const App = (): JSX.Element => {
   useSplash();
 
   return (
     <BrowserRouter>
+      <RouterScroll />
       <ErrorProvider>
         <AppAuthProvider>
           <AppHttpProvider>
