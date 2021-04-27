@@ -7,6 +7,7 @@ import { Icon } from '@shared/components/icon/Icon';
 import { UploadOne } from '@icon-park/react';
 import { Dict } from '@shared/utils/types';
 import { useMessage } from '@shared/hooks/useMessage';
+import { useMountedState } from '@shared/hooks/useMountedState';
 
 export type FileUploadProps = {
   label?: string;
@@ -62,6 +63,7 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
   const { warning } = useMessage();
   const [uploadOption, setUploadOption] = useState<UploadOption>();
   const timeoutRef = useRef<number>();
+  const isMounted = useMountedState();
 
   const { apiGet } = useHttp();
 
@@ -72,12 +74,14 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
       apiGet(apiEndpoint, { thumbs: thumbs, cropper: cropper?.enable }, false)
     );
 
-    setUploadOption(data);
+    if (isMounted()) {
+      setUploadOption(data);
+    }
 
     if (data && data.timeout && data.timeout > 0) {
       timeoutRef.current = window.setTimeout(fetchUploadOption, data.timeout * 1000);
     }
-  }, [apiEndpoint, apiGet, thumbs, cropper]);
+  }, [apiGet, apiEndpoint, thumbs, cropper?.enable, isMounted]);
 
   useEffect(() => {
     fetchUploadOption();
