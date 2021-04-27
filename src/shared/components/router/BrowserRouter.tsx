@@ -1,6 +1,6 @@
 import { BrowserRouterProps, Router } from 'react-router-dom';
 import { BrowserHistory, createBrowserHistory } from 'history';
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
 
 const BrowserHistoryContext = createContext<BrowserHistory | undefined>(undefined);
 
@@ -18,7 +18,7 @@ const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element =>
     location: history.location,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const unListen = history.listen(setState);
 
     return () => unListen();
