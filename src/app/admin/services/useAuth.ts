@@ -47,6 +47,7 @@ const useAuth = (): UseAuth => {
   const { apiGet } = useHttp();
 
   const { data, error, mutate } = useSWR<Auth>(AUTH_API, (url: string) => apiGet<Auth>(url), {
+    suspense: false,
     revalidateOnMount: !cache.has(AUTH_API),
   });
 
