@@ -37,10 +37,7 @@ const scrollToPosition = (position: ScrollToHashOptions): void => {
   if ('scrollBehavior' in document.documentElement.style) {
     window.scrollTo(scrollToOptions);
   } else {
-    window.scrollTo(
-      scrollToOptions.left != null ? scrollToOptions.left : window.pageXOffset,
-      scrollToOptions.top != null ? scrollToOptions.top : window.pageYOffset
-    );
+    window.scrollTo(scrollToOptions.left || window.pageXOffset, scrollToOptions.top || window.pageYOffset);
   }
 };
 

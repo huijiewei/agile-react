@@ -8,7 +8,6 @@ import { AppHttpProvider } from '@admin/AppHttp';
 
 import { AppRoutes } from '@admin/routers';
 import { RouterScroll } from '@shared/components/router/RouterScroll';
-import { RouterBack } from '@shared/components/router/RouterBack';
 import { BrowserRouter } from '@shared/components/router/BrowserRouter';
 
 const App = (): JSX.Element => {
@@ -16,7 +15,6 @@ const App = (): JSX.Element => {
 
   return (
     <BrowserRouter>
-      <RouterBack />
       <RouterScroll />
       <ErrorProvider>
         <AppAuthProvider>
