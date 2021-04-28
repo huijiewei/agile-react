@@ -61,8 +61,6 @@ const RouterScroll = (): null => {
         top: 0,
       };
 
-      console.log(toPosition);
-
       scrollToPosition(toPosition);
     });
 
