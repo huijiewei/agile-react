@@ -1,44 +1,61 @@
 import { BrowserRouterProps, Router } from 'react-router-dom';
-import { BrowserHistory, createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory, State, To } from 'history';
 import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { computeScrollPosition, saveScrollPosition } from '@shared/components/router/RouterScroll';
 
-const BrowserHistoryContext = createContext<BrowserHistory | undefined>(undefined);
+const HistoryContext = createContext<BrowserHistory | undefined>(undefined);
 
 const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element => {
   const historyRef = useRef<BrowserHistory>();
 
   if (historyRef.current == null) {
-    historyRef.current = createBrowserHistory({ window });
+    const browserHistory = createBrowserHistory({ window });
+
+    historyRef.current = {
+      ...browserHistory,
+      ...{
+        push(to: To, state?: State | undefined) {
+          saveScrollPosition(browserHistory.createHref(browserHistory.location), computeScrollPosition());
+
+          browserHistory.push(to, state);
+        },
+        replace(to: To, state?: State | undefined) {
+          browserHistory.replace(to, state);
+        },
+      },
+    };
   }
 
-  const history = historyRef.current;
+  const browserHistory = historyRef.current;
 
   const [state, setState] = useState({
-    action: history.action,
-    location: history.location,
+    action: browserHistory.action,
+    location: browserHistory.location,
   });
 
   useLayoutEffect(() => {
-    const unListen = history.listen(setState);
+    const removeHistoryListener = browserHistory.listen(({ action, location }) => {
+      setState({ action, location });
+    });
 
-    return () => unListen();
-  }, [history]);
+    return () => removeHistoryListener();
+  }, [browserHistory]);
 
   return (
-    <Router action={state.action} location={state.location} navigator={history}>
-      <BrowserHistoryContext.Provider value={history}>{children}</BrowserHistoryContext.Provider>
+    <Router action={state.action} location={state.location} navigator={browserHistory}>
+      <HistoryContext.Provider value={browserHistory}>{children}</HistoryContext.Provider>
     </Router>
   );
 };
 
-const useBrowserHistory = (): BrowserHistory => {
-  const context = useContext(BrowserHistoryContext);
+const useHistory = (): BrowserHistory => {
+  const historyContext = useContext(HistoryContext);
 
-  if (context === undefined) {
+  if (historyContext === undefined) {
     throw new Error('useBrowserHistory must be used within a BrowserRouter');
   }
 
-  return context;
+  return historyContext;
 };
 
-export { BrowserRouter, useBrowserHistory };
+export { BrowserRouter, useHistory };

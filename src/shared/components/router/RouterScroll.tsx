@@ -1,10 +1,14 @@
-import { isBrowser } from '@chakra-ui/utils';
+import { useHistory } from '@shared/components/router/BrowserRouter';
 import { useEffect } from 'react';
-import { useBrowserHistory } from '@shared/components/router/BrowserRouter';
 
 type ScrollToHashOptions = ScrollToOptions & {
   hash?: string;
 };
+
+export const computeScrollPosition = (): ScrollToOptions => ({
+  left: window.pageXOffset,
+  top: window.pageYOffset,
+});
 
 const getScrollPosition = (hash: string, offset: ScrollToOptions) => {
   if (hash.length < 2) {
@@ -30,8 +34,9 @@ const getScrollPosition = (hash: string, offset: ScrollToOptions) => {
 const scrollToPosition = (position: ScrollToHashOptions): void => {
   const scrollToOptions = getScrollPosition(position.hash || '', position);
 
-  if ('scrollBehavior' in document.documentElement.style) window.scrollTo(scrollToOptions);
-  else {
+  if ('scrollBehavior' in document.documentElement.style) {
+    window.scrollTo(scrollToOptions);
+  } else {
     window.scrollTo(
       scrollToOptions.left != null ? scrollToOptions.left : window.pageXOffset,
       scrollToOptions.top != null ? scrollToOptions.top : window.pageYOffset
@@ -39,21 +44,29 @@ const scrollToPosition = (position: ScrollToHashOptions): void => {
   }
 };
 
-const RouterScroll = (): null => {
-  if (isBrowser && 'scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
+const scrollPositions = new Map<string, ScrollToOptions>();
 
-  const browserHistory = useBrowserHistory();
+export const saveScrollPosition = (key: string, scrollPosition: ScrollToOptions): void => {
+  scrollPositions.set(key, scrollPosition);
+};
+
+const RouterScroll = (): null => {
+  const browserHistory = useHistory();
 
   useEffect(() => {
-    const unListen = browserHistory.listen(({ action, location }) => {
-      if (action == 'PUSH') {
-        scrollToPosition({ hash: location.hash, left: 0, top: 0, behavior: 'auto' });
-      }
+    const removeHistoryListener = browserHistory.listen(({ action, location }) => {
+      const toPosition = (action == 'POP' ? scrollPositions.get(browserHistory.createHref(location)) : undefined) || {
+        hash: location.hash,
+        left: 0,
+        top: 0,
+      };
+
+      console.log(toPosition);
+
+      scrollToPosition(toPosition);
     });
 
-    return () => unListen();
+    return () => removeHistoryListener();
   }, [browserHistory]);
 
   return null;
