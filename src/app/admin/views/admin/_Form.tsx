@@ -113,7 +113,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
           rules={{
             required: '请上传头像',
           }}
-          render={({ field: { value, onChange } }) => <ImageUpload isMultiple value={value} onChange={onChange} />}
+          render={({ field: { value, onChange } }) => <AvatarUpload value={value} onChange={onChange} />}
         />
         <FormErrorMessage>{errors.avatar?.message || ' '}</FormErrorMessage>
       </FormItem>

@@ -220,7 +220,7 @@ const useUpload = (props: UseUploadProps): UseUpload => {
         }
 
         if (isMultiple) {
-          setValue((prevState) => [...prevState, data.url]);
+          setValue((prevState) => [...prevState, data.url].filter((url) => url.length > 0));
         } else {
           setValue(data.url);
         }

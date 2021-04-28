@@ -24,6 +24,10 @@ const metismenu = css`
     background-color: gray;
   }
 
+  .mm-item.mm-active {
+    color: yellow;
+  }
+
   .mm-collapse:not(.mm-show) {
     display: none;
   }
@@ -41,7 +45,7 @@ const metismenu = css`
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MetismenuElem = ({ menu }: { menu: any }) => {
   return menu.url ? (
-    <chakra.a as={NavLink} className="mm-item" to={formatUrl(menu.url)}>
+    <chakra.a as={NavLink} activeClassName="mm-active" end className="mm-item" to={formatUrl(menu.url)}>
       {menu.label}
     </chakra.a>
   ) : (
