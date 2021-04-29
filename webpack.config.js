@@ -231,6 +231,7 @@ module.exports = (env, argv) => {
             chunks: 'all',
             minChunks: 2,
             priority: 10,
+            reuseExistingChunk: true,
           },
         },
       },
