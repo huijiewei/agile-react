@@ -1,6 +1,5 @@
 const path = require('path');
 const { EnvironmentPlugin } = require('webpack');
-
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
@@ -9,7 +8,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -37,9 +35,9 @@ module.exports = (env, argv) => {
       },
     },
     resolve: {
+      modules: [path.resolve(__dirname, './node_modules')],
       extensions: ['.jsx', '.js', '.tsx', '.ts'],
       alias: {
-        '@uikit': path.resolve('src/uikit'),
         '@shared': path.resolve('src/shared'),
         [`@${appName}`]: path.resolve(`src/app/${appName}`),
       },
@@ -57,6 +55,7 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.(js|jsx|ts|tsx)$/,
+          include: path.resolve(__dirname, './src'),
           exclude: /node_modules/,
           use: [
             {
@@ -146,7 +145,6 @@ module.exports = (env, argv) => {
             files: [`./src/app/${appName}/**/*.{ts,tsx,js,jsx}`],
           },
         }),
-      new VanillaExtractPlugin(),
       isProduction &&
         new MiniCssExtractPlugin({
           filename: cssFileName,
@@ -197,7 +195,7 @@ module.exports = (env, argv) => {
 
   if (isProduction) {
     config.optimization = {
-      minimizer: ['...', new CssMinimizerPlugin()],
+      minimizer: [new CssMinimizerPlugin(), '...'],
       splitChunks: {
         cacheGroups: {
           react: {
@@ -219,13 +217,6 @@ module.exports = (env, argv) => {
             test: /[\\/]node_modules[\\/]/,
             chunks: 'all',
             priority: 10,
-            enforce: true,
-          },
-          uikit: {
-            name: 'uikit',
-            test: /[\\/]src\/uikit[\\/]/,
-            chunks: 'all',
-            priority: 20,
             enforce: true,
           },
           shared: {
