@@ -3,7 +3,7 @@ import { Dict } from '@shared/utils/types';
 
 const alertTheme = {
   baseStyle: {
-    icon: { height: 7, width: 4 },
+    icon: { height: 6, width: 4 },
   },
   variants: {
     subtle: (props: Dict): Dict => ({
