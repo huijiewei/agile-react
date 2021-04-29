@@ -5,7 +5,6 @@ import { InputProps, useControllableState, useFormControl } from '@chakra-ui/rea
 type UploadRequestOption = {
   action: string;
   method?: 'POST' | 'PUT';
-  timeout?: number;
 
   fieldName?: string;
 
@@ -121,7 +120,6 @@ const useUpload = (props: UseUploadProps): UseUpload => {
 
     action,
     method = 'POST',
-    timeout = 0,
     fieldName = 'file',
 
     onBefore,
@@ -175,7 +173,6 @@ const useUpload = (props: UseUploadProps): UseUpload => {
 
     await uploadFiles(files, {
       action: action,
-      timeout: timeout,
       method: method,
       fieldName: fieldName,
       onBefore: onBefore,
