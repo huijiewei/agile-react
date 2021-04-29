@@ -3,22 +3,18 @@ import { Dict } from '@shared/utils/types';
 import { InputProps, useControllableState, useFormControl } from '@chakra-ui/react';
 
 type UploadRequestOption = {
-  requestUrl: string;
-  requestMethod?: 'POST' | 'PUT';
-  requestTimeout?: number;
-  requestHeaders?: Dict<string>;
-  requestData?: Dict;
+  action: string;
+  method?: 'POST' | 'PUT';
+  timeout?: number;
 
-  formDataName?: string;
-  withCredentials?: boolean;
-  responseDataType?: 'json' | 'xml';
+  fieldName?: string;
 
-  onUploadRequest?: (file: File, xhr: XMLHttpRequest, formData: FormData) => void;
-  onUploadProgress?: (event: ProgressEvent) => void;
-  onUploadSuccess?: (data: { url: string }) => void;
-  onUploadResponse?: <E, T>(response: E) => T;
-  onUploadError?: (error: string) => void;
-  onUploadAbort?: () => void;
+  onBefore?: (file: File, xhr: XMLHttpRequest, formData: FormData) => void;
+  onProgress?: (event: ProgressEvent) => void;
+  onAfter?: <E, T>(response: E) => T;
+  onUpload?: (data: { url: string }) => void;
+  onError?: (error: string) => void;
+  onAbort?: () => void;
 };
 
 type UploadFile = {
@@ -38,12 +34,6 @@ const uploadFile = (file: UploadFile, options: UploadRequestOption) => {
   }
 
   const xhr = new XMLHttpRequest();
-  xhr.responseType = options.responseDataType == 'json' ? 'json' : 'text';
-  xhr.withCredentials = options.withCredentials || false;
-
-  if (options.requestTimeout) {
-    xhr.timeout = options.requestTimeout;
-  }
 
   xhr.upload.onprogress = (e) => {
     console.log(e);
@@ -52,35 +42,23 @@ const uploadFile = (file: UploadFile, options: UploadRequestOption) => {
   xhr.onreadystatechange = () => {
     if (xhr.readyState == 4) {
       if (xhr.status == 0 || xhr.status >= 500 || xhr.status >= 400) {
-        options.onUploadError && options.onUploadError('文件上传错误');
+        options.onError && options.onError('文件上传错误');
       } else {
-        const data = options.onUploadResponse ? options.onUploadResponse(xhr.response) : xhr.response;
+        const data = options.onAfter ? options.onAfter(xhr.response) : xhr.response;
 
-        options.onUploadSuccess && options.onUploadSuccess(data);
+        options.onUpload && options.onUpload(data);
       }
     }
   };
 
   const formData = new FormData();
 
-  if (options.requestData) {
-    for (const [key, value] of Object.entries(options.requestData)) {
-      formData.append(key, value);
-    }
-  }
+  formData.append(options.fieldName || 'file', file.file, file.file.name);
 
-  formData.append(options.formDataName || 'file', file.file, file.file.name);
+  xhr.open(options.method || 'POST', options.action, true);
 
-  if (options.onUploadRequest) {
-    options.onUploadRequest(file.file, xhr, formData);
-  }
-
-  xhr.open(options.requestMethod || 'POST', options.requestUrl, true);
-
-  if (options.requestHeaders) {
-    for (const [key, value] of Object.entries(options.requestHeaders)) {
-      xhr.setRequestHeader(key, value);
-    }
+  if (options.onBefore) {
+    options.onBefore(file.file, xhr, formData);
   }
 
   xhr.send(formData);
@@ -98,7 +76,7 @@ const uploadFiles = async (files: File[], options: UploadRequestOption) => {
   });
 };
 
-export type UseUploadProps = {
+export type UseUploadProps = UploadRequestOption & {
   name?: string;
   accept?: string;
 
@@ -110,13 +88,11 @@ export type UseUploadProps = {
 
   onChange?: (value: string | string[]) => void;
 
-  onFileReject?: () => void;
-
   isDisabled?: boolean;
   isReadOnly?: boolean;
   isRequired?: boolean;
   isMultiple?: boolean;
-} & UploadRequestOption;
+};
 
 type UseUpload = {
   loading: boolean;
@@ -143,26 +119,21 @@ const useUpload = (props: UseUploadProps): UseUpload => {
     isRequired = false,
     isMultiple = false,
 
-    requestUrl,
-    requestMethod = 'POST',
-    requestTimeout = 0,
-    requestHeaders,
-    requestData,
-    responseDataType,
-    withCredentials = false,
-    formDataName = 'file',
+    action,
+    method = 'POST',
+    timeout = 0,
+    fieldName = 'file',
 
-    onUploadRequest,
-    onUploadProgress,
-    onUploadResponse,
-    onUploadSuccess,
-    onUploadError,
+    onBefore,
+    onProgress,
+    onAfter,
+    onUpload,
+    onError,
 
     ...htmlProps
   } = props;
 
   const [loading, setLoading] = useState(false);
-  const [files, setFiles] = useState<Dict<UploadFile>>({});
 
   const [inputValue, setValue] = useControllableState({
     value: isMultiple && typeof valueProp == 'string' ? [valueProp] : valueProp,
@@ -194,7 +165,7 @@ const useUpload = (props: UseUploadProps): UseUpload => {
 
     [...event.target.files].forEach((file) => {
       if (maxFileSize && maxFileSize > 0 && maxFileSize < file.size) {
-        onUploadError && onUploadError(`文件: ${file.name} 大小超出 ${humanFileSize(maxFileSize)}`);
+        onError && onError(`文件: ${file.name} 大小超出 ${humanFileSize(maxFileSize)}`);
       } else {
         files.push(file);
       }
@@ -203,20 +174,16 @@ const useUpload = (props: UseUploadProps): UseUpload => {
     setLoading(true);
 
     await uploadFiles(files, {
-      requestUrl: requestUrl,
-      requestTimeout: requestTimeout,
-      requestMethod: requestMethod,
-      requestData: requestData,
-      requestHeaders: requestHeaders,
-      responseDataType: responseDataType,
-      withCredentials: withCredentials,
-      formDataName: formDataName,
-      onUploadRequest: onUploadRequest,
-      onUploadProgress: onUploadProgress,
-      onUploadResponse: onUploadResponse,
-      onUploadSuccess: (data) => {
-        if (onUploadSuccess) {
-          onUploadSuccess(data);
+      action: action,
+      timeout: timeout,
+      method: method,
+      fieldName: fieldName,
+      onBefore: onBefore,
+      onProgress: onProgress,
+      onAfter: onAfter,
+      onUpload: (data) => {
+        if (onUpload) {
+          onUpload(data);
         }
 
         if (isMultiple) {
@@ -225,7 +192,7 @@ const useUpload = (props: UseUploadProps): UseUpload => {
           setValue(data.url);
         }
       },
-      onUploadError: onUploadError,
+      onError: onError,
     });
 
     setLoading(false);

@@ -1,7 +1,8 @@
 import { Button, forwardRef } from '@chakra-ui/react';
+import { omit } from '@chakra-ui/utils';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { requestFlatry } from '@shared/utils/http';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { Upload } from '@shared/components/upload/Upload';
 import { Icon } from '@shared/components/icon/Icon';
 import { UploadOne } from '@icon-park/react';
@@ -10,10 +11,11 @@ import { useMessage } from '@shared/hooks/useMessage';
 import { useMountedState } from '@shared/hooks/useMountedState';
 
 export type FileUploadProps = {
-  label?: string;
   value?: string | string[];
   defaultValue?: string | string[];
   onChange?: (value: string | string[]) => void;
+
+  buttonText: ReactNode;
 
   isDisabled?: boolean;
   isMultiple?: boolean;
@@ -51,7 +53,7 @@ type UploadOption = {
 
 const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
   const {
-    label,
+    buttonText,
     apiEndpoint,
     preview = null,
     cropper = null,
@@ -59,6 +61,8 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
     defaultThumb = null,
     ...restProps
   } = props;
+
+  const uploadProps = omit(restProps, ['onError', 'onProgress', 'onAbort']);
 
   const { warning } = useMessage();
   const [uploadOption, setUploadOption] = useState<UploadOption>();
@@ -93,32 +97,49 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
     };
   }, []);
 
-  const onUploadRequest = useCallback((file: File, xhr: XMLHttpRequest, formData: FormData) => {
-    for (const [key, value] of formData) {
-      if (value.toString().indexOf('${filename}') !== -1) {
-        const randomFileName = Math.random().toString(36).substring(3, 15) + '.' + file.name.split('.').pop();
+  const onBeforeUpload = useCallback(
+    (file: File, xhr: XMLHttpRequest, formData: FormData, uploadOption: UploadOption) => {
+      xhr.responseType = uploadOption.dataType == 'json' ? 'json' : 'text';
 
-        formData.set(key, value.toString().replace('${filename}', randomFileName));
+      if (uploadOption.timeout) {
+        xhr.timeout = uploadOption.timeout;
       }
-    }
-  }, []);
 
-  const onUploadResponse = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (response: any) => {
-      if (uploadOption) {
-        const result =
-          uploadOption.dataType == 'xml' ? new DOMParser().parseFromString(response, 'application/xml') : response;
+      if (uploadOption.headers) {
+        for (const [key, value] of Object.entries(uploadOption.headers)) {
+          xhr.setRequestHeader(key, value);
+        }
+      }
 
-        // eslint-disable-next-line no-new-func
-        const responseParse = new Function('result', uploadOption.responseParse);
+      if (uploadOption.params) {
+        for (const [key, value] of Object.entries(uploadOption.params)) {
+          if (value.toString().indexOf('${filename}') !== -1) {
+            const randomFileName = Math.random().toString(36).substring(3, 15) + '.' + file.name.split('.').pop();
 
-        const data = responseParse(result);
-
-        return { url: data.original, ...data };
+            formData.append(key, value.toString().replace('${filename}', randomFileName));
+          } else {
+            formData.append(key, value);
+          }
+        }
       }
     },
-    [uploadOption]
+    []
+  );
+
+  const onAfterUpload = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (response: any, uploadOption: UploadOption) => {
+      const result =
+        uploadOption.dataType == 'xml' ? new DOMParser().parseFromString(response, 'application/xml') : response;
+
+      // eslint-disable-next-line no-new-func
+      const responseParse = new Function('result', uploadOption.responseParse);
+
+      const data = responseParse(result);
+
+      return { url: data.original, ...data };
+    },
+    []
   );
 
   const onUploadError = (error: string) => {
@@ -129,19 +150,16 @@ const BaseUpload = forwardRef<BaseUploadProps, 'div'>((props, ref) => {
     <Upload
       ref={ref}
       accept={uploadOption.typesLimit.map((type) => '.' + type).join(', ')}
-      requestUrl={uploadOption.url}
-      formDataName={uploadOption.paramName}
-      requestData={uploadOption.params}
-      requestHeaders={uploadOption.headers}
-      responseDataType={uploadOption.dataType}
+      action={uploadOption.url}
+      fieldName={uploadOption.paramName}
       maxFileSize={uploadOption.sizeLimit}
-      onUploadRequest={onUploadRequest}
-      onUploadResponse={onUploadResponse}
-      onUploadError={onUploadError}
-      {...restProps}
+      onBefore={(file, xhr, formData) => onBeforeUpload(file, xhr, formData, uploadOption)}
+      onAfter={(response) => onAfterUpload(response, uploadOption)}
+      onError={onUploadError}
+      {...uploadProps}
     >
       <Button iconSpacing={1.5} variant={'outline'} size={'xs'} leftIcon={<Icon as={UploadOne} />}>
-        {label}
+        {buttonText}
       </Button>
     </Upload>
   ) : null;

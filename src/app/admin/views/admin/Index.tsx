@@ -37,7 +37,14 @@ const AdminTable = (): JSX.Element => {
                 <Td>{admin.name}</Td>
                 <Td>
                   <Center>
-                    <Avatar size="sm" name={admin.name} src={admin.avatar} />
+                    <Avatar
+                      onError={() => {
+                        console.log('error');
+                      }}
+                      size="sm"
+                      name={admin.name}
+                      src={admin.avatar}
+                    />
                   </Center>
                 </Td>
                 <Td textAlign={'center'}>{admin.adminGroup?.name}</Td>

@@ -12,7 +12,7 @@ type AvatarUploadProps = {
 const AvatarUpload = forwardRef<AvatarUploadProps, 'div'>((props, ref) => {
   const { label = '上传头像', ...restProps } = props;
 
-  return <ImageUpload label={label} ref={ref} {...restProps} />;
+  return <ImageUpload buttonText={label} ref={ref} {...restProps} />;
 });
 
 export { AvatarUpload };

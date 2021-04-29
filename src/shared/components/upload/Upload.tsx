@@ -1,25 +1,13 @@
-import {
-  Box,
-  forwardRef,
-  HTMLChakraProps,
-  Input,
-  InputGroup,
-  List,
-  ListItem,
-  useFormControl,
-  useFormControlProps,
-  Wrap,
-} from '@chakra-ui/react';
+import { Box, forwardRef, Input, InputGroup, useFormControlProps, Wrap } from '@chakra-ui/react';
 import { useUpload, UseUploadProps } from '@shared/components/upload/useUpload';
 import { getValidChildren } from '@chakra-ui/react-utils';
 import { cloneElement } from 'react';
 import { UploadFile } from '@shared/components/upload/UploadFile';
 
-export type UploadProps = UseUploadProps &
-  Omit<HTMLChakraProps<'div'>, 'onChange'> & {
-    accept?: string;
-    showFile?: boolean;
-  };
+export type UploadProps = UseUploadProps & {
+  accept?: string;
+  showFile?: boolean;
+};
 
 const Upload = forwardRef<UploadProps, 'div'>((props, ref) => {
   const { name, accept = '', showFile = true, isDisabled = false, isMultiple = false, children, ...ownProps } = props;
