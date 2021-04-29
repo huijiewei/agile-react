@@ -1,10 +1,8 @@
 import { Dict } from '@shared/utils/types';
 
-export const timeout = (delay: number): Promise<null> => {
+export const sleep = (delay: number): Promise<null> => {
   return new Promise((resolve) => {
-    setTimeout(function () {
-      resolve(null);
-    }, delay);
+    setTimeout(resolve, delay);
   });
 };
 
