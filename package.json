@@ -13,12 +13,12 @@
     "admin boilerplate"
   ],
   "scripts": {
-    "admin-dev": "webpack serve --hot --mode development --env APP_CONFIG=./app.admin.config.js",
-    "admin-build": "webpack build --mode production --env APP_CONFIG=./app.admin.config.js",
-    "admin-analyze": "webpack build --mode production --env APP_CONFIG=./app.admin.config.js BUNDLE_ANALYZE=1",
+    "admin-dev": "webpack serve --hot --mode development --env APP_CONFIG=./config/admin.config.js",
+    "admin-build": "webpack build --mode production --env APP_CONFIG=./config/admin.config.js",
+    "admin-analyze": "webpack build --mode production --env APP_CONFIG=./config/admin.config.js BUNDLE_ANALYZE=1",
     "admin-serve": "light-server -s dist --historyindex '/admin/index.html' --bind localhost --open /admin --port 8011 --no-reload",
-    "mobile-dev": "webpack serve --hot --mode development --env APP_CONFIG=./app.mobile.config.js",
-    "mobile-build": "webpack build --mode production --env APP_CONFIG=./app.mobile.config.js",
+    "mobile-dev": "webpack serve --hot --mode development --env APP_CONFIG=./config/mobile.config.js",
+    "mobile-build": "webpack build --mode production --env APP_CONFIG=./config/mobile.config.js",
     "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "author": "Huijie Wei",

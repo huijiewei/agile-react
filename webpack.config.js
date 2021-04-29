@@ -130,6 +130,7 @@ module.exports = (env, argv) => {
       dev: {
         publicPath: appConfig.publicPath,
       },
+      open: appConfig.publicPath,
       host: appConfig.serverHost,
       port: appConfig.serverPort,
     },

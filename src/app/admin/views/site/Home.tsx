@@ -7,7 +7,7 @@ const Home = (): JSX.Element => {
     <ContentLayout>
       <Stack>
         <Box>Agile - The React Admin Template</Box>
-        <Box>中文字体</Box>
+        <Box>中文介绍</Box>
         <div>
           <TextLink as={Link} to={'../nest'}>
             嵌套路由页面
