@@ -17,43 +17,40 @@ import { PropsWithChildren, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { useMountedState } from '@shared/hooks/useMountedState';
+import { HttpMethod } from '@shared/utils/http';
 
-type ExportButtonProps = ButtonProps & {
+type ExportBaseOption = {
+  apiMethod?: HttpMethod;
   apiEndpoint: string;
-  confirmMessage?: string;
 };
 
-const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element => {
-  const {
-    apiEndpoint,
-    confirmMessage,
-    variant = 'outline',
-    size = 'sm',
-    colorScheme = 'teal',
-    children,
-    ...restProps
-  } = props;
+type ExportButtonDownloadProps = ButtonProps &
+  ExportBaseOption & {
+    onSuccess?: () => void;
+  };
+
+type ExportButtonProps = ButtonProps &
+  ExportBaseOption & {
+    confirmMessage?: string;
+  };
+
+const ExportDownloadButton = (props: PropsWithChildren<ExportButtonDownloadProps>): JSX.Element => {
+  const { apiMethod = 'GET', apiEndpoint, onSuccess, children, ...restProps } = props;
+
+  const [loading, setLoading] = useState(false);
 
   const { apiDownload } = useHttp();
   const { search } = useLocation();
   const { setError } = useErrorDispatch();
-  const [loading, setLoading] = useState(false);
 
   const isMounted = useMountedState();
   const newCancelToken = useCancelToken();
-  const initialFocusRef = useRef(null);
-
-  const { onOpen, onClose, isOpen } = useDisclosure();
-
-  const onClickCancel = async () => {
-    onClose();
-  };
 
   const onClickDownload = async () => {
     setLoading(true);
 
     const result = await apiDownload({
-      method: 'GET',
+      method: apiMethod,
       url: apiEndpoint,
       params: {
         ...queryString.parse(search),
@@ -69,8 +66,34 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
 
     if (isMounted()) {
       setLoading(false);
-      onClose();
+      onSuccess && onSuccess();
     }
+  };
+
+  return (
+    <Button isLoading={loading} onClick={onClickDownload} {...restProps}>
+      {children}
+    </Button>
+  );
+};
+
+const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element => {
+  const {
+    apiMethod,
+    apiEndpoint,
+    confirmMessage,
+    variant = 'outline',
+    size = 'sm',
+    colorScheme = 'teal',
+    children,
+    ...restProps
+  } = props;
+  const initialFocusRef = useRef(null);
+
+  const { onOpen, onClose, isOpen } = useDisclosure();
+
+  const onClickCancel = async () => {
+    onClose();
   };
 
   return confirmMessage ? (
@@ -86,21 +109,35 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
           <PopoverBody>{confirmMessage}</PopoverBody>
           <PopoverFooter display={'flex'} justifyContent="flex-end">
             <ButtonGroup spacing={5} size="sm">
-              <Button isLoading={loading} onClick={onClickCancel} variant="outline" ref={initialFocusRef}>
+              <Button onClick={onClickCancel} variant="outline" ref={initialFocusRef}>
                 取消
               </Button>
-              <Button isLoading={loading} onClick={onClickDownload} colorScheme={colorScheme}>
+
+              <ExportDownloadButton
+                apiMethod={apiMethod}
+                apiEndpoint={apiEndpoint}
+                colorScheme={colorScheme}
+                onSuccess={onClose}
+                {...restProps}
+              >
                 确定
-              </Button>
+              </ExportDownloadButton>
             </ButtonGroup>
           </PopoverFooter>
         </PopoverContent>
       </Portal>
     </Popover>
   ) : (
-    <Button colorScheme={colorScheme} onClick={onClickDownload} size={size} variant={variant} {...restProps}>
+    <ExportDownloadButton
+      apiMethod={apiMethod}
+      apiEndpoint={apiEndpoint}
+      colorScheme={colorScheme}
+      size={size}
+      variant={variant}
+      {...restProps}
+    >
       {children}
-    </Button>
+    </ExportDownloadButton>
   );
 };
 
