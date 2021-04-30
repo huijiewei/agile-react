@@ -1,6 +1,6 @@
 import { useHttp } from '@shared/contexts/HttpContext';
 import { useMessage } from '@shared/hooks/useMessage';
-import { useAuth } from '@admin/services/useAuth';
+import { useAuth, setAuth } from '@admin/services/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useLoginDirect } from '@admin/hooks/useLoginDirect';
 import { requestFlatry } from '@shared/utils/http';
@@ -9,17 +9,12 @@ import { Avatar, Center, Menu, MenuButton, MenuDivider, MenuItem, MenuList } fro
 import { Icon } from '@shared/components/icon/Icon';
 import { Down, Logout, Refresh, User } from '@icon-park/react';
 
-const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
+const LogoutMenuItem = (): JSX.Element => {
   const { apiPost } = useHttp();
   const { success } = useMessage();
-  const { currentUser, mutate } = useAuth();
 
   const navigate = useNavigate();
   const direct = useLoginDirect();
-
-  const onRefresh = async () => {
-    await mutate();
-  };
 
   const onLogout = async () => {
     const { data } = await requestFlatry<{ message: string }>(apiPost('auth/logout', null));
@@ -27,7 +22,7 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
     if (data) {
       setAuthAccessToken('');
 
-      await mutate(undefined, false);
+      await setAuth(undefined);
 
       success(data.message, {
         duration: 1000,
@@ -36,6 +31,20 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
         },
       });
     }
+  };
+
+  return (
+    <MenuItem iconSpacing="3" icon={<Icon as={Logout} />} onClick={onLogout}>
+      退出登录
+    </MenuItem>
+  );
+};
+
+const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
+  const { currentUser, mutate } = useAuth();
+
+  const onRefresh = async () => {
+    await mutate();
   };
 
   if (currentUser) {
@@ -64,9 +73,7 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
             刷新资料
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="3" icon={<Icon as={Logout} />} onClick={onLogout}>
-            退出登录
-          </MenuItem>
+          <LogoutMenuItem />
         </MenuList>
       </Menu>
     );

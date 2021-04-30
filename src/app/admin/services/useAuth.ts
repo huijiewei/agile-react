@@ -60,7 +60,7 @@ const useAuth = (): UseAuth => {
   };
 };
 
-const setAuth = async (auth: Auth): Promise<void> => {
+const setAuth = async (auth: Auth | undefined): Promise<void> => {
   await mutate(AUTH_API, auth, false);
 };
 
