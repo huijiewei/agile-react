@@ -30,9 +30,6 @@ module.exports = (env, argv) => {
     },
     cache: {
       type: 'filesystem',
-      buildDependencies: {
-        config: [__filename],
-      },
     },
     resolve: {
       modules: [path.resolve(__dirname, './node_modules')],
