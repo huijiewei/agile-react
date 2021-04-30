@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useRef } from 'react';
 import {
   createHttp,
   httpBaseUrl,
@@ -8,6 +8,7 @@ import {
   httpOnSuccess,
   httpParamsSerializer,
 } from '@shared/utils/http';
+import Axios, { CancelToken, CancelTokenSource } from 'axios';
 
 const HttpContext = createContext<HttpInstance | undefined>(undefined);
 
@@ -46,4 +47,23 @@ const useHttp = (): HttpInstance => {
   return context;
 };
 
-export { HttpProvider, useHttp };
+const useCancelToken = (): (() => CancelToken) => {
+  const axiosSource = useRef<CancelTokenSource>();
+
+  const newCancelToken = () => {
+    axiosSource.current = Axios.CancelToken.source();
+
+    return axiosSource.current.token;
+  };
+
+  useEffect(
+    () => () => {
+      axiosSource.current && axiosSource.current.cancel();
+    },
+    []
+  );
+
+  return newCancelToken;
+};
+
+export { HttpProvider, useHttp, useCancelToken };

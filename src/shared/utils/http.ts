@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig } from 'axios';
+import Axios, { AxiosRequestConfig, CancelToken } from 'axios';
 import { flatry } from '@shared/utils/util';
 import { Dict } from '@shared/utils/types';
 
@@ -35,13 +35,7 @@ export type HttpInstance = {
   apiPost: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   apiPut: <T>(url: string, data: unknown, params?: unknown, historyBack?: boolean) => Promise<T>;
   apiDelete: <T>(url: string, params?: unknown, historyBack?: boolean) => Promise<T>;
-  apiDownload: (
-    method: HttpMethod,
-    url: string,
-    params?: unknown,
-    data?: unknown,
-    historyBack?: boolean
-  ) => Promise<boolean>;
+  apiDownload: (options: DownloadRequestOption) => Promise<boolean>;
 };
 
 export type HttpParams = Record<string, unknown> | URLSearchParams | undefined;
@@ -95,11 +89,7 @@ export const bindUnprocessableEntityErrors = (
   return result;
 };
 
-const saveFile = (response: HttpResponse | undefined): boolean => {
-  if (!response) {
-    return false;
-  }
-
+const saveFile = (response: HttpResponse): boolean => {
   let filename = response.headers['x-suggested-filename'];
 
   if (!filename) {
@@ -141,6 +131,10 @@ const createAxios = (
       return onRequest ? onRequest(config as HttpRequestConfig) : config;
     },
     (error: HttpError) => {
+      if (Axios.isCancel(error)) {
+        return;
+      }
+
       return onError ? onError(error) : error;
     }
   );
@@ -150,11 +144,28 @@ const createAxios = (
       return onSuccess ? onSuccess(response as HttpResponse) : response;
     },
     (error: HttpError) => {
+      if (Axios.isCancel(error)) {
+        return;
+      }
+
       return onError ? onError(error) : error;
     }
   );
 
   return axiosInstance;
+};
+
+type RequestOption = {
+  url: string;
+  params?: Dict | Dict[] | null;
+  data?: Dict | Dict[] | null;
+  historyBack?: boolean;
+  cancelToken?: CancelToken;
+};
+
+type DownloadRequestOption = RequestOption & {
+  method: HttpMethod;
+  timeout?: number;
 };
 
 export const createHttp = (
@@ -199,26 +210,25 @@ export const createHttp = (
 
       return axios.delete(url, config);
     },
-    apiDownload: async (
-      method: HttpMethod,
-      url: string,
-      params: unknown = null,
-      body: unknown = null,
-      historyBack = false
-    ) => {
+    apiDownload: async (options: DownloadRequestOption) => {
       const config = {
-        url: url,
-        method: method,
-        timeout: 120 * 1000,
-        params: params,
-        data: body,
+        url: options.url,
+        method: options.method,
+        timeout: options.timeout || 120 * 1000,
+        params: options.params,
+        data: options.data,
         responseType: 'blob',
-        __historyBack: historyBack,
+        cancelToken: options.cancelToken,
+        __historyBack: options.historyBack || false,
       } as AxiosRequestConfig;
 
-      const { data } = await requestFlatry(axios.request(config));
+      const { data, error } = await requestFlatry<HttpResponse>(axios.request(config));
 
-      return saveFile(data as HttpResponse);
+      if (data) {
+        return saveFile(data);
+      }
+
+      return !error;
     },
   };
 };

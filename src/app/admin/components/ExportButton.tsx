@@ -3,6 +3,7 @@ import {
   ButtonGroup,
   ButtonProps,
   Popover,
+  PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverFooter,
@@ -10,11 +11,12 @@ import {
   Portal,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useHttp } from '@shared/contexts/HttpContext';
+import { useCancelToken, useHttp } from '@shared/contexts/HttpContext';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 import { PropsWithChildren, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import { useMountedState } from '@shared/hooks/useMountedState';
 
 type ExportButtonProps = ButtonProps & {
   apiEndpoint: string;
@@ -37,7 +39,9 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
 
+  const newCancelToken = useCancelToken();
   const initialFocusRef = useRef(null);
+  const isMounted = useMountedState();
 
   const { onOpen, onClose, isOpen } = useDisclosure();
 
@@ -48,49 +52,52 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
   const onClickDownload = async () => {
     setLoading(true);
 
-    const result = await apiDownload('GET', apiEndpoint, {
-      ...queryString.parse(search),
-      page: undefined,
-      size: undefined,
+    const result = await apiDownload({
+      method: 'GET',
+      url: apiEndpoint,
+      params: {
+        ...queryString.parse(search),
+        page: undefined,
+        size: undefined,
+      },
+      cancelToken: newCancelToken(),
     });
-
-    setLoading(false);
 
     if (!result) {
       setError('下载失败', false);
     }
 
-    onClose();
+    if (isMounted()) {
+      setLoading(false);
+      onClose();
+    }
   };
 
-  if (confirmMessage) {
-    return (
-      <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
-        <PopoverTrigger>
-          <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
-            {children}
-          </Button>
-        </PopoverTrigger>
-        <Portal>
-          <PopoverContent>
-            <PopoverBody>{confirmMessage}</PopoverBody>
-            <PopoverFooter display={'flex'} justifyContent="flex-end">
-              <ButtonGroup spacing={5} size="sm">
-                <Button isLoading={loading} onClick={onClickCancel} variant="outline" ref={initialFocusRef}>
-                  取消
-                </Button>
-                <Button isLoading={loading} onClick={onClickDownload} colorScheme={colorScheme}>
-                  确定
-                </Button>
-              </ButtonGroup>
-            </PopoverFooter>
-          </PopoverContent>
-        </Portal>
-      </Popover>
-    );
-  }
-
-  return (
+  return confirmMessage ? (
+    <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
+      <PopoverTrigger>
+        <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
+          {children}
+        </Button>
+      </PopoverTrigger>
+      <Portal>
+        <PopoverContent>
+          <PopoverArrow />
+          <PopoverBody>{confirmMessage}</PopoverBody>
+          <PopoverFooter display={'flex'} justifyContent="flex-end">
+            <ButtonGroup spacing={5} size="sm">
+              <Button isLoading={loading} onClick={onClickCancel} variant="outline" ref={initialFocusRef}>
+                取消
+              </Button>
+              <Button isLoading={loading} onClick={onClickDownload} colorScheme={colorScheme}>
+                确定
+              </Button>
+            </ButtonGroup>
+          </PopoverFooter>
+        </PopoverContent>
+      </Portal>
+    </Popover>
+  ) : (
     <Button colorScheme={colorScheme} onClick={onClickDownload} size={size} variant={variant} {...restProps}>
       {children}
     </Button>

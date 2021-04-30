@@ -17,7 +17,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
   const { name, loadOptions, buttonText = '刷新选项数据', isDisabled, ...restProps } = props;
 
   const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<Option[] | void>();
+  const [options, setOptions] = useState<Option[] | undefined>();
   const isMounted = useMountedState();
 
   const fetch = useCallback<() => void>(async () => {
@@ -26,9 +26,8 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
     const options = await loadOptions();
 
     if (isMounted()) {
-      setLoading(false);
-
       setOptions(options);
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
