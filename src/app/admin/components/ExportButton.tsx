@@ -39,9 +39,9 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
   const { setError } = useErrorDispatch();
   const [loading, setLoading] = useState(false);
 
+  const isMounted = useMountedState();
   const newCancelToken = useCancelToken();
   const initialFocusRef = useRef(null);
-  const isMounted = useMountedState();
 
   const { onOpen, onClose, isOpen } = useDisclosure();
 
@@ -74,7 +74,7 @@ const ExportButton = (props: PropsWithChildren<ExportButtonProps>): JSX.Element 
   };
 
   return confirmMessage ? (
-    <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} initialFocusRef={initialFocusRef} isLazy>
       <PopoverTrigger>
         <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
           {children}

@@ -86,7 +86,7 @@ const DeleteButton = (props: PropsWithChildren<DeleteButtonProps>): JSX.Element 
   };
 
   return (
-    <Popover closeOnBlur={false} isOpen={isOpen} onOpen={onOpen} initialFocusRef={initialFocusRef} isLazy>
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} initialFocusRef={initialFocusRef} isLazy>
       <PopoverTrigger>
         <Button colorScheme={colorScheme} size={size} variant={variant} {...restProps}>
           {children}
