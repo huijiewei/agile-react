@@ -26,17 +26,15 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
       const matchLength = match.length - 1;
 
       match?.forEach((item, index) => {
-        if (index > 0) {
-          const isCurrent = index == matchLength;
+        const isCurrent = index == matchLength;
 
-          breadcrumbs.push({
-            to: isCurrent ? undefined : item.to,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            title: item.title,
-            isCurrent: isCurrent,
-          });
-        }
+        breadcrumbs.push({
+          to: isCurrent ? undefined : item.to,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          title: item.title,
+          isCurrent: isCurrent,
+        });
       });
 
       setBreadcrumbs(breadcrumbs);

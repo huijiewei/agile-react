@@ -62,14 +62,16 @@ type RouteMatch = {
 const getMatchRoutes = (location: Location): RouteMatch[] | null => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return matchRoutes(routes, location, BASE_NAME)?.map((match) => {
-    return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      title: match.route?.title,
-      to: BASE_NAME + match.pathname,
-    };
-  });
+  return matchRoutes(routes, location, BASE_NAME)
+    ?.filter((match) => match.route.path != '/')
+    .map((match) => {
+      return {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        title: match.route?.title,
+        to: BASE_NAME + match.pathname,
+      };
+    });
 };
 
 export { AppRoutes, getMatchRoutes };

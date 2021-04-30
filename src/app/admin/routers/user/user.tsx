@@ -7,7 +7,7 @@ const UserEdit = lazy(() => import(/* webpackChunkName: "chunk-user" */ '@admin/
 const userRoutes = [
   {
     path: 'user',
-    title: '用户管理',
+    title: '用户',
     children: [
       {
         path: '',
