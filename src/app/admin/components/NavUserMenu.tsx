@@ -47,8 +47,8 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
     await mutate();
   };
 
-  if (currentUser) {
-    return (
+  return (
+    currentUser && (
       <Menu isLazy autoSelect={false}>
         <MenuButton
           sx={{ '&:hover, &[data-hover], &:active, &[data-active]': { backgroundColor: 'gray.100' } }}
@@ -76,10 +76,8 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
           <LogoutMenuItem />
         </MenuList>
       </Menu>
-    );
-  }
-
-  return null;
+    )
+  );
 };
 
 export { NavUserMenu };
