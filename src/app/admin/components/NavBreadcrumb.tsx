@@ -1,12 +1,49 @@
-import { useBreadcrumb } from '@admin/routers';
+import { getMatchRoutes } from '@admin/routers';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbProps, Text } from '@chakra-ui/react';
 import { Icon } from '@shared/components/icon/Icon';
 import { Home, Right } from '@icon-park/react';
-import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { To } from 'history';
+
+type Breadcrumb = {
+  to?: To;
+  title: string;
+  isCurrent: boolean;
+};
 
 const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
-  const breadcrumbs = useBreadcrumb();
+  const location = useLocation();
+
+  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+
+  useEffect(() => {
+    const match = getMatchRoutes(location);
+
+    if (match) {
+      const breadcrumbs: Breadcrumb[] = [];
+
+      const matchLength = match.length - 1;
+
+      match?.forEach((item, index) => {
+        if (index > 0) {
+          const isCurrent = index == matchLength;
+
+          breadcrumbs.push({
+            to: isCurrent ? undefined : item.to,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            title: item.title,
+            isCurrent: isCurrent,
+          });
+        }
+      });
+
+      setBreadcrumbs(breadcrumbs);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   const defaultTitle = useRef(document.title);
 
@@ -38,7 +75,7 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
         </BreadcrumbLink>
       </BreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => (
-        <BreadcrumbItem key={'ab-' + index} isCurrentPage={breadcrumb.current}>
+        <BreadcrumbItem key={'ab-' + index} isCurrentPage={breadcrumb.isCurrent}>
           {breadcrumb.to ? (
             <BreadcrumbLink as={Link} to={breadcrumb.to}>
               {breadcrumb.title}
