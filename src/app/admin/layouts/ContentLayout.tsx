@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 const ContentLayout = ({ children }: { children: ReactNode }): JSX.Element => {
   return (
-    <Box minHeight={'full'} backgroundColor="white" padding="5">
+    <Box flexGrow={1} backgroundColor="white" padding="4">
       {children}
     </Box>
   );

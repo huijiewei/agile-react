@@ -1,9 +1,10 @@
-import { Box } from '@chakra-ui/react';
-import { PropsWithChildren, ReactNode } from 'react';
+import { Box, BoxProps } from '@chakra-ui/react';
+import { PropsWithChildren } from 'react';
 import { LayoutProvider, LayoutState, useLayoutState } from './LayoutContext';
 import { noScrollbarsClassName } from 'react-remove-scroll-bar';
 
-const LayoutHeader = ({ children }: { children: ReactNode }): JSX.Element => {
+const LayoutHeader = (props: BoxProps): JSX.Element => {
+  const { children, ...restProps } = props;
   const { headerHeight, headerBackgroundColor } = useLayoutState();
   return (
     <Box
@@ -17,13 +18,15 @@ const LayoutHeader = ({ children }: { children: ReactNode }): JSX.Element => {
       top="0"
       right="0"
       left="0"
+      {...restProps}
     >
       {children}
     </Box>
   );
 };
 
-const LayoutAside = ({ children }: { children: ReactNode }): JSX.Element => {
+const LayoutAside = (props: BoxProps): JSX.Element => {
+  const { children, ...restProps } = props;
   const { headerHeight, asideWidth, asideColor, asideCollapsedWidth, asideBackgroundColor } = useLayoutState();
 
   return (
@@ -38,32 +41,36 @@ const LayoutAside = ({ children }: { children: ReactNode }): JSX.Element => {
       bottom="0"
       width={[asideWidth, asideWidth, asideWidth, asideCollapsedWidth, asideWidth]}
       boxShadow="sm"
+      {...restProps}
     >
       {children}
     </Box>
   );
 };
 
-const LayoutContent = ({ children }: { children: ReactNode }): JSX.Element => {
+const LayoutContent = (props: BoxProps): JSX.Element => {
+  const { children, ...restProps } = props;
   const { asideWidth, asideCollapsedWidth, headerHeight } = useLayoutState();
 
   return (
     <Box
+      display={'flex'}
       as={'main'}
-      height={`calc(100vh - ${headerHeight} )`}
+      minHeight={`calc(100vh - ${headerHeight} )`}
       marginTop={headerHeight}
-      padding="5"
       marginStart={[0, 0, 0, asideCollapsedWidth, asideWidth]}
+      {...restProps}
     >
       {children}
     </Box>
   );
 };
 
-const LayoutRoot = ({ children }: { children: ReactNode }) => {
+const LayoutRoot = (props: BoxProps) => {
+  const { children, ...restProps } = props;
   const { backgroundColor } = useLayoutState();
   return (
-    <Box backgroundColor={backgroundColor} display="block">
+    <Box backgroundColor={backgroundColor} display="block" {...restProps}>
       {children}
     </Box>
   );
