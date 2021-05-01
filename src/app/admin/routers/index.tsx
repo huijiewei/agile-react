@@ -1,5 +1,5 @@
 import { matchRoutes, Navigate, useRoutes } from 'react-router-dom';
-import { Location } from 'history';
+import { Location, To } from 'history';
 
 import { adminRoutes } from './admin/admin';
 import { adminGroupRoutes } from './admin/admin-group';
@@ -55,23 +55,25 @@ const AppRoutes = (): ReturnType<typeof useRoutes> => {
 };
 
 type RouteMatch = {
-  to: string;
+  to: To;
   title?: string;
 };
 
-const getMatchRoutes = (location: Location): RouteMatch[] | null => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return matchRoutes(routes, location, BASE_NAME)
-    ?.filter((match) => match.route.path != '/')
-    .map((match) => {
-      return {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        title: match.route?.title,
-        to: BASE_NAME + match.pathname,
-      };
-    });
+const getMatchRoutes = (location: Location): RouteMatch[] => {
+  return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    matchRoutes(routes, location, BASE_NAME)
+      ?.filter((match) => match.route.path != '/')
+      .map((match) => {
+        return {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          title: match.route?.title,
+          to: BASE_NAME + match.pathname,
+        };
+      }) ?? []
+  );
 };
 
 export { AppRoutes, getMatchRoutes };

@@ -19,26 +19,21 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
 
   useEffect(() => {
     const match = getMatchRoutes(location);
+    const matchLength = match.length - 1;
 
-    if (match) {
-      const breadcrumbs: Breadcrumb[] = [];
+    const breadcrumbs = match.map((item, index) => {
+      const isCurrent = index == matchLength;
 
-      const matchLength = match.length - 1;
+      return {
+        to: isCurrent ? undefined : item.to,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        title: item.title || '',
+        isCurrent: isCurrent,
+      };
+    });
 
-      match?.forEach((item, index) => {
-        const isCurrent = index == matchLength;
-
-        breadcrumbs.push({
-          to: isCurrent ? undefined : item.to,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          title: item.title,
-          isCurrent: isCurrent,
-        });
-      });
-
-      setBreadcrumbs(breadcrumbs);
-    }
+    setBreadcrumbs(breadcrumbs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
@@ -47,14 +42,7 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
 
   useEffect(() => {
     document.title =
-      breadcrumbs
-        .slice()
-        .reverse()
-        .map((breadcrumb) => {
-          return breadcrumb.title;
-        })
-        .join(' - ') +
-      ' - ' +
+      breadcrumbs.reduceRight((accumulator, currentValue) => accumulator + currentValue.title + ' - ', '') +
       defaultTitle.current;
   }, [breadcrumbs]);
 
