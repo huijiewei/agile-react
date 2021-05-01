@@ -9,18 +9,18 @@ const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element =>
   const historyRef = useRef<BrowserHistory>();
 
   if (historyRef.current == null) {
-    const browserHistory = createBrowserHistory({ window });
+    const primitiveHistory = createBrowserHistory({ window });
 
     historyRef.current = {
-      ...browserHistory,
+      ...primitiveHistory,
       ...{
         push(to: To, state?: State | undefined) {
-          saveScrollPosition(browserHistory.createHref(browserHistory.location), computeScrollPosition());
+          saveScrollPosition(primitiveHistory.createHref(primitiveHistory.location), computeScrollPosition());
 
-          browserHistory.push(to, state);
+          primitiveHistory.push(to, state);
         },
         replace(to: To, state?: State | undefined) {
-          browserHistory.replace(to, state);
+          primitiveHistory.replace(to, state);
         },
       },
     };
