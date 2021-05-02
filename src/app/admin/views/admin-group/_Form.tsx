@@ -11,6 +11,7 @@ import { AdminGroupDeleteButton } from '@admin/views/admin-group/_Delete';
 import { useNavigate } from 'react-router-dom';
 import { SameWidthChildrenBox } from '@shared/components/box/SameWidthChildrenBox';
 import { useAuth } from '@admin/services/useAuth';
+import { FormHead } from '@shared/components/form/FormHead';
 
 type AdminGroupPermissionCheckGroup = {
   name: string;
@@ -212,88 +213,97 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
   }, [adminGroupPermissions, adminGroup.permissions]);
 
   return (
-    <Form onSubmit={handleSubmit(onSubmitForm)}>
-      <FormItem id="name" isRequired label={'名称：'} isInvalid={errors.name} fieldWidth={9}>
-        <Input type={'text'} {...register('name', { required: '请输入管理组名称' })} defaultValue={adminGroup.name} />
-        <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
-      </FormItem>
-      <FormItem id="permissions" label={'权限：'}>
-        <Controller
-          control={control}
-          name={'permissions'}
-          defaultValue={adminGroup.permissions}
-          render={({ field: { value, onChange } }) => (
-            <CheckboxGroup value={value} onChange={onChange}>
-              <Stack spacing={3}>
-                {groupPermissions.map((group, groupIdx) => (
-                  <Box key={'gp-' + groupIdx}>
-                    <Box backgroundColor={'gray.50'} color={'gray.500'} fontWeight={'medium'} paddingX={3} paddingY={2}>
-                      <Checkbox
-                        onChange={() => onChangeGroup(group)}
-                        isIndeterminate={group.isIndeterminate}
-                        isChecked={group.isChecked}
+    <>
+      <FormHead>管理组{isEditMode ? '编辑' : '新建'}</FormHead>
+      <Form onSubmit={handleSubmit(onSubmitForm)}>
+        <FormItem id="name" isRequired label={'名称：'} isInvalid={errors.name} fieldWidth={9}>
+          <Input type={'text'} {...register('name', { required: '请输入管理组名称' })} defaultValue={adminGroup.name} />
+          <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
+        </FormItem>
+        <FormItem id="permissions" label={'权限：'}>
+          <Controller
+            control={control}
+            name={'permissions'}
+            defaultValue={adminGroup.permissions}
+            render={({ field: { value, onChange } }) => (
+              <CheckboxGroup value={value} onChange={onChange}>
+                <Stack spacing={3}>
+                  {groupPermissions.map((group, groupIdx) => (
+                    <Box key={'gp-' + groupIdx}>
+                      <Box
+                        backgroundColor={'gray.50'}
+                        color={'gray.500'}
+                        fontWeight={'medium'}
+                        paddingX={3}
+                        paddingY={2}
                       >
-                        {group.name}
-                      </Checkbox>
+                        <Checkbox
+                          onChange={() => onChangeGroup(group)}
+                          isIndeterminate={group.isIndeterminate}
+                          isChecked={group.isChecked}
+                        >
+                          {group.name}
+                        </Checkbox>
+                      </Box>
+                      <SameWidthChildrenBox childrenClassName={'sw-checkbox'} paddingX={3} paddingY={2}>
+                        {group.children &&
+                          group.children.map((item, itemIdx) =>
+                            item.children ? (
+                              <Box key={'gp-' + groupIdx + '-' + itemIdx}>
+                                {item.children.map((checkbox, checkboxIdx) => (
+                                  <Checkbox
+                                    className={'sw-checkbox'}
+                                    marginEnd={12}
+                                    paddingY={1}
+                                    key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
+                                    value={checkbox.actionId}
+                                    onChange={(e) => onChangeItem(checkbox, group, e)}
+                                    isDisabled={disablePermissions.includes(checkbox.actionId)}
+                                  >
+                                    {checkbox.name}
+                                  </Checkbox>
+                                ))}
+                              </Box>
+                            ) : (
+                              <Checkbox
+                                className={'sw-checkbox'}
+                                marginEnd={12}
+                                paddingY={1}
+                                key={'gp-' + groupIdx + '-' + itemIdx}
+                                value={item.actionId}
+                                onChange={(e) => onChangeItem(item, group, e)}
+                                isDisabled={disablePermissions.includes(item.actionId)}
+                              >
+                                {item.name}
+                              </Checkbox>
+                            )
+                          )}
+                      </SameWidthChildrenBox>
                     </Box>
-                    <SameWidthChildrenBox childrenClassName={'sw-checkbox'} paddingX={3} paddingY={2}>
-                      {group.children &&
-                        group.children.map((item, itemIdx) =>
-                          item.children ? (
-                            <Box key={'gp-' + groupIdx + '-' + itemIdx}>
-                              {item.children.map((checkbox, checkboxIdx) => (
-                                <Checkbox
-                                  className={'sw-checkbox'}
-                                  marginEnd={12}
-                                  paddingY={1}
-                                  key={'gp-' + groupIdx + '-' + itemIdx + '-' + checkboxIdx}
-                                  value={checkbox.actionId}
-                                  onChange={(e) => onChangeItem(checkbox, group, e)}
-                                  isDisabled={disablePermissions.includes(checkbox.actionId)}
-                                >
-                                  {checkbox.name}
-                                </Checkbox>
-                              ))}
-                            </Box>
-                          ) : (
-                            <Checkbox
-                              className={'sw-checkbox'}
-                              marginEnd={12}
-                              paddingY={1}
-                              key={'gp-' + groupIdx + '-' + itemIdx}
-                              value={item.actionId}
-                              onChange={(e) => onChangeItem(item, group, e)}
-                              isDisabled={disablePermissions.includes(item.actionId)}
-                            >
-                              {item.name}
-                            </Checkbox>
-                          )
-                        )}
-                    </SameWidthChildrenBox>
-                  </Box>
-                ))}
-              </Stack>
-            </CheckboxGroup>
-          )}
-        />
-      </FormItem>
-      <FormAction>
-        <ButtonGroup spacing={3} alignItems={'flex-end'}>
-          <Button isLoading={loading} type={'submit'}>
-            {isEditMode ? '编辑' : '新建'}
-          </Button>
-          {isEditMode && !isOwnerMode && (
-            <AdminGroupDeleteButton
-              size={'sm'}
-              adminGroup={adminGroup}
-              onSuccess={() => {
-                navigate('../../../admin-group');
-              }}
-            />
-          )}
-        </ButtonGroup>
-      </FormAction>
-    </Form>
+                  ))}
+                </Stack>
+              </CheckboxGroup>
+            )}
+          />
+        </FormItem>
+        <FormAction>
+          <ButtonGroup spacing={3} alignItems={'flex-end'}>
+            <Button isLoading={loading} type={'submit'}>
+              {isEditMode ? '编辑' : '新建'}
+            </Button>
+            {isEditMode && !isOwnerMode && (
+              <AdminGroupDeleteButton
+                size={'sm'}
+                adminGroup={adminGroup}
+                onSuccess={() => {
+                  navigate('../../../admin-group');
+                }}
+              />
+            )}
+          </ButtonGroup>
+        </FormAction>
+      </Form>
+    </>
   );
 };
 

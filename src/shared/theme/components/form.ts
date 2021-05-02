@@ -1,6 +1,7 @@
 const formErrorTheme = {
   baseStyle: {
     text: {
+      mt: 1,
       fontSize: 'xs',
     },
   },
