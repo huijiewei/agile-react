@@ -9,8 +9,8 @@ const NotFound = (): JSX.Element => {
   };
 
   return (
-    <Flex height="full" alignContent="center" alignItems="center" justifyContent="center">
-      <Stack spacing="3" padding="5" boxShadow="md" width="xs" backgroundColor="white">
+    <Flex flexGrow={1} alignContent="center" alignItems="center" justifyContent="center">
+      <Stack borderRadius={'md'} spacing="3" padding="5" boxShadow="md" width="xs" backgroundColor="white">
         <Center>
           <Image height="50px" alt="Not Found" src={require('../../assets/images/logo.png')} />
         </Center>
