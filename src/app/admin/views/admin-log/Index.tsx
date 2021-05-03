@@ -51,9 +51,7 @@ const AdminLogTable = ({
                   <Td>{adminLog.id}</Td>
                   <Td>{adminLog.admin.name || adminLog.admin.phone}</Td>
                   <Td textAlign={'center'}>
-                    <Tag variant={'solid'} colorScheme={adminLog.status.value == 1 ? 'green' : 'red'}>
-                      {adminLog.status.description}
-                    </Tag>
+                    <Tag colorScheme={adminLog.status.value == 1 ? 'green' : 'red'}>{adminLog.status.description}</Tag>
                   </Td>
                   <Td textAlign={'center'}>{adminLog.type.description}</Td>
                   <Td textAlign={'center'}>{adminLog.method}</Td>
