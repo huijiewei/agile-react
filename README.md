@@ -22,7 +22,7 @@ npm install
 
 ### 配置
 
-#### config\*.config.js 配置说明
+#### 配置文件
 
 可以根据 package.json 文件 scripts 内命令行 APP_CONFIG 参数使用不同配置文件
 

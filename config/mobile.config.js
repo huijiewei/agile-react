@@ -1,4 +1,4 @@
-module.exports = (appProduction) => {
+module.exports = (isProduction) => {
   return {
     name: 'mobile',
     title: 'Agile 移动端',
@@ -6,7 +6,7 @@ module.exports = (appProduction) => {
     serverHost: 'localhost',
     serverPort: 8020,
     pwaEnable: true,
-    apiHost: appProduction ? 'https://agile.huijiewei.com/admin-api' : 'https://agile.huijiewei.com/admin-api',
+    apiHost: isProduction ? 'https://agile.huijiewei.com/admin-api' : 'https://agile.huijiewei.com/admin-api',
     qsArrayFormat: 'none',
   };
 };
