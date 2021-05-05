@@ -1,7 +1,6 @@
 import { BrowserRouterProps, Router } from 'react-router-dom';
-import { BrowserHistory, createBrowserHistory, State, To } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
-import { computeScrollPosition, saveScrollPosition } from '@shared/components/router/RouterScroll';
 
 const HistoryContext = createContext<BrowserHistory | undefined>(undefined);
 
@@ -9,21 +8,7 @@ const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element =>
   const historyRef = useRef<BrowserHistory>();
 
   if (historyRef.current == null) {
-    const primitiveHistory = createBrowserHistory({ window });
-
-    historyRef.current = {
-      ...primitiveHistory,
-      ...{
-        push(to: To, state?: State | undefined) {
-          saveScrollPosition(primitiveHistory.createHref(primitiveHistory.location), computeScrollPosition());
-
-          primitiveHistory.push(to, state);
-        },
-        replace(to: To, state?: State | undefined) {
-          primitiveHistory.replace(to, state);
-        },
-      },
-    };
+    historyRef.current = createBrowserHistory({ window });
   }
 
   const browserHistory = historyRef.current;

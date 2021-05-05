@@ -1,11 +1,13 @@
 import { useHistory } from '@shared/components/router/BrowserRouter';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { createPath } from 'history';
 
 type ScrollToHashOptions = ScrollToOptions & {
   hash?: string;
 };
 
-export const computeScrollPosition = (): ScrollToOptions => ({
+const computeScrollPosition = (): ScrollToOptions => ({
   left: window.pageXOffset,
   top: window.pageYOffset,
 });
@@ -41,18 +43,27 @@ const scrollToPosition = (position: ScrollToHashOptions): void => {
   }
 };
 
-const scrollPositions = new Map<string, ScrollToOptions>();
-
-export const saveScrollPosition = (key: string, scrollPosition: ScrollToOptions): void => {
-  scrollPositions.set(key, scrollPosition);
-};
-
 const RouterScroll = (): null => {
   const browserHistory = useHistory();
+  const location = useLocation();
+  const prevPathRef = useRef<string | undefined>();
+  const savedPositionsRef = useRef(new Map<string, ScrollToOptions>());
+
+  useLayoutEffect(() => {
+    const currentPath = createPath({ pathname: location.pathname, search: location.search, hash: location.hash });
+
+    const savedPositions = savedPositionsRef.current;
+
+    prevPathRef.current = currentPath;
+
+    return () => {
+      prevPathRef.current && savedPositions.set(prevPathRef.current, computeScrollPosition());
+    };
+  }, [location.pathname, location.search, location.hash]);
 
   useEffect(() => {
     const removeHistoryListener = browserHistory.listen(({ action, location }) => {
-      const toPosition = (action == 'POP' ? scrollPositions.get(browserHistory.createHref(location)) : undefined) || {
+      const toPosition = (action == 'POP' ? savedPositionsRef.current.get(createPath(location)) : undefined) || {
         hash: location.hash,
         left: 0,
         top: 0,
