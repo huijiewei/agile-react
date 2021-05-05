@@ -37,7 +37,7 @@ const useHistory = (): BrowserHistory => {
   const historyContext = useContext(HistoryContext);
 
   if (historyContext === undefined) {
-    throw new Error('useBrowserHistory must be used within a BrowserRouter');
+    throw new Error('useHistory must be used within a BrowserRouter');
   }
 
   return historyContext;

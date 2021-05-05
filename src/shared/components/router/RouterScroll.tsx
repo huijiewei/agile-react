@@ -50,11 +50,9 @@ const RouterScroll = (): null => {
   const savedPositionsRef = useRef(new Map<string, ScrollToOptions>());
 
   useLayoutEffect(() => {
-    const currentPath = createPath({ pathname: location.pathname, search: location.search, hash: location.hash });
-
     const savedPositions = savedPositionsRef.current;
 
-    prevPathRef.current = currentPath;
+    prevPathRef.current = createPath({ pathname: location.pathname, search: location.search, hash: location.hash });
 
     return () => {
       prevPathRef.current && savedPositions.set(prevPathRef.current, computeScrollPosition());
