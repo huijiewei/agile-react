@@ -1,17 +1,12 @@
 import { BrowserRouterProps, Router } from 'react-router-dom';
 import { BrowserHistory, createBrowserHistory } from 'history';
-import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { createContext, useContext, useLayoutEffect, useState } from 'react';
+import { useConst } from '@chakra-ui/react';
 
 const HistoryContext = createContext<BrowserHistory | undefined>(undefined);
 
 const BrowserRouter = ({ children, window }: BrowserRouterProps): JSX.Element => {
-  const historyRef = useRef<BrowserHistory>();
-
-  if (historyRef.current == null) {
-    historyRef.current = createBrowserHistory({ window });
-  }
-
-  const browserHistory = historyRef.current;
+  const browserHistory = useConst(createBrowserHistory({ window }));
 
   const [state, setState] = useState({
     action: browserHistory.action,

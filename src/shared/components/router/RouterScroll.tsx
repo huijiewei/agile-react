@@ -2,6 +2,7 @@ import { useHistory } from '@shared/components/router/BrowserRouter';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { createPath } from 'history';
+import { useConst } from '@chakra-ui/react';
 
 type ScrollToHashOptions = ScrollToOptions & {
   hash?: string;
@@ -47,21 +48,19 @@ const RouterScroll = (): null => {
   const browserHistory = useHistory();
   const location = useLocation();
   const prevPathRef = useRef<string | undefined>();
-  const savedPositionsRef = useRef(new Map<string, ScrollToOptions>());
+  const savedPositions = useConst(new Map<string, ScrollToOptions>());
 
   useLayoutEffect(() => {
-    const savedPositions = savedPositionsRef.current;
-
     prevPathRef.current = createPath({ pathname: location.pathname, search: location.search, hash: location.hash });
 
     return () => {
       prevPathRef.current && savedPositions.set(prevPathRef.current, computeScrollPosition());
     };
-  }, [location.pathname, location.search, location.hash]);
+  }, [location.pathname, location.search, location.hash, savedPositions]);
 
   useEffect(() => {
     const removeHistoryListener = browserHistory.listen(({ action, location }) => {
-      const toPosition = (action == 'POP' ? savedPositionsRef.current.get(createPath(location)) : undefined) || {
+      const toPosition = (action == 'POP' ? savedPositions.get(createPath(location)) : undefined) || {
         hash: location.hash,
         left: 0,
         top: 0,
@@ -71,7 +70,7 @@ const RouterScroll = (): null => {
     });
 
     return () => removeHistoryListener();
-  }, [browserHistory]);
+  }, [browserHistory, savedPositions]);
 
   return null;
 };
