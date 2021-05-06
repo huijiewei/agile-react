@@ -24,7 +24,6 @@ export type UsePaginationProps = {
 export type PaginationProps = HTMLChakraProps<'nav'> &
   UsePaginationProps & {
     showTotal?: boolean;
-    showQuickJumper?: boolean;
     renderPage?: (page: PaginationItemProps) => ReactNode;
   };
 
@@ -85,18 +84,12 @@ const usePagination = (props: PaginationProps): UsePagination => {
   const itemList: any[] = [
     ...['previous'],
     ...startPages,
-
-    // Start ellipsis
     ...(siblingsStart > boundarySize + 2
       ? ['start-ellipsis']
       : boundarySize + 1 < totalPage - boundarySize
       ? [boundarySize + 1]
       : []),
-
-    // Sibling pages
     ...range(siblingsStart, siblingsEnd),
-
-    // End ellipsis
     ...(siblingsEnd < totalPage - boundarySize - 1
       ? ['end-ellipsis']
       : totalPage - boundarySize > boundarySize
@@ -107,7 +100,6 @@ const usePagination = (props: PaginationProps): UsePagination => {
     ...['next'],
   ];
 
-  // Map the button type to its page number
   const buttonPage = (type: string) => {
     switch (type) {
       case 'previous':
