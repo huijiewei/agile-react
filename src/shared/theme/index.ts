@@ -9,7 +9,6 @@ import { formErrorTheme, formHorizontalLabelTheme } from '@shared/theme/componen
 import { inputTheme, numberInputTheme } from '@shared/theme/components/input';
 import { breakpoints } from '@shared/theme/foundations/breakpoints';
 import { typography } from '@shared/theme/foundations/typography';
-import { sizes, spacing } from '@shared/theme/foundations/sizes';
 import { radii } from '@shared/theme/foundations/radius';
 import { selectTheme } from '@shared/theme/components/select';
 import { styles } from '@shared/theme/styles';
@@ -25,8 +24,6 @@ const agileTheme = extendTheme({
   breakpoints: breakpoints,
   ...typography,
   radii: radii,
-  space: spacing,
-  sizes: sizes,
   components: {
     Alert: alertTheme,
     Link: linkTheme,
