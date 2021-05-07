@@ -123,7 +123,7 @@ module.exports = (env, argv) => {
         index: appConfig.publicPath,
       },
       headers: { 'Access-Control-Allow-Origin': '*' },
-      dev: {
+      devMiddleware: {
         publicPath: appConfig.publicPath,
       },
       open: appConfig.publicPath,
@@ -147,7 +147,12 @@ module.exports = (env, argv) => {
           filename: cssFileName,
           chunkFilename: cssFileName,
         }),
-      !isProduction && new ReactRefreshWebpackPlugin(),
+      !isProduction &&
+        new ReactRefreshWebpackPlugin({
+          overlay: {
+            sockProtocol: 'ws',
+          },
+        }),
       new HtmlWebPackPlugin({
         title: appConfig.title,
         template: `./public/app/${appName}/index.html`,
