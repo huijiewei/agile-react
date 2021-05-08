@@ -34,7 +34,7 @@ const LogoutMenuItem = (): JSX.Element => {
   };
 
   return (
-    <MenuItem iconSpacing="3" icon={<Icon as={Logout} />} onClick={onLogout}>
+    <MenuItem iconSpacing={3} icon={<Icon as={Logout} />} onClick={onLogout}>
       退出登录
     </MenuItem>
   );
@@ -49,27 +49,27 @@ const NavUserMenu = ({ height }: { height: string }): JSX.Element | null => {
 
   return (
     currentUser && (
-      <Menu isLazy autoSelect={false}>
+      <Menu isLazy>
         <MenuButton
-          sx={{ '&:hover, &[data-hover], &:active, &[data-active]': { backgroundColor: 'gray.100' } }}
-          paddingStart="3"
-          paddingEnd="3"
+          _hover={{ backgroundColor: 'gray.100' }}
+          _active={{ backgroundColor: 'gray.100' }}
+          paddingX={3}
           height={height}
           lineHeight={height}
         >
-          <Avatar marginEnd="2" verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
+          <Avatar marginEnd={2} verticalAlign="middle" size="sm" src={currentUser.avatar} name={currentUser.name} />
           {currentUser.name}
-          <Icon marginStart="2" as={Down} />
+          <Icon marginStart={2} as={Down} />
         </MenuButton>
         <MenuList>
           <MenuItem isDisabled as={Center}>
             {currentUser.adminGroup.name}
           </MenuItem>
           <MenuDivider />
-          <MenuItem iconSpacing="3" icon={<Icon as={User} />}>
+          <MenuItem iconSpacing={3} icon={<Icon as={User} />}>
             个人资料
           </MenuItem>
-          <MenuItem iconSpacing="3" icon={<Icon as={Refresh} />} onClick={onRefresh}>
+          <MenuItem iconSpacing={3} icon={<Icon as={Refresh} />} onClick={onRefresh}>
             刷新资料
           </MenuItem>
           <MenuDivider />

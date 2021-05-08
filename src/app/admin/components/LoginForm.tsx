@@ -52,6 +52,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps): JSX.Element => {
       success('Agile React 是一个基于 React, TypeScript, Chakra UI, Webpack 5 的后台管理演示项目.', {
         position: 'top-right',
         title: '欢迎使用 Agile React',
+        isClosable: true,
       });
 
       onSuccess && onSuccess();
