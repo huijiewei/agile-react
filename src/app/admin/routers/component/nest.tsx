@@ -24,48 +24,48 @@ const nestRouters = [
       },
       {
         path: '1',
-        title: 'next-1',
+        title: 'nest-1',
         element: <Nest1 />,
         children: [
           {
             path: '1-1',
-            title: 'next-1-1',
+            title: 'nest-1-1',
             element: <Nest11 />,
             children: [
               {
                 path: '1-1-1',
-                title: 'next-1-1-1',
+                title: 'nest-1-1-1',
                 element: <Nest111 />,
                 children: [
                   {
                     path: '1-1-1-1',
-                    title: 'next-1-1-1-1',
+                    title: 'nest-1-1-1-1',
                     element: <Nest1111 />,
                   },
                   {
                     path: '1-1-1-2',
-                    title: 'next-1-1-1-2',
+                    title: 'nest-1-1-1-2',
                     element: <Nest1112 />,
                   },
                 ],
               },
               {
                 path: '1-1-2',
-                title: 'next-1-1-2',
+                title: 'nest-1-1-2',
                 element: <Nest112 />,
               },
             ],
           },
           {
             path: '1-2',
-            title: 'next-1-2',
+            title: 'nest-1-2',
             element: <Nest12 />,
           },
         ],
       },
       {
         path: '2',
-        title: 'next-2',
+        title: 'nest-2',
         element: <Nest2 />,
       },
     ],
