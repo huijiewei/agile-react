@@ -1,11 +1,18 @@
 import { Button, HStack, IconButton, Stack } from '@chakra-ui/react';
 import { Config, Delete, Minus } from '@icon-park/react';
+import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
 const ComponentButton = (): JSX.Element => {
+  const { setError } = useErrorDispatch();
+
+  const onClickButton = () => {
+    setError('错误提示');
+  };
+
   return (
     <Stack>
       <HStack>
-        <Button leftIcon={<Delete />} variant="outline">
+        <Button onClick={onClickButton} leftIcon={<Delete />} variant="outline">
           图标按钮
         </Button>
         <Button leftIcon={<Config />}>图标按钮</Button>

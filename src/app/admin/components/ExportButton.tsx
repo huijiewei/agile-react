@@ -24,7 +24,7 @@ type ExportBaseOption = {
   apiEndpoint: string;
 };
 
-type ExportButtonDownloadProps = ButtonProps &
+type ExportDownloadButtonProps = ButtonProps &
   ExportBaseOption & {
     onSuccess?: () => void;
   };
@@ -34,7 +34,7 @@ type ExportButtonProps = ButtonProps &
     confirmMessage?: string;
   };
 
-const ExportDownloadButton = (props: PropsWithChildren<ExportButtonDownloadProps>): JSX.Element => {
+const ExportDownloadButton = (props: PropsWithChildren<ExportDownloadButtonProps>): JSX.Element => {
   const { apiMethod = 'GET', apiEndpoint, onSuccess, children, ...restProps } = props;
 
   const [loading, setLoading] = useState(false);
