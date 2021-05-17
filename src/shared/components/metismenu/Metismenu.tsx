@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
 import { formatUrl } from '@shared/utils/util';
+import { cx } from '@chakra-ui/utils';
 
 type MetismenuProps = {
   toggle: boolean;
@@ -18,6 +19,26 @@ const metismenu = css`
     line-height: 50px;
     padding: 0 20px;
     cursor: pointer;
+    position: relative;
+  }
+
+  .has-arrow::after {
+    position: absolute;
+    width: 0.35em;
+    height: 0.35em;
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+    border-color: inherit;
+    top: 50%;
+    transform: rotate(-45deg) translate(0, -50%);
+    transform-origin: top;
+    transition: all 0.3s ease-out;
+    right: 1em;
+    content: '';
+  }
+
+  .has-arrow[aria-expanded='true']::after {
+    transform: rotate(-135deg) translate(0, -50%);
   }
 
   .mm-item:hover {
@@ -42,14 +63,34 @@ const metismenu = css`
   }
 `;
 
+const MetismenuIcon = ({ icon }: { icon: string }) => {
+  return (
+    <chakra.svg
+      marginTop={'-2px'}
+      marginEnd={1}
+      lineHeight={1}
+      display={'inline-block'}
+      width={'1em'}
+      height={'1em'}
+      fill={'currentColor'}
+      viewBox={'0 0 1024 1024'}
+      dangerouslySetInnerHTML={{ __html: icon }}
+    />
+  );
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MetismenuElem = ({ menu }: { menu: any }) => {
   return menu.url ? (
     <chakra.a as={NavLink} activeClassName="mm-active" end className="mm-item" to={formatUrl(menu.url)}>
+      {menu.icon && <MetismenuIcon icon={menu.icon} />}
       {menu.label}
     </chakra.a>
   ) : (
-    <chakra.span className="mm-item">{menu.label}</chakra.span>
+    <chakra.span className={cx('mm-item', menu.children && 'has-arrow')}>
+      {menu.icon && <MetismenuIcon icon={menu.icon} />}
+      {menu.label}
+    </chakra.span>
   );
 };
 
@@ -61,13 +102,15 @@ const MetismenuItem = ({ menu, keyPrefix }: { menu: any; keyPrefix: string }) =>
 
       {menu.children && (
         <chakra.ul>
-          {menu.children.map((
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            subMenu: any,
-            subIdx: string
-          ) => (
-            <MetismenuItem key={keyPrefix + '-' + subIdx} keyPrefix={keyPrefix + '-' + subIdx} menu={subMenu} />
-          ))}
+          {menu.children.map(
+            (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              subMenu: any,
+              subIdx: string
+            ) => (
+              <MetismenuItem key={keyPrefix + '-' + subIdx} keyPrefix={keyPrefix + '-' + subIdx} menu={subMenu} />
+            )
+          )}
         </chakra.ul>
       )}
     </li>
