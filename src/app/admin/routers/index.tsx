@@ -5,6 +5,7 @@ import { adminRoutes } from './admin/admin';
 import { adminGroupRoutes } from './admin/admin-group';
 import { adminLogRoutes } from './admin/admin-log';
 import { userRoutes } from './user/user';
+import { userAddressRoutes } from './user/user-address';
 import { nestRouters } from '@admin/routers/component/nest';
 import { componentRouters } from '@admin/routers/component/component';
 
@@ -39,6 +40,7 @@ const routes = [
       ...adminGroupRoutes,
       ...adminLogRoutes,
       ...userRoutes,
+      ...userAddressRoutes,
       ...nestRouters,
       ...componentRouters,
       {
