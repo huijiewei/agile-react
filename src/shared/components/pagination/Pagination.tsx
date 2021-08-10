@@ -24,7 +24,7 @@ const Pagination = (props: PaginationProps): JSX.Element => {
       {...restProps}
     >
       {showTotal && (
-        <chakra.span marginEnd={3} lineHeight={7} height={7}>
+        <chakra.span marginEnd={3} lineHeight={7} height={7} paddingX={2} borderRadius={'sm'} background={'gray.100'}>
           共 {props.total} 条
         </chakra.span>
       )}
