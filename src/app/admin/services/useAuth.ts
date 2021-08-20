@@ -1,4 +1,4 @@
-import useSWR, { cache, mutate } from 'swr';
+import useSWR, { createCache, mutate } from 'swr';
 import { MutatorCallback } from 'swr/dist/types';
 import { useHttp } from '@shared/contexts/HttpContext';
 import { HttpError, requestFlatry } from '@shared/utils/http';
@@ -45,10 +45,11 @@ const AUTH_API = 'auth/account';
 
 const useAuth = (): UseAuth => {
   const { apiGet } = useHttp();
+  const { cache } = createCache(new Map());
 
   const { data, error, mutate } = useSWR<Auth>(AUTH_API, (url: string) => apiGet<Auth>(url), {
     suspense: false,
-    revalidateOnMount: !cache.has(AUTH_API),
+    revalidateOnMount: cache.get(AUTH_API) == undefined,
   });
 
   const loading = !data && !error;
