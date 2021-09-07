@@ -4,11 +4,11 @@ const Nest1 = (): JSX.Element => {
   return (
     <>
       <div>
-        <Link to={'../1'}>Nest-1</Link>
+        <Link to={'/nest/1'}>Nest-1</Link>
         &nbsp;&nbsp;
-        <Link to={'1-1'}>Nest-1-1</Link>
+        <Link to={'/nest/1/1-1'}>Nest-1-1</Link>
         &nbsp;&nbsp;
-        <Link to={'1-2'}>Nest-1-2</Link>
+        <Link to={'/nest/1/1-2'}>Nest-1-2</Link>
       </div>
       <Outlet />
     </>

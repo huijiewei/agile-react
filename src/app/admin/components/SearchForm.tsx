@@ -68,8 +68,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
 
   const navigateTo = (search: string) => {
     const to: To = {
-      pathname: location.pathname,
-      search: search == '' ? '' : '?' + search,
+      search: search,
       hash: location.hash,
     };
 

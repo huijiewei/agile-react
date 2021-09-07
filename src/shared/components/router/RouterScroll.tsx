@@ -9,8 +9,8 @@ type ScrollToHashOptions = ScrollToOptions & {
 };
 
 const computeScrollPosition = (): ScrollToOptions => ({
-  left: window.pageXOffset,
-  top: window.pageYOffset,
+  left: window.scrollX,
+  top: window.scrollY,
 });
 
 const getScrollPosition = (hash: string, offset: ScrollToOptions) => {
@@ -40,7 +40,7 @@ const scrollToPosition = (position: ScrollToHashOptions): void => {
   if ('scrollBehavior' in document.documentElement.style) {
     window.scrollTo(scrollToOptions);
   } else {
-    window.scrollTo(scrollToOptions.left || window.pageXOffset, scrollToOptions.top || window.pageYOffset);
+    window.scrollTo(scrollToOptions.left || window.scrollX, scrollToOptions.top || window.scrollY);
   }
 };
 

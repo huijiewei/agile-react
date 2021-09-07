@@ -24,7 +24,7 @@ const NavHeader = (): JSX.Element => {
           textAlign="center"
           backgroundColor={asideBackgroundColor}
         >
-          <Link to={'home'}>
+          <Link to={'/home'}>
             <Image display="inline-block" height="36px" alt="Agile" src={require('../assets/images/logo.png')} />
             <Image
               display="inline-block"

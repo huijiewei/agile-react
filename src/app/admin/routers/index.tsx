@@ -53,7 +53,7 @@ const routes = [
 ];
 
 const AppRoutes = (): ReturnType<typeof useRoutes> => {
-  return useRoutes(routes, BASE_NAME);
+  return useRoutes(routes, { basename: BASE_NAME });
 };
 
 type RouteMatch = {
@@ -72,7 +72,7 @@ const getMatchRoutes = (location: Location): RouteMatch[] => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           title: match.route?.title,
-          to: BASE_NAME + match.pathname,
+          to: match.pathname,
         };
       }) ?? []
   );

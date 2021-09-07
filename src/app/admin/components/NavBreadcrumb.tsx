@@ -33,6 +33,8 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
       };
     });
 
+    console.log(breadcrumbs);
+
     setBreadcrumbs(breadcrumbs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +58,7 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
   return (
     <Breadcrumb spacing={2} separator={<Icon verticalAlign="-3px" as={Right} />} paddingStart={3} {...props}>
       <BreadcrumbItem>
-        <BreadcrumbLink as={Link} to={'home'}>
+        <BreadcrumbLink as={Link} to={'/home'}>
           <Icon verticalAlign="-2px" as={Home} /> 管理后台
         </BreadcrumbLink>
       </BreadcrumbItem>

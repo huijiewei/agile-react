@@ -82,10 +82,10 @@ const MetismenuIcon = ({ icon }: { icon: string }) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MetismenuElem = ({ menu }: { menu: any }) => {
   return menu.url ? (
-    <chakra.a as={NavLink} activeClassName="mm-active" end className="mm-item" to={formatUrl(menu.url)}>
+    <NavLink end className={({ isActive }) => `mm-item ${isActive ? 'mm-active' : ''}`} to={'/' + formatUrl(menu.url)}>
       {menu.icon && <MetismenuIcon icon={menu.icon} />}
       {menu.label}
-    </chakra.a>
+    </NavLink>
   ) : (
     <chakra.span className={cx('mm-item', menu.children && 'has-arrow')}>
       {menu.icon && <MetismenuIcon icon={menu.icon} />}

@@ -18,8 +18,7 @@ const DataPaginationItem = (props: DataPaginationItemProps) => {
   const search = queryString.stringify({ ...queryString.parse(location.search), page: page > 1 ? page : undefined });
 
   const to: To = {
-    pathname: location.pathname,
-    search: search == '' ? '' : '?' + search,
+    search: search,
     hash: location.hash,
   };
 
