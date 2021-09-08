@@ -5,11 +5,11 @@ const ComponentLayout = (): JSX.Element => {
   return (
     <ContentLayout>
       <div>
-        <Link to={'../component'}>组件</Link>
+        <Link to={'/component'}>组件</Link>
         &nbsp;&nbsp;
-        <Link to={'button'}>按钮</Link>
+        <Link to={'/component/button'}>按钮</Link>
         &nbsp;&nbsp;
-        <Link to={'upload'}>上传</Link>
+        <Link to={'/component/upload'}>上传</Link>
       </div>
       <Outlet />
     </ContentLayout>
