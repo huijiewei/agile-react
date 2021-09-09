@@ -1,11 +1,32 @@
 import ContentLayout from '@admin/layouts/ContentLayout';
-import { Box, Button, Flex, Table, Tag, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
-import { useAdminLogAll } from '@admin/services/useAdminLog';
+import {
+  Box,
+  Button,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Table,
+  Tag,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { AdminLog, useAdminLogAll } from '@admin/services/useAdminLog';
 import { SearchForm, useSearchForm } from '@admin/components/SearchForm';
 import { DataPagination } from '@admin/components/DataPagination';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SearchField } from '@admin/services/types';
 import { DataTable } from '@shared/components/table/DataTable';
+import { tabledObject, tabledObjectResult } from '@shared/utils/util';
 
 const AdminLogTable = ({
   setSearchFields,
@@ -15,10 +36,74 @@ const AdminLogTable = ({
   withSearchFields: boolean;
 }) => {
   const { data, loading } = useAdminLogAll(withSearchFields);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [adminLogState, setAdminLogState] = useState<tabledObjectResult[] | undefined>();
 
   useEffect(() => {
     setSearchFields && setSearchFields(data?.searchFields);
   }, [data?.searchFields, setSearchFields]);
+
+  const onClickDetails = (adminLog: AdminLog) => {
+    setAdminLogState(
+      tabledObject(adminLog, [
+        {
+          name: 'Id',
+          property: 'id',
+        },
+        {
+          name: '管理员',
+          property: 'admin',
+          callback: (admin) => {
+            return admin.name || admin.phone;
+          },
+        },
+        {
+          name: '状态',
+          property: 'status',
+          callback: (status) => {
+            return status.description;
+          },
+        },
+        {
+          name: '类型',
+          property: 'type',
+          callback: (type) => {
+            return type.description;
+          },
+        },
+        {
+          name: '方法',
+          property: 'method',
+        },
+        {
+          name: '操作',
+          property: 'action',
+        },
+        {
+          name: '参数',
+          property: 'params',
+        },
+        {
+          name: '异常信息',
+          property: 'exception',
+        },
+        {
+          name: 'IP 地址',
+          property: 'remoteAddr',
+        },
+        {
+          name: '浏览器',
+          property: 'userAgent',
+        },
+        {
+          name: '创建时间',
+          property: 'createdAt',
+        },
+      ])
+    );
+
+    onOpen();
+  };
 
   return (
     <>
@@ -64,7 +149,7 @@ const AdminLogTable = ({
                     <Text as="pre">{adminLog.createdAt}</Text>
                   </Td>
                   <Td textAlign={'right'}>
-                    <Button size={'xs'} variant={'outline'}>
+                    <Button onClick={() => onClickDetails(adminLog)} size={'xs'} variant={'outline'}>
                       详情
                     </Button>
                   </Td>
@@ -74,6 +159,27 @@ const AdminLogTable = ({
         </Table>
       </DataTable>
       <DataPagination pages={data?.pages} />
+      <Modal isOpen={isOpen} onClose={onClose} size={'3xl'}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>日志详情</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Table>
+              <Tbody>
+                {adminLogState &&
+                  adminLogState.map((item) => (
+                    <Tr key={item.name}>
+                      <Td width={150}>{item.name}</Td>
+                      <Td>{item.value}</Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </ModalBody>
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
     </>
   );
 };

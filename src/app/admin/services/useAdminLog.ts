@@ -5,7 +5,7 @@ import useSWR, { SWRConfiguration } from 'swr';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 
-type AdminLog = {
+export type AdminLog = {
   id: number;
   admin: Admin;
   status: Description<number>;
