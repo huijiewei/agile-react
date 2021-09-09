@@ -33,8 +33,6 @@ const NavBreadcrumb = (props: BreadcrumbProps): JSX.Element => {
       };
     });
 
-    console.log(breadcrumbs);
-
     setBreadcrumbs(breadcrumbs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
