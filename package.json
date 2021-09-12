@@ -36,9 +36,9 @@
     "query-string": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.15.2",
+    "react-hook-form": "^7.15.3",
     "react-router-dom": "^6.0.0-beta.3",
-    "swr": "^1.0.0"
+    "swr": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -69,14 +69,14 @@
     "fork-ts-checker-webpack-plugin": "^6.3.3",
     "html-webpack-plugin": "^5.3.2",
     "light-server": "^2.9.1",
-    "mini-css-extract-plugin": "^2.2.2",
+    "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.3.6",
     "postcss-loader": "^6.1.0",
     "prettier": "^2.4.0",
     "react-refresh": "^0.10.0",
     "style-loader": "^3.2.1",
-    "typescript": "^4.4.2",
-    "webpack": "^5.52.0",
+    "typescript": "^4.4.3",
+    "webpack": "^5.52.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.0"
