@@ -15,7 +15,7 @@ import Home from '@admin/views/site/Home';
 import Login from '@admin/views/site/Login';
 import NotFound from '@admin/views/site/NotFound';
 
-const BASE_NAME = process.env.PUBLIC_URL;
+const BASE_NAME = process.env.PUBLIC_URL || '';
 
 const routes = [
   {
@@ -28,7 +28,7 @@ const routes = [
     element: <DefaultLayout />,
     children: [
       {
-        path: '',
+        index: true,
         element: <Navigate to="home" replace={true} />,
       },
       {
@@ -78,4 +78,14 @@ const getMatchRoutes = (location: Location): RouteMatch[] => {
   );
 };
 
-export { AppRoutes, getMatchRoutes };
+const getNormalizedPath = (pathname: string): string => {
+  const base = BASE_NAME;
+
+  if (!base || !pathname.toLowerCase().startsWith(base.toLowerCase())) {
+    return pathname;
+  }
+
+  return pathname.slice(base.length) || '/';
+};
+
+export { AppRoutes, getMatchRoutes, getNormalizedPath };

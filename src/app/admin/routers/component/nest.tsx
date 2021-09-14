@@ -18,7 +18,7 @@ const nestRouters = [
     element: <NestLayout />,
     children: [
       {
-        path: '',
+        index: true,
         title: 'index',
         element: <NestIndex />,
       },

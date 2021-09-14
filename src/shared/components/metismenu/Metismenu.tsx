@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 import metismenujs from 'metismenujs';
-import { useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useMemo, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
-import { formatUrl } from '@shared/utils/util';
+import { deepSearch, formatUrl } from '@shared/utils/util';
 import { cx } from '@chakra-ui/utils';
+import { getNormalizedPath } from '@admin/routers';
+import { useAuth } from '@admin/services/useAuth';
 
 type MetismenuProps = {
   toggle: boolean;
@@ -67,7 +69,7 @@ const MetismenuIcon = ({ icon }: { icon: string }) => {
   return (
     <chakra.svg
       marginTop={'-2px'}
-      marginEnd={1}
+      marginEnd={'5px'}
       lineHeight={1}
       display={'inline-block'}
       width={'1em'}
@@ -80,25 +82,55 @@ const MetismenuIcon = ({ icon }: { icon: string }) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const MetismenuElem = ({ menu }: { menu: any }) => {
-  return menu.url ? (
-    <NavLink end className={({ isActive }) => `mm-item ${isActive ? 'mm-active' : ''}`} to={'/' + formatUrl(menu.url)}>
-      {menu.icon && <MetismenuIcon icon={menu.icon} />}
-      {menu.label}
-    </NavLink>
-  ) : (
-    <chakra.span className={cx('mm-item', menu.children && 'has-arrow')}>
+const MetismenuElem = ({ menu, deep, activePath }: { menu: any; deep: number; activePath: string }) => {
+  if (menu.url) {
+    const menuUrl = '/' + formatUrl(menu.url);
+
+    const classNames = ['mm-item'];
+
+    if (menuUrl == activePath) {
+      classNames.push('mm-active');
+    }
+
+    return (
+      <chakra.a
+        style={{ paddingInlineStart: deep * 20 + 'px' }}
+        as={Link}
+        className={classNames.join(' ')}
+        to={menuUrl}
+      >
+        {menu.icon && <MetismenuIcon icon={menu.icon} />}
+        {menu.label}
+      </chakra.a>
+    );
+  }
+
+  return (
+    <chakra.span
+      style={{ paddingInlineStart: deep * 20 + 'px' }}
+      className={cx('mm-item', menu.children && 'has-arrow')}
+    >
       {menu.icon && <MetismenuIcon icon={menu.icon} />}
       {menu.label}
     </chakra.span>
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const MetismenuItem = ({ menu, keyPrefix }: { menu: any; keyPrefix: string }) => {
+const MetismenuItem = ({
+  menu,
+  deep,
+  activePath,
+  keyPrefix,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  menu: any;
+  deep: number;
+  activePath: string;
+  keyPrefix: string;
+}) => {
   return (
     <li>
-      <MetismenuElem menu={menu} />
+      <MetismenuElem deep={deep} activePath={activePath} menu={menu} />
 
       {menu.children && (
         <chakra.ul>
@@ -108,7 +140,13 @@ const MetismenuItem = ({ menu, keyPrefix }: { menu: any; keyPrefix: string }) =>
               subMenu: any,
               subIdx: string
             ) => (
-              <MetismenuItem key={keyPrefix + '-' + subIdx} keyPrefix={keyPrefix + '-' + subIdx} menu={subMenu} />
+              <MetismenuItem
+                deep={deep + 1}
+                activePath={activePath}
+                key={keyPrefix + '-' + subIdx}
+                keyPrefix={keyPrefix + '-' + subIdx}
+                menu={subMenu}
+              />
             )
           )}
         </chakra.ul>
@@ -133,10 +171,39 @@ const Metismenu = (props: MetismenuProps): JSX.Element => {
     };
   }, [toggle, menus]);
 
+  const location = useLocation();
+  const { groupMenus } = useAuth();
+
+  const activePath = useMemo<string>(() => {
+    const path = getNormalizedPath(location.pathname);
+
+    const paths = path.split('/').filter((split) => split.length > 0);
+
+    const pathTable = [];
+
+    for (let i = paths.length - 1; i >= 0; i--) {
+      pathTable.push(paths.slice(0, i + 1));
+    }
+
+    for (let i = 0; i < pathTable.length; i++) {
+      const url = pathTable[i].join('/');
+      const groupMenuUrls = deepSearch('url', groupMenus);
+      const find = groupMenuUrls.map((menu) => formatUrl(menu)).includes(url);
+
+      if (find) {
+        return '/' + url;
+      }
+    }
+
+    return path;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, groupMenus]);
+
   return (
     <chakra.ul className={'metismenu'} css={metismenu} ref={elemRef}>
       {menus.map((menu, idx) => (
-        <MetismenuItem key={'mm-' + idx} keyPrefix={'mm-' + idx} menu={menu} />
+        <MetismenuItem deep={1} activePath={activePath} key={'mm-' + idx} keyPrefix={'mm-' + idx} menu={menu} />
       ))}
     </chakra.ul>
   );

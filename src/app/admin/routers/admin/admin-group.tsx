@@ -10,7 +10,7 @@ const adminGroupRoutes = [
     title: '管理组',
     children: [
       {
-        path: '',
+        index: true,
         title: '列表',
         element: <AdminGroupIndex />,
       },

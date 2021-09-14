@@ -10,7 +10,7 @@ const userRoutes = [
     title: '用户',
     children: [
       {
-        path: '',
+        index: true,
         title: '列表',
         element: <UserIndex />,
       },

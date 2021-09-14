@@ -98,7 +98,7 @@ const UserForm = ({ user, onSuccess }: UserFromProps): JSX.Element => {
                 size={'sm'}
                 user={user}
                 onSuccess={() => {
-                  navigate('../../../user');
+                  navigate('/user');
                 }}
               />
             )}

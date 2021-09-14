@@ -145,7 +145,7 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
                 size={'sm'}
                 admin={admin}
                 onSuccess={() => {
-                  navigate('../../../admin');
+                  navigate('/admin');
                 }}
               />
             )}

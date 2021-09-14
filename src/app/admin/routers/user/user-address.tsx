@@ -9,7 +9,7 @@ const userAddressRoutes = [
     title: '用户地址',
     children: [
       {
-        path: '',
+        index: true,
         title: '列表',
         element: <UserAddressIndex />,
       },

@@ -12,7 +12,7 @@ const componentRouters = [
     element: <ComponentLayout />,
     children: [
       {
-        path: '',
+        index: true,
         title: '索引',
         element: <ComponentIndex />,
       },

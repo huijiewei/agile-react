@@ -296,7 +296,7 @@ const AdminGroupFrom = ({ adminGroup, onSuccess }: AdminGroupFormProps): JSX.Ele
                 size={'sm'}
                 adminGroup={adminGroup}
                 onSuccess={() => {
-                  navigate('../../../admin-group');
+                  navigate('/admin-group');
                 }}
               />
             )}

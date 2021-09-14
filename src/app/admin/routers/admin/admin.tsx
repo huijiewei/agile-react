@@ -10,7 +10,7 @@ const adminRoutes = [
     title: '管理员',
     children: [
       {
-        path: '',
+        index: true,
         title: '列表',
         element: <AdminIndex />,
       },

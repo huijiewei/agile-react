@@ -1,5 +1,5 @@
-import { useLocation } from 'react-router-dom';
-import { createPath, To } from 'history';
+import { useHref, useLocation } from 'react-router-dom';
+import { To } from 'history';
 import queryString from 'query-string';
 
 const useLoginDirect = (): To => {
@@ -9,8 +9,12 @@ const useLoginDirect = (): To => {
     pathname: 'login',
   };
 
+  const href = useHref(location);
+
+  console.log(href);
+
   if (location.pathname !== 'login') {
-    to.search = '?' + queryString.stringify({ direct: createPath(location) });
+    to.search = queryString.stringify({ direct: href });
   }
 
   return to;
