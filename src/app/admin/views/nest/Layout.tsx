@@ -7,9 +7,9 @@ const NestLayout = (): JSX.Element => {
       <div>
         <Link to={'/nest'}>Nest</Link>
         &nbsp;&nbsp;
-        <Link to={'/nest/1'}>Nest-1</Link>
+        <Link to={'1'}>Nest-1</Link>
         &nbsp;&nbsp;
-        <Link to={'/nest/2'}>Nest-2</Link>
+        <Link to={'2'}>Nest-2</Link>
       </div>
       <Outlet />
     </ContentLayout>

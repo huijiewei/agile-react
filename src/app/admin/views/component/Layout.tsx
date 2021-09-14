@@ -7,9 +7,9 @@ const ComponentLayout = (): JSX.Element => {
       <div>
         <Link to={'/component'}>组件</Link>
         &nbsp;&nbsp;
-        <Link to={'/component/button'}>按钮</Link>
+        <Link to={'button'}>按钮</Link>
         &nbsp;&nbsp;
-        <Link to={'/component/upload'}>上传</Link>
+        <Link to={'upload'}>上传</Link>
       </div>
       <Outlet />
     </ContentLayout>
