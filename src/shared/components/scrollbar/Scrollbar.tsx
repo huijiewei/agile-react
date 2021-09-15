@@ -82,11 +82,13 @@ const Scrollbar = (props: ScrollbarProps): JSX.Element => {
   const { children, options, events, onUpdate = (ps) => ps.update(), ...restProps } = props;
 
   const elemRef = useRef<HTMLDivElement>(null);
-  const [ps, setPs] = useState<PerfectScrollbar>();
+  const [psState, setPsState] = useState<PerfectScrollbar>();
 
   useEffect(() => {
-    if (elemRef.current) {
-      setPs(new PerfectScrollbar(elemRef.current, { ...options, wheelPropagation: false }));
+    const ps = elemRef.current ? new PerfectScrollbar(elemRef.current, { ...options, wheelPropagation: false }) : null;
+
+    if (ps) {
+      setPsState(ps);
     }
 
     return () => {
@@ -95,24 +97,24 @@ const Scrollbar = (props: ScrollbarProps): JSX.Element => {
   }, [options]);
 
   useEffect(() => {
-    if (elemRef.current && events) {
-      Object.entries(events).forEach(([event, callback]) => {
-        elemRef.current && elemRef.current.addEventListener(eventMap[event], callback);
-      });
-    }
+    const element = elemRef.current;
 
-    return () => {
-      if (elemRef.current && events) {
+    if (element && events) {
+      Object.entries(events).forEach(([event, callback]) => {
+        element.addEventListener(eventMap[event], callback);
+      });
+
+      return () => {
         Object.entries(events).forEach(([event, callback]) => {
-          elemRef.current && elemRef.current.removeEventListener(eventMap[event], callback);
+          element.removeEventListener(eventMap[event], callback);
         });
-      }
-    };
+      };
+    }
   }, [events]);
 
   useEffect(() => {
-    if (elemRef.current && ps) {
-      onUpdate(ps);
+    if (elemRef.current && psState) {
+      onUpdate(psState);
     }
   });
 

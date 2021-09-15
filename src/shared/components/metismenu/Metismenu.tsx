@@ -48,7 +48,7 @@ const metismenu = css`
   }
 
   .mm-item.mm-active {
-    color: yellow;
+    color: #ecc94b;
   }
 
   .mm-collapse:not(.mm-show) {
@@ -86,17 +86,11 @@ const MetismenuElem = ({ menu, deep, activePath }: { menu: any; deep: number; ac
   if (menu.url) {
     const menuUrl = '/' + formatUrl(menu.url);
 
-    const classNames = ['mm-item'];
-
-    if (menuUrl == activePath) {
-      classNames.push('mm-active');
-    }
-
     return (
       <chakra.a
         style={{ paddingInlineStart: deep * 20 + 'px' }}
         as={Link}
-        className={classNames.join(' ')}
+        className={cx('mm-item', menuUrl == activePath && 'mm-active')}
         to={menuUrl}
       >
         {menu.icon && <MetismenuIcon icon={menu.icon} />}
@@ -133,7 +127,7 @@ const MetismenuItem = ({
       <MetismenuElem deep={deep} activePath={activePath} menu={menu} />
 
       {menu.children && (
-        <chakra.ul>
+        <ul>
           {menu.children.map(
             (
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -149,7 +143,7 @@ const MetismenuItem = ({
               />
             )
           )}
-        </chakra.ul>
+        </ul>
       )}
     </li>
   );
