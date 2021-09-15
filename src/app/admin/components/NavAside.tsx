@@ -1,33 +1,16 @@
 import { Metismenu } from '@shared/components/metismenu/Metismenu';
 import { useAuth } from '@admin/services/useAuth';
-import { Box } from '@chakra-ui/react';
+import { Scrollbar } from '@shared/components/scrollbar/Scrollbar';
+import { useLayoutState } from '@shared/components/layout/LayoutContext';
 
 const NavAside = (): JSX.Element => {
   const { groupMenus } = useAuth();
+  const { headerHeight } = useLayoutState();
 
   return (
-    <Box
-      overflowY="hidden"
-      _hover={{
-        overflowY: 'auto',
-      }}
-      height="full"
-      sx={{
-        '&::-webkit-scrollbar': {
-          width: '6px',
-          height: '100px',
-        },
-        '&::-webkit-scrollbar-track': {
-          width: '9px',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          background: 'gray',
-          borderRadius: 'sm',
-        },
-      }}
-    >
+    <Scrollbar height={`calc(100vh - ${headerHeight} )`}>
       <Metismenu menus={groupMenus} toggle={false} />
-    </Box>
+    </Scrollbar>
   );
 };
 
