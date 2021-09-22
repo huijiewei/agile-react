@@ -3,8 +3,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { Form } from '@shared/components/form/Form';
 import { Button, ButtonGroup, FormErrorMessage, FormHelperText, Input } from '@chakra-ui/react';
 import { FormItem } from '@shared/components/form/FormItem';
-import { RemoteSelect } from '@admin/components/RemoteSelect';
-import { useAdminGroups } from '@admin/services/useMisc';
 import { FormAction } from '@shared/components/form/FormAction';
 import { AdminDeleteButton } from '@admin/views/admin/_Delete';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +10,7 @@ import { bindUnprocessableEntityErrors } from '@shared/utils/http';
 import { useAuth } from '@admin/services/useAuth';
 import { AvatarUpload } from '@admin/components/upload/AvatarUpload';
 import { FormHead } from '@shared/components/form/FormHead';
+import { AdminGroupSelect } from '@admin/components/AdminGroupSelect';
 
 type AdminFromProps = {
   admin: Admin;
@@ -30,23 +29,11 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
   } = useForm({ mode: 'all' });
 
   const navigate = useNavigate();
-  const { fetch } = useAdminGroups();
   const { loading, submitAdmin } = useAdminSubmit();
   const { currentUser, mutate } = useAuth();
 
   const isEditMode = admin.id > 0;
   const isOwnerMode = currentUser?.id == admin.id;
-
-  const loadAdminGroups = async () => {
-    const { data } = await fetch();
-
-    return data?.map((adminGroup) => {
-      return {
-        value: adminGroup.id,
-        label: adminGroup.name,
-      };
-    });
-  };
 
   const onSubmitForm = async (formData: Admin & { password: string; passwordConfirm: string }) => {
     const { data, error } = await submitAdmin(admin.id, formData);
@@ -126,10 +113,9 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
           isInvalid={errors.adminGroupId}
           fieldWidth={5}
         >
-          <RemoteSelect
+          <AdminGroupSelect
             isDisabled={isOwnerMode}
             placeholder={'所属管理组'}
-            loadOptions={loadAdminGroups}
             {...register('adminGroupId', { required: isOwnerMode ? false : '请选择管理组' })}
             defaultValue={admin.adminGroupId}
           />
