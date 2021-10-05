@@ -53,7 +53,7 @@ const routes = [
 ];
 
 const AppRoutes = (): ReturnType<typeof useRoutes> => {
-  return useRoutes(routes, { basename: BASE_NAME });
+  return useRoutes(routes);
 };
 
 type RouteMatch = {
@@ -65,7 +65,7 @@ const getMatchRoutes = (location: Location): RouteMatch[] => {
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    matchRoutes(routes, location, BASE_NAME)
+    matchRoutes(routes, location)
       ?.filter((match) => match.route.path != '/')
       .map((match) => {
         return {
@@ -78,14 +78,4 @@ const getMatchRoutes = (location: Location): RouteMatch[] => {
   );
 };
 
-const getNormalizedPath = (pathname: string): string => {
-  const base = BASE_NAME;
-
-  if (!base || !pathname.toLowerCase().startsWith(base.toLowerCase())) {
-    return pathname;
-  }
-
-  return pathname.slice(base.length) || '/';
-};
-
-export { AppRoutes, getMatchRoutes, getNormalizedPath };
+export { BASE_NAME, AppRoutes, getMatchRoutes };

@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
 import { deepSearch, formatUrl } from '@shared/utils/util';
 import { cx } from '@chakra-ui/utils';
-import { getNormalizedPath } from '@admin/routers';
 import { useAuth } from '@admin/services/useAuth';
 
 type MetismenuProps = {
@@ -169,7 +168,7 @@ const Metismenu = (props: MetismenuProps): JSX.Element => {
   const { groupMenus } = useAuth();
 
   const activePath = useMemo<string>(() => {
-    const path = getNormalizedPath(location.pathname);
+    const path = location.pathname;
 
     const paths = path.split('/').filter((split) => split.length > 0);
 
