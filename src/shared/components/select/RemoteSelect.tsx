@@ -14,7 +14,7 @@ type RemoteSelectProps = SelectProps & {
 };
 
 const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
-  const { name, loadOptions, buttonText = '刷新选项数据', isDisabled, ...restProps } = props;
+  const { id, name, defaultValue, loadOptions, buttonText = '刷新选项数据', isDisabled, ...restProps } = props;
 
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<Option[] | undefined>();
@@ -41,7 +41,14 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
     <Stack alignItems={'center'} direction={'row'} spacing={3}>
       <Skeleton width={'full'} isLoaded={!!options}>
         {options ? (
-          <Select isDisabled={isDisabled || loading} name={name} ref={ref} {...restProps}>
+          <Select
+            id={id}
+            name={name}
+            defaultValue={defaultValue}
+            isDisabled={isDisabled || loading}
+            ref={ref}
+            {...restProps}
+          >
             {options.map((option, index) => (
               <option key={name + '-' + index} value={option.value}>
                 {option.label}
@@ -49,7 +56,7 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
             ))}
           </Select>
         ) : (
-          <Select />
+          <Select {...restProps} />
         )}
       </Skeleton>
       <IconButton
