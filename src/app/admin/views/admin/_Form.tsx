@@ -113,11 +113,14 @@ const AdminFrom = ({ admin, onSuccess }: AdminFromProps): JSX.Element => {
           isInvalid={errors.adminGroupId}
           fieldWidth={5}
         >
-          <AdminGroupSelect
-            isDisabled={isOwnerMode}
-            placeholder={'所属管理组'}
-            {...register('adminGroupId', { required: isOwnerMode ? false : '请选择管理组' })}
+          <Controller
+            name={'adminGroupId'}
+            control={control}
             defaultValue={admin.adminGroupId}
+            rules={{ required: isOwnerMode ? false : '请选择管理组' }}
+            render={({ field: { value, onChange } }) => (
+              <AdminGroupSelect isDisabled={isOwnerMode} placeholder={'所属管理组'} value={value} onChange={onChange} />
+            )}
           />
           <FormErrorMessage>{errors.adminGroupId?.message || ' '}</FormErrorMessage>
         </FormItem>
