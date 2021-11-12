@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import metismenujs from 'metismenujs';
-import { useEffect, useMemo, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { chakra } from '@chakra-ui/react';
-import { deepSearch, formatUrl } from '@shared/utils/util';
+import { formatUrl, getActivePath } from './metismenuUtils';
 import { cx } from '@chakra-ui/utils';
-import { useAuth } from '@admin/services/useAuth';
 
 type MetismenuProps = {
   toggle: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   menus: any[];
+  pathname: string;
 };
 
 const metismenu = css`
@@ -149,9 +149,11 @@ const MetismenuItem = ({
 };
 
 const Metismenu = (props: MetismenuProps): JSX.Element => {
-  const { toggle, menus } = props;
+  const { toggle, menus, pathname } = props;
 
   const elemRef = useRef<HTMLUListElement>(null);
+
+  const activePath = getActivePath(pathname, menus);
 
   useEffect(() => {
     const mm =
@@ -163,35 +165,6 @@ const Metismenu = (props: MetismenuProps): JSX.Element => {
       mm && mm.dispose();
     };
   }, [toggle, menus]);
-
-  const location = useLocation();
-  const { groupMenus } = useAuth();
-
-  const activePath = useMemo<string>(() => {
-    const path = location.pathname;
-
-    const paths = path.split('/').filter((split) => split.length > 0);
-
-    const pathTable = [];
-
-    for (let i = paths.length - 1; i >= 0; i--) {
-      pathTable.push(paths.slice(0, i + 1));
-    }
-
-    for (let i = 0; i < pathTable.length; i++) {
-      const url = pathTable[i].join('/');
-      const groupMenuUrls = deepSearch('url', groupMenus);
-      const find = groupMenuUrls.map((menu) => formatUrl(menu)).includes(url);
-
-      if (find) {
-        return '/' + url;
-      }
-    }
-
-    return path;
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname, groupMenus]);
 
   return (
     <chakra.ul className={'metismenu'} css={metismenu} ref={elemRef}>
