@@ -84,10 +84,6 @@ const UserForm = ({ user, onSuccess }: UserFromProps): JSX.Element => {
           <Input type={'text'} {...register('name', { required: false })} defaultValue={user.name} />
           <FormErrorMessage>{errors.name?.message || ' '}</FormErrorMessage>
         </FormItem>
-        <FormItem id="avatar" label={'头像：'} isInvalid={errors.avatar} fieldWidth={5}>
-          <AvatarUpload defaultValue={user.avatar} {...register('avatar')} />
-          <FormErrorMessage>{errors.avatar?.message || ' '}</FormErrorMessage>
-        </FormItem>
         <FormAction>
           <ButtonGroup spacing={3} alignItems={'flex-end'}>
             <Button isLoading={loading} type={'submit'}>

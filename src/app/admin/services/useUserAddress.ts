@@ -55,7 +55,7 @@ const useUserAddressAll = (withSearchFields = false): UseAll<PageResponse<UserAd
   };
 };
 
-const useUserAddressView = (id: string): UseView<UserAddress> => {
+const useUserAddressView = (id: string | undefined): UseView<UserAddress> => {
   const { apiGet } = useHttp();
   const { data, error, mutate } = useSWR<UserAddress | undefined>(USER_ADDRESS_API + '/' + id, (url) => apiGet(url));
 

@@ -32,7 +32,7 @@ const useAdminAll = (): UseAll<ListResponse<Admin>> => {
   };
 };
 
-const useAdminView = (id: string): UseView<Admin> => {
+const useAdminView = (id: string | undefined): UseView<Admin> => {
   const { apiGet } = useHttp();
   const { data, error, mutate } = useSWR<Admin | undefined>(ADMIN_API + '/' + id, (url) => apiGet(url));
 

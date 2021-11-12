@@ -26,7 +26,7 @@ const useAdminGroupAll = (): UseAll<ListResponse<AdminGroup>> => {
   };
 };
 
-const useAdminGroupView = (id: string): UseView<AdminGroup> => {
+const useAdminGroupView = (id: string | undefined): UseView<AdminGroup> => {
   const { apiGet } = useHttp();
   const { data, error, mutate } = useSWR<AdminGroup | undefined>(ADMIN_GROUP_API + '/' + id, (url) => apiGet(url));
 

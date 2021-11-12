@@ -43,7 +43,7 @@ const useUserAll = (withSearchFields = false): UseAll<PageResponse<User>> => {
   };
 };
 
-const useUserView = (id: string): UseView<User> => {
+const useUserView = (id: string | undefined): UseView<User> => {
   const { apiGet } = useHttp();
   const { data, error, mutate } = useSWR<User | undefined>(USER_API + '/' + id, (url) => apiGet(url));
 
