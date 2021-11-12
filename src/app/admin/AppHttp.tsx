@@ -20,10 +20,12 @@ const AppHttpProvider = ({ children }: { children: ReactNode }): JSX.Element => 
   const { setLoginAction } = useAuthLoginDispatch();
 
   const onRequest = (config: HttpRequestConfig) => {
-    const authToken = getAuthToken();
+    if (config.headers) {
+      const authToken = getAuthToken();
 
-    config.headers['X-Client-Id'] = authToken.clientId;
-    config.headers['X-Access-Token'] = authToken.accessToken;
+      config.headers['X-Client-Id'] = authToken.clientId;
+      config.headers['X-Access-Token'] = authToken.accessToken;
+    }
 
     return config;
   };
