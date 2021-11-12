@@ -13,7 +13,6 @@
     "admin boilerplate"
   ],
   "scripts": {
-    "vite-admin-dev": "cross-env APP_CONFIG=./vite.app.admin.config.js vite",
     "admin-dev": "webpack serve --hot --mode development --env APP_CONFIG=./config/admin.config.js",
     "admin-build": "webpack build --mode production --env APP_CONFIG=./config/admin.config.js",
     "admin-analyze": "webpack build --mode production --env APP_CONFIG=./config/admin.config.js BUNDLE_ANALYZE=1",
@@ -55,7 +54,6 @@
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
-    "@vitejs/plugin-react": "^1.0.8",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^8.2.3",
@@ -81,7 +79,6 @@
     "react-refresh": "^0.11.0",
     "style-loader": "^3.3.1",
     "typescript": "^4.4.4",
-    "vite": "^2.6.14",
     "webpack": "^5.64.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1",
