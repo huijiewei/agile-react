@@ -5,7 +5,7 @@ import { useConst } from '@chakra-ui/react';
 
 const HistoryContext = createContext<BrowserHistory | undefined>(undefined);
 
-const BrowserRouter = ({ children, window, basename }: BrowserRouterProps): JSX.Element => {
+const BrowserRouter = ({ basename, children, window }: BrowserRouterProps): JSX.Element => {
   const browserHistory = useConst(createBrowserHistory({ window }));
 
   const [state, setState] = useState({
@@ -14,15 +14,13 @@ const BrowserRouter = ({ children, window, basename }: BrowserRouterProps): JSX.
   });
 
   useLayoutEffect(() => {
-    const removeHistoryListener = browserHistory.listen(({ action, location }) => {
-      setState({ action, location });
-    });
+    const removeHistoryListener = browserHistory.listen(setState);
 
     return () => removeHistoryListener();
   }, [browserHistory]);
 
   return (
-    <Router basename={basename} action={state.action} location={state.location} navigator={browserHistory}>
+    <Router basename={basename} navigationType={state.action} location={state.location} navigator={browserHistory}>
       <HistoryContext.Provider value={browserHistory}>{children}</HistoryContext.Provider>
     </Router>
   );
