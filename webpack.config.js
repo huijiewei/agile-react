@@ -228,7 +228,7 @@ module.exports = (env, argv) => {
             priority: 20,
             enforce: true,
           },
-          default: {
+          components: {
             name: 'components',
             chunks: 'all',
             minChunks: 2,
