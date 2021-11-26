@@ -34,7 +34,7 @@ npm install
 
 ### 运行本地开发
 
-修改 config\*.config.js 里面的相关参数
+修改 config 目录内 *.config.js 文件内相关参数
 
 ```bash
 npm run admin-dev
