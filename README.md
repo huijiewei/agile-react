@@ -2,6 +2,7 @@ React + TypeScript + React-Router + Chakra UI + Webpack 5
 
 项目目前正在开发，变动可能会很大，暂时只供研究学习参考
 
+
 ## 特点
 
 1. 基于 Webpack 5
@@ -11,6 +12,11 @@ React + TypeScript + React-Router + Chakra UI + Webpack 5
 3. 尽力最新技术
 
 4. 使用配置文件分割项目入口
+
+## 在线演示
+https://agile.huijiewei.com/admin-react
+账号：13098761234
+密码：123456
 
 ## 教程
 
