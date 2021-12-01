@@ -14,7 +14,7 @@ React + TypeScript + React-Router + Chakra UI + Webpack 5
 [![WebStorm](https://img.shields.io/badge/webstorm-143?style=flat&logo=webstorm)](https://jb.gg/OpenSourceSupport)
 [![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)](https://git-scm.com/)
 [![Sourcetree](https://img.shields.io/badge/Sourcetree-0052CC?style=flat&logo=Sourcetree&logoColor=white)](https://sourcetreeapp.com)
-[![Sourcetree](https://img.shields.io/badge/npm-CB3837?style=flat&logo=npm&logoColor=white)](https://www.npmjs.com)
+[![NPM](https://img.shields.io/badge/npm-CB3837?style=flat&logo=npm&logoColor=white)](https://www.npmjs.com)
 
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://typescriptlang.org)
