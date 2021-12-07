@@ -70,9 +70,6 @@ module.exports = (env, argv) => {
               loader: 'css-loader',
               options: { importLoaders: 1 },
             },
-            {
-              loader: 'postcss-loader',
-            },
           ],
         },
         {
@@ -202,7 +199,7 @@ module.exports = (env, argv) => {
         cacheGroups: {
           react: {
             name: 'react',
-            test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|history)[\\/]/,
+            test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|history|scheduler)[\\/]/,
             chunks: 'all',
             priority: 30,
             enforce: true,

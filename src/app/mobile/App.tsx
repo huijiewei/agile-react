@@ -5,14 +5,14 @@ import routes from '@mobile/routers';
 import { ErrorProvider } from '@shared/contexts/ErrorContext';
 
 const AppRoutes = () => {
-  return useRoutes(routes, process.env.PUBLIC_URL);
+  return useRoutes(routes);
 };
 
 const App = (): JSX.Element => {
   useSplash();
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ErrorProvider>
         <AppRoutes />
       </ErrorProvider>

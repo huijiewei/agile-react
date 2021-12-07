@@ -1,4 +1,4 @@
-import { Box, BoxProps, forwardRef, Heading, HeadingProps } from '@chakra-ui/react';
+import { Box, BoxProps, Heading, HeadingProps } from '@chakra-ui/react';
 
 const CardHeader = (props: HeadingProps): JSX.Element => {
   const { children, ...restProps } = props;

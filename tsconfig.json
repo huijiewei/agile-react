@@ -3,24 +3,20 @@
   "exclude": ["**/node_modules", "**/.*/", "dist"],
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "target": "es5",
-    "downlevelIteration": true,
-
-    "allowJs": true,
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "skipLibCheck": true,
-
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "noEmit": true,
-
+    "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
       "@shared/*": ["shared/*"],
