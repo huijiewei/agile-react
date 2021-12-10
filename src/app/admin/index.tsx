@@ -5,7 +5,8 @@ import { render } from 'react-dom';
 
 import { App } from './App';
 
-// import './serviceWorker';
+import './serviceWorker';
+
 import { ChakraProvider } from '@chakra-ui/react';
 
 import { agileTheme } from '@shared/theme';

@@ -8,6 +8,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 
 module.exports = (env, argv) => {
   process.env.NODE_ENV = argv.mode;
@@ -132,6 +133,11 @@ module.exports = (env, argv) => {
         PUBLIC_URL: appConfig.publicPath,
         QS_ARRAY_FORMAT: appConfig.qsArrayFormat,
       }),
+      isProduction &&
+        new GenerateSW({
+          clientsClaim: true,
+          skipWaiting: true,
+        }),
       isProduction && new ESLintPlugin(),
       isProduction &&
         new ForkTsCheckerWebpackPlugin({
