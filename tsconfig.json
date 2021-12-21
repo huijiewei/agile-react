@@ -1,12 +1,12 @@
 {
   "include": ["src"],
-  "exclude": ["**/node_modules", "**/.*/", "dist"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "target": "esnext",
     "useDefineForClassFields": true,
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
