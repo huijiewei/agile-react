@@ -1,12 +1,23 @@
-import { Button, HStack, IconButton, Stack } from '@chakra-ui/react';
+import { Button, HStack, IconButton, Stack, useToast } from '@chakra-ui/react';
 import { Config, Delete, Minus } from '@icon-park/react';
 import { useErrorDispatch } from '@shared/contexts/ErrorContext';
 
 const ComponentButton = (): JSX.Element => {
   const { setError } = useErrorDispatch();
+  const toast = useToast();
 
   const onClickButton = () => {
     setError('错误提示');
+  };
+
+  const onClickShowToast = () => {
+    toast({
+      title: '提示',
+      description: '这是一个提示',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -15,7 +26,9 @@ const ComponentButton = (): JSX.Element => {
         <Button onClick={onClickButton} leftIcon={<Delete />} variant="outline">
           图标按钮
         </Button>
-        <Button leftIcon={<Config />}>图标按钮</Button>
+        <Button onClick={onClickShowToast} leftIcon={<Config />}>
+          图标按钮
+        </Button>
         <Button iconSpacing="2" leftIcon={<Config />} variant="outline" size={'sm'}>
           图标按钮
         </Button>

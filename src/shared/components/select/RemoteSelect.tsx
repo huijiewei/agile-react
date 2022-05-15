@@ -1,7 +1,6 @@
 import { forwardRef, IconButton, Select, SelectProps, Skeleton, Stack } from '@chakra-ui/react';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { Refresh } from '@icon-park/react';
-import useAsyncEffect from 'use-async-effect';
 
 type Option = {
   value: string | number | readonly string[] | undefined;
@@ -19,18 +18,20 @@ const RemoteSelect = forwardRef<RemoteSelectProps, 'select'>((props, ref) => {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<Option[] | undefined>();
 
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     setLoading(true);
 
     const options = await loadOptions();
 
     setOptions(options);
     setLoading(false);
-  };
+  }, [loadOptions]);
 
-  useAsyncEffect(async () => {
-    await fetch();
-  }, []);
+  useEffect(() => {
+    (async () => {
+      await fetch();
+    })();
+  }, [fetch]);
 
   return (
     <Stack alignItems={'center'} direction={'row'} spacing={3}>

@@ -121,7 +121,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps): JSX.Element => {
       )}
 
       <Box>
-        <Button isLoading={loading} type={'submit'} isFullWidth>
+        <Button isLoading={loading} type={'submit'} width={'full'}>
           确 定
         </Button>
       </Box>

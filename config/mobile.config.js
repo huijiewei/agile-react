@@ -4,7 +4,7 @@ module.exports = (isProduction) => {
     title: 'Agile 移动端',
     publicPath: '/mobile',
     serverHost: 'localhost',
-    serverPort: 8020,
+    serverPort: 8022,
     pwaEnable: true,
     apiHost: isProduction ? 'https://agile.huijiewei.com/admin-api' : 'https://agile.huijiewei.com/admin-api',
     qsArrayFormat: 'none',
